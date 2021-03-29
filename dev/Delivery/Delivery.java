@@ -20,8 +20,20 @@ public class Delivery {
         this.truckNumber = truckNumber;
         this.driverName = driverName;
         this.departureWeight = departureWeight;
-        this.modification = modification;
+        this.modification = modification; // " - old g121 -- new g123 -"
         this.origin = origin;
         this.destinations = destinations;
+    }
+
+    public Delivery(){}
+
+    public void setDriver(Driver dr) {
+        driverName = dr.getName();
+    }
+
+    public Delivery clone(){return null;} //todo  clone.modification = "- old "+this.id+" -"
+
+    public void makeOld(String oldID){
+        modification += "- new "+ oldID+ " -";
     }
 }
