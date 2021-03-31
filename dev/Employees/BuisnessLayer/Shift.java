@@ -2,7 +2,7 @@ package Employees.BuisnessLayer;
 
 import java.util.Date;
 
-public class Shift {
+public abstract class Shift {
 
     private Date date;
     private int start;
