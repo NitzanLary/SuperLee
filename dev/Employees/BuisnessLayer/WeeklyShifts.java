@@ -7,10 +7,15 @@ public class WeeklyShifts {
 
     private Date fromDate;
     private Date toDate;
-
-
-
     private List<Shift> shifts;
+
+    WeeklyShifts(Date _fromDate, Date _todate){
+        fromDate = _fromDate;
+        toDate = _todate;
+
+    }
+
+
 
 
 
