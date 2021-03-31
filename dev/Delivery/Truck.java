@@ -13,4 +13,11 @@ public class Truck {
         this.truckWeight = maxWeight;
     }
 
+    public String toString(){
+        String ret = "";
+        ret.concat("id-"+id);
+        ret.concat("\nmodel-"+model).concat("\nmaxWeight-"+maxWeight).concat("\ntruckWeight-"+truckWeight);
+        return ret;
+    }
+
 }

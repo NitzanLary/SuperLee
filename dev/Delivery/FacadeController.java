@@ -35,11 +35,11 @@ public class FacadeController {
 
     @Override
     public String toString() {
-        return "dec=" + dec +
-                ", drc=" + drc +
-                ", arc=" + arc +
-                ", tac=" + tac +
-                ", trc=" + trc +
+        return "Deliveries=" + dec +
+                "\nDrivers=" + drc +
+                "\nAreas=" + arc +
+                "\nTasks=" + tac +
+                "\nTrucks=" + trc +
                 '}';
     }
 }
