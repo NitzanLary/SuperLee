@@ -9,7 +9,18 @@ public class Location {
         this.address = address;
         this.contactName = contactName;
         this.phoneNumber = phoneNumber;
+    }
 
+    public String getAddress() {
+        return address;
+    }
 
+    @Override
+    public String toString() {
+        return "{" +
+                "address='" + address + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", contactName='" + contactName + '\'' +
+                '}';
     }
 }

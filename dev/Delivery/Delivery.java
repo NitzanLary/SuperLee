@@ -36,4 +36,19 @@ public class Delivery {
     public void makeOld(String oldID){
         modification += "- new "+ oldID+ " -";
     }
+
+    @Override
+    public String toString() {
+        return "\n\t\tDelivery : {" +
+                "\n\t\tid ='" + id + '\'' +
+                "\n\t\tdate = '" + date + '\'' +
+                "\n\t\ttimeOfDeparture = '" + timeOfDeparture + '\'' +
+                "\n\t\ttruckNumber = '" + truckNumber + '\'' +
+                "\n\t\tdriverName = '" + driverName + '\'' +
+                "\n\t\tdepartureWeight = " + departureWeight +
+                "\n\t\tmodification = '" + modification + '\'' +
+                "\n\t\torigin = " + origin +
+                "\n\t\tdestinations= " + destinations +
+                '}';
+    }
 }

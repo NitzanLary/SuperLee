@@ -13,7 +13,8 @@ public class DeliveryController {
         deliveries = new HashMap<>();
     }
 
-    public void createFullDelivery(String id, String date, String timeOfDeparture, String truckNumber, String driverName, int departureWeight, String modification, Location origin, ArrayList<Task> destinations){
+    public void createFullDelivery(String date, String timeOfDeparture, String truckNumber, String driverName, int departureWeight, String modification, Location origin, ArrayList<Task> destinations){
+        String id = getNewDeliveryID();
         deliveries.put(id ,new Delivery(id, date, timeOfDeparture, truckNumber, driverName, departureWeight, modification, origin, destinations));
     }
 
@@ -92,7 +93,10 @@ public class DeliveryController {
         deliveries.get(delID);
     }
 
-
-
-
+    @Override
+    public String toString() {
+        return "DeliveryController{" +
+                "\ndeliveries =\n\t" + deliveries +
+                '}';
+    }
 }
