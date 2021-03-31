@@ -1,11 +1,16 @@
 package Employees.BuisnessLayer;
 
 import java.util.Date;
+import java.util.List;
 
 public class WeeklyShifts {
 
     private Date fromDate;
     private Date toDate;
+
+
+
+    private List<Shift> shifts;
 
 
 
@@ -24,6 +29,11 @@ public class WeeklyShifts {
     public void setToDate(Date toDate) {
         this.toDate = toDate;
     }
+
+    public List<Shift> getShifts() {
+        return shifts;
+    }
+
 
 
 }
