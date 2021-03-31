@@ -1,15 +1,23 @@
 package Employees.BuisnessLayer;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Set;
 
 public abstract class Shift {
 
     private Date date;
-    private int start;
-    private int end;
+    protected int start;
+    protected int end;
     private boolean closed;
+    private HashMap<Employee, int> constrains;
+    private HashMap<String, Employee> assignedEmployees;
 
-
+    Shift(Date _date) {
+        date = _date;
+        constrains = new HashMap<Employee, int>();
+        assignedEmployees = new HashMap<String, Employee>();
+    }
 
     public Date getDate() {
         return date;
@@ -42,6 +50,16 @@ public abstract class Shift {
     public void setClosed(boolean closed) {
         this.closed = closed;
     }
+
+    public void AddConstrain(Employee employee, int con){
+        constrains.put(employee, con);
+    }
+
+    public void AssignEmployee(Employee e){
+        assignedEmployees.put(e.getID(), e);
+    }
+
+
 
 
 
