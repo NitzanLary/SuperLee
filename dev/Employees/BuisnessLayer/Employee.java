@@ -14,22 +14,23 @@ public class Employee {
     Employee(String _name, String _ID) {
         name = _name;
         ID = _ID;
-        roles = new ArrayList<Role>();
+        roles = new ArrayList<>();
     }
 
-    public String getName() {return name;}
+    public String getName() {return name;} // TODO: change return type to Response<String>
 
-    public int getSalary() {
-        return salary;
+    public String getID() {
+        return ID;
     }
 
     public String getBankAccount() {
         return bankAccount;
     }
 
-    public String getID() {
-        return ID;
+    public int getSalary() {
+        return salary;
     }
+
 
     public List<Role> getRoles() {
         return roles;
@@ -39,7 +40,7 @@ public class Employee {
         return terms;
     }
 
-    public void setSalary(int salary) {
+    public void setSalary(int salary) { // TODO: return type response();
         this.salary = salary;
     }
 

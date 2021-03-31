@@ -9,15 +9,11 @@ public class WeeklyShifts {
     private Date toDate;
     private List<Shift> shifts;
 
-    WeeklyShifts(Date _fromDate, Date _todate){
+    WeeklyShifts(Date _fromDate, Date _toDate){
         fromDate = _fromDate;
-        toDate = _todate;
+        toDate = _toDate;
 
     }
-
-
-
-
 
     public Date getFromDate() {
         return fromDate;
