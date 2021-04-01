@@ -117,11 +117,29 @@ public class CLI {
         System.out.println("For example: Banana:40,bread:30");
         String productStr = in.nextLine();
         // TODO : NEED TO CHECK IF THE FORMAT IS GOOD
-        System.out.println("For loading press 1:");
-        arr.add(in.nextLine());
+        System.out.println("For loading press 1");
+        System.out.println("For unloading press 2");
+        String op = in.nextLine();
+        while (!(op.equals("1") || op.equals("2") || op.equals("exit"))) {
+            System.out.println("Please choose one of the option 1, 2 or exit");
+            op = in.nextLine();
+        }
+        String loadOrUnload = "";
+        switch (op) {
+            case ("1"): {
+                loadOrUnload = "loading";
+            }
+            case ("2"): {
+                loadOrUnload = "unloading";
+            }
+        }
+//        arr.add(in.nextLine());
+        System.out.println("Insert location:");
+        ArrayList<String> originLocation = this.insertLocation();
+//        arr.add(in.nextLine());
+        // Todo - should we return an array or void??? 
 
-        System.out.println("contact name:");
-        arr.add(in.nextLine());
+
         return arr;
     }
 
