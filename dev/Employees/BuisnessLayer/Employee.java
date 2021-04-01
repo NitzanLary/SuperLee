@@ -17,7 +17,9 @@ public class Employee {
         roles = new ArrayList<>();
     }
 
-    public String getName() {return name;} // TODO: change return type to Response<String>
+    public Response getName() {
+        return new ResponseT<String>(name,null);
+    } // TODO: change return type to Response<String>
 
     public String getID() {
         return ID;

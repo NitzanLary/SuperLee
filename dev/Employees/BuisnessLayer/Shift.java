@@ -1,4 +1,5 @@
 package Employees.BuisnessLayer;
+import java.time.LocalDate;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -6,24 +7,24 @@ import java.util.Set;
 
 public abstract class Shift {
 
-    private Date date;
+    private LocalDate date;
     protected int start;
     protected int end;
     private boolean closed;
-    private HashMap<Employee, int> constrains;
+    private HashMap<Employee, Integer> constrains;
     private HashMap<String, Employee> assignedEmployees;
 
-    Shift(Date _date) {
+    Shift(LocalDate _date) {
         date = _date;
-        constrains = new HashMap<Employee, int>();
+        constrains = new HashMap<Employee, Integer>();
         assignedEmployees = new HashMap<String, Employee>();
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
