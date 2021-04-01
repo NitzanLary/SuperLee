@@ -25,9 +25,9 @@ public class Main {
 //                System.out.println("|  " + sc.getWeeklyShifts().get(i).getShifts().get(j).getStart());
 //                System.out.println("|  " + sc.getWeeklyShifts().get(i).getShifts().get(j).getEnd());
 //                System.out.println("  -----------------------------------");
-            }
+//            }
 
-        }
+//        }
 
     }
 
