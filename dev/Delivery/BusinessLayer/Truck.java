@@ -13,6 +13,22 @@ public class Truck {
         this.truckWeight = maxWeight;
     }
 
+    public String getId(){
+        return id;
+    }
+
+    public String getModel(){
+        return this.model;
+    }
+
+    public int getMaxWeight(){
+        return maxWeight;
+    }
+
+    public int getTruckWeight(){
+        return truckWeight;
+    }
+
     public String toString(){
         String ret = "";
         ret.concat("id-"+id);

@@ -54,8 +54,12 @@ public class FacadeController {
         this.trc.addTruck(id, model, maxWeight, truckWeight);
     }
 
-    public ArrayList<Truck> getTrucks(){
-        return this.trc.getTrucks();
+    // here instead of returning a list of trucks (which the CLI shouldn't know) i returning a list of the truck numbers.
+    public ArrayList<String> getTrucks(){
+        ArrayList<String> ret = new ArrayList<>();
+        for (Truck t : trc.getTrucks())
+            ret.add(t.getId()+"\t"+t.getModel()+"\t"+t.getMaxWeight()+"\t"+t.getTruckWeight());
+        return ret;
     }
 
     // - Delivery -
@@ -72,4 +76,10 @@ public class FacadeController {
     }
 
 
+    public ArrayList<String> getDrivers() {
+        ArrayList<String> ret = new ArrayList<>();
+        for (Driver d : drc.getDrivers())
+            ret.add(d.getName()+"\t"+d.getLicenceType());
+        return ret;
+    }
 }

@@ -32,5 +32,9 @@ public class Driver {
                 ", employee=" + employee +
                 '}';
     }
+
+    public int getLicenceType() {
+        return licenseType;
+    }
 }
 

@@ -2,8 +2,12 @@ package Delivery.PresentationLayer;
 
 import Delivery.BusinessLayer.FacadeController;
 
+import javax.xml.parsers.ParserConfigurationException;
+import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.time.format.*;
 
 public class CLI {
     FacadeController fc;
@@ -54,22 +58,77 @@ public class CLI {
         }
     }
 
+    public boolean isLegalDate(String date){
+        try {
+            // ResolverStyle.STRICT for 30, 31 days checking, and also leap year.
+            LocalDate.parse(date,
+                    DateTimeFormatter.ofPattern("d-M-uu")
+                            .withResolverStyle(ResolverStyle.STRICT)
+            );
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
+
+    private String insertDate(Scanner in){
+        String date = "";
+        do {
+            System.out.println("Insert date: dd-mm-yy");
+            date = in.nextLine();
+        } while (!isLegalDate(date) || !date.equals("exit"));
+        return date;
+    }
+
+    public String insertTimeOfDeparture(Scanner in){
+        String timeOfDeparture = "";
+        do {
+            System.out.println("Insert time of departure: hh:mm");
+            timeOfDeparture = in.nextLine();
+        } while (!isLegalTime(timeOfDeparture) || !timeOfDeparture.equals("exit"));
+        return timeOfDeparture;
+    }
+
+    private String chooseTruck(Scanner in){
+        String inp = "";
+        ArrayList<String> truckLst = fc.getTrucks();
+        do {
+            System.out.println("choose a truck for the delivery: ");
+            for (int i = 1; i <= truckLst.size(); i++) {
+                System.out.println(i + ") " + truckLst.get(i - 1));
+            }
+            inp = in.nextLine();
+        }while (isLegalChoice(truckLst.size(), inp));
+        return truckLst.get(Integer.parseInt(inp));
+    }
+
+    private boolean isLegalChoice(int size, String input) {
+        int p = -1;
+        try {
+            p = Integer.parseInt(input);
+        }catch (NumberFormatException e){
+            return false;
+        }
+        if (p < 0 || p > size)
+            return false;
+        return true;
+    }
+
     public void createDelivery(){
         Scanner in = new Scanner(System.in);
 //        System.out.println("Choose the option for a date:");
 //        System.out.println("1 for today's date");
-//        System.out.println("2 for insert a date"); ---- optional - What you say?
-        System.out.println("Insert date:");
-        String date = in.nextLine();
-        // need to put here constraint about legal date
-        System.out.println("Insert time of departure:");
-        String timeOfDeparture = in.nextLine();
+//        System.out.println("2 for insert a date"); ---- optional - What you say? i say no
+        String date = insertDate(in);
+        String timeOfDeparture = insertTimeOfDeparture(in);
 
-        System.out.println("Insert truck number:");
-        String truckNumber = in.nextLine();
+        // farj, im changing here the handling. the user chose from list instead of inserting a pre-known data. asaf.
+//        System.out.println("Insert truck number:");
+//        String truckNumber = in.nextLine();
 
-        System.out.println("Insert driver name:");
-        String driverName = in.nextLine();
+        String truck = chooseTruck(in);
+        String driverName = chooseDriver(in);
+        // todo - need to continue here to make every action as a method. so it can be ahnded correctly.
 
         System.out.println("Insert departure weight:");
         String departureWeight = in.nextLine();
@@ -90,6 +149,30 @@ public class CLI {
         }
 
 
+    }
+
+    private String chooseDriver(Scanner in) {
+        String inp = "";
+        ArrayList<String> driversLst = fc.getDrivers();
+        do {
+            System.out.println("choose a driver for the delivery: ");
+            for (int i = 1; i <= driversLst.size(); i++) {
+                System.out.println(i + ") " + driversLst.get(i - 1));
+            }
+            inp = in.nextLine();
+        }while (isLegalChoice(driversLst.size(), inp));
+        return driversLst.get(Integer.parseInt(inp));
+    }
+
+    private boolean isLegalTime(String timeOfDeparture) {
+        String[] spl = timeOfDeparture.split(":");
+        if (spl.length != 2)
+            return false;
+        int hour = Integer.parseInt(spl[0]);
+        int minutes = Integer.parseInt(spl[0]);
+        if (hour > 24 || hour < 0 || minutes > 59 || minutes < 60)
+            return false;
+        return true;
     }
 
     public ArrayList<String> insertLocation(){
