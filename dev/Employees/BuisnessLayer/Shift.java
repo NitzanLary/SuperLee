@@ -57,7 +57,7 @@ public abstract class Shift {
     }
 
     public void AssignEmployee(Employee e){
-        assignedEmployees.put(e.getID(), e);
+        assignedEmployees.put(e.getID().getValue(), e);
     }
 
 

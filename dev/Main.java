@@ -14,7 +14,11 @@ public class Main {
 //
 
 //        ShiftController sc = ShiftController.getInstance();
-//        ShiftController.add4WeeksSlots();
+//        ShiftController.add1WeeksSlot();
+//        ShiftController.add1WeeksSlot();
+//        ShiftController.add1WeeksSlot();
+//        ShiftController.add1WeeksSlot();
+//        System.out.println(sc.getWeeklyShifts().size());
 //        for (int i = 0 ; i < sc.getWeeklyShifts().size() ; i++) {
 //            System.out.println("\n");
 //            System.out.println("  Week: " + sc.getWeeklyShifts().get(i).getFromDate() + " Until the " + sc.getWeeklyShifts().get(i).getToDate());
@@ -26,7 +30,7 @@ public class Main {
 //                System.out.println("|  " + sc.getWeeklyShifts().get(i).getShifts().get(j).getEnd());
 //                System.out.println("  -----------------------------------");
 //            }
-
+//
 //        }
 
     }

@@ -17,44 +17,48 @@ public class Employee {
         roles = new ArrayList<>();
     }
 
-    public Response getName() {
-        return new ResponseT<String>(name,null);
+    public ResponseT<String> getName() {
+        return new ResponseT<String>(name);
     } // TODO: change return type to Response<String>
 
-    public String getID() {
-        return ID;
+    public ResponseT<String> getID() {
+        return new ResponseT<String>(ID);
     }
 
-    public String getBankAccount() {
-        return bankAccount;
+    public ResponseT<String> getBankAccount() {
+        return new ResponseT<String>(bankAccount);
     }
 
-    public int getSalary() {
-        return salary;
+    public ResponseT<int> getSalary() {
+        return new ResponseT<int>(salary);
     }
 
 
-    public List<Role> getRoles() {
-        return roles;
+    public ResponseT<List<Role>> getRoles() {
+        return new ResponseT<>(roles);
     }
 
-    public TermsOfEmployee getTerms() {
-        return terms;
+    public ResponseT<TermsOfEmployee> getTerms() {
+        return new ResponseT<>(terms);
     }
 
-    public void setSalary(int salary) { // TODO: return type response();
+    public Response setSalary(int salary) { // TODO: return type response();
         this.salary = salary;
+        return new Response();
     }
 
-    public void setBankAccount(String bankAccount) {
+    public Response setBankAccount(String bankAccount) {
         this.bankAccount = bankAccount;
+        return new Response();
     }
 
-    public void AddRole(Role role){
+    public Response AddRole(Role role){
         roles.add(role);
+        return new Response();
     }
 
-    public void setTerms(TermsOfEmployee terms) {
+    public Response setTerms(TermsOfEmployee terms) {
         this.terms = terms;
+        return new Response();
     }
 }

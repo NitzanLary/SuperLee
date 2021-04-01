@@ -8,6 +8,11 @@ public class ResponseT<T> extends Response{
         value = _value;
     }
 
+    public ResponseT(T _value){
+        super();
+        value = _value;
+    }
+
     public T getValue() {
         return value;
     }

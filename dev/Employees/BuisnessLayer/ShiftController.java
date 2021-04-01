@@ -10,12 +10,7 @@ import java.util.List;
 public class ShiftController {
 
     private static ShiftController shiftController = null;
-
-
-
-
     private ArrayList<WeeklyShifts> weeklyShifts;
-
 
 
     private ShiftController(){
@@ -28,7 +23,6 @@ public class ShiftController {
     {
         if (shiftController == null)
             shiftController = new ShiftController();
-
         return shiftController;
     }
 
@@ -45,6 +39,18 @@ public class ShiftController {
             for (int i = 0 ; i < 4 ; i++) {
                 shiftController.weeklyShifts.add(new WeeklyShifts(tempDate.plusWeeks(i), tempDate.plusWeeks(i+1)));
                 }
+        }
+    }
+
+    public static void add1WeeksSlot(){
+        if (shiftController.weeklyShifts.isEmpty()){
+            LocalDate tempDate = LocalDate.now();
+            shiftController.weeklyShifts.add(new WeeklyShifts(tempDate, tempDate.plusWeeks(1)));
+        }
+        else{
+            //Star to add slots from day after the last day we have in our weeklyShifts list
+            LocalDate tempDate = shiftController.weeklyShifts.get(shiftController.weeklyShifts.size()-1).getToDate();
+            shiftController.weeklyShifts.add(new WeeklyShifts(tempDate, tempDate.plusWeeks(1)));
         }
     }
 

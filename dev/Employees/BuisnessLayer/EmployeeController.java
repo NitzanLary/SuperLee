@@ -16,10 +16,10 @@ public class EmployeeController {
         Employee e = new Employee(name, ID);
         e.setTerms(terms);
         e.AddRole(role);
-        employees.put(e.getID(), e);
+        employees.put(e.getID().getValue(), e);
     }
 
-    public ResponseT<Employee> getEmployee(String id){ //TODO I dont like the responses concept.. can I delete it?
+    public ResponseT<Employee> getEmployee(String id){
         if (!employees.containsKey(id)) return new ResponseT(null, "No employee with this ID");
         return new ResponseT<Employee>(employees.get(id), null);
     }
