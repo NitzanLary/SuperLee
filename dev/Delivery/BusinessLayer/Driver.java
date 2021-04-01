@@ -1,4 +1,4 @@
-package Delivery;
+package Delivery.BusinessLayer;
 public class Driver {
     private int licenseType;
     private Employee employee;

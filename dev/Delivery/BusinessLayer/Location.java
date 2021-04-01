@@ -1,4 +1,4 @@
-package Delivery;
+package Delivery.BusinessLayer;
 
 public class Location {
     private String address;

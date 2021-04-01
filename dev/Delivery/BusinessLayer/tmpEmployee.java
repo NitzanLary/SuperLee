@@ -1,6 +1,4 @@
-package Delivery;
-
-import javax.xml.namespace.QName;
+package Delivery.BusinessLayer;
 
 public class tmpEmployee implements Employee {
     private String name;

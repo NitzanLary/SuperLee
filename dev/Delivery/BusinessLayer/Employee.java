@@ -1,4 +1,4 @@
-package Delivery;
+package Delivery.BusinessLayer;
 
 public interface Employee {
 

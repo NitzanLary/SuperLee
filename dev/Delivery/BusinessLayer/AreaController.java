@@ -1,6 +1,7 @@
-package Delivery;
+package Delivery.BusinessLayer;
 
-import java.util.ArrayList;
+import Delivery.Delivery;
+
 import java.util.HashMap;
 import java.util.InputMismatchException;
 

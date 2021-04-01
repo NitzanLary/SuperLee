@@ -1,7 +1,8 @@
-package Delivery;
+package Delivery.BusinessLayer;
+
+import Delivery.Delivery;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Area {
     private ArrayList<Location> locations;

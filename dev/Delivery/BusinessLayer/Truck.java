@@ -1,4 +1,4 @@
-package Delivery;
+package Delivery.BusinessLayer;
 
 public class Truck {
     private String id;
