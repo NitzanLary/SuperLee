@@ -9,6 +9,10 @@ public class Main {
 //        for(int i = 0; i< 260000; i++)
 //            System.out.println(dc.getNewDeliveryID());
 //        //////////////////////////////////////
+
+        FacadeController facadeController = new FacadeController();
+        facadeController.runWithConsole();
+
         Location location1 = new Location("berechia 58", "086755143", "RAFA");
         Location location2 = new Location("Lavi", "0867123456", "DR GANOT");
 
@@ -17,7 +21,7 @@ public class Main {
         area.addLocation(location2);
 
         AreaController areaController = new AreaController();
-        areaController.addArea(area);
+        areaController.addArea(area.getAreaName());
 
         System.out.println(areaController.toString());
 //        System.out.println(area.toString());

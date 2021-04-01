@@ -2,16 +2,25 @@ package Delivery;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.InputMismatchException;
 
 public class AreaController {
     private HashMap<String, Area> controller;
 
     public AreaController(){
         this.controller = new HashMap<>();
+
     }
 
-    public void addArea(Area area){
-        controller.put(area.getAreaName(), area);
+    public void addArea(String area){
+        controller.put(area, new Area(area));
+    }
+
+    public void addLocation(String areaName, String address, String phoneNumber, String contactName){
+        if (!this.controller.containsKey(areaName)){
+            throw new InputMismatchException("Area name dose not exist.");
+        }
+        controller.get(areaName).addLocation(new Location(address, phoneNumber, contactName));
     }
 
     @Override

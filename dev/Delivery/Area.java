@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class Area {
     private ArrayList<Location> locations;
-    private String areaName;
+    private String areaName; // we didnt put this data type in the diagram - but its necessary
 
     public Area(String areaName){
         this.locations = new ArrayList<>();

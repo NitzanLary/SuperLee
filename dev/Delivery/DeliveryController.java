@@ -1,9 +1,7 @@
 package Delivery;
 
 import java.security.KeyException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 public class DeliveryController {
     private HashMap<String, Delivery> deliveries; // changes it to deliveries
@@ -91,6 +89,19 @@ public class DeliveryController {
 
     public void addDate(String delID, String date){
         deliveries.get(delID);
+    }
+
+    public Delivery getDeliveryById(String id){
+        if (!this.deliveries.containsKey(id)){
+            throw new InputMismatchException("Delivery dose not exist.");
+        }
+        return this.deliveries.get(id);
+    }
+
+    public void createDelivery(){
+        String newId = this.getNewDeliveryID();
+
+
     }
 
     @Override
