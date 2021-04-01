@@ -13,6 +13,7 @@ public class FacadeController {
         shiftController = ShiftController.getInstance();
     }
 
+
     public static FacadeController getInstance(){
         if (facadeController == null)
             facadeController = new FacadeController();

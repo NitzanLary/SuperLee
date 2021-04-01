@@ -32,8 +32,8 @@ public class Employee {
         return new ResponseT<String>(bankAccount);
     }
 
-    public ResponseT<int> getSalary() {
-        return new ResponseT<int>(salary);
+    public ResponseT<Integer> getSalary() {
+        return new ResponseT<Integer>(salary);
     }
 
 
