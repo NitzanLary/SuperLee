@@ -1,5 +1,6 @@
 package Employees.BuisnessLayer;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,10 +11,12 @@ public class Employee {
     private int salary;
     private List<Role> roles;
     private TermsOfEmployee terms;
+    private LocalDate dateOfHire;
 
-    Employee(String _name, String _ID) {
+    Employee(String _name, String _ID, LocalDate _dateOfHire) {
         name = _name;
         ID = _ID;
+        dateOfHire = _dateOfHire;
         roles = new ArrayList<>();
     }
 

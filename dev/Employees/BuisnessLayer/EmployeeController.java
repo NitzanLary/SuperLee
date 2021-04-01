@@ -1,19 +1,28 @@
 package Employees.BuisnessLayer;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 
 public class EmployeeController {
+    private static EmployeeController employeeController;
     HashMap<String, Employee> employees;
 
-    EmployeeController() {
+    private EmployeeController()
+    {
         employees = new HashMap<>();
     }
 
+    public static EmployeeController getInstance(){
+        if (employeeController != null)
+            return employeeController;
+        return new EmployeeController();
+    }
+
     public void AddEmployee(String ID, String name, String bankAccount, int salary,
-                            int sickDays, int studyFund, int daysOff, String roleName){
+                            int sickDays, int studyFund, int daysOff, String roleName, LocalDate _dateOfHire){
         TermsOfEmployee terms = new TermsOfEmployee(sickDays, studyFund, daysOff);
         Role role = new Role(roleName);
-        Employee e = new Employee(name, ID);
+        Employee e = new Employee(name, ID, _dateOfHire);
         e.setTerms(terms);
         e.AddRole(role);
         employees.put(e.getID().getValue(), e);

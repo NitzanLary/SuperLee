@@ -12,7 +12,6 @@ public class ShiftController {
     private static ShiftController shiftController = null;
     private ArrayList<WeeklyShifts> weeklyShifts;
 
-
     private ShiftController(){
         weeklyShifts = new ArrayList<WeeklyShifts>();  //creating with 4 weeks slots
 //        ShiftController.add4WeeksSlots();
