@@ -1,4 +1,5 @@
 import Delivery.BusinessLayer.*;
+import Delivery.PresentationLayer.CLI;
 
 import java.util.ArrayList;
 
@@ -9,9 +10,9 @@ public class Main {
 //        for(int i = 0; i< 260000; i++)
 //            System.out.println(dc.getNewDeliveryID());
 //        //////////////////////////////////////
-
+        CLI cli = new CLI();
         FacadeController facadeController = new FacadeController();
-        facadeController.runWithConsole();
+        cli.runWithConsole();
 
         Location location1 = new Location("berechia 58", "086755143", "RAFA");
         Location location2 = new Location("Lavi", "0867123456", "DR GANOT");

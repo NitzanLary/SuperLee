@@ -65,57 +65,11 @@ public class FacadeController {
 
     public Delivery getDeliveryByDate(String Date){return null;} // - optional -
 
-    public ArrayList<String> insertLocation(){
-        ArrayList<String> arr = new ArrayList<>();
-        Scanner in = new Scanner(System.in);
 
-        System.out.println("address:");
-        arr.add(in.nextLine());
-
-        System.out.println("phone number:");
-        arr.add(in.nextLine());
-
-        System.out.println("contact name:");
-        arr.add(in.nextLine());
-        return arr;
-
-    }
 
     public void insertNewTask(){
 
     }
 
-    public void createDelivery(){
-        Scanner in = new Scanner(System.in);
-//        System.out.println("Choose the option for a date:");
-//        System.out.println("1 for today's date");
-//        System.out.println("2 for insert a date"); ---- optional - What you say?
-        System.out.println("Insert date:");
-        String date = in.nextLine();
-        // need to put here constraint about legal date
-        System.out.println("Insert time of departure:");
-        String timeOfDeparture = in.nextLine();
 
-        System.out.println("Insert truck number:");
-        String truckNumber = in.nextLine();
-
-        System.out.println("Insert driver name:");
-        String driverName = in.nextLine();
-
-        System.out.println("Insert departure weight:");
-        String departureWeight = in.nextLine();
-
-        System.out.println("Insert origin location:");
-        ArrayList<String> originLocation = this.insertLocation();
-
-        System.out.println("Insert Task");
-        System.out.println("1 create new task");
-        System.out.println("2 choose existed task");
-        String op = in.nextLine();
-        if (op == "1"){
-
-        }
-
-
-    }
 }

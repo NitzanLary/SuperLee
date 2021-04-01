@@ -1,6 +1,6 @@
 package Delivery.BusinessLayer;
 
-import Delivery.Delivery;
+import Delivery.BusinessLayer.Delivery;
 
 import java.util.HashMap;
 import java.util.InputMismatchException;
