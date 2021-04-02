@@ -78,6 +78,19 @@ public class FacadeController {
 
     public Delivery getDeliveryByDate(String Date){return null;} // - optional -
 
+    // todo - should be integrated with employee module to get all drivers
+    private ArrayList<tmpEmployee> getAllDriverEmployees(){
+        ArrayList<tmpEmployee> ret = new ArrayList<>();
+        tmpEmployee emp1 = new tmpEmployee("yanay the sunny",15000);
+        tmpEmployee emp2 = new tmpEmployee("nitzan the lary", 20000);
+        tmpEmployee emp3 = new tmpEmployee("shaul the shauly", 15000);
+        tmpEmployee emp4 = new tmpEmployee("david the davidy", 20000);
+        ret.add(emp1);
+        ret.add(emp2);
+        ret.add(emp3);
+        ret.add(emp4);
+        return ret;
+    }
 
 
     public void insertNewTask(){

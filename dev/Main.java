@@ -26,8 +26,11 @@ public class Main {
 //        System.out.println(cli.isLegalDate("31-2-21"));
         //////////// end date test
 //        FacadeController facadeController = new FacadeController();
-
-        cli.insertLocation();
+//        cli.addNewTrack();
+//        cli.insertLocation();
+        cli.getFacade().addTruck("1234567","mer", 123,123);
+        cli.getFacade().addTruck("12345678","mer", 123,123);
+        cli.runWithConsole();
 
         Location location1 = new Location("berechia 58", "086755143", "RAFA");
         Location location2 = new Location("Lavi", "0867123456", "DR GANOT");
@@ -48,7 +51,7 @@ public class Main {
         System.out.println(deliveryController);
 
 
-        cli.runWithConsole();
+
 
     }
 }

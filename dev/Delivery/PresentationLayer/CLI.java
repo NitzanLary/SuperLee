@@ -13,53 +13,56 @@ import java.time.format.*;
 public class CLI {
     FacadeController fc;
 
-    public CLI(){
+    public CLI() {
         fc = new FacadeController();
     }
 
 
-    public void runWithConsole(){
+    public void runWithConsole() {
         Scanner in = new Scanner(System.in);
         System.out.println("welcome to Delivery Module!");
         System.out.println("for exit the simulation type 'exit' as input at any point");
         String s = "";
-        while (!s.equals("exit")){
+        while (!s.equals("exit")) {
             System.out.println("system current state:");
             System.out.println(this.fc.toString());
             System.out.println("chose action:\n1 add new delivery,\n2 update existing delivery\n3 create new appending task" +
-                    "\n4 add Truck to the sys\n5 add Driver to the sys\nadd Area to the sys\n7 add location to the sys");
+                    "\n4 add Truck to the sys\n5 add Driver to the sys\n6 add Area to the sys\n7 add location to the sys");
             s = in.nextLine().strip();
             chooseAction(s);
         }
     }
 
     private void chooseAction(String s) {
-        switch (s){
-            case ("1"):{
+        switch (s) {
+            case ("1"): {
                 this.createDelivery();
             }
-            case ("2"):{
+            case ("2"): {
 
             }
-            case ("3"):{
+            case ("3"): {
 
             }
-            case ("4"):{
+            case ("4"): {
+                this.addNewTrack();
+            }
+            case ("5"): {
+                this.addNewDriver();
+            }
+            case ("6"): {
 
             }
-            case ("5"):{
-
-            }
-            case ("6"):{
-
-            }
-            case ("7"):{
+            case ("7"): {
 
             }
         }
     }
 
-    public boolean isLegalDate(String date){
+    private void addNewDriver() {
+    }
+
+    public boolean isLegalDate(String date) {
         try {
             // ResolverStyle.STRICT for 30, 31 days checking, and also leap year.
             LocalDate.parse(date,
@@ -72,7 +75,7 @@ public class CLI {
         }
     }
 
-    private String insertDate(Scanner in){
+    private String insertDate(Scanner in) {
         String date = "";
         do {
             System.out.println("Insert date: dd-mm-yy");
@@ -81,7 +84,7 @@ public class CLI {
         return date;
     }
 
-    public String insertTimeOfDeparture(Scanner in){
+    public String insertTimeOfDeparture(Scanner in) {
         String timeOfDeparture = "";
         do {
             System.out.println("Insert time of departure: hh:mm");
@@ -90,7 +93,7 @@ public class CLI {
         return timeOfDeparture;
     }
 
-    private String chooseTruck(Scanner in){
+    private String chooseTruck(Scanner in) {
         String inp = "";
         ArrayList<String> truckLst = fc.getTrucks();
         do {
@@ -99,15 +102,15 @@ public class CLI {
                 System.out.println(i + ") " + truckLst.get(i - 1));
             }
             inp = in.nextLine();
-        }while (isLegalChoice(truckLst.size(), inp));
-        return truckLst.get(Integer.parseInt(inp));
+        } while (!isLegalChoice(truckLst.size(), inp) && !inp.equals("exit"));
+        return truckLst.get(Integer.parseInt(inp)-1);
     }
 
     private boolean isLegalChoice(int size, String input) {
         int p = -1;
         try {
             p = Integer.parseInt(input);
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             return false;
         }
         if (p < 0 || p > size)
@@ -115,11 +118,10 @@ public class CLI {
         return true;
     }
 
-    public void createDelivery(){
+    public void createDelivery() {
         Scanner in = new Scanner(System.in);
         String date = insertDate(in);
         String timeOfDeparture = insertTimeOfDeparture(in);
-        // farj, im changing here the handling. the user chose from list instead of inserting a pre-known data. asaf.
         String truck = chooseTruck(in);
         String driverName = chooseDriver(in);
         String departureWeight = insertDepartureWeight(in);
@@ -132,11 +134,11 @@ public class CLI {
         System.out.println("1 create new task");
         System.out.println("2 choose existed task");
         String op = in.nextLine();
-        while (!(op.equals("1") || op.equals("2") || op.equals("exit"))){
+        while (!(op.equals("1") || op.equals("2") || op.equals("exit"))) {
             System.out.println("Please choose one of the option 1, 2 or exit");
             op = in.nextLine();
         }
-        if (op.equals("1")){
+        if (op.equals("1")) {
 
         }
 
@@ -165,27 +167,27 @@ public class CLI {
             for (String a : locationsByAreas.keySet()) {
                 ArrayList<String> locations = locationsByAreas.get(a);
                 System.out.println(++i + ") " + a);
-                joinNumberToArea.put(Integer.toString(i) ,a);
-                for (int j = 1; j <= locations.size(); j++){
-                    System.out.println("\t"+j+") "+locations.get(j-1));
+                joinNumberToArea.put(Integer.toString(i), a);
+                for (int j = 1; j <= locations.size(); j++) {
+                    System.out.println("\t" + j + ") " + locations.get(j - 1));
                 }
             }
             inp = in.nextLine();
             arrayInput = inp.split(" ");
-            if (arrayInput.length == 2){
-                if (isLegalChoice(locationsByAreas.size(),arrayInput[0])){
+            if (arrayInput.length == 2) {
+                if (isLegalChoice(locationsByAreas.size(), arrayInput[0])) {
                     if (isLegalChoice(locationsByAreas.get(joinNumberToArea.get(arrayInput[0])).size(), arrayInput[1]))
                         legal = true;
                 }
             }
-        }while (!legal);
-        return locationsByAreas.get(joinNumberToArea.get(arrayInput[0])).get(Integer.valueOf(arrayInput[1])-1);
+        } while (!legal);
+        return locationsByAreas.get(joinNumberToArea.get(arrayInput[0])).get(Integer.valueOf(arrayInput[1]) - 1);
     }
 
-    private boolean isLegalFloat(String input){
+    private boolean isLegalFloat(String input) {
         try {
             Long.valueOf(input);
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             return false;
         }
         return true;
@@ -209,7 +211,7 @@ public class CLI {
                 System.out.println(i + ") " + driversLst.get(i - 1));
             }
             inp = in.nextLine();
-        }while (isLegalChoice(driversLst.size(), inp));
+        } while (isLegalChoice(driversLst.size(), inp));
         return driversLst.get(Integer.parseInt(inp));
     }
 
@@ -219,13 +221,13 @@ public class CLI {
             return false;
         int hour = Integer.parseInt(spl[0]);
         int minutes = Integer.parseInt(spl[1]);
-        System.out.println(hour +" "+ minutes);
-        if (hour>24 || hour<0 || minutes>59 || minutes<0)
+        System.out.println(hour + " " + minutes);
+        if (hour > 24 || hour < 0 || minutes > 59 || minutes < 0)
             return false;
         return true;
     }
 
-    public ArrayList<String> insertLocation(){
+    public ArrayList<String> insertLocation() {
         ArrayList<String> arr = new ArrayList<>();
         Scanner in = new Scanner(System.in);
 
@@ -240,7 +242,7 @@ public class CLI {
         return arr;
     }
 
-    public ArrayList<String> insertTask(){
+    public ArrayList<String> insertTask() {
         ArrayList<String> arr = new ArrayList<>();
         Scanner in = new Scanner(System.in);
         // TODO - NEED TO ADD NEW ID LIKE THE DELIVERY YOU MADE - @ASAF, LAVI, ISRAEL
@@ -276,4 +278,46 @@ public class CLI {
         return arr;
     }
 
+    public void addNewTrack() {
+        Scanner in = new Scanner(System.in);
+        String truckNumber = "";
+        do {
+            System.out.println("insert truck number: xx-xxx-xx || xxx-xx-xxx");
+            truckNumber = in.nextLine();
+        } while (!isLegalTruck(truckNumber));
+        String truckModel = "";
+        do {
+            System.out.println("insert truck model:");
+            truckModel = in.nextLine();
+        } while (truckModel.length() < 1);
+        int maxWeight = 0;
+        String input = "";
+        do {
+            System.out.println("insert truck's max weight: kg");
+            input = in.nextLine();
+        } while (!isLegalFloat(input));
+        maxWeight = Integer.parseInt(input);
+        int truckWeight = 0;
+        do {
+            System.out.println("insert truck's weight");
+            input = in.nextLine();
+        } while (!isLegalFloat(input));
+        truckWeight = Integer.parseInt(input);
+        fc.addTruck(truckNumber, truckModel, maxWeight, truckWeight);
+    }
+
+    private boolean isLegalTruck(String input) {
+        input = input.replace("-", "");
+        if (input.length() != 7 && input.length() != 8)
+            return false;
+        if (!isLegalFloat(input))
+            return false;
+        if (fc.containsTruck(input))
+            return false;
+        return true;
+    }
+
+    public FacadeController getFacade() {
+        return fc;
+    }
 }
