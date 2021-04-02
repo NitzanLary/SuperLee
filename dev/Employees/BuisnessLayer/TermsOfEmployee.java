@@ -23,15 +23,18 @@ public class TermsOfEmployee {
         return daysOff;
     }
 
-    public void setAdvancedStudyFund(int advancedStudyFund) {
+    public Response setAdvancedStudyFund(int advancedStudyFund) {
         this.advancedStudyFund = advancedStudyFund;
+        return new Response();
     }
 
-    public void setDaysOff(int daysOff) {
+    public Response setDaysOff(int daysOff) {
         this.daysOff = daysOff;
+        return new Response();
     }
 
-    public void setSickDays(int sickDays) {
+    public Response setSickDays(int sickDays) {
         this.sickDays = sickDays;
+        return new Response();
     }
 }

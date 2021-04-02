@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Employee {
+
+
     private String name;
     private String ID;
     private String bankAccount;
@@ -13,7 +15,7 @@ public class Employee {
     private TermsOfEmployee terms;
     private LocalDate dateOfHire;
 
-    Employee(String _name, String _ID, LocalDate _dateOfHire) {
+    public Employee(String _name, String _ID, LocalDate _dateOfHire) {
         name = _name;
         ID = _ID;
         dateOfHire = _dateOfHire;
@@ -22,7 +24,13 @@ public class Employee {
 
     public ResponseT<String> getName() {
         return new ResponseT<String>(name);
-    } // TODO: change return type to Response<String>
+    }
+
+
+    public Response setName(String name) {
+        this.name = name;
+        return new Response();
+    }
 
     public ResponseT<String> getID() {
         return new ResponseT<String>(ID);
@@ -45,7 +53,7 @@ public class Employee {
         return new ResponseT<>(terms);
     }
 
-    public Response setSalary(int salary) { // TODO: return type response();
+    public Response setSalary(int salary) {
         this.salary = salary;
         return new Response();
     }
@@ -64,4 +72,34 @@ public class Employee {
         this.terms = terms;
         return new Response();
     }
+
+    public ResponseT<Boolean> haveRoleCheck(String roleToCheck) {
+        if (!roles.isEmpty()) {
+            for (Role role : roles) {
+                if (role.compare(roleToCheck))
+                    return new ResponseT<Boolean>(true);
+            }
+            return new ResponseT<Boolean>(false);
+        }
+        return new ResponseT<Boolean>(false, "Error, No Rules Found");
+    }
+
+
+    //Check if this employee is HR/generarManager authorize
+    public ResponseT<Boolean> checkAuthorizedHrOrGenral(){ //TODO; how should we work with those strings??
+        if(this.haveRoleCheck("HR Manager").getValue() || this.haveRoleCheck("Genral Manager").getValue())
+            return new ResponseT<Boolean>(true);
+
+        return new ResponseT<Boolean>(false);
+    }
+
+    public ResponseT<String> getEmpDataTostring(){ //TODO: should we consider terms of employye as well??
+        return new ResponseT<String>("Name: %s \nID: %s \nBank Account: %s \nSalary: %s \nDate Of Hire: %s".formatted(
+                name, ID, bankAccount, salary, dateOfHire)
+        );
+        //what kind of error Response should it return??
+    }
+
+
+
 }

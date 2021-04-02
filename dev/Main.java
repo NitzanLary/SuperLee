@@ -1,7 +1,4 @@
-import Employees.BuisnessLayer.Response;
-import Employees.BuisnessLayer.Shift;
-import Employees.BuisnessLayer.ShiftController;
-import Employees.BuisnessLayer.WeeklyShifts;
+import Employees.BuisnessLayer.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,12 +9,21 @@ public class Main {
 //        System.out.println("!Hello world");
 
 //
+        Employee emp1 = new Employee("Nitzan Lary", "311541214", LocalDate.parse("2019-04-03"));
+        Employee emp2 = new Employee("Assaf Stern", "224266120", LocalDate.parse("2019-03-03"));
+        Employee emp3 = new Employee("Refael Farjune", "300545411", LocalDate.parse("2019-06-02"));
+        ShiftController sc = ShiftController.getInstance();
+        ShiftController.getInstance().add1WeeksSlot();
+        ShiftController.getInstance().add1WeeksSlot();
+        ShiftController.getInstance().add1WeeksSlot();
+        ShiftController.getInstance().add1WeeksSlot();
+        ShiftController.getInstance().findShift(LocalDate.parse("2021-04-03"),14,22).AddConstrain(emp1, 3);
+        ShiftController.getInstance().findShift(LocalDate.parse("2021-04-03"),14,22).AddConstrain(emp2, 3);
+        ShiftController.getInstance().findShift(LocalDate.parse("2021-04-03"),14,22).AddConstrain(emp3, 3);
+        System.out.println(ShiftController.getInstance().findShift(LocalDate.parse("2021-04-03"),14,22).getShiftConstrainsString().getValue());
 
-//        ShiftController sc = ShiftController.getInstance();
-//        ShiftController.add1WeeksSlot();
-//        ShiftController.add1WeeksSlot();
-//        ShiftController.add1WeeksSlot();
-//        ShiftController.add1WeeksSlot();
+
+
 //        System.out.println(sc.getWeeklyShifts().size());
 //        for (int i = 0 ; i < sc.getWeeklyShifts().size() ; i++) {
 //            System.out.println("\n");

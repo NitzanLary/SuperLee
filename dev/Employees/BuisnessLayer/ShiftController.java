@@ -2,6 +2,7 @@ package Employees.BuisnessLayer;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -25,11 +26,11 @@ public class ShiftController {
         return shiftController;
     }
 
-    public static void add4WeeksSlots(){
+    public Response add4WeeksSlots(){
         if (shiftController.weeklyShifts.isEmpty()){
             LocalDate tempDate = LocalDate.now();
             for (int i = 0 ; i < 4 ; i++) {
-                shiftController.weeklyShifts.add(new WeeklyShifts(tempDate.plusWeeks(i), tempDate.plusWeeks(i+1)));
+                shiftController.getInstance().weeklyShifts.add(new WeeklyShifts(tempDate.plusWeeks(i), tempDate.plusWeeks(i+1)));
             }
         }
         else{
@@ -39,9 +40,10 @@ public class ShiftController {
                 shiftController.weeklyShifts.add(new WeeklyShifts(tempDate.plusWeeks(i), tempDate.plusWeeks(i+1)));
                 }
         }
+        return new Response();
     }
 
-    public static void add1WeeksSlot(){
+    public void add1WeeksSlot(){
         if (shiftController.weeklyShifts.isEmpty()){
             LocalDate tempDate = LocalDate.now();
             shiftController.weeklyShifts.add(new WeeklyShifts(tempDate, tempDate.plusWeeks(1)));
@@ -53,8 +55,16 @@ public class ShiftController {
         }
     }
 
-    public ArrayList<WeeklyShifts> getWeeklyShifts() {
-        return weeklyShifts;
+    public Shift findShift(LocalDate date, int StartTime, int EndTime){
+        for(WeeklyShifts ws : weeklyShifts){
+            for(Shift s : ws.getShifts()){
+                if (s.compare(date, StartTime, EndTime))
+                    return s;
+            }
+        }
+        return null;
     }
+
+
 
 }
