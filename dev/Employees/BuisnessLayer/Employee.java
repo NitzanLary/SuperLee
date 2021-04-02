@@ -16,10 +16,33 @@ public class Employee {
     private LocalDate dateOfHire;
 
     public Employee(String _name, String _ID, LocalDate _dateOfHire) {
+        if (!isNameValid(_name))
+            throw new IllegalArgumentException("Invalid name");
+         if (!isIdValid(_ID))
+            throw new IllegalArgumentException("Invalid ID, required 9 digits");
+        if (!isDateValid(_dateOfHire))
+            throw new IllegalArgumentException("Invalid date");
         name = _name;
         ID = _ID;
         dateOfHire = _dateOfHire;
         roles = new ArrayList<>();
+    }
+
+    private boolean isNameValid(String name){
+        if (name == null || name.equals("") || name.equals(" "))
+            return false;
+        return true;
+    }
+
+    private boolean isIdValid(String id){
+        if (id.length() != 9)
+            return false;
+        return true;
+    }
+
+    private boolean isDateValid(LocalDate date){
+        LocalDate now = LocalDate.now();
+        return true;
     }
 
     public ResponseT<String> getName() {
@@ -28,6 +51,8 @@ public class Employee {
 
 
     public Response setName(String name) {
+        if (!isNameValid(name))
+            return new ResponseT("Invalid name");
         this.name = name;
         return new Response();
     }

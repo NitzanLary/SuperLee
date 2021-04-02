@@ -19,14 +19,22 @@ public class EmployeeController {
         return new EmployeeController();
     }
 
-    public void AddEmployee(String ID, String name, String bankAccount, int salary,
+    public Response AddEmployee(String ID, String name, String bankAccount, int salary,
                             int sickDays, int studyFund, int daysOff, String roleName, LocalDate _dateOfHire){
+        if (sickDays < 0 || studyFund < 0 || daysOff < 0)
+            return new Response("All values of terms must be greater than 0");
         TermsOfEmployee terms = new TermsOfEmployee(sickDays, studyFund, daysOff);
-        Role role = new Role(roleName);
-        Employee e = new Employee(name, ID, _dateOfHire);
+        Role role = new Role(roleName); // Todo: validate roleName
+        Employee e;
+        try{
+             e = new Employee(name, ID, _dateOfHire);
+        }catch (IllegalArgumentException exception){
+            return new Response(exception.getMessage());
+        }
         e.setTerms(terms);
         e.AddRole(role);
         employees.put(e.getID().getValue(), e);
+        return new Response();
     }
 
     public ResponseT<Employee> getEmployee(String id){

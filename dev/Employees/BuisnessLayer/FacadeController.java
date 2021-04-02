@@ -29,12 +29,13 @@ public class FacadeController {
 
     public Response addEmployee(String userID, String EmpID, String name, String bankAccount, int salary,
                                 int sickDays, int studyFund, int daysOff, String roleName, LocalDate _dateOfHire){
-        if (employeeController.getEmployee(userID).getValue().checkAuthorizedHrOrGenral().getValue()){
-            employeeController.AddEmployee(EmpID, name, bankAccount, salary, sickDays, studyFund, daysOff,
-                    roleName, _dateOfHire);
-            return new Response();
-        }
-        return new Response("Not Authorized! Only HR Manager Or General Manager Authorized For This Action");
+        if (!employeeController.getEmployee(userID).getValue().checkAuthorizedHrOrGenral().getValue())
+            return new Response("Not Authorized! Only HR Manager Or General Manager Authorized For This Action");
+        Response  response = employeeController.AddEmployee(EmpID, name, bankAccount, salary, sickDays, studyFund,
+                daysOff, roleName, _dateOfHire);
+
+        return response;
+
     } // only HR and general manager
 
 
@@ -80,7 +81,7 @@ public class FacadeController {
         return new Response("Not Authorized! Only HR Manager Or General Manager Authorized For This Action");
     } // only HR and general manager
 
-    public Response selfAssignToShift(String userID, LocalDate date, int start, int end,
+    public Response putConstrain(String userID, LocalDate date, int start, int end,
                                       int pref/*0-want 1-can 2-cant*/){
         Shift shift = shiftController.findShift(date, start, end);
         if (shift != null){

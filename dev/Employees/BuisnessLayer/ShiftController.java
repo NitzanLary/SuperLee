@@ -55,7 +55,7 @@ public class ShiftController {
         }
     }
 
-    public Shift findShift(LocalDate date, int StartTime, int EndTime){
+    public Shift findShift(LocalDate date, int StartTime, int EndTime){ // Todo: maybe optimize
         for(WeeklyShifts ws : weeklyShifts){
             for(Shift s : ws.getShifts()){
                 if (s.compare(date, StartTime, EndTime))
