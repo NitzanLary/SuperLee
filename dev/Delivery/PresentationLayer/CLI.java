@@ -77,7 +77,7 @@ public class CLI {
         do {
             System.out.println("Insert date: dd-mm-yy");
             date = in.nextLine();
-        } while (!isLegalDate(date) || !date.equals("exit"));
+        } while (!isLegalDate(date) && !date.equals("exit"));
         return date;
     }
 
@@ -86,7 +86,7 @@ public class CLI {
         do {
             System.out.println("Insert time of departure: hh:mm");
             timeOfDeparture = in.nextLine();
-        } while (!isLegalTime(timeOfDeparture) || !timeOfDeparture.equals("exit"));
+        } while (!isLegalTime(timeOfDeparture) && !timeOfDeparture.equals("exit"));
         return timeOfDeparture;
     }
 
@@ -146,11 +146,11 @@ public class CLI {
     private String chooseLocation(Scanner in) {
         // this function should ask for location choice from the following format:
         // 1) area1
-        //  1) location1 of this area
-        //  2) locations2
-        //  3) location3
+        //   1) location1 of this area
+        //   2) locations2
+        //   3) location3
         // 2) area2
-        //  1) first of area 2
+        //   1) first of area 2
         //
         // and the input should be 1 2 (second location of first area)
         // todo - test it!
@@ -160,7 +160,7 @@ public class CLI {
         HashMap<String, String> joinNumberToArea = new HashMap<>();
         boolean legal = false;
         do {
-            System.out.println("choose the origin location for the delivery: area location");
+            System.out.println("choose the origin location for the delivery: <area number> <location number>");
             int i = 0;
             for (String a : locationsByAreas.keySet()) {
                 ArrayList<String> locations = locationsByAreas.get(a);
@@ -218,8 +218,9 @@ public class CLI {
         if (spl.length != 2)
             return false;
         int hour = Integer.parseInt(spl[0]);
-        int minutes = Integer.parseInt(spl[0]);
-        if (hour > 24 || hour < 0 || minutes > 59 || minutes < 60)
+        int minutes = Integer.parseInt(spl[1]);
+        System.out.println(hour +" "+ minutes);
+        if (hour>24 || hour<0 || minutes>59 || minutes<0)
             return false;
         return true;
     }
