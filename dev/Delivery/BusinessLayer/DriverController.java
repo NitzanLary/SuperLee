@@ -10,9 +10,8 @@ public class DriverController {
         controller = new HashMap<String, Driver>();
     }
 
-    public void addDriverToSys(String name, int license){
-        tmpEmployee e = new tmpEmployee(name, license);
-        controller.put(name, new Driver(e));
+    public boolean containsDriver(String name){
+        return this.controller.containsKey(name);
     }
 
     @Override

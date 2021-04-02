@@ -66,6 +66,11 @@ public class FacadeController {
         return ret;
     }
 
+    // - Driver -
+    public boolean containsDriver(String name){
+        return this.drc.containsDriver(name);
+    }
+
     // - Delivery -
     public Delivery getDeliveryById(String id){
         return this.dec.getDeliveryById(id);
@@ -99,4 +104,5 @@ public class FacadeController {
         }
         return ret;
     }
+
 }
