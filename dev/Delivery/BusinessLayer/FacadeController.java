@@ -82,4 +82,17 @@ public class FacadeController {
             ret.add(d.getName()+"\t"+d.getLicenceType());
         return ret;
     }
+
+    public HashMap<String, ArrayList<String>> getLocationsByAreas() {
+        HashMap<String, ArrayList<String>> ret = new HashMap<>();
+        HashMap<Area, ArrayList<Location>> al = arc.getLocationsByArea();
+        for (Area a : al.keySet()){
+            ArrayList<String> locations = new ArrayList<>();
+            for (Location l: a.getLocations()){
+                locations.add(l.getAddress());
+            }
+            ret.put(a.getAreaName(), locations);
+        }
+        return ret;
+    }
 }

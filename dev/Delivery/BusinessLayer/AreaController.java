@@ -2,6 +2,7 @@ package Delivery.BusinessLayer;
 
 import Delivery.BusinessLayer.Delivery;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 
@@ -32,5 +33,13 @@ public class AreaController {
         }
         return str;
 
+    }
+
+    public HashMap<Area, ArrayList<Location>> getLocationsByArea() {
+        HashMap<Area, ArrayList<Location>> ret = new HashMap<>();
+        for(Area a : controller.values()){
+            ret.put(a, a.getLocations());
+        }
+        return ret;
     }
 }

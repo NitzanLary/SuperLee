@@ -3,6 +3,7 @@ package Delivery.BusinessLayer;
 import Delivery.BusinessLayer.Delivery;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class Area {
     private ArrayList<Location> locations;
@@ -30,5 +31,9 @@ public class Area {
         str = str.substring(0, str.length() - 2);
 
         return areaName + ": " + str;
+    }
+
+    public ArrayList<Location> getLocations() {
+        return locations;
     }
 }

@@ -6,6 +6,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.time.format.*;
 
@@ -116,25 +117,16 @@ public class CLI {
 
     public void createDelivery(){
         Scanner in = new Scanner(System.in);
-//        System.out.println("Choose the option for a date:");
-//        System.out.println("1 for today's date");
-//        System.out.println("2 for insert a date"); ---- optional - What you say? i say no
         String date = insertDate(in);
         String timeOfDeparture = insertTimeOfDeparture(in);
-
         // farj, im changing here the handling. the user chose from list instead of inserting a pre-known data. asaf.
-//        System.out.println("Insert truck number:");
-//        String truckNumber = in.nextLine();
-
         String truck = chooseTruck(in);
         String driverName = chooseDriver(in);
-        // todo - need to continue here to make every action as a method. so it can be ahnded correctly.
+        String departureWeight = insertDepartureWeight(in);
 
-        System.out.println("Insert departure weight:");
-        String departureWeight = in.nextLine();
-
-        System.out.println("Insert origin location:");
-        ArrayList<String> originLocation = this.insertLocation();
+//        System.out.println("Insert origin location:");
+//        ArrayList<String> originLocation = this.insertLocation();
+        String originLocation = chooseLocation(in);
 
         System.out.println("Insert Task");
         System.out.println("1 create new task");
@@ -149,6 +141,63 @@ public class CLI {
         }
 
 
+    }
+
+    private String chooseLocation(Scanner in) {
+        // this function should ask for location choice from the following format:
+        // 1) area1
+        //  1) location1 of this area
+        //  2) locations2
+        //  3) location3
+        // 2) area2
+        //  1) first of area 2
+        //
+        // and the input should be 1 2 (second location of first area)
+        // todo - test it!
+        String inp = "";
+        String[] arrayInput;
+        HashMap<String, ArrayList<String>> locationsByAreas = fc.getLocationsByAreas();
+        HashMap<String, String> joinNumberToArea = new HashMap<>();
+        boolean legal = false;
+        do {
+            System.out.println("choose the origin location for the delivery: area location");
+            int i = 0;
+            for (String a : locationsByAreas.keySet()) {
+                ArrayList<String> locations = locationsByAreas.get(a);
+                System.out.println(++i + ") " + a);
+                joinNumberToArea.put(Integer.toString(i) ,a);
+                for (int j = 1; j <= locations.size(); j++){
+                    System.out.println("\t"+j+") "+locations.get(j-1));
+                }
+            }
+            inp = in.nextLine();
+            arrayInput = inp.split(" ");
+            if (arrayInput.length == 2){
+                if (isLegalChoice(locationsByAreas.size(),arrayInput[0])){
+                    if (isLegalChoice(locationsByAreas.get(joinNumberToArea.get(arrayInput[0])).size(), arrayInput[1]))
+                        legal = true;
+                }
+            }
+        }while (!legal);
+        return locationsByAreas.get(joinNumberToArea.get(arrayInput[0])).get(Integer.valueOf(arrayInput[1])-1);
+    }
+
+    private boolean isLegalFloat(String input){
+        try {
+            Long.valueOf(input);
+        } catch (NumberFormatException e){
+            return false;
+        }
+        return true;
+    }
+
+    private String insertDepartureWeight(Scanner in) {
+        String input = "";
+        do {
+            System.out.println("Insert legal departure weight:");
+            input = in.nextLine();
+        } while (isLegalFloat(input));
+        return input;
     }
 
     private String chooseDriver(Scanner in) {
