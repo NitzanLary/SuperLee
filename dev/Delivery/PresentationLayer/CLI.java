@@ -269,7 +269,7 @@ public class CLI {
         System.out.println("Insert location:");
         ArrayList<String> originLocation = this.insertLocation();
 //        arr.add(in.nextLine());
-        // Todo - should we return an array or void??? 
+        // Todo - should we return an array or void???
 
 
         return arr;

@@ -22,6 +22,10 @@ public class TruckController {
         return arr;
     }
 
+    public boolean containsTruck(String id){
+        return controller.containsKey(id);
+    }
+
     @Override
     public String toString() {
         return "TruckController{" +

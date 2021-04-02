@@ -54,6 +54,10 @@ public class FacadeController {
         this.trc.addTruck(id, model, maxWeight, truckWeight);
     }
 
+    public boolean containsTruck(String id){
+        return trc.containsTruck(id);
+    }
+
     // here instead of returning a list of trucks (which the CLI shouldn't know) i returning a list of the truck numbers.
     public ArrayList<String> getTrucks(){
         ArrayList<String> ret = new ArrayList<>();
