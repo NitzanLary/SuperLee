@@ -30,18 +30,25 @@ public class FacadeController {
     }
 
     // - Area -
-    public void addArea(String areaName){
-        this.arc.addArea(areaName);
-
+    public void addNewArea(String areaName){
+        this.arc.addNewArea(areaName);
+    }
+    public void tempAddNewArea(String s, Area area){
+        this.arc.addArea(s,area);
     }
 
-    public void addlocation(String areaName, String address, String phoneNumber, String contactName){
+    public boolean containsArea(String areaName){
+        return this.arc.containsArea(areaName);
+    }
+
+    public void addLocation(String areaName, String address, String phoneNumber, String contactName){
         arc.addLocation(areaName, address, phoneNumber, contactName);
     }
 
     // - Task -
-    public void addTask(String id, HashMap<String, Integer> listOfProduct, String loadingOrUnloading, ArrayList<Location> destination){
-        this.tac.addTask(id, listOfProduct, loadingOrUnloading, destination);
+    public String addTask(HashMap<String, Integer> listOfProduct, String loadingOrUnloading,
+                        ArrayList<String> originDestination){
+        return this.tac.addTask(listOfProduct, loadingOrUnloading, originDestination);
     }
     public Task getTaskById(String id){
         return this.tac.getTaskById(id);
@@ -78,8 +85,14 @@ public class FacadeController {
 
     public Delivery getDeliveryByDate(String Date){return null;} // - optional -
 
+    public void addTask2Delivery(String id){
+        Task task = this.tac.getTaskById(id);
+
+
+    }
+
     // todo - should be integrated with employee module to get all drivers
-    private ArrayList<tmpEmployee> getAllDriverEmployees(){
+    public ArrayList<tmpEmployee> getAllDriverEmployees(){
         ArrayList<tmpEmployee> ret = new ArrayList<>();
         tmpEmployee emp1 = new tmpEmployee("yanay the sunny",15000);
         tmpEmployee emp2 = new tmpEmployee("nitzan the lary", 20000);
@@ -91,6 +104,9 @@ public class FacadeController {
         ret.add(emp4);
         return ret;
     }
+    public void tempAddDriver(ArrayList<tmpEmployee> arr){
+        this.drc.tmpAddDriver(arr);
+    }
 
 
     public void insertNewTask(){
@@ -100,7 +116,8 @@ public class FacadeController {
 
     public ArrayList<String> getDrivers() {
         ArrayList<String> ret = new ArrayList<>();
-        for (Driver d : drc.getDrivers())
+//        for (Driver d : drc.getDrivers())
+        for (tmpEmployee d : drc.tmpGetDrivers())
             ret.add(d.getName()+"\t"+d.getLicenceType());
         return ret;
     }

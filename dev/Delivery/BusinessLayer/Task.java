@@ -7,13 +7,13 @@ public class Task {
     private String id;
     private HashMap<String, Integer>listOfProduct;
     private String loadingOrUnloading;
-    ArrayList<Location> destination;
+    ArrayList<String> destination;
 
-    public Task(String id, HashMap<String, Integer> listOfProduct, String loadingOrUnloading, ArrayList<Location> destinations){
+    public Task(String id, HashMap<String, Integer> listOfProduct, String loadingOrUnloading, ArrayList<String> destination){
         this.id = id;
         this.listOfProduct = listOfProduct;
         this.loadingOrUnloading = loadingOrUnloading;
-        this.destination = destinations;
+        this.destination = destination;
     }
 
     public String toString(){

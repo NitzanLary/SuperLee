@@ -13,7 +13,7 @@ public class Driver {
 
     public Driver(tmpEmployee e){
         this.employee = e;
-        this.licenseType = e.getLicense();
+        this.licenseType = e.getLicenceType();
     }
 
     public void setEmployee(Employee e){

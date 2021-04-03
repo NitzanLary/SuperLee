@@ -11,6 +11,8 @@ public class Main {
 //            System.out.println(dc.getNewDeliveryID());
 //        //////////////////////////////////////
         CLI cli = new CLI();
+
+
         /////////////  legal date tests
 //        System.out.println(cli.isLegalDate("31-7-20"));
 //        System.out.println(cli.isLegalDate("31-6-20"));
@@ -30,7 +32,9 @@ public class Main {
 //        cli.insertLocation();
         cli.getFacade().addTruck("1234567","mer", 123,123);
         cli.getFacade().addTruck("12345678","mer", 123,123);
-        cli.runWithConsole();
+        ArrayList<tmpEmployee> arr = cli.getFacade().getAllDriverEmployees();
+        cli.getFacade().tempAddDriver(arr);
+
 
         Location location1 = new Location("berechia 58", "086755143", "RAFA");
         Location location2 = new Location("Lavi", "0867123456", "DR GANOT");
@@ -40,10 +44,10 @@ public class Main {
         area.addLocation(location2);
 
         AreaController areaController = new AreaController();
-        areaController.addArea(area.getAreaName());
-
-        System.out.println(areaController.toString());
-//        System.out.println(area.toString());
+        areaController.addArea(area.getAreaName(), area);
+        cli.getFacade().tempAddNewArea(area.getAreaName(), area);
+        cli.runWithConsole();
+//        System.out.println(areaController);
 
         DeliveryController deliveryController = new DeliveryController();
         deliveryController.createFullDelivery("1/1/2000", "08:00", "12345", "YANAY", 15800, "", location1, new ArrayList<Task>());

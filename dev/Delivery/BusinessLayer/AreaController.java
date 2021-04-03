@@ -14,8 +14,16 @@ public class AreaController {
 
     }
 
-    public void addArea(String area){
+    public boolean containsArea(String areaName){
+        return this.controller.containsKey(areaName);
+    }
+
+    public void addNewArea(String area){
         controller.put(area, new Area(area));
+    }
+
+    public void addArea(String areaName, Area area){
+        controller.put(areaName, area);
     }
 
     public void addLocation(String areaName, String address, String phoneNumber, String contactName){

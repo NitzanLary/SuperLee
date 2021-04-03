@@ -24,11 +24,14 @@ public class Area {
 
     @Override
     public String toString() {
+
         String str = "";
         for (int i = 0; i < locations.size() - 1; i++){
             str += locations.toString() + ", ";
         }
-        str = str.substring(0, str.length() - 2);
+        if (str.equals(""))
+            return str;
+        str = str.substring(0, str.length() - 1);
 
         return areaName + ": " + str;
     }

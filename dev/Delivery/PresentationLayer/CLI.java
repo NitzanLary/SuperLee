@@ -1,5 +1,6 @@
 package Delivery.PresentationLayer;
 
+import Delivery.BusinessLayer.Area;
 import Delivery.BusinessLayer.FacadeController;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.time.format.*;
+import java.util.SplittableRandom;
 
 public class CLI {
     FacadeController fc;
@@ -29,14 +31,16 @@ public class CLI {
             System.out.println("chose action:\n1 add new delivery,\n2 update existing delivery\n3 create new appending task" +
                     "\n4 add Truck to the sys\n5 add Driver to the sys\n6 add Area to the sys\n7 add location to the sys");
             s = in.nextLine().strip();
-            chooseAction(s);
+            chooseAction(s); // Todo: its tachles nees to be after the while, to the case that press immediate exit
         }
+
     }
 
     private void chooseAction(String s) {
         switch (s) {
             case ("1"): {
                 this.createDelivery();
+                break;
             }
             case ("2"): {
 
@@ -46,20 +50,25 @@ public class CLI {
             }
             case ("4"): {
                 this.addNewTrack();
+                break;
             }
             case ("5"): {
                 this.addNewDriver();
+                break;
             }
             case ("6"): {
-
+                this.addNewArea();
+                break;
             }
             case ("7"): {
-
+                this.addNewLocation();
+                break;
             }
         }
     }
 
-    private void addNewDriver() {
+    private void addNewDriver() { // REMOVE - NOT NEED THIS FUCKSHIT
+        System.out.println("helooo i'm here !!");
     }
 
     public boolean isLegalDate(String date) {
@@ -103,6 +112,8 @@ public class CLI {
             }
             inp = in.nextLine();
         } while (!isLegalChoice(truckLst.size(), inp) && !inp.equals("exit"));
+        if (inp.equals("exit"))
+            return inp;
         return truckLst.get(Integer.parseInt(inp)-1);
     }
 
@@ -121,14 +132,32 @@ public class CLI {
     public void createDelivery() {
         Scanner in = new Scanner(System.in);
         String date = insertDate(in);
+        if (date.equals("exit"))
+            return;
+
         String timeOfDeparture = insertTimeOfDeparture(in);
+        if (timeOfDeparture.equals("exit"))
+            return;
+
         String truck = chooseTruck(in);
+        if (truck.equals("exit"))
+            return;
+
         String driverName = chooseDriver(in);
+        if (driverName.equals("exit"))
+            return;
+
         String departureWeight = insertDepartureWeight(in);
+        if (departureWeight.equals("exit"))
+            return;
+        int departureWeightInt = Integer.parseInt(insertDepartureWeight(in));
+
 
 //        System.out.println("Insert origin location:");
 //        ArrayList<String> originLocation = this.insertLocation();
         String originLocation = chooseLocation(in);
+        if (originLocation.equals("exit"))
+            return;
 
         System.out.println("Insert Task");
         System.out.println("1 create new task");
@@ -139,12 +168,35 @@ public class CLI {
             op = in.nextLine();
         }
         if (op.equals("1")) {
+            ArrayList<String> arrTaskStr = this.addNewTask();
+            HashMap<String, Integer> hashOfProduct = this.str2Hash(arrTaskStr.get(0));
+            String loadingOrUnloading = arrTaskStr.get(1);
+            ArrayList<String> originDestination = new ArrayList<>();
+            originDestination.add(arrTaskStr.get(2));
+            originDestination.add(arrTaskStr.get(3));
+            originDestination.add(arrTaskStr.get(4));
 
+            String id = this.fc.addTask(hashOfProduct, loadingOrUnloading, originDestination);
+            this.fc.addTask2Delivery(id);
         }
 
 
     }
+    public HashMap<String, Integer> str2Hash(String strOfProduct){
+        String[] keyValuePairs = strOfProduct.split(",");              //split the string to create key-value pairs
+        HashMap<String,Integer> map = new HashMap<>();
 
+        for(String pair : keyValuePairs)                        //iterate over the pairs
+        {
+            String[] entry = pair.split(":");                   //split the pairs to get key and value
+
+            map.put(entry[0].trim(), Integer.parseInt(entry[1].trim()));          //add them to the hashmap and trim whitespaces, parse to int
+        }
+        return map;
+    }
+
+    // todo : discuss with asaf about it - 1. why not first choose an area than choose location from it
+                                   //todo: 2. did NOT test it yet - better it will be you
     private String chooseLocation(Scanner in) {
         // this function should ask for location choice from the following format:
         // 1) area1
@@ -184,6 +236,7 @@ public class CLI {
         return locationsByAreas.get(joinNumberToArea.get(arrayInput[0])).get(Integer.valueOf(arrayInput[1]) - 1);
     }
 
+
     private boolean isLegalFloat(String input) {
         try {
             Long.valueOf(input);
@@ -198,7 +251,7 @@ public class CLI {
         do {
             System.out.println("Insert legal departure weight:");
             input = in.nextLine();
-        } while (isLegalFloat(input));
+        } while (!isLegalFloat(input));
         return input;
     }
 
@@ -211,8 +264,10 @@ public class CLI {
                 System.out.println(i + ") " + driversLst.get(i - 1));
             }
             inp = in.nextLine();
-        } while (isLegalChoice(driversLst.size(), inp));
-        return driversLst.get(Integer.parseInt(inp));
+        } while (!isLegalChoice(driversLst.size(), inp) && !inp.equals("exit"));
+        if (inp.equals("exit"))
+            return inp;
+        return driversLst.get(Integer.parseInt(inp) - 1);
     }
 
     private boolean isLegalTime(String timeOfDeparture) {
@@ -230,7 +285,7 @@ public class CLI {
     public ArrayList<String> insertLocation() {
         ArrayList<String> arr = new ArrayList<>();
         Scanner in = new Scanner(System.in);
-
+        System.out.println("Insert new location:");
         System.out.println("address:");
         arr.add(in.nextLine());
 
@@ -242,16 +297,35 @@ public class CLI {
         return arr;
     }
 
-    public ArrayList<String> insertTask() {
+    public void addNewLocation(){
+        Scanner in = new Scanner(System.in);
+        String areaName = "";
+        ArrayList<String> arr = this.insertLocation();
+        do {
+            System.out.println("Insert an area name for the location:");
+            areaName = in.nextLine();
+        } while (!(this.fc.containsArea(areaName) || areaName.equals("exit")));
+        if (areaName.equals("exit"))
+            return;
+        this.fc.addLocation(areaName, arr.get(0), arr.get(1), arr.get(2));
+
+
+
+
+    }
+
+    public ArrayList<String> addNewTask() {
         ArrayList<String> arr = new ArrayList<>();
         Scanner in = new Scanner(System.in);
-        // TODO - NEED TO ADD NEW ID LIKE THE DELIVERY YOU MADE - @ASAF, LAVI, ISRAEL
+        // TODO - NEED TO ADD NEW ID LIKE THE DELIVERY YOU MADE. BUT IN THE BUSINESS LAYER - @ASAF, LAVI, ISRAEL
         System.out.println("Insert list of product:");
         System.out.println("Please wright in the EXACT format:");
         System.out.println("<Product>:<Quantity>");
         System.out.println("For example: Banana:40,bread:30");
         String productStr = in.nextLine();
-        // TODO : NEED TO CHECK IF THE FORMAT IS GOOD
+        arr.add(productStr);
+        // TODO : NEED TO CHECK IF THE FORMAT ABOVE IS GOOD
+
         System.out.println("For loading press 1");
         System.out.println("For unloading press 2");
         String op = in.nextLine();
@@ -259,22 +333,28 @@ public class CLI {
             System.out.println("Please choose one of the option 1, 2 or exit");
             op = in.nextLine();
         }
+
         String loadOrUnload = "";
         switch (op) {
             case ("1"): {
                 loadOrUnload = "loading";
+                break;
             }
             case ("2"): {
                 loadOrUnload = "unloading";
+                break;
             }
         }
-//        arr.add(in.nextLine());
+        arr.add(loadOrUnload);
+
+
         System.out.println("Insert location:");
         ArrayList<String> originLocation = this.insertLocation();
-//        arr.add(in.nextLine());
-        // Todo - should we return an array or void???
+        arr.add(originLocation.get(0));
+        arr.add(originLocation.get(1));
+        arr.add(originLocation.get(2));
 
-
+    // arr = [list of product, un\loading, location.address, location.phone number, location.contact name]
         return arr;
     }
 
@@ -284,24 +364,35 @@ public class CLI {
         do {
             System.out.println("insert truck number: xx-xxx-xx || xxx-xx-xxx");
             truckNumber = in.nextLine();
-        } while (!isLegalTruck(truckNumber));
+        } while (!(isLegalTruck(truckNumber) || truckNumber.equals("exit")));
+        if (truckNumber.equals("exit"))
+            return;
+
         String truckModel = "";
         do {
             System.out.println("insert truck model:");
             truckModel = in.nextLine();
-        } while (truckModel.length() < 1);
+        } while (!(truckModel.length() < 1 || truckModel.equals("exit")));
+        if (truckModel.equals("exit"))
+            return;
+
         int maxWeight = 0;
         String input = "";
         do {
             System.out.println("insert truck's max weight: kg");
             input = in.nextLine();
-        } while (!isLegalFloat(input));
+        } while (!(isLegalFloat(input) || input.equals("exit")));
+        if (input.equals("exit"))
+            return;
         maxWeight = Integer.parseInt(input);
+
         int truckWeight = 0;
         do {
             System.out.println("insert truck's weight");
             input = in.nextLine();
-        } while (!isLegalFloat(input));
+        } while (!(isLegalFloat(input) || input.equals("exit")));
+        if (input.equals("exit"))
+            return;
         truckWeight = Integer.parseInt(input);
         fc.addTruck(truckNumber, truckModel, maxWeight, truckWeight);
     }
@@ -320,4 +411,21 @@ public class CLI {
     public FacadeController getFacade() {
         return fc;
     }
+
+    public void addNewArea(){
+        Scanner in = new Scanner(System.in);
+        String areaName = "";
+        do {
+            System.out.println("Insert area name:");
+            areaName = in.nextLine();
+        } while (this.fc.containsArea(areaName) && !areaName.equals("exit"));
+        if (areaName.equals("exit"))
+            return;
+        this.fc.addNewArea(areaName);
+    }
+    public void tempAddArea(String s, Area area){
+        this.fc.tempAddNewArea(s, area);
+    }
+
+
 }

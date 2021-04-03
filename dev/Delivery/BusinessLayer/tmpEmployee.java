@@ -14,7 +14,7 @@ public class tmpEmployee implements Employee {
         return name;
     }
 
-    public int getLicense(){
+    public int getLicenceType(){
         return license;
     }
 
