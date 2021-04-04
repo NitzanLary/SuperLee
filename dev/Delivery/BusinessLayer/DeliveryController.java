@@ -67,18 +67,22 @@ public class DeliveryController {
     public String getNewDeliveryID(){
         String ret = nextID;
         String[] splitted = {nextID.substring(0,1), nextID.substring(1)};
-        if (splitted[1].equals("9999")) {
+        if (splitted[1].equals("999")) {
             int index = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(splitted[0]) + 1;
             try {
-                nextID = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(index) + "0000";
+                nextID = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(index) + "000";
             }catch (IndexOutOfBoundsException e){
                 System.out.println("overloaded system, resetting delivery ids");
             }
         }
         else{
-            nextID = splitted[0] + String.format("%1$04d",Integer.parseInt(splitted[1])+1);
+            nextID = splitted[0] + String.format("%1$03d",Integer.parseInt(splitted[1])+1);
         }
         return ret;
+    }
+
+    public String getNextDeliveryID(){
+        return nextID;
     }
 
 

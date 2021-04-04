@@ -2,6 +2,7 @@ import Delivery.BusinessLayer.*;
 import Delivery.PresentationLayer.CLI;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Main {
     public static void main(String[] args) {
@@ -32,27 +33,41 @@ public class Main {
 //        cli.insertLocation();
         cli.getFacade().addTruck("1234567","mer", 123,123);
         cli.getFacade().addTruck("12345678","mer", 123,123);
+        cli.getFacade().addNewArea("North");
+        cli.getFacade().addNewArea("South");
+        cli.getFacade().addLocation("North","Lavi", "0503993502", "Asaf");
+        cli.getFacade().addLocation("South","Berechia", "0503993504", "Farjun");
+        cli.getFacade().addLocation("South","Beer Sheva", "0503993505", "Shaul the shauli");
         ArrayList<tmpEmployee> arr = cli.getFacade().getAllDriverEmployees();
         cli.getFacade().tempAddDriver(arr);
-
-
-        Location location1 = new Location("berechia 58", "086755143", "RAFA");
-        Location location2 = new Location("Lavi", "0867123456", "DR GANOT");
-
-        Area area = new Area("ISR");
-        area.addLocation(location1);
-        area.addLocation(location2);
-
-        AreaController areaController = new AreaController();
-        areaController.addArea(area.getAreaName(), area);
-        cli.getFacade().tempAddNewArea(area.getAreaName(), area);
+        HashMap<String, Integer> t1 = new HashMap<>();
+        t1.put("c", 1);
+        t1.put("b", 10);
+        HashMap<String, Integer> t2 = new HashMap<>();
+        t2.put("d", 1);
+        t2.put("c3po", 100);
+        cli.getFacade().addTask(t1,"loading","Berechia");
+        cli.getFacade().addTask(t2,"loading","Beer Sheva");
         cli.runWithConsole();
-//        System.out.println(areaController);
 
-        DeliveryController deliveryController = new DeliveryController();
-        deliveryController.createFullDelivery("1/1/2000", "08:00", "12345", "YANAY", 15800, "", location1, new ArrayList<Task>());
 
-        System.out.println(deliveryController);
+//        Location location1 = new Location("berechia 58", "086755143", "RAFA");
+//        Location location2 = new Location("Lavi", "0867123456", "DR GANOT");
+//
+//        Area area = new Area("ISR");
+//        area.addLocation(location1);
+//        area.addLocation(location2);
+//
+//        AreaController areaController = new AreaController();
+//        areaController.addArea(area.getAreaName(), area);
+//        cli.getFacade().tempAddNewArea(area.getAreaName(), area);
+//        cli.runWithConsole();
+////        System.out.println(areaController);
+//
+//        DeliveryController deliveryController = new DeliveryController();
+//        deliveryController.createFullDelivery("1/1/2000", "08:00", "12345", "YANAY", 15800, "", location1, new ArrayList<Task>());
+//
+//        System.out.println(deliveryController);
 
 
 

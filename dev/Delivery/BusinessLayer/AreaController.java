@@ -50,4 +50,15 @@ public class AreaController {
         }
         return ret;
     }
+
+    public Location getLocation(String destination) {
+        for (Area a : controller.values()){
+            for (Location l: a.getLocations()){
+                if (l.getAddress().equals(destination)){
+                    return l;
+                }
+            }
+        }
+        return null;
+    }
 }

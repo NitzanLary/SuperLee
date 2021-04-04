@@ -47,8 +47,9 @@ public class FacadeController {
 
     // - Task -
     public String addTask(HashMap<String, Integer> listOfProduct, String loadingOrUnloading,
-                        ArrayList<String> originDestination){
-        return this.tac.addTask(listOfProduct, loadingOrUnloading, originDestination);
+                        String Destination){
+        Location destination = arc.getLocation(Destination);
+        return this.tac.addTask(listOfProduct, loadingOrUnloading, destination);
     }
     public Task getTaskById(String id){
         return this.tac.getTaskById(id);
@@ -135,4 +136,29 @@ public class FacadeController {
         return ret;
     }
 
+    public void createFullDelivery(String date, String timeOfDeparture, String truckNumber, String driverName, int departureWeight, String modification, String origin, ArrayList<String> destinations) {
+        Location locationOrigin = arc.getLocation(origin);
+        ArrayList<Task> tasks = new ArrayList<>();
+        for (String id: destinations) {
+            tasks.add(tac.getAndRemoveTaskById(id));
+        }
+        dec.createFullDelivery(date, timeOfDeparture, truckNumber, driverName, departureWeight, modification, locationOrigin, tasks);
+    }
+
+    public String getNextDeliveryID() {
+        return dec.getNextDeliveryID();
+    }
+
+    public ArrayList<ArrayList<String>> getTasks() {
+        ArrayList<ArrayList<String>> ret = new ArrayList<>();
+        for (Task t : tac.getTasks()) {
+            ArrayList<String> arr = new ArrayList<>();
+            arr.add(t.getId());
+            arr.add(t.getDestination().getAddress());
+            arr.add(t.getLoadingOrUnloading());
+            arr.add(t.getListOfProduct().toString());
+            ret.add(arr);
+        }
+        return ret;
+    }
 }
