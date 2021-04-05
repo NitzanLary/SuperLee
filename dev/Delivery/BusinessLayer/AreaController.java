@@ -5,6 +5,7 @@ import Delivery.BusinessLayer.Delivery;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InputMismatchException;
+import java.util.Set;
 
 public class AreaController {
     private HashMap<String, Area> controller;
@@ -60,5 +61,13 @@ public class AreaController {
             }
         }
         return null;
+    }
+
+    public ArrayList<String> getAreas() {
+        ArrayList<String> arr = new ArrayList<>();
+        for (String areaName : controller.keySet()){
+            arr.add(areaName);
+        }
+        return arr;
     }
 }

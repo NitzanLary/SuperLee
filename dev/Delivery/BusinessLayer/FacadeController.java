@@ -3,6 +3,7 @@ package Delivery.BusinessLayer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Set;
 
 public class FacadeController {
     DeliveryController dec;
@@ -43,6 +44,10 @@ public class FacadeController {
 
     public void addLocation(String areaName, String address, String phoneNumber, String contactName){
         arc.addLocation(areaName, address, phoneNumber, contactName);
+    }
+
+    public ArrayList<String> getAreas() {
+        return this.arc.getAreas();
     }
 
     // - Task -
@@ -161,4 +166,6 @@ public class FacadeController {
         }
         return ret;
     }
+
+
 }

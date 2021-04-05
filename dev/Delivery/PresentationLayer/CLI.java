@@ -6,11 +6,8 @@ import Delivery.BusinessLayer.FacadeController;
 import javax.xml.parsers.ParserConfigurationException;
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 import java.time.format.*;
-import java.util.SplittableRandom;
 
 public class CLI {
     FacadeController fc;
@@ -355,16 +352,24 @@ public class CLI {
     }
 
     public void addNewLocation(){
+        // Todo: fix input -3 bug and input more than the size
         Scanner in = new Scanner(System.in);
+        ArrayList<String> areas;
+        String inp = "";
         String areaName = "";
         ArrayList<String> arr = this.addNewLocationHelper();
         if (arr == null)
             return;
         do {
-            System.out.println("Insert an area name for the location:");
-            areaName = in.nextLine();
-        } while (!(this.fc.containsArea(areaName) || areaName.equals("exit")));
-        if (areaName.equals("exit"))
+            System.out.println("Choose an area name for the location:");
+            areas = this.fc.getAreas();
+            for (int i = 1; i <= areas.size(); i++){
+                System.out.println(i + ") " + areas.get(i - 1));
+            }
+            inp = in.nextLine();
+            areaName = areas.get(Integer.parseInt(inp));
+        } while (!isLegalChoice(areas.size(), inp) && !inp.equals("exit"));
+        if (inp.equals("exit"))
             return;
         this.fc.addLocation(areaName, arr.get(0), arr.get(1), arr.get(2));
     }
