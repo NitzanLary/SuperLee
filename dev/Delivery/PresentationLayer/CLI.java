@@ -125,7 +125,7 @@ public class CLI {
         } catch (NumberFormatException e) {
             return false;
         }
-        if (p < 0 || p > size)
+        if (p <= 0 || p > size)
             return false;
         return true;
     }
@@ -318,9 +318,10 @@ public class CLI {
         String[] spl = timeOfDeparture.split(":");
         if (spl.length != 2)
             return false;
+        if (!isLegalFloat(spl[0]) || !isLegalFloat(spl[1]))
+            return false;
         int hour = Integer.parseInt(spl[0]);
         int minutes = Integer.parseInt(spl[1]);
-        System.out.println(hour + " " + minutes);
         if (hour > 24 || hour < 0 || minutes > 59 || minutes < 0)
             return false;
         return true;
@@ -331,16 +332,25 @@ public class CLI {
         Scanner in = new Scanner(System.in);
         System.out.println("Insert new location:");
         System.out.println("address:");
-        arr.add(in.nextLine());
+        String address = in.nextLine();
+        if (address.equals("exit"))
+            return null;
+        arr.add(address);
         String phoneNum = "";
         while(!(isLegalFloat(phoneNum) || phoneNum.length() == 10)) {
             System.out.println("phone number: <10 digits>");
             phoneNum = in.nextLine();
+            if (phoneNum.equals("exit"))
+                break;
         }
-        arr.add(in.nextLine());
-
+        arr.add(phoneNum);
+        if (phoneNum.equals("exit"))
+            return null;
         System.out.println("contact name:");
-        arr.add(in.nextLine());
+        String contactName = in.nextLine();
+        if (contactName.equals("exit"))
+            return null;
+        arr.add(contactName);
         return arr;
     }
 
@@ -348,6 +358,8 @@ public class CLI {
         Scanner in = new Scanner(System.in);
         String areaName = "";
         ArrayList<String> arr = this.addNewLocationHelper();
+        if (arr == null)
+            return;
         do {
             System.out.println("Insert an area name for the location:");
             areaName = in.nextLine();
@@ -355,10 +367,6 @@ public class CLI {
         if (areaName.equals("exit"))
             return;
         this.fc.addLocation(areaName, arr.get(0), arr.get(1), arr.get(2));
-
-
-
-
     }
 
     public ArrayList<String> userTaskCreator() {
@@ -421,7 +429,7 @@ public class CLI {
         do {
             System.out.println("insert truck model:");
             truckModel = in.nextLine();
-        } while (!(truckModel.length() < 1 || truckModel.equals("exit")));
+        } while (!(truckModel.length()  != 0 || truckModel.equals("exit")));
         if (truckModel.equals("exit"))
             return;
 
