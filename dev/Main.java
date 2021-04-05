@@ -9,10 +9,14 @@ public class Main {
     public static void main(String[] args) {
 //        System.out.println("!Hello world");
 
-        LocalTime time = LocalTime.of(14, 50);
-        System.out.println(time);
-        System.out.println(time.getHour());
-        System.out.println(time.getMinute());
+//        LocalTime time = LocalTime.of(14, 50);
+//        System.out.println(time);
+//        System.out.println(time.getHour());
+//        System.out.println(time.getMinute());
+
+        LocalDate now = LocalDate.now();
+        LocalDate later = LocalDate.of(2022, 5,12);
+        System.out.println(later.compareTo(now));
 //
 //        Employee emp1 = new Employee("Nitzan Lary", "311541214", LocalDate.parse("2019-04-03"));
 //        Employee emp2 = new Employee("Assaf Stern", "224266120", LocalDate.parse("2019-03-03"));

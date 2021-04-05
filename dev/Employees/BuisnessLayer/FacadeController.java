@@ -99,7 +99,13 @@ public class FacadeController {
         return new Response("Not Authorized! Only HR Manager Or General Manager Authorized For This Action");
     } // only HR and general manager
 
-    public ResponseT<List<Shift>> getAllShifts(String userID){ //TODO: NEED TO IMPLEMENT
+    public ResponseT<List<Shift>> getFutureShifts(String userID){ //
+        if (!employeeController.getEmployee(userID).getValue().checkAuthorizedHrOrGenral().getValue())
+            return new ResponseT<>(null, "Not Authorized! Only HR Manager Or General Manager Authorized For This Action");
+        return shiftController.getFutureShifts();
+    }
+
+    public ResponseT<List<Shift>> getShiftsHistory(String userID){
         return null;
     }
 

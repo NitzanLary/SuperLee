@@ -65,6 +65,20 @@ public class ShiftController {
         return null;
     }
 
+    public ResponseT<List<Shift>> getFutureShifts(){ // todo: need to be tested
+        List<Shift> shifts = new ArrayList<>();
+        LocalDate now = LocalDate.now();
+        for(WeeklyShifts week: weeklyShifts){
+            if (now.compareTo(week.getToDate()) <= 0){ // positive if now date is after week.getToDate()
+                for (Shift s: week.getShifts()){
+                    if (now.compareTo(s.getDate()) <= 0)
+                        shifts.add(s);
+                }
+            }
+        }
+        return new ResponseT<>(shifts);
+    }
+
 
 
 }
