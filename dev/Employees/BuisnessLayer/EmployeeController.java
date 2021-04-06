@@ -41,5 +41,37 @@ public class EmployeeController {
         if (!employees.containsKey(id)) return new ResponseT(null, "No employee with this ID");
         return new ResponseT<Employee>(employees.get(id), null);
     }
+
+    public Response setEmpName(Employee employee, String newEmpName) {
+        if (newEmpName == "")
+            return new Response("Invalid name");
+        employee.setName(newEmpName);
+        return new Response();
+    }
+
+    public Response updateEmpBankAccount(Employee employee, String newBankAccount) {
+        employee.setBankAccount(newBankAccount);
+        return new Response();
+    }
+
+    public Response updateEmpSalary(Employee employee, int newSalary) {
+        employee.setSalary(newSalary);
+        return new Response();
+    }
+
+    public Response updateEmpSickDays(Employee employee, int updatedsickDays) {
+        employee.getTerms().setSickDays(updatedsickDays);
+        return new Response();
+    }
+
+    public Response updateEmpStudyFund(Employee employee, int newStudyFund) {
+        employee.getTerms().setAdvancedStudyFund(newStudyFund);
+        return new Response();
+    }
+
+    public Response updateEmpDaysOff(Employee employee, int newDaysOff) {
+        employee.getTerms().setDaysOff(newDaysOff);
+        return new Response();
+    }
 }
 

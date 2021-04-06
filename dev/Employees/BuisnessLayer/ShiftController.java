@@ -1,8 +1,8 @@
 package Employees.BuisnessLayer;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -55,14 +55,22 @@ public class ShiftController {
         }
     }
 
-    public Shift findShift(LocalDate date, int StartTime, int EndTime){ // Todo: maybe optimize
+    public ResponseT<Shift> findShift(LocalDate date, LocalTime StartTime, LocalTime EndTime){ // Todo: maybe optimize
         for(WeeklyShifts ws : weeklyShifts){
             for(Shift s : ws.getShifts()){
                 if (s.compare(date, StartTime, EndTime))
-                    return s;
+                    return new ResponseT(s);
             }
         }
-        return null;
+        return new ResponseT(null, "Shift not found");
+    }
+
+    public Response putConstrain(Employee employee, LocalDate date, LocalTime start, LocalTime end, int pref/*0-want 1-can 2-cant*/) {
+        ResponseT<Shift> rS = findShift(date, start, end);
+        if (!rS.isErrorOccured())
+            return rS.getValue().AddConstrain(employee, pref);
+        return rS;
+
     }
 
     public ResponseT<List<Shift>> getFutureShifts(){ // todo: need to be tested
@@ -79,6 +87,27 @@ public class ShiftController {
         return new ResponseT<>(shifts);
     }
 
+    public Response assignToShift(Employee employee, LocalDate date, LocalTime start, LocalTime end, String role){
+        if(!employee.haveRoleCheck(role))
+            return new Response("The role does not match with the employee's roles");
+        ResponseT<Shift> rS = findShift(date, start, end);
+        if(rS.isErrorOccured())
+            return rS;
+        return rS.getValue().AssignEmployee(employee);
+    }
 
 
+    public Response closeShift(LocalDate date, LocalTime start, LocalTime end) {
+        ResponseT<Shift> rS = findShift(date, start, end);
+        if(rS.isErrorOccured())
+            return rS;
+        return rS.getValue().close();
+    }
+
+    public ResponseT<String> getEmployeesConstrainsForShift(Employee employee, LocalDate date, LocalTime start, LocalTime end) {
+        ResponseT<Shift> rS = findShift(date, start, end);
+        if(rS.isErrorOccured())
+            return new ResponseT(null, rS.getErrorMessage());
+        return rS.getValue().getShiftConstrainsString();
+    }
 }

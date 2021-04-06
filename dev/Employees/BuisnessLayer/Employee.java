@@ -74,8 +74,8 @@ public class Employee {
         return new ResponseT<>(roles);
     }
 
-    public ResponseT<TermsOfEmployee> getTerms() {
-        return new ResponseT<>(terms);
+    public TermsOfEmployee getTerms() {
+        return terms;
     }
 
     public Response setSalary(int salary) {
@@ -98,23 +98,19 @@ public class Employee {
         return new Response();
     }
 
-    public ResponseT<Boolean> haveRoleCheck(String roleToCheck) {
-        if (!roles.isEmpty()) {
-            for (Role role : roles) {
-                if (role.compare(roleToCheck))
-                    return new ResponseT<Boolean>(true);
-            }
-            return new ResponseT<Boolean>(false);
+    public boolean haveRoleCheck(String roleToCheck) {
+        for (Role role : roles) {
+            if (role.compare(roleToCheck))
+                return true;
         }
-        return new ResponseT<Boolean>(false, "Error, No Rules Found");
+        return false;
     }
 
 
     //Check if this employee is HR/generarManager authorize
     public ResponseT<Boolean> checkAuthorizedHrOrGenral(){ //TODO; how should we work with those strings??
-        if(this.haveRoleCheck("HR Manager").getValue() || this.haveRoleCheck("Genral Manager").getValue())
+        if(this.haveRoleCheck("HR Manager") || this.haveRoleCheck("General Manager"))
             return new ResponseT<Boolean>(true);
-
         return new ResponseT<Boolean>(false);
     }
 

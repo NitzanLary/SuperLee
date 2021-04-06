@@ -2,17 +2,17 @@ package Employees.BuisnessLayer;
 
 public class Response {
     private String ErrorMessage;
-    public boolean ErrorOccured;
+    private boolean ErrorOccurred;
 
-    public Response(){ErrorOccured = false;}
+    public Response(){ErrorOccurred = false;}
 
     public Response(String errorMessage) {
         ErrorMessage = errorMessage;
-        ErrorOccured = errorMessage != null;
+        ErrorOccurred = errorMessage != null;
     }
 
     public boolean isErrorOccured() {
-        return ErrorOccured;
+        return ErrorOccurred;
     }
 
     public String getErrorMessage() {
