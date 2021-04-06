@@ -1,5 +1,6 @@
 package PresentationLayer;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class IO {
@@ -8,7 +9,7 @@ public class IO {
     private Scanner scanner;
 
     public static IO getInstance() {
-        if (instance != null) {
+        if (instance == null) {
             instance = new IO();
         }
         return instance;
@@ -20,13 +21,46 @@ public class IO {
     }
 
     public void start() {
-        System.out.println("1 to add sale, 2 to report faulty");
+
+        System.out.println("1)Add sale\n" +
+                "2)Report Faulty\n" +
+                "3)Add Item\n" +
+                "4)Add Category");
         int action = scanner.nextInt();
-        ioCtrl.act(action);
+        while (action <= 4 && action >= 1) {
+            ioCtrl.act(action);
+            System.out.println("1)Add sale\n" +
+                    "2)Report Faulty\n" +
+                    "3)Add Item\n" +
+                    "4)Add Category");
+            action = scanner.nextInt();
+        }
+
     }
 
-    public int getId() {
-        System.out.println("Enter item id");
+    public int getInt(String msg) {
+        System.out.println(msg);
         return scanner.nextInt();
+    }
+
+    public double getDouble(String msg) {
+        System.out.println(msg);
+        return scanner.nextDouble();
+    }
+
+    public String getString(String msg) {
+        System.out.println(msg);
+        return scanner.nextLine();
+    }
+
+    public LocalDate getDate(String msg) {
+        System.out.println(msg);
+        System.out.println("Enter the day:");
+        int day = scanner.nextInt();
+        System.out.println("Enter the month:");
+        int month = scanner.nextInt();
+        System.out.println("Enter the year:");
+        int year = scanner.nextInt();
+        return LocalDate.of(year,month,day);
     }
 }
