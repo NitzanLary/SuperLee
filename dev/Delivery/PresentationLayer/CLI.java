@@ -3,8 +3,6 @@ package Delivery.PresentationLayer;
 import Delivery.BusinessLayer.Area;
 import Delivery.BusinessLayer.FacadeController;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.*;
 import java.time.format.*;
@@ -40,7 +38,8 @@ public class CLI {
                 break;
             }
             case ("2"): {
-
+                this.updateDelivery();
+                break;
             }
             case ("3"): {
                 this.addNewTask();
@@ -63,6 +62,51 @@ public class CLI {
                 break;
             }
         }
+    }
+
+    private void updateDelivery() {
+        System.out.println("Choose delivery to update");
+        Scanner in = new Scanner(System.in);
+        String chosen = chooseDelivery(in);
+        if (chosen.equals("exit"))
+            return;
+        if (chosen.equals("")){
+            System.out.println("there are no updatable deliveries in the system, press <Enter> to continue");
+            in.nextLine();
+            return;
+        }
+        chooseFieldToUpdate(in, chosen);
+    }
+
+    private void chooseFieldToUpdate(Scanner in, String chosen) {
+        System.out.println("the Delivery you chose:\n"+fc.getDeliveryById(chosen));
+        System.out.println("choose which field you would like to update:");
+        System.out.println(" 1) date \n 2) time of departure\n 3) truck\n 4) driver\n 5)departure weight\n 6) origin\n 7) destinations and tasks");
+        String inp = in.nextLine();
+        while (!isLegalChoice(7,inp) && !inp.equals("exit")){
+            inp = in.nextLine();
+        }
+        String[] delivery = new String[7];
+        delivery[0] = "new Date";
+        if (inp.equals("exit"))
+            return;
+        fc.updateDelivery(delivery, chosen);
+
+    }
+
+    private String chooseDelivery(Scanner in) {
+        String inp = "";
+        ArrayList<String> deliveries = fc.getUpdatableDeliveries();
+        do {
+            System.out.println("choose a delivery to update: ");
+            for (int i = 1; i <= deliveries.size(); i++) {
+                System.out.println(i + ") " + deliveries.get(i - 1));
+            }
+            inp = in.nextLine();
+        } while (!isLegalChoice(deliveries.size(), inp) && !inp.equals("exit"));
+        if (inp.equals("exit"))
+            return inp;
+        return deliveries.get(Integer.parseInt(inp)-1);
     }
 
     private void addNewDriver() { // REMOVE - NOT NEED THIS FUCKSHIT
@@ -233,6 +277,7 @@ public class CLI {
         return tasksLst.get(Integer.parseInt(inp)-1);
     }
 
+
     public HashMap<String, Integer> str2Hash(String strOfProduct){
         String[] keyValuePairs = strOfProduct.split(",");              //split the string to create key-value pairs
         HashMap<String,Integer> map = new HashMap<>();
@@ -248,7 +293,6 @@ public class CLI {
 
 
     private String chooseLocation(Scanner in) {
-        // todo - test it!
         String inp = "";
         String[] arrayInput;
         HashMap<String, ArrayList<String>> locationsByAreas = fc.getLocationsByAreas();
@@ -351,9 +395,33 @@ public class CLI {
         return arr;
     }
 
+//    public void addNewLocation(){
+//        // Todo: fix input -3 bug and input more than the size
+//        Scanner in = new Scanner(System.in);
+////        ArrayList<String> areas;
+//        ArrayList<AreaPresentationInterface> areas;
+//        String inp = "";
+//        String areaName = "";
+//        ArrayList<String> arr = this.addNewLocationHelper();
+//        if (arr == null)
+//            return;
+//        do {
+//            System.out.println("Choose an area name for the location:");
+//            areas = this.fc.getAreas();
+//            for (int i = 1; i <= areas.size(); i++){
+//                System.out.println(i + ") " + areas.get(i - 1).getName());
+//            }
+//            inp = in.nextLine();
+//        } while (!isLegalChoice(areas.size(), inp) && !inp.equals("exit"));
+//        if (inp.equals("exit"))
+//            return;
+//        this.fc.addLocation(areas.get(Integer.parseInt(inp) - 1), arr.get(0), arr.get(1), arr.get(2));
+//    }
+
     public void addNewLocation(){
         // Todo: fix input -3 bug and input more than the size
         Scanner in = new Scanner(System.in);
+//        ArrayList<String> areas;
         ArrayList<String> areas;
         String inp = "";
         String areaName = "";

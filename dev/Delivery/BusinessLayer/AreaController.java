@@ -1,6 +1,7 @@
 package Delivery.BusinessLayer;
 
 import Delivery.BusinessLayer.Delivery;
+import Delivery.PresentationLayer.AreaPresentationInterface;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,6 +35,13 @@ public class AreaController {
         controller.get(areaName).addLocation(new Location(address, phoneNumber, contactName));
     }
 
+    public void addLocation(AreaPresentationInterface areaName, String address, String phoneNumber, String contactName){
+        if (!this.controller.containsKey(areaName.getName())){
+            throw new InputMismatchException("Area name dose not exist.");
+        }
+        controller.get(areaName.getName()).addLocation(new Location(address, phoneNumber, contactName));
+    }
+
     @Override
     public String toString() {
         String str = "";
@@ -63,9 +71,9 @@ public class AreaController {
         return null;
     }
 
-    public ArrayList<String> getAreas() {
-        ArrayList<String> arr = new ArrayList<>();
-        for (String areaName : controller.keySet()){
+    public ArrayList<Area> getAreas() {
+        ArrayList<Area> arr = new ArrayList<>();
+        for (Area areaName : controller.values()){
             arr.add(areaName);
         }
         return arr;

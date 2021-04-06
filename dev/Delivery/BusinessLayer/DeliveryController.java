@@ -1,5 +1,7 @@
 package Delivery.BusinessLayer;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class DeliveryController {
@@ -112,5 +114,22 @@ public class DeliveryController {
         return "DeliveryController{" +
                 "\ndeliveries =\n\t" + deliveries +
                 '}';
+    }
+
+    public ArrayList<Delivery> getUpdatableDeliveries() {
+        ArrayList<Delivery> ret = new ArrayList<>();
+        for (Delivery d: deliveries.values()){
+            if(d.isUpdatable())
+                ret.add(d);
+        }
+        return ret;
+    }
+
+    public LocalDate getCurrentDate(){
+        return LocalDate.now();
+    }
+
+    public LocalDateTime getCurrentTime(){
+        return LocalDateTime.now();
     }
 }

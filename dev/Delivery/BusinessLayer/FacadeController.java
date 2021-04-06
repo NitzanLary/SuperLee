@@ -1,9 +1,9 @@
 package Delivery.BusinessLayer;
 
+import Delivery.PresentationLayer.AreaPresentationInterface;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
-import java.util.Set;
 
 public class FacadeController {
     DeliveryController dec;
@@ -34,6 +34,7 @@ public class FacadeController {
     public void addNewArea(String areaName){
         this.arc.addNewArea(areaName);
     }
+
     public void tempAddNewArea(String s, Area area){
         this.arc.addArea(s,area);
     }
@@ -45,9 +46,19 @@ public class FacadeController {
     public void addLocation(String areaName, String address, String phoneNumber, String contactName){
         arc.addLocation(areaName, address, phoneNumber, contactName);
     }
+//        public void addLocation(AreaPresentationInterface areaName, String address, String phoneNumber, String contactName){
+//        arc.addLocation(areaName, address, phoneNumber, contactName);
+//    }
+
+//    public ArrayList<AreaPresentationInterface> getAreas() {
+//        return new ArrayList<>(arc.getAreas());
+//    }
 
     public ArrayList<String> getAreas() {
-        return this.arc.getAreas();
+        ArrayList<String> ret = new ArrayList<>();
+        for (Area a: arc.getAreas())
+            ret.add(a.getAreaName());
+        return ret;
     }
 
     // - Task -
@@ -128,6 +139,7 @@ public class FacadeController {
         return ret;
     }
 
+    // todo - transfer it to area controller!
     public HashMap<String, ArrayList<String>> getLocationsByAreas() {
         HashMap<String, ArrayList<String>> ret = new HashMap<>();
         HashMap<Area, ArrayList<Location>> al = arc.getLocationsByArea();
@@ -154,6 +166,8 @@ public class FacadeController {
         return dec.getNextDeliveryID();
     }
 
+
+    // todo - transfer it to task controller!
     public ArrayList<ArrayList<String>> getTasks() {
         ArrayList<ArrayList<String>> ret = new ArrayList<>();
         for (Task t : tac.getTasks()) {
@@ -168,4 +182,10 @@ public class FacadeController {
     }
 
 
+    public ArrayList<String> getUpdatableDeliveries() {
+        ArrayList<String> ret = new ArrayList<>();
+        for (Delivery d:dec.getUpdatableDeliveries())
+            ret.add(d.getID());
+        return ret;
+    }
 }

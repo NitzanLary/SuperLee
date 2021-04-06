@@ -1,11 +1,10 @@
 package Delivery.BusinessLayer;
 
-import Delivery.BusinessLayer.Delivery;
+import Delivery.PresentationLayer.AreaPresentationInterface;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
-public class Area {
+public class Area implements AreaPresentationInterface {
     private ArrayList<Location> locations;
     private String areaName; // we didnt put this data type in the diagram - but its necessary
 
@@ -40,5 +39,10 @@ public class Area {
 
     public ArrayList<Location> getLocations() {
         return locations;
+    }
+
+    @Override
+    public String getName() {
+        return areaName;
     }
 }
