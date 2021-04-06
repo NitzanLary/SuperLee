@@ -1,7 +1,10 @@
 package Delivery.PresentationLayer;
 
-import Delivery.BusinessLayer.Area;
-import Delivery.BusinessLayer.FacadeController;
+import Delivery.BusinessLayer.*;
+import Delivery.DTO.DeliveryDTO;
+import Delivery.DTO.LocationDTO;
+import Delivery.DTO.TaskDTO;
+import Delivery.DTO.TruckDTO;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -65,7 +68,7 @@ public class CLI {
     }
 
     private void updateDelivery() {
-        System.out.println("Choose delivery to update");
+//        System.out.println("Choose delivery to update");
         Scanner in = new Scanner(System.in);
         String chosen = chooseDelivery(in);
         if (chosen.equals("exit"))
@@ -78,25 +81,119 @@ public class CLI {
         chooseFieldToUpdate(in, chosen);
     }
 
-    private void chooseFieldToUpdate(Scanner in, String chosen) {
-        System.out.println("the Delivery you chose:\n"+fc.getDeliveryById(chosen));
-        System.out.println("choose which field you would like to update:");
-        System.out.println(" 1) date \n 2) time of departure\n 3) truck\n 4) driver\n 5)departure weight\n 6) origin\n 7) destinations and tasks");
-        String inp = in.nextLine();
-        while (!isLegalChoice(7,inp) && !inp.equals("exit")){
+    private void chooseFieldToUpdate(Scanner in, String oldChosenId) {
+        String inp = "";
+        DeliveryDTO delDTO = fc.getDeliveryById(oldChosenId);
+        while (!(inp.equals("8") || inp.equals("exit"))) {
+            System.out.println("Delivery " + delDTO.getId() +
+                    "\nchoose which field you would like to update:");
+            System.out.println(" 1) date - " + delDTO.getDate());
+            System.out.println(" 2) time of departure - " + delDTO.getTimeOfDeparture());
+            System.out.println(" 3) truck - " + delDTO.getTruckNumber());
+            System.out.println(" 4) driver - " + delDTO.getDriverName());
+            System.out.println(" 5) departure weight - " + delDTO.getDepartureWeight());
+            System.out.println(" 6) origin - " + delDTO.getOrigin());
+            System.out.println(" 7) destinations and tasks - " + delDTO.getDestinations());
+            System.out.println(" 8) continue");
             inp = in.nextLine();
+            while (!isLegalChoice(8, inp) && !inp.equals("exit")) {
+                inp = in.nextLine();
+            }
+            switch (inp) {
+                case ("1"): {
+                    delDTO.setDate(insertDate(in));
+                    break;
+                }
+                case ("2"): {
+                    delDTO.setTimeOfDeparture(insertTimeOfDeparture(in));
+                    break;
+                }
+                case ("3"): {
+                    delDTO.setTruckNumber(chooseTruck(in));
+                    break;
+                }
+                case ("4"): {
+                    delDTO.setDriverName(chooseDriver(in));
+                    break;
+                }
+                case ("5"): {
+                    delDTO.setDepartureWeight(Integer.parseInt(insertDepartureWeight(in)));
+                    break;
+                }
+                case ("6"): {
+                    delDTO.setOrigin(chooseLocation(in));
+                    break;
+                }
+                case ("7"): {
+                    delDTO.setDestinations(handleUpdateDeliveryTasks(in, delDTO));
+//                    delDTO.setDestinations(insertTasksToDelivery(in));
+                    break;
+                }
+            }
         }
-        String[] delivery = new String[7];
-        delivery[0] = "new Date";
         if (inp.equals("exit"))
             return;
-        fc.updateDelivery(delivery, chosen);
+        DeliveryDTO ret = fc.updateDelivery(delDTO, oldChosenId); // delDTO is the old one but with the updates
+        System.out.println("the new delivery id is: "+ ret.getId());
+        System.out.println("click <Enter> to continue");
+        in.nextLine();
+    }
 
+    private ArrayList<TaskDTO> handleUpdateDeliveryTasks(Scanner in, DeliveryDTO delDTO) {
+        System.out.println(" 1) remove task from the list\n 2) add task to the list");
+        String inp = in.nextLine();
+        while (!(isLegalChoice(2,inp) || inp.equals("exit"))){
+            System.out.println("choose 1, 2 or type 'exit'");
+            inp = in.nextLine();
+            }
+        ArrayList<TaskDTO> ar = null;
+        if (inp.equals("2")){
+            ar = insertTasksToDelivery(in, delDTO.getDestinations());
+            ar.addAll(delDTO.getDestinations());
+//            delDTO.setDestinations(ar);
+        }
+        if (inp.equals("1")){
+            ar = removeTasksFromDelivery(in, delDTO);
+        }
+        return ar;
+    }
+
+    private ArrayList<TaskDTO> removeTasksFromDelivery(Scanner in, DeliveryDTO delDTO) {
+        ArrayList<TaskDTO> allTasks = delDTO.getDestinations();
+        String inp = "";
+        System.out.println("attention !\nevery task you removed will be completely deleted ! ! !");
+        do {
+            if (allTasks.size() == 0) {
+                System.out.println("there are no updatable deliveries in the system\npress <Enter> to continue");
+                in.nextLine();
+                return allTasks;
+            }
+            do {
+                System.out.println("choose a task to remove: ");
+                System.out.println(" 0) continue");
+                for (int i = 1; i <= allTasks.size(); i++) {
+                    System.out.println(" "+i + ") " + allTasks.get(i - 1));
+                }
+                inp = in.nextLine();
+            } while (!isLegalChoice(allTasks.size(), inp) && !inp.equals("exit") && !inp.equals("0"));
+            if (!inp.equals("0"))
+                allTasks.remove(Integer.parseInt(inp) - 1);
+        }while (!inp.equals("0") && !inp.equals("exit"));
+//        inp = in.nextLine();
+//        while (!"yn".contains(inp)){inp = in.nextLine();}
+//        if (inp.equals("n"))
+//            return delDTO.getDestinations();
+        return allTasks;
     }
 
     private String chooseDelivery(Scanner in) {
         String inp = "";
         ArrayList<String> deliveries = fc.getUpdatableDeliveries();
+        if (deliveries.size() == 0){
+            System.out.println("there are no updatable deliveries in the system\npress <Enter> to continue");
+            in.nextLine();
+            return "exit";
+        }
         do {
             System.out.println("choose a delivery to update: ");
             for (int i = 1; i <= deliveries.size(); i++) {
@@ -146,7 +243,7 @@ public class CLI {
 
     private String chooseTruck(Scanner in) {
         String inp = "";
-        ArrayList<String> truckLst = fc.getTrucks();
+        ArrayList<TruckDTO> truckLst = fc.getTrucks();
         do {
             System.out.println("choose a truck for the delivery: ");
             for (int i = 1; i <= truckLst.size(); i++) {
@@ -156,7 +253,7 @@ public class CLI {
         } while (!isLegalChoice(truckLst.size(), inp) && !inp.equals("exit"));
         if (inp.equals("exit"))
             return inp;
-        return truckLst.get(Integer.parseInt(inp)-1);
+        return truckLst.get(Integer.parseInt(inp)-1).getId();
     }
 
     private boolean isLegalChoice(int size, String input) {
@@ -194,71 +291,94 @@ public class CLI {
             return;
         int departureWeightInt = Integer.parseInt(departureWeight);
 
-        String originLocation = chooseLocation(in);
+        LocationDTO originLocation = chooseLocation(in);
         if (originLocation.equals("exit"))
             return;
 
-        ArrayList<ArrayList<String>> arrTaskStr = insertTasksToDelivery(in);
-        if (arrTaskStr == null)
+        ArrayList<TaskDTO> arrTask = insertTasksToDelivery(in, new ArrayList<>());
+        if (arrTask == null)
             return;
 
         // summery:
-        System.out.println("your creation:\n Delivery id - " + fc.getNextDeliveryID() + "\n Leaving at - " + date + " " + timeOfDeparture
-                + "\n Truck - " + truck + "\n Driver - " + driverName + "\n Departure Weight - " + departureWeight + "\n From - " + originLocation
-                + "\n Tasks - " + arrTaskStr.toString());
+//        System.out.println("your creation:\n Delivery id - " + fc.getNextDeliveryID() + "\n Leaving at - " + date + " " + timeOfDeparture
+//                + "\n Truck - " + truck + "\n Driver - " + driverName + "\n Departure Weight - " + departureWeight + "\n From - " + originLocation
+//                + "\n Tasks - " + arrTask.toString());
+        DeliveryDTO creation = new DeliveryDTO(date, timeOfDeparture, truck.split(" ")[0], driverName, departureWeightInt, "", originLocation, arrTask);
+        System.out.println(creation);
         String approve = "";
         System.out.println("Create the delivery? y/n");
         while (!(approve.equals("y") || approve.equals("n")))
             approve = in.nextLine();
         if (approve.equals("y")) {
-            ArrayList<String> tasksForDelIDs = new ArrayList<>();
-            for (ArrayList<String> al : arrTaskStr){
-                tasksForDelIDs.add(al.get(0));
-            }
-            fc.createFullDelivery(date, timeOfDeparture, truck.split(" ")[0], driverName, departureWeightInt, "", originLocation, tasksForDelIDs);
+//            ArrayList<String> tasksForDelIDs = new ArrayList<>();
+//            for (TaskDTO al : arrTask){
+//                tasksForDelIDs.add(al.getId());
+//            }
+//            fc.createFullDelivery(date, timeOfDeparture, truck.split(" ")[0], driverName, departureWeightInt, "", originLocation, tasksForDelIDs);
+            fc.createFullDelivery(creation);
         }
     }
 
-    private ArrayList<ArrayList<String>> insertTasksToDelivery(Scanner in) {
+
+    private ArrayList<TaskDTO> insertTasksToDelivery(Scanner in, ArrayList<TaskDTO> alreadyIn) {
         String op = "";
-        ArrayList<ArrayList<String>> arrTaskStr = new ArrayList<>();
-        ArrayList<ArrayList<String>> allTasks = fc.getTasks();
+//        ArrayList<ArrayList<String>> arrTaskStr = new ArrayList<>();
+        ArrayList<TaskDTO> arrTask = new ArrayList<>();
+        ArrayList<TaskDTO> allTasks = new ArrayList<>();
+        for (TaskDTO t1 : fc.getTasks()){
+            boolean isInAllTasks = false;
+            for (TaskDTO t2 : alreadyIn){
+                if (t2.getId() == t1.getId()) {
+                    isInAllTasks = true;
+                    break;
+                }
+            }
+            if (!isInAllTasks){
+                allTasks.add(t1);
+            }
+        }
         while (!(op.equals("exit") || op.equals("3"))){
-            System.out.println("Insert Task\n 1 create new task\n 2 choose existed task\n 3 continue");
+            System.out.println("Insert Task\n 1) create new task\n 2) choose existed task\n 3) continue");
             op = in.nextLine();
             if (op.equals("1")) {
-                arrTaskStr.add(addNewTask());
+                TaskDTO t = addNewTask();
+                if (t!=null)
+                    arrTask.add(t);
             }else if (op.equals("2")) {
                 if (fc.getTasks().size() == 0) {
                     System.out.println("no appending tasks in the system. please insert before choosing this option");
                     op = "not good";
                     continue;
                 }
-                ArrayList<String> chosen = chooseTask(in, allTasks);
+                TaskDTO chosen = chooseTask(in, allTasks);
                 if (chosen != null) {
-                    arrTaskStr.add(chosen); // [id, list, loading, address]
+                    arrTask.add(chosen);
                     allTasks.remove(chosen);
                 }
             }
         }
         if (op.equals("exit"))
             return null;
-        return arrTaskStr;
+//        ArrayList<TaskDTO> ret = new ArrayList<>();
+//        for (ArrayList<String> as : arrTaskStr)
+//            ret.add(new TaskDTO())
+        return arrTask;
     }
 
-    private ArrayList<String> addNewTask(){
-        ArrayList<String> task = this.userTaskCreator();
-        HashMap<String, Integer> hashOfProduct = this.str2Hash(task.get(0));
-        String loadingOrUnloading = task.get(1);
-        String Destination = task.get(2);
-        String id = this.fc.addTask(hashOfProduct, loadingOrUnloading, Destination);
-        ArrayList<String> incID = new ArrayList<>();
-        incID.add(id);
-        incID.addAll(task);
+    private TaskDTO addNewTask(){
+        ArrayList<String> taskSTR = this.userTaskCreator();
+        if (taskSTR == null)
+            return null;
+        HashMap<String, Integer> hashOfProduct = this.str2Hash(taskSTR.get(0));
+        String loadingOrUnloading = taskSTR.get(1);
+        LocationDTO Destination = fc.getLocationByAddress(taskSTR.get(2));
+        TaskDTO task = new TaskDTO(hashOfProduct,loadingOrUnloading,Destination);
+        String id = this.fc.addTask(task);
+        task.setId(id);
         return task;
     }
 
-    private ArrayList<String> chooseTask(Scanner in, ArrayList<ArrayList<String>> tasksLst) {
+    private TaskDTO chooseTask(Scanner in, ArrayList<TaskDTO> tasksLst) {
         String inp = "";
         do {
             if(tasksLst.size() == 0){
@@ -274,7 +394,7 @@ public class CLI {
         } while (!isLegalChoice(tasksLst.size(), inp) && !inp.equals("exit"));
         if (inp.equals("exit"))
             return null;
-        return tasksLst.get(Integer.parseInt(inp)-1);
+        return  tasksLst.get(Integer.parseInt(inp)-1);
     }
 
 
@@ -292,17 +412,17 @@ public class CLI {
     }
 
 
-    private String chooseLocation(Scanner in) {
+    private LocationDTO chooseLocation(Scanner in) {
         String inp = "";
         String[] arrayInput;
-        HashMap<String, ArrayList<String>> locationsByAreas = fc.getLocationsByAreas();
+        HashMap<String, ArrayList<LocationDTO>> locationsByAreas = fc.getLocationsByAreas();
         HashMap<String, String> joinNumberToArea = new HashMap<>();
         boolean legal = false;
         do {
             System.out.println("choose the origin location for the delivery: <area number> <location number>");
             int i = 0;
             for (String a : locationsByAreas.keySet()) {
-                ArrayList<String> locations = locationsByAreas.get(a);
+                ArrayList<LocationDTO> locations = locationsByAreas.get(a);
                 System.out.println(++i + ") " + a);
                 joinNumberToArea.put(Integer.toString(i), a);
                 for (int j = 1; j <= locations.size(); j++) {
@@ -444,15 +564,33 @@ public class CLI {
     public ArrayList<String> userTaskCreator() {
         ArrayList<String> arr = new ArrayList<>();
         Scanner in = new Scanner(System.in);
-        // TODO - NEED TO ADD NEW ID LIKE THE DELIVERY YOU MADE. BUT IN THE BUSINESS LAYER - @ASAF, LAVI, ISRAEL
         System.out.println("Insert list of product:");
         System.out.println("Please wright in the EXACT format:");
         System.out.println("<Product>:<Quantity>");
-        System.out.println("For example: Banana:40,bread:30");
-        String productStr = in.nextLine();
+        System.out.println("For example: Banana:40,bread:30 ...");
+        String productStr = "";
+        boolean flag = true;
+        do{
+            if (!flag)
+                System.out.println("<Product>:<Quantity>");
+            flag = true;
+            productStr = in.nextLine().strip();
+            String[] allProducts = productStr.split(",");
+            for(String p : allProducts){
+                String[] spl = p.split(":");
+                if (spl.length != 2) {
+                    flag = false;
+                    continue;
+                }
+                if(!isLegalFloat(spl[1])){
+                    flag = false;
+                    continue;
+                }
+            }
+        } while (!(flag || productStr.equals("exit")));
+        if (productStr.equals("exit"))
+            return null;
         arr.add(productStr);
-        // TODO : NEED TO CHECK IF THE FORMAT ABOVE IS GOOD
-
         System.out.println("For loading press 1");
         System.out.println("For unloading press 2");
         String op = in.nextLine();
@@ -480,7 +618,7 @@ public class CLI {
 //        arr.add(originLocation.get(0));
 //        arr.add(originLocation.get(1));
 //        arr.add(originLocation.get(2));
-        String destination = chooseLocation(in);
+        String destination = chooseLocation(in).getAddress();
         arr.add(destination);
 
     // arr = [list of product, un\loading, location.address, location.phone number, location.contact name]

@@ -1,7 +1,11 @@
 package Delivery.BusinessLayer;
 
-import Delivery.PresentationLayer.AreaPresentationInterface;
+import Delivery.DTO.DeliveryDTO;
+import Delivery.DTO.LocationDTO;
+import Delivery.DTO.TaskDTO;
+import Delivery.DTO.TruckDTO;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -61,11 +65,22 @@ public class FacadeController {
         return ret;
     }
 
+    public LocationDTO getLocationByAddress(String address){
+        return new LocationDTO(arc.getLocation(address));
+    }
+
     // - Task -
     public String addTask(HashMap<String, Integer> listOfProduct, String loadingOrUnloading,
                         String Destination){
         Location destination = arc.getLocation(Destination);
         return this.tac.addTask(listOfProduct, loadingOrUnloading, destination);
+    }
+
+    public String addTask(TaskDTO t){
+        if (t.getId() == null){
+            return addTask(t.getListOfProduct(),t.getLoadingOrUnloading(),t.getDestination().getAddress());
+        }
+        return "";
     }
     public Task getTaskById(String id){
         return this.tac.getTaskById(id);
@@ -83,10 +98,10 @@ public class FacadeController {
     }
 
     // here instead of returning a list of trucks (which the CLI shouldn't know) i returning a list of the truck numbers.
-    public ArrayList<String> getTrucks(){
-        ArrayList<String> ret = new ArrayList<>();
+    public ArrayList<TruckDTO> getTrucks(){
+        ArrayList<TruckDTO> ret = new ArrayList<>();
         for (Truck t : trc.getTrucks())
-            ret.add(t.getId()+"\t"+t.getModel()+"\t"+t.getMaxWeight()+"\t"+t.getTruckWeight());
+            ret.add(new TruckDTO(t));
         return ret;
     }
 
@@ -96,8 +111,8 @@ public class FacadeController {
     }
 
     // - Delivery -
-    public Delivery getDeliveryById(String id){
-        return this.dec.getDeliveryById(id);
+    public DeliveryDTO getDeliveryById(String id){
+        return new DeliveryDTO(this.dec.getDeliveryById(id));
     }
 
     public Delivery getDeliveryByDate(String Date){return null;} // - optional -
@@ -140,26 +155,33 @@ public class FacadeController {
     }
 
     // todo - transfer it to area controller!
-    public HashMap<String, ArrayList<String>> getLocationsByAreas() {
-        HashMap<String, ArrayList<String>> ret = new HashMap<>();
+    public HashMap<String, ArrayList<LocationDTO>> getLocationsByAreas() {
+        HashMap<String, ArrayList<LocationDTO>> ret = new HashMap<>();
         HashMap<Area, ArrayList<Location>> al = arc.getLocationsByArea();
         for (Area a : al.keySet()){
-            ArrayList<String> locations = new ArrayList<>();
+            ArrayList<LocationDTO> locations = new ArrayList<>();
             for (Location l: a.getLocations()){
-                locations.add(l.getAddress());
+                locations.add(new LocationDTO(l));
             }
             ret.put(a.getAreaName(), locations);
         }
         return ret;
     }
 
-    public void createFullDelivery(String date, String timeOfDeparture, String truckNumber, String driverName, int departureWeight, String modification, String origin, ArrayList<String> destinations) {
-        Location locationOrigin = arc.getLocation(origin);
+//    public void createFullDelivery(String date, String timeOfDeparture, String truckNumber, String driverName, int departureWeight, String modification, String origin, ArrayList<String> destinations) {
+//        Location locationOrigin = arc.getLocation(origin);
+//        ArrayList<Task> tasks = new ArrayList<>();
+//        for (String id: destinations) {
+//            tasks.add(tac.getAndRemoveTaskById(id));
+//        }
+//        dec.createFullDelivery(date, timeOfDeparture, truckNumber, driverName, departureWeight, modification, locationOrigin, tasks);
+//    }
+
+    public void createFullDelivery(DeliveryDTO del){
         ArrayList<Task> tasks = new ArrayList<>();
-        for (String id: destinations) {
-            tasks.add(tac.getAndRemoveTaskById(id));
-        }
-        dec.createFullDelivery(date, timeOfDeparture, truckNumber, driverName, departureWeight, modification, locationOrigin, tasks);
+        for (TaskDTO t: del.getDestinations())
+            tasks.add(tac.getAndRemoveTaskById(t.getId()));
+        dec.createFullDelivery(del.getDate(),del.getTimeOfDeparture(),del.getTruckNumber(),del.getDriverName(),del.getDepartureWeight(),del.getModification(), arc.getLocation(del.getOrigin().getAddress()),tasks);
     }
 
     public String getNextDeliveryID() {
@@ -168,15 +190,10 @@ public class FacadeController {
 
 
     // todo - transfer it to task controller!
-    public ArrayList<ArrayList<String>> getTasks() {
-        ArrayList<ArrayList<String>> ret = new ArrayList<>();
+    public ArrayList<TaskDTO> getTasks() {
+        ArrayList<TaskDTO> ret = new ArrayList<>();
         for (Task t : tac.getTasks()) {
-            ArrayList<String> arr = new ArrayList<>();
-            arr.add(t.getId());
-            arr.add(t.getDestination().getAddress());
-            arr.add(t.getLoadingOrUnloading());
-            arr.add(t.getListOfProduct().toString());
-            ret.add(arr);
+            ret.add(new TaskDTO(t));
         }
         return ret;
     }
@@ -187,5 +204,20 @@ public class FacadeController {
         for (Delivery d:dec.getUpdatableDeliveries())
             ret.add(d.getID());
         return ret;
+    }
+
+    public DeliveryDTO updateDelivery(DeliveryDTO newDel, String oldDelId) {
+        ArrayList<Task> tasks = new ArrayList<>();
+//        System.out.println("test - \n"+newDel.getDestinations()+"\n");
+        for(TaskDTO td: newDel.getDestinations()){
+            Task t = dec.getTasksFromDelivery(td.getId(), oldDelId);
+            if (t==null)
+                t = tac.getAndRemoveTaskById(td.getId());
+            tasks.add(t);
+        }
+        Location orig = arc.getLocation(newDel.getOrigin().getAddress());
+        newDel.setId(null);
+        Delivery newD = dec.createNewDelivery(newDel, orig, tasks);
+        return new DeliveryDTO(dec.updateDelivery(newD, oldDelId));
     }
 }

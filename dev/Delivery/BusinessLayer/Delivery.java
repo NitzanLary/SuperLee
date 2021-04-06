@@ -20,6 +20,75 @@ public class Delivery {
     private ArrayList<Task> destinations;
 
 
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTimeOfDeparture() {
+        return timeOfDeparture;
+    }
+
+    public void setTimeOfDeparture(String timeOfDeparture) {
+        this.timeOfDeparture = timeOfDeparture;
+    }
+
+    public String getTruckNumber() {
+        return truckNumber;
+    }
+
+    public void setTruckNumber(String truckNumber) {
+        this.truckNumber = truckNumber;
+    }
+
+    public String getDriverName() {
+        return driverName;
+    }
+
+    public void setDriverName(String driverName) {
+        this.driverName = driverName;
+    }
+
+    public int getDepartureWeight() {
+        return departureWeight;
+    }
+
+    public void setDepartureWeight(int departureWeight) {
+        this.departureWeight = departureWeight;
+    }
+
+    public String getModification() {
+        return modification;
+    }
+
+    public void addModification(String modification) {
+        this.modification += modification;
+    }
+
+    public Location getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(Location origin) {
+        this.origin = origin;
+    }
+
+    public ArrayList<Task> getDestinations() {
+        return destinations;
+    }
+
+    public void setDestinations(ArrayList<Task> destinations) {
+        this.destinations = destinations;
+    }
+
     public Delivery(String id, String date, String timeOfDeparture, String truckNumber, String driverName, int departureWeight, String modification, Location origin, ArrayList<Task> destinations){
         this.id = id;
         this.date =date;

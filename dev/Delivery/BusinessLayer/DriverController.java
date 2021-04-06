@@ -1,11 +1,14 @@
 package Delivery.BusinessLayer;
 
+import Delivery.DataAccessLayer.DataController;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DriverController {
     private HashMap<String, Driver> controller;
     private HashMap<String, tmpEmployee> tempController;// REMOVE - TEMP !
+    private DataController dc = DataController.getInstance();
 
     public DriverController(){
         this.controller = new HashMap<String, Driver>();

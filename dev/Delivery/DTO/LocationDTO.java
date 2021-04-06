@@ -44,4 +44,11 @@ public class LocationDTO {
     public void setContactName(String contactName) {
         this.contactName = contactName;
     }
+
+    @Override
+    public String toString() {
+        return  address + " " +
+                 phoneNumber + " " +
+                 contactName;
+    }
 }

@@ -9,10 +9,17 @@ public class TaskDTO {
     private String id;
     private HashMap<String, Integer> listOfProduct;
     private String loadingOrUnloading;
-    Location destination;
+    LocationDTO destination;
 
-    public TaskDTO(String id, HashMap<String, Integer> listOfProduct, String loadingOrUnloading, Location destination){
+    public TaskDTO(String id, HashMap<String, Integer> listOfProduct, String loadingOrUnloading, LocationDTO destination){
         this.id = id;
+        this.listOfProduct = listOfProduct;
+        this.loadingOrUnloading = loadingOrUnloading;
+        this.destination = destination;
+    }
+
+    public TaskDTO(HashMap<String, Integer> listOfProduct, String loadingOrUnloading, LocationDTO destination){
+        this.id = null;
         this.listOfProduct = listOfProduct;
         this.loadingOrUnloading = loadingOrUnloading;
         this.destination = destination;
@@ -22,7 +29,7 @@ public class TaskDTO {
         this.id = task.getId();
         this.listOfProduct = task.getListOfProduct();
         this.loadingOrUnloading = task.getLoadingOrUnloading();
-        this.destination = task.getDestination();
+        this.destination = new LocationDTO(task.getDestination());
     }
 
     public String getId() {
@@ -49,11 +56,16 @@ public class TaskDTO {
         this.loadingOrUnloading = loadingOrUnloading;
     }
 
-    public Location getDestination() {
+    public LocationDTO getDestination() {
         return destination;
     }
 
-    public void setDestination(Location destination) {
+    public void setDestination(LocationDTO destination) {
         this.destination = destination;
+    }
+
+    @Override
+    public String toString() {
+        return id+" "+listOfProduct+" "+loadingOrUnloading+" "+destination;
     }
 }

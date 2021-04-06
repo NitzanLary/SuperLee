@@ -5,6 +5,12 @@ public class Location {
     private String phoneNumber;
     private String contactName;
 
+    public Location(String address, String phoneNumber, String contactName){
+        this.address = address;
+        this.contactName = contactName;
+        this.phoneNumber = phoneNumber;
+    }
+
     public void setAddress(String address) {
         this.address = address;
     }
@@ -23,12 +29,6 @@ public class Location {
 
     public void setContactName(String contactName) {
         this.contactName = contactName;
-    }
-
-    public Location(String address, String phoneNumber, String contactName){
-        this.address = address;
-        this.contactName = contactName;
-        this.phoneNumber = phoneNumber;
     }
 
     public String getAddress() {

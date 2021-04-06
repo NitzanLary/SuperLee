@@ -1,10 +1,13 @@
 package Delivery.BusinessLayer;
 
+import Delivery.DataAccessLayer.DataController;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TruckController {
     HashMap<String, Truck> controller;
+    private DataController dc = DataController.getInstance();
 
     public TruckController(){
         controller = new HashMap<String, Truck>();

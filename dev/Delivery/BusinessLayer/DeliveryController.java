@@ -1,5 +1,8 @@
 package Delivery.BusinessLayer;
 
+import Delivery.DTO.DeliveryDTO;
+import Delivery.DataAccessLayer.DataController;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -7,6 +10,7 @@ import java.util.*;
 public class DeliveryController {
     private HashMap<String, Delivery> deliveries; // changes it to deliveries
     private String nextID = "A000";
+    private DataController dc = DataController.getInstance();
 
     public DeliveryController(){
         deliveries = new HashMap<>();
@@ -21,15 +25,17 @@ public class DeliveryController {
         deliveries.get(delID).setDriver(dr);
     }
 
-    public void storeDelivery(Delivery toStore){} // send to database
+    public void storeDelivery(Delivery toStore){} // send to database todo
 
-    // todo - delivery update mechanism {will do ID = 44546A, 44546B, 44546C ... }
-    public Delivery updateDelivery(String delID){
-        Delivery toStore = deliveries.remove(delID);
+    public Delivery updateDelivery(Delivery newDel, String OldDelID){
+        Delivery toStore = deliveries.remove(OldDelID);
+        toStore.addModification("- new "+newDel.getID()+" -");
+        newDel.addModification("- old "+OldDelID+" -");
         storeDelivery(toStore);
-        Delivery newDel = cloneDelivery(toStore);
-        return null;
-    } //todo decide if necessary
+//        Delivery newDel = cloneDelivery(toStore);
+//        return null;
+        return newDel;
+    }
 
     public Delivery cloneDelivery(Delivery oldDel){
         //Delivery clone = OldDel.clone()
@@ -88,8 +94,12 @@ public class DeliveryController {
     }
 
 
-    public Delivery createNewDelivery(){
-        return null;
+    public Delivery createNewDelivery(DeliveryDTO newDel, Location origin, ArrayList<Task> destinations){
+        if (newDel.getId() == null)
+            newDel.setId(getNewDeliveryID());
+        Delivery ret = new Delivery(newDel.getId(),newDel.getDate(),newDel.getTimeOfDeparture(),newDel.getTruckNumber(),newDel.getDriverName(),newDel.getDepartureWeight(),newDel.getModification(),origin,destinations);
+        deliveries.put(newDel.getId(), ret);
+        return ret;
     }
 
     public void addDate(String delID, String date){
@@ -131,5 +141,14 @@ public class DeliveryController {
 
     public LocalDateTime getCurrentTime(){
         return LocalDateTime.now();
+    }
+
+    public Task getTasksFromDelivery(String id, String oldDelId) {
+        ArrayList<Task> ta = deliveries.get(oldDelId).getDestinations();
+        for (Task t: ta){
+            if (t.getId().equals(id))
+                return t;
+        }
+        return null;
     }
 }

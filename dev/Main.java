@@ -32,15 +32,18 @@ public class Main {
 //        FacadeController facadeController = new FacadeController();
 //        cli.addNewTrack();
 //        cli.insertLocation();
-        Delivery d = new Delivery("1","6-4-21","18:30","1","1",1,"",new Location("1","1","1"),new ArrayList<Task>());
-        System.out.println(d.isUpdatable());
-        d = new Delivery("1","5-4-21","18:30","1","1",1,"",new Location("1","1","1"),new ArrayList<Task>());
-        System.out.println(d.isUpdatable());
-        d = new Delivery("1","7-4-21","18:30","1","1",1,"",new Location("1","1","1"),new ArrayList<Task>());
-        System.out.println(d.isUpdatable());
-        d = new Delivery("1","6-4-21","19:30","1","1",1,"",new Location("1","1","1"),new ArrayList<Task>());
-        System.out.println(d.isUpdatable());
-        System.out.println(d);
+
+        ////// test is Datable //////
+//        Delivery d = new Delivery("1","6-4-21","18:30","1","1",1,"",new Location("1","1","1"),new ArrayList<Task>());
+//        System.out.println(d.isUpdatable());
+//        d = new Delivery("1","5-4-21","18:30","1","1",1,"",new Location("1","1","1"),new ArrayList<Task>());
+//        System.out.println(d.isUpdatable());
+//        d = new Delivery("1","7-4-21","18:30","1","1",1,"",new Location("1","1","1"),new ArrayList<Task>());
+//        System.out.println(d.isUpdatable());
+//        d = new Delivery("1","6-4-21","19:30","1","1",1,"",new Location("1","1","1"),new ArrayList<Task>());
+//        System.out.println(d.isUpdatable());
+//        System.out.println(d);
+        //// end tes is updatable ///////
 
         cli.getFacade().addTruck("1234567","mer", 123,123);
         cli.getFacade().addTruck("12345678","mer", 123,123);

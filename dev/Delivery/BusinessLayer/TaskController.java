@@ -1,5 +1,7 @@
 package Delivery.BusinessLayer;
 
+import Delivery.DataAccessLayer.DataController;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InputMismatchException;
@@ -7,6 +9,7 @@ import java.util.InputMismatchException;
 public class TaskController {
     HashMap<String, Task> controller;
     private String nextID = "A0000";
+    private DataController dc = DataController.getInstance();
 
 
     public TaskController(){

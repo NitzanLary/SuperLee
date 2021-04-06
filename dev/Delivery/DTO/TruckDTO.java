@@ -53,4 +53,9 @@ public class TruckDTO {
     public void setTruckWeight(int truckWeight) {
         this.truckWeight = truckWeight;
     }
+
+    @Override
+    public String toString() {
+        return id + " "+ model + " " + " "+maxWeight +" "+ truckWeight;
+    }
 }

@@ -1,7 +1,7 @@
 package Delivery.BusinessLayer;
 
 import Delivery.BusinessLayer.Delivery;
-import Delivery.PresentationLayer.AreaPresentationInterface;
+import Delivery.DataAccessLayer.DataController;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +10,7 @@ import java.util.Set;
 
 public class AreaController {
     private HashMap<String, Area> controller;
+    private DataController dc = DataController.getInstance();
 
     public AreaController(){
         this.controller = new HashMap<>();
@@ -35,12 +36,12 @@ public class AreaController {
         controller.get(areaName).addLocation(new Location(address, phoneNumber, contactName));
     }
 
-    public void addLocation(AreaPresentationInterface areaName, String address, String phoneNumber, String contactName){
-        if (!this.controller.containsKey(areaName.getName())){
-            throw new InputMismatchException("Area name dose not exist.");
-        }
-        controller.get(areaName.getName()).addLocation(new Location(address, phoneNumber, contactName));
-    }
+//    public void addLocation(AreaPresentationInterface areaName, String address, String phoneNumber, String contactName){
+//        if (!this.controller.containsKey(areaName.getName())){
+//            throw new InputMismatchException("Area name dose not exist.");
+//        }
+//        controller.get(areaName.getName()).addLocation(new Location(address, phoneNumber, contactName));
+//    }
 
     @Override
     public String toString() {
