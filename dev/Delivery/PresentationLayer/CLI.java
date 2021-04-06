@@ -334,7 +334,7 @@ public class CLI {
             return null;
         arr.add(address);
         String phoneNum = "";
-        while(!(isLegalFloat(phoneNum) || phoneNum.length() == 10)) {
+        while(!isLegalFloat(phoneNum) || phoneNum.length() != 10) {
             System.out.println("phone number: <10 digits>");
             phoneNum = in.nextLine();
             if (phoneNum.equals("exit"))
@@ -367,11 +367,10 @@ public class CLI {
                 System.out.println(i + ") " + areas.get(i - 1));
             }
             inp = in.nextLine();
-            areaName = areas.get(Integer.parseInt(inp));
         } while (!isLegalChoice(areas.size(), inp) && !inp.equals("exit"));
         if (inp.equals("exit"))
             return;
-        this.fc.addLocation(areaName, arr.get(0), arr.get(1), arr.get(2));
+        this.fc.addLocation(areas.get(Integer.parseInt(inp) - 1), arr.get(0), arr.get(1), arr.get(2));
     }
 
     public ArrayList<String> userTaskCreator() {
