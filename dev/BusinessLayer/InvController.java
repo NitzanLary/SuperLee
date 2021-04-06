@@ -27,4 +27,13 @@ public class InvController {
         return null;
     }
 
+    /*
+    public Item addItem(int id, String name, LocalDate expDate, double price, double cost, int shelf, String man, int shQuan, int stQuan, String catName) {
+        return  stockCtrl.addItem(id,name,expDate,price,cost,shelf,man,shQuan,stQuan);
+    }
+
+    public Catagory addCategory(String name, String superName){
+        return stockCtrl.addCategory(name, superName);
+    }
+     */
 }
