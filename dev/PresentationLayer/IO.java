@@ -21,26 +21,27 @@ public class IO {
     }
 
     public void start() {
-
-        System.out.println("1)Add sale\n" +
-                "2)Report Faulty\n" +
-                "3)Add Item\n" +
-                "4)Add Category");
-        int action = scanner.nextInt();
-        while (action <= 4 && action >= 1) {
-            ioCtrl.act(action);
-            System.out.println("1)Add sale\n" +
-                    "2)Report Faulty\n" +
-                    "3)Add Item\n" +
-                    "4)Add Category");
+        int action;
+        do {
+            System.out.println("1) Add sale\n" +
+                    "2) Report Faulty\n" +
+                    "3) Add Item\n" +
+                    "4) Add Category\n" +
+                    "5) Faulty Report");
             action = scanner.nextInt();
-        }
+            if (action > 5 || action < 1)
+                break;
+            scanner.nextLine();
+            ioCtrl.act(action);
+        } while (true);
 
     }
 
     public int getInt(String msg) {
         System.out.println(msg);
-        return scanner.nextInt();
+        int out = scanner.nextInt();
+        scanner.nextLine();
+        return out;
     }
 
     public double getDouble(String msg) {
