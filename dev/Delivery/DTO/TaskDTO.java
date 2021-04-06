@@ -1,6 +1,7 @@
 package Delivery.DTO;
 
 import Delivery.BusinessLayer.Location;
+import Delivery.BusinessLayer.Task;
 
 import java.util.HashMap;
 
@@ -15,6 +16,13 @@ public class TaskDTO {
         this.listOfProduct = listOfProduct;
         this.loadingOrUnloading = loadingOrUnloading;
         this.destination = destination;
+    }
+
+    public TaskDTO(Task task){
+        this.id = task.getId();
+        this.listOfProduct = task.getListOfProduct();
+        this.loadingOrUnloading = task.getLoadingOrUnloading();
+        this.destination = task.getDestination();
     }
 
     public String getId() {

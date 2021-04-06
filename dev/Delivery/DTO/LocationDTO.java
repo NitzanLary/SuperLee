@@ -1,5 +1,9 @@
 package Delivery.DTO;
 
+import Delivery.BusinessLayer.Location;
+
+import java.lang.invoke.LambdaConversionException;
+
 public class LocationDTO {
     private String address;
     private String phoneNumber;
@@ -9,6 +13,12 @@ public class LocationDTO {
         this.address = address;
         this.contactName = contactName;
         this.phoneNumber = phoneNumber;
+    }
+
+    public LocationDTO(Location location){
+        this.address = location.getAddress();
+        this.phoneNumber = location.getPhoneNumber();
+        this.contactName = location.getContactName();
     }
 
     public String getAddress() {
