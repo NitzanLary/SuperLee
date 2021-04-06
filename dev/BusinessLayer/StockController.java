@@ -20,7 +20,7 @@ public class StockController {
         return null;
     }
 
-    public void addSubCatagory(String name, String superName) {
+    public void addSubCategory(String name, String superName) {
         Category superCategory = getCategory(superName);
         if (superCategory == null)
             categories.add(new Category(name));
@@ -41,10 +41,29 @@ public class StockController {
         return null;
     }
 
-    public void addItem(int id, String name, LocalDate expDate, double price, double cost, int shelfNum, String manufacturer, int shelfQuantity, int storageQuantity, String catName) {
+    public boolean addItem(int id, String name, LocalDate expDate, double price, double cost, int shelfNum, String manufacturer, int shelfQuantity, int storageQuantity, String catName) {
         Category c = getCategory(catName);
-        if (c != null) {
-            c.addItem(id, name, expDate, price, cost, shelfNum, manufacturer, shelfQuantity, storageQuantity);
+        if (c == null)
+            return false;
+        if (getItem(id) != null)
+            return false;
+        return c.addItem(id, name, expDate, price, cost, shelfNum, manufacturer, shelfQuantity, storageQuantity);
+    }
+
+    public Category getCategory(int id) {
+        for (Category c : categories) {
+            Category output = c.getCategory(id);
+            if (output != null)
+                return output;
         }
+        return null;
+    }
+
+    public boolean deleteItem(int id) {
+        if (getItem(id) == null)
+            return false;
+        Category c = getCategory(id);
+        c.deleteItem(id);
+        return true;
     }
 }

@@ -28,7 +28,7 @@ public class InvController {
     }
 
     public void addSubCategory(String name, String superName){
-        stockCtrl.addSubCatagory(name, superName);
+        stockCtrl.addSubCategory(name, superName);
     }
 
     public void addCategory(String name) {
@@ -37,6 +37,10 @@ public class InvController {
 
     public String getFaultyReport(LocalDate startDate) {
         return recCtrl.faultyReport(startDate);
+    }
+
+    public boolean deleteItem(int id) {
+        return stockCtrl.deleteItem(id);
     }
 
 }

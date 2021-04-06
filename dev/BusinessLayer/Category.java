@@ -15,12 +15,15 @@ public class Category {
         items = new LinkedList<>();
     }
 
-    public List<Item> getItems() {
-        return items;
+    public boolean addItem(int id, String name, LocalDate expDate, double price, double cost, int shelfNum, String manufacturer, int shelfQuantity, int storageQuantity) {
+        return items.add(new Item(id, name, expDate, price, cost, shelfNum, manufacturer, shelfQuantity, storageQuantity));
     }
 
-    public void addItem(int id, String name, LocalDate expDate, double price, double cost, int shelfNum, String manufacturer, int shelfQuantity, int storageQuantity) {
-        items.add(new Item(id, name, expDate, price, cost, shelfNum, manufacturer, shelfQuantity, storageQuantity));
+    public boolean deleteItem(int id) {
+        Item toDelete = getItem(id);
+        if (toDelete == null)
+            return false;
+        return items.remove(toDelete);
     }
 
     public void addSubCategory(Category sub) {
@@ -47,6 +50,16 @@ public class Category {
             Category curr = c.getCategory(name);
             if (curr != null)
                 return curr;
+        }
+        return null;
+    }
+
+    public Category getCategory(int id) {
+        if (getItem(id) != null)
+            return this;
+        for (Category c : subCategories) {
+            if (c.getCategory(id) != null)
+                return c;
         }
         return null;
     }
