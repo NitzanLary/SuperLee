@@ -28,7 +28,9 @@ public class IO_Controller {
 
         //add faulty
         if (action == 2){
-            invCtrl.addFaulty(io.getInt("Enter item ID:"));
+            int itemId = io.getInt("Enter item ID:");
+            int opt = io.getInt("Where was the faulty item found (1 - shelf , 2 - storage)");
+            invCtrl.addFaulty(itemId, opt);
         }
 
         //add item
@@ -58,13 +60,14 @@ public class IO_Controller {
             LocalDate date = io.getDate("Enter faulty report starting date");
             System.out.println(invCtrl.getFaultyReport(date));
         }
-
+        //go to edit menu
         if (action == 6) {
             io.editMenu();
         }
     }
 
     public void editAct(int action) {
+        //add discount to item
         if(action == 1) {
             LocalDate start = io.getDate("Enter discount starting date");
             LocalDate end = io.getDate("Enter discount end date");
@@ -73,12 +76,43 @@ public class IO_Controller {
             invCtrl.addItemDiscount(start, end, dis, itemId);
         }
 
+        //add discount to category
         if(action == 2) {
             LocalDate start = io.getDate("Enter discount starting date");
             LocalDate end = io.getDate("Enter discount end date");
             int dis = io.getInt("Enter the amount of discount");
             String category  = io.getString("Enter Category name");
             invCtrl.addCategoryDiscount(start, end, dis, category);
+        }
+
+        //add items to storage
+        if(action == 3) {
+            int itemID = io.getInt("Enter item id");
+            int amountToAdd = io.getInt("Enter amount to add");
+            invCtrl.addToStorage(itemID, amountToAdd);
+        }
+
+        //add a manufacturer discount to item
+        if(action == 4) {
+            LocalDate start = io.getDate("Enter discount starting date");
+            LocalDate end = io.getDate("Enter discount end date");
+            int dis = io.getInt("Enter the amount of discount");
+            int itemId = io.getInt("Enter Item ID");
+            invCtrl.addManuDiscount(start, end, dis, itemId);
+        }
+
+        //change the shelf of an item
+        if(action == 5) {
+            int itemId = io.getInt("Enter Item ID");
+            int newShelf = io.getInt("Enter the new shelf for the item");
+            invCtrl.changeShelf(itemId, newShelf);
+        }
+
+        //moves items from storage to the shelf
+        if(action == 6) {
+            int itemId = io.getInt("Enter Item ID");
+            int amountToMove = io.getInt("Enter the amount of items to move");
+            invCtrl.moveToShelf(itemId, amountToMove);
         }
     }
 }
