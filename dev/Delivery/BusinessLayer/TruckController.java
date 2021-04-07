@@ -15,9 +15,9 @@ public class TruckController {
         dataController = DataController.getInstance();
     }
 
-    public void addTruck(String id, String model, int maxWeight, int truckWeight){
-        this.controller.put(id, new Truck(id, model, maxWeight, truckWeight));
-//        dataController.storeTruck(new TruckDTO(id, str));
+    public void addTruck(TruckDTO truckDTO){
+        this.controller.put(truckDTO.getId(), new Truck(truckDTO));
+        dataController.storeTruck(truckDTO);
     }
 
     public ArrayList<Truck> getTrucks(){

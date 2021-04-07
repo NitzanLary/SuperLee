@@ -18,6 +18,8 @@ public class TaskDTO {
         this.destination = destination;
     }
 
+    public TaskDTO(){}
+
     public TaskDTO(HashMap<String, Integer> listOfProduct, String loadingOrUnloading, LocationDTO destination){
         this.id = null;
         this.listOfProduct = listOfProduct;

@@ -19,8 +19,8 @@ public class AreaDTO {
         return locations;
     }
 
-    public void setLocations(ArrayList<LocationDTO> locations) {
-        this.locations = locations;
+    public void addLocation(LocationDTO location) {
+        this.locations.add(location);
     }
 
     public String getAreaName() {

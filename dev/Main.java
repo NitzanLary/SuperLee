@@ -1,4 +1,7 @@
 import Delivery.BusinessLayer.*;
+import Delivery.DTO.AreaDTO;
+import Delivery.DTO.LocationDTO;
+import Delivery.DTO.TruckDTO;
 import Delivery.PresentationLayer.CLI;
 
 import java.util.ArrayList;
@@ -44,14 +47,19 @@ public class Main {
 //        System.out.println(d.isUpdatable());
 //        System.out.println(d);
         //// end tes is updatable ///////
+        AreaDTO areaDTONorth = new AreaDTO("North");
+        AreaDTO areaDTOSouth = new AreaDTO("South");
+        LocationDTO lavi = new LocationDTO("Lavi", "0503993502", "Asaf");
+        LocationDTO berechia = new LocationDTO("Berechia", "0503993504", "Farjun");
+        LocationDTO beerSheva = new LocationDTO("Beer Sheva", "0503993505", "Shaul the shauli");
 
-        cli.getFacade().addTruck("1234567","mer", 123,123);
-        cli.getFacade().addTruck("12345678","mer", 123,123);
-        cli.getFacade().addNewArea("North");
-        cli.getFacade().addNewArea("South");
-        cli.getFacade().addLocation("North","Lavi", "0503993502", "Asaf");
-        cli.getFacade().addLocation("South","Berechia", "0503993504", "Farjun");
-        cli.getFacade().addLocation("South","Beer Sheva", "0503993505", "Shaul the shauli");
+        cli.getFacade().addTruck(new TruckDTO("1234567","mer", 123,123));
+        cli.getFacade().addTruck(new TruckDTO("12345678","mer", 123,123));
+        cli.getFacade().addNewArea(areaDTONorth);
+        cli.getFacade().addNewArea(areaDTOSouth);
+        cli.getFacade().addLocation(areaDTONorth, lavi);
+        cli.getFacade().addLocation(areaDTOSouth,berechia);
+        cli.getFacade().addLocation(areaDTOSouth, beerSheva);
         ArrayList<tmpEmployee> arr = cli.getFacade().getAllDriverEmployees();
         cli.getFacade().tempAddDriver(arr);
         HashMap<String, Integer> t1 = new HashMap<>();

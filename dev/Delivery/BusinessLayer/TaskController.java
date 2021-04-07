@@ -1,5 +1,6 @@
 package Delivery.BusinessLayer;
 
+import Delivery.DTO.TaskDTO;
 import Delivery.DataAccessLayer.DataController;
 
 import java.util.ArrayList;
@@ -16,11 +17,11 @@ public class TaskController {
         controller = new HashMap<String, Task>();
     }
 
-    public String addTask(HashMap<String, Integer> listOfProduct, String loadingOrUnloading, Location destination){
-        // TODO - NEED TO ADD NEW ID LIKE THE DELIVERY YOU MADE.
+    public TaskDTO addTask(HashMap<String, Integer> listOfProduct, String loadingOrUnloading, Location destination){
         String id = getNewTaskID();
-        controller.put(id, new Task(id, listOfProduct, loadingOrUnloading, destination));
-        return id;
+        Task newTask = new Task(id, listOfProduct, loadingOrUnloading, destination);
+        controller.put(id, newTask);
+        return new TaskDTO(newTask);
     }
 
     public Task getTaskById(String id){

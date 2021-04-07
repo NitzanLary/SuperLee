@@ -1,14 +1,12 @@
 package Delivery.PresentationLayer;
 
 import Delivery.BusinessLayer.*;
-import Delivery.DTO.DeliveryDTO;
-import Delivery.DTO.LocationDTO;
-import Delivery.DTO.TaskDTO;
-import Delivery.DTO.TruckDTO;
+import Delivery.DTO.*;
 
 import java.time.LocalDate;
 import java.util.*;
 import java.time.format.*;
+import java.util.logging.LoggingPermission;
 
 public class CLI {
     FacadeController fc;
@@ -400,11 +398,15 @@ public class CLI {
         ArrayList<String> taskSTR = this.userTaskCreator();
         if (taskSTR == null)
             return null;
+        TaskDTO taskDTO = new TaskDTO();
         HashMap<String, Integer> hashOfProduct = this.str2Hash(taskSTR.get(0));
+        taskDTO.setListOfProduct(hashOfProduct);
         String loadingOrUnloading = taskSTR.get(1);
-        LocationDTO Destination = fc.getLocationByAddress(taskSTR.get(2));
+        taskDTO.setLoadingOrUnloading(loadingOrUnloading);
+        Response<String> addresss = new Response<>(taskSTR.get(2));
+        LocationDTO Destination = fc.getLocationByAddress(addresss);
         TaskDTO task = new TaskDTO(hashOfProduct,loadingOrUnloading,Destination);
-        String id = this.fc.addTask(task);
+        String id = this.fc.addTask(task).getId();
         task.setId(id);
         return task;
     }
@@ -571,10 +573,9 @@ public class CLI {
 //    }
 
     public void addNewLocation(){
-        // Todo: fix input -3 bug and input more than the size
         Scanner in = new Scanner(System.in);
 //        ArrayList<String> areas;
-        ArrayList<String> areas;
+        ArrayList<AreaDTO> areas;
         String inp = "";
         String areaName = "";
         ArrayList<String> arr = this.addNewLocationHelper();
@@ -590,7 +591,8 @@ public class CLI {
         } while (!isLegalChoice(areas.size(), inp) && !inp.equals("exit"));
         if (inp.equals("exit"))
             return;
-        this.fc.addLocation(areas.get(Integer.parseInt(inp) - 1), arr.get(0), arr.get(1), arr.get(2));
+        LocationDTO locationDTO = new LocationDTO(arr.get(0), arr.get(1), arr.get(2));
+        this.fc.addLocation(areas.get(Integer.parseInt(inp) - 1), locationDTO);
     }
 
     public ArrayList<String> userTaskCreator() {
@@ -693,7 +695,8 @@ public class CLI {
         if (input.equals("exit"))
             return;
         truckWeight = Integer.parseInt(input);
-        fc.addTruck(truckNumber, truckModel, maxWeight, truckWeight);
+        TruckDTO truckDTO = new TruckDTO(truckModel, truckModel, maxWeight, truckWeight);
+        fc.addTruck(truckDTO);
     }
 
     private boolean isLegalTruck(String input) {
@@ -720,7 +723,8 @@ public class CLI {
         } while (this.fc.containsArea(areaName) && !areaName.equals("exit"));
         if (areaName.equals("exit"))
             return;
-        this.fc.addNewArea(areaName);
+        AreaDTO areaDTO = new AreaDTO(areaName);
+        this.fc.addNewArea(areaDTO);
     }
     public void tempAddArea(String s, Area area){
         this.fc.tempAddNewArea(s, area);

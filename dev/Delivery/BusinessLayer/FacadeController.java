@@ -32,8 +32,9 @@ public class FacadeController {
     }
 
     // - Area -
-    public void addNewArea(String areaName){
-        this.arc.addNewArea(areaName);
+    public void addNewArea(AreaDTO areaDTO){
+        this.arc.addNewArea(areaDTO);
+
     }
 
     public void tempAddNewArea(String s, Area area){
@@ -44,10 +45,10 @@ public class FacadeController {
         return this.arc.containsArea(areaName);
     }
 
-    public void addLocation(String areaName, String address, String phoneNumber, String contactName){
-        arc.addLocation(areaName, address, phoneNumber, contactName);
+    public void addLocation(AreaDTO areaDTO, LocationDTO locationDTO){
+        arc.addLocation(areaDTO, locationDTO);
     }
-//        public void addLocation(AreaPresentationInterface areaName, String address, String phoneNumber, String contactName){
+//        public void addLocation(AreaPresentationInterfacle areaName, String address, String phoneNumber, String contactName){
 //        arc.addLocation(areaName, address, phoneNumber, contactName);
 //    }
 
@@ -55,29 +56,29 @@ public class FacadeController {
 //        return new ArrayList<>(arc.getAreas());
 //    }
 
-    public ArrayList<String> getAreas() {
-        ArrayList<String> ret = new ArrayList<>();
+    public ArrayList<AreaDTO> getAreas() {
+        ArrayList<AreaDTO> ret = new ArrayList<>();
         for (Area a: arc.getAreas())
-            ret.add(a.getAreaName());
+            ret.add(new AreaDTO(a));
         return ret;
     }
 
-    public LocationDTO getLocationByAddress(String address){
-        return new LocationDTO(arc.getLocation(address));
+    public LocationDTO getLocationByAddress(Response<String> address){
+        return new LocationDTO(arc.getLocation(address.getData()));
     }
 
     // - Task -
-    public String addTask(HashMap<String, Integer> listOfProduct, String loadingOrUnloading,
+    public TaskDTO addTask(HashMap<String, Integer> listOfProduct, String loadingOrUnloading,
                         String Destination){
         Location destination = arc.getLocation(Destination);
         return this.tac.addTask(listOfProduct, loadingOrUnloading, destination);
     }
 
-    public String addTask(TaskDTO t){
+    public TaskDTO addTask(TaskDTO t){
         if (t.getId() == null){
             return addTask(t.getListOfProduct(),t.getLoadingOrUnloading(),t.getDestination().getAddress());
         }
-        return "";
+        return null;
     }
     public Task getTaskById(String id){
         return this.tac.getTaskById(id);
@@ -86,8 +87,8 @@ public class FacadeController {
     public HashMap<String, Integer> makeProductLst(){return null;} // optional - possible to add this in separate
 
     // - Truck -
-    public void addTruck(String id, String model, int maxWeight, int truckWeight){
-        this.trc.addTruck(id, model, maxWeight, truckWeight);
+    public void addTruck(TruckDTO truckDTO){
+        this.trc.addTruck(truckDTO);
     }
 
     public boolean containsTruck(String id){

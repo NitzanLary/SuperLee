@@ -1,6 +1,8 @@
 package Delivery.BusinessLayer;
 
 import Delivery.BusinessLayer.Delivery;
+import Delivery.DTO.AreaDTO;
+import Delivery.DTO.LocationDTO;
 import Delivery.DataAccessLayer.DataController;
 
 import java.util.ArrayList;
@@ -21,19 +23,21 @@ public class AreaController {
         return this.controller.containsKey(areaName);
     }
 
-    public void addNewArea(String area){
-        controller.put(area, new Area(area));
+    public void addNewArea(AreaDTO areaDTO){
+        controller.put(areaDTO.getAreaName(), new Area(areaDTO.getAreaName()));
+        dc.storeArea(areaDTO);
     }
 
     public void addArea(String areaName, Area area){
         controller.put(areaName, area);
     }
 
-    public void addLocation(String areaName, String address, String phoneNumber, String contactName){
-        if (!this.controller.containsKey(areaName)){
+    public void addLocation(AreaDTO areaDTO, LocationDTO locationDTO){
+        if (!this.controller.containsKey(areaDTO.getAreaName())){
             throw new InputMismatchException("Area name dose not exist.");
         }
-        controller.get(areaName).addLocation(new Location(address, phoneNumber, contactName));
+        controller.get(areaDTO.getAreaName()).addLocation(new Location(locationDTO.getAddress(), locationDTO.getPhoneNumber(), locationDTO.getContactName()));
+        dc.storeLocation(areaDTO, locationDTO);
     }
 
 //    public void addLocation(AreaPresentationInterface areaName, String address, String phoneNumber, String contactName){

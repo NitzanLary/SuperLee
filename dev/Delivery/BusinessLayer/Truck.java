@@ -1,5 +1,7 @@
 package Delivery.BusinessLayer;
 
+import Delivery.DTO.TruckDTO;
+
 public class Truck {
     private String id;
     private String model;
@@ -27,6 +29,13 @@ public class Truck {
         this.model = model;
         this.maxWeight = maxWeight;
         this.truckWeight = maxWeight;
+    }
+
+    public Truck(TruckDTO truckDTO){
+        this.id = truckDTO.getId();
+        this.model = truckDTO.getModel();
+        this.maxWeight = truckDTO.getMaxWeight();
+        this.truckWeight = truckDTO.getTruckWeight();
     }
 
     public String getId(){

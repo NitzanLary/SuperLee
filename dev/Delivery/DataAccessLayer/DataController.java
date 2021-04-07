@@ -15,7 +15,7 @@ public class DataController {
     private HashMap<String,TaskDTO> tasks;
     private HashMap<String,AreaDTO> areas;
     private HashMap<String,TruckDTO> trucks;
-    private HashMap<String,DriverDTO> drivers;;
+    private HashMap<String,DriverDTO> drivers;
 
     private DataController(){
         deliveries = new HashMap<>();
@@ -45,5 +45,9 @@ public class DataController {
 
     public void storeArea(AreaDTO areaDTO){
         this.areas.put(areaDTO.getAreaName(), areaDTO);
+    }
+
+    public void storeLocation(AreaDTO areaDTO, LocationDTO locationDTO){
+        areas.get(areaDTO.getAreaName()).addLocation(locationDTO);
     }
 }
