@@ -59,6 +59,21 @@ public class StockController {
         return null;
     }
 
+    public int addToStorage(int id, int amount) {
+        Category c = getCategory(id);
+        return c.addToStorage(id, amount);
+    }
+
+    public int moveToShelf(int id, int amount) {
+        Category c = getCategory(id);
+        return c.moveToShelf(id, amount);
+    }
+
+    public int changeShelf(int id, int shelf) {
+        Category c = getCategory(id);
+        return c.moveToShelf(id, shelf);
+    }
+
     public boolean deleteItem(int id) {
         if (getItem(id) == null)
             return false;
@@ -77,5 +92,11 @@ public class StockController {
         Category c = getCategory(catName);
         if (c != null)
             c.addCategoryDiscount(start, end, discountPr);
+    }
+
+    public void addManuDiscount(LocalDate start, LocalDate end, int discountPr, int id) {
+        Category c = getCategory(id);
+        if (c != null)
+            c.addManuDiscount(start, end, discountPr, id);
     }
 }

@@ -1,7 +1,6 @@
 package BusinessLayer;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,7 +14,9 @@ public class Item {
     private String manufacturer;
     private int shelfQuantity;
     private int storageQuantity;
-    private List<Discount> discounts;
+    private List<Discount> priceDiscounts;
+    private List<Discount> costDiscounts;
+
 
     public Item(int id, String name, double price, double cost, int shelfNum, String manufacturer, int shelfQuantity, int storageQuantity) {
         this.id = id;
@@ -26,11 +27,37 @@ public class Item {
         this.manufacturer = manufacturer;
         this.shelfQuantity = shelfQuantity;
         this.storageQuantity = storageQuantity;
-        discounts = new LinkedList<>();
+        priceDiscounts = new LinkedList<>();
+        costDiscounts = new LinkedList<>();
     }
 
-    public void addDiscount(Discount d) {
-        discounts.add(d);
+    public int addToStorage(int amount) {
+        storageQuantity += amount;
+        return storageQuantity;
+    }
+
+    public int moveToShelf(int amount) {
+        if (amount > storageQuantity) {
+            int currStorageQuantity = storageQuantity;
+            shelfQuantity += currStorageQuantity;
+            storageQuantity = 0;
+            return currStorageQuantity;
+        }
+        storageQuantity -= amount;
+        shelfQuantity += amount;
+        return amount;
+    }
+
+    public void changeShelf(int newShelf) {
+        shelfNum = newShelf;
+    }
+
+    public void addPriceDiscount(Discount d) {
+        priceDiscounts.add(d);
+    }
+
+    public void addCostDiscount(Discount d) {
+        costDiscounts.add(d);
     }
 
     public int getId() {
@@ -43,7 +70,7 @@ public class Item {
 
     public Double getPrice() {
         double currPrice = price;
-        for(Discount dis : discounts) {
+        for(Discount dis : priceDiscounts) {
             LocalDate now = LocalDate.now();
             if (now.isAfter(dis.getStart()) && now.isBefore(dis.getEnd()))
                 currPrice -= currPrice*dis.getDiscountPr()/100;

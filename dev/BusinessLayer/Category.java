@@ -21,14 +21,40 @@ public class Category {
 
     public void addItemDiscount(LocalDate start, LocalDate end, int discountPr, int id) {
         Item i = getItem(id);
-        i.addDiscount(new Discount(start, end, discountPr));
+        i.addPriceDiscount(new Discount(start, end, discountPr));
+    }
+
+    public int addToStorage(int id, int amount) {
+        Item i = getItem(id);
+        if (i == null)
+            return -1;
+        return i.addToStorage(amount);
+    }
+
+    public int moveToShelf(int id, int amount) {
+        Item i = getItem(id);
+        if (i == null)
+            return -1;
+        return i.moveToShelf(amount);
+    }
+
+    public int changeShelf(int id, int shelf) {
+        Item i = getItem(id);
+        if (i == null)
+            return -1;
+        return i.moveToShelf(shelf);
     }
 
     public void addCategoryDiscount(LocalDate start, LocalDate end, int discountPr) {
         Discount d = new Discount(start, end, discountPr);
         for(Item i : items) {
-            i.addDiscount(d);
+            i.addPriceDiscount(d);
         }
+    }
+
+    public void addManuDiscount(LocalDate start, LocalDate end, int discountPr, int id) {
+        Item i = getItem(id);
+        i.addCostDiscount(new Discount(start, end, discountPr));
     }
 
     public boolean deleteItem(int id) {

@@ -55,10 +55,10 @@ public class IO {
             System.out.println("1) Add Item discount\n" +
                     "2) Add Category discount\n" +
                     "3) Add to storage\n" +
-                    "4) Add manufacturer discount"+
+                    "4) Add manufacturer discount\n"+
                     "5) Change item shelf\n" +
                     "6) Move item to shelf from storage\n" +
-                    "9) Back");
+                    "\n9) Back");
             action = scanner.nextInt();
             if (action > 2 || action < 1)
                 break;
