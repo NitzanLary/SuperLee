@@ -29,15 +29,11 @@ public class Employee {
     }
 
     private boolean isNameValid(String name){
-        if (name == null || name.equals("") || name.equals(" "))
-            return false;
-        return true;
+        return name != null && !name.equals("") && !name.equals(" ");
     }
 
     private boolean isIdValid(String id){
-        if (id.length() != 9)
-            return false;
-        return true;
+        return id.length() == 9;
     }
 
     private boolean isDateValid(LocalDate date){

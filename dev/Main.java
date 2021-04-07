@@ -1,4 +1,5 @@
 import Employees.BuisnessLayer.*;
+import Employees.PresentationLayer.MassageHandler;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -9,6 +10,8 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
 //        System.out.println("!Hello world");
+
+
 
 //        LocalTime time = LocalTime.of(14, 50);
 //        System.out.println(time);
@@ -23,6 +26,10 @@ public class Main {
 //        LocalTime end = LocalTime.of(22,0);
 //
 //
+        MassageHandler mh = s -> System.out.println(s);
+
+        mh.print("Nitzan the king on the whole complex");
+
 //        Employee emp1 = new Employee("Nitzan Lary", "311541214", LocalDate.parse("2019-04-03"));
 //        Employee emp2 = new Employee("Assaf Stern", "224266120", LocalDate.parse("2019-03-03"));
 //        Employee emp3 = new Employee("Refael Farjune", "300545411", LocalDate.parse("2019-06-02"));

@@ -22,12 +22,23 @@ public class FacadeController {
         return facadeController;
     }
 
-    /**
-     *
-     This function add new Employee to EmployeeController Hashmap of Employees only if userID is
-     HR manage or General Manger and return Response if successful, else return Response(error message)
-     */
 
+
+    /**
+     *This function add new Employee to EmployeeController Hashmap of Employees only if userID is
+     *HR manage or General Manger and return Response if successful, else return Response(error message)
+     * @param userID
+     * @param EmpID
+     * @param name
+     * @param bankAccount
+     * @param salary
+     * @param sickDays
+     * @param studyFund
+     * @param daysOff
+     * @param roleName
+     * @param _dateOfHire
+     * @return
+     */
     public Response addEmployee(String userID, String EmpID, String name, String bankAccount, int salary,
                                 int sickDays, int studyFund, int daysOff, String roleName, LocalDate _dateOfHire){
         if (!employeeController.getEmployee(userID).getValue().checkAuthorizedHrOrGenral().getValue())

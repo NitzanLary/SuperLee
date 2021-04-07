@@ -6,12 +6,12 @@ public class CLIController {
     private static CLIController clientController = null;
     private CLI cli;
     private FacadeController facade;
-    MassageHandler mg;
+    MassageHandler mh;
 
     private CLIController(){
         cli = CLI.getInstance();
         facade = FacadeController.getInstance();
-        mg = System.out::println; // same as mg = s -> sout(s)
+        mh = System.out::println; // same as mg = s -> sout(s)
     }
 
     public static CLIController getInstance(){
