@@ -460,7 +460,7 @@ public class IO {
                     System.out.println("Invalid Discount");
                     return;
                 }
-                facadeC.editMinQuantity(SupplierID, pid, discount);
+                facadeC.editDiscount(SupplierID, pid, discount);
                 break;
 
             case 3:
@@ -638,10 +638,6 @@ public class IO {
         }
     }
 
-
-//    public static void printResult(String msg) {
-//        System.out.println(msg);
-//    }
 
 }
 
