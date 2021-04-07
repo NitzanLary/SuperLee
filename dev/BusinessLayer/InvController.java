@@ -78,4 +78,8 @@ public class InvController {
     public void moveToShelf(int itemId, int amountToMove) {
         stockCtrl.moveToShelf(itemId, amountToMove);
     }
+
+    public String stkReport() {
+        return stockCtrl.stkReport();
+    }
 }

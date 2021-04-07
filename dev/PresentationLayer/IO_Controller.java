@@ -17,6 +17,15 @@ public class IO_Controller {
     public void initData() {
         invCtrl.addCategory("Dairy");
         invCtrl.addItem(1,"Milk", 5, 3,11, "Tnova", 10, 15, "Dairy");
+        invCtrl.addItem(2,"Cheese", 10, 5,10, "Tnova", 10, 15, "Dairy");
+        invCtrl.addCategory("Drinks");
+        invCtrl.addSubCategory("Soda", "Drinks");
+        invCtrl.addItem(3,"Water", 4, 1,12, "Ein Gedi", 10, 20, "Drinks");
+        invCtrl.addItem(4,"Cola", 6, 2,13, "Coka Cola", 20, 1, "Soda");
+        invCtrl.addItem(5,"Fanta", 6, 2,13, "Coka Cola", 20, 1, "Soda");
+        invCtrl.addSubCategory("Diet", "Soda");
+        invCtrl.addItem(6,"Cola", 6, 2,14, "Coka Cola", 20, 1, "Diet");
+        invCtrl.addItem(7,"Fanta", 6, 2,14, "Coka Cola", 20, 1, "Diet");
     }
 
     public void act(int action) {
@@ -58,11 +67,16 @@ public class IO_Controller {
         // faulty report
         if (action == 5) {
             LocalDate date = io.getDate("Enter faulty report starting date");
-            System.out.println(invCtrl.getFaultyReport(date));
+            io.print(invCtrl.getFaultyReport(date));
         }
         //go to edit menu
         if (action == 6) {
             io.editMenu();
+        }
+
+        //inventory report
+        if (action == 7) {
+            io.print(invCtrl.stkReport());
         }
     }
 

@@ -36,10 +36,11 @@ public class IO {
                     "3) Add Item\n" +
                     "4) Add Category\n" +
                     "5) Faulty Report\n" +
-                    "6) Edit\n\n" +
+                    "6) Edit\n" +
+                    "7) Inventory report\n" +
                     "9) Exit");
             action = scanner.nextInt();
-            if (action > 6 || action < 1)
+            if (action > 7 || action < 1)
                 break;
             scanner.nextLine();
             ioCtrl.act(action);
@@ -96,5 +97,9 @@ public class IO {
         System.out.println("Enter the year:");
         int year = scanner.nextInt();
         return LocalDate.of(year,month,day);
+    }
+    //display `msg` to the user
+    public void print(String msg) {
+        System.out.println(msg);
     }
 }
