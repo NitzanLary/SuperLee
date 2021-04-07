@@ -19,8 +19,17 @@ public class IO {
     public static Scanner scanner = new Scanner(System.in);
 
     private IO() {
+        System.out.println('\n' + "----------------------------------------------------------");
+        System.out.println('\n' +
+                "8888  8  8  8888  8888  8888              8    8888  8888" + '\n' +
+                "8     8  8  8  8  8     8  8              8    8     8   "+ '\n' +
+                "8888  8  8  8888  8888  888     888888    8    8888  8888"+ '\n' +
+                "   8  8  8  8     8     8 8               8    8     8   "+ '\n' +
+                "8888  8888  8     8888  8  8              8888 8888  8888" + '\n');
+        System.out.println("----------------------------------------------------------" + '\n');
+
         System.out.println('\n' + "Welcome To Super-Lee Supplier System!" + '\n' +
-                "Choose What You Want To Do: ");
+                "Choose What You Want To Do: "+ '\n');
     }
 
     public static IO getInstance() {
@@ -31,6 +40,7 @@ public class IO {
     }
 
     public static void init() {
+
         System.out.println( "1. Main Menu " + '\n' + "2. Load Data example " );
 
         int caseNumber = Integer.parseInt(scanner.nextLine());
@@ -87,7 +97,7 @@ public class IO {
                     orders();
                     break;
                 case 3:
-                    System.out.println("You Are Log Out From The System, Have A Nice Day.\n");
+                    System.out.println('\n'+ "You Are Log Out From The System, Have A Nice Day.\n");
                     exit(0);
                 default:
                     System.out.println("You Need To Choose Only 1-3");
@@ -560,6 +570,10 @@ public class IO {
                         System.out.println("This Supplier Does Not Have This Product ID");
                         return;
                     }
+                    if(!facadeC.productInOrder(orderID,productID)){
+                        System.out.println("This Product Does Not Exist In This Order, Deletion Failed");
+                        return;
+                    }
                     facadeC.removeFromOrder(productID,SupplierID);
                     break;
 
@@ -568,6 +582,10 @@ public class IO {
                     productID = Integer.parseInt(scanner.nextLine());
                     if(!facadeC.checkProductExist(SupplierID, productID)){
                         System.out.println("This Supplier Does Not Have This Product ID");
+                        return;
+                    }
+                    if(!facadeC.productInOrder(orderID,productID)){
+                        System.out.println("This Product Does Not Exist In This Order, You Need To Add It First");
                         return;
                     }
                     System.out.println('\n' + "Enter New Product Quantity:");

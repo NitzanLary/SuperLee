@@ -119,13 +119,25 @@ public class ProductController {
         return prod != null;
     }
 
-    //TODO: FLAGGGGGGGGGGGGGG
-    public void addProductToOrder(int supplierID, int productID , int quantity) {
-
-    }
-
     public boolean checkProductInBillOfQ(int supID, int prodID){
         return discounts.get(supID).getMinQuantityForDis().containsKey(prodID);
+    }
+
+    public void editMinQuantity(int supplierID, int pid, int newQ) {
+        discounts.get(supplierID).getMinQuantityForDis().replace(pid,newQ);
+    }
+
+    public void editDiscount(int supplierID, int pid, int discount) {
+        discounts.get(supplierID).getDiscountList().replace(pid,discount);
+    }
+
+    public void addProdToBill(int supplierID, int pid, int minQ, int discount) {
+        discounts.get(supplierID).getDiscountList().put(pid,discount);
+        discounts.get(supplierID).getMinQuantityForDis().put(pid,minQ);
+    }
+
+    public void removeProdFromBill(int supplierID, int pid) {
+        discounts.get(supplierID).getDiscountList().remove(pid);
     }
 
 

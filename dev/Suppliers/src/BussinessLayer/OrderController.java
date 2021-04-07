@@ -88,4 +88,24 @@ public class OrderController {
         return orders.get(orderID).getProducts().isEmpty();
     }
 
+    public void editMinQuantity(int supplierID, int pid, int newQ) {
+        prodController.editMinQuantity(supplierID,pid,newQ);
+    }
+
+    public void editDiscount(int supplierID, int pid, int discount) {
+        prodController.editDiscount(supplierID,pid,discount);
+    }
+
+    public void addProdToBill(int supplierID, int pid, int minQ, int discount) {
+        prodController.addProdToBill(supplierID,pid,minQ,discount);
+    }
+
+    public void removeProdFromBill(int supplierID, int pid) {
+        prodController.removeProdFromBill(supplierID,pid);
+    }
+
+    public boolean productInOrder(int orderID, int prodID){
+        return orders.get(orderID).getProducts().containsKey(prodID);
+    }
+
 }

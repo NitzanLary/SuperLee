@@ -47,24 +47,20 @@ public class FacadeController {
         supController.deleteBillOfQuantity(supplierID);
     }
 
-    //TODO: FINISH
     public void editMinQuantity(int supplierID, int pid, int newQ) {
-
+        orderController.editMinQuantity(supplierID,pid,newQ);
     }
 
-    //TODO: FINISH
     public void editDiscount(int supplierID, int pid, int discount) {
-
+        orderController.editDiscount(supplierID,pid,discount);
     }
 
-    //TODO: FINISH
     public void addProdToBill(int supplierID, int pid, int minQ, int discount) {
-
+        orderController.addProdToBill(supplierID,pid,minQ,discount);
     }
 
-    //TODO: FINISH
     public void removeProdFromBill(int supplierID, int pid) {
-
+        orderController.removeProdFromBill(supplierID,pid);
     }
 
     public void EditSupplierName(int supplierID, String supplierName) {
@@ -198,6 +194,10 @@ public class FacadeController {
 
     public boolean isEmptyOrder(int orderID){
         return orderController.isEmptyOrder(orderID);
+    }
+
+    public boolean productInOrder(int orderID, int prodID){
+        return orderController.productInOrder(orderID, prodID);
     }
 
     //TODO: where to catch exceptions
