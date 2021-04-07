@@ -82,5 +82,13 @@ public class Item {
         return cost;
     }
 
-
+    public String toString(String tabs) {
+        return tabs+"Id: " + id +
+                "\n"+tabs+"Name: " + name +
+                "\n"+tabs+"Shelf Num: "+ shelfNum +
+                "\n"+tabs+"Manufacturer: "+ manufacturer +
+                "\n"+tabs+"Quantity: "+ (shelfQuantity+storageQuantity) +
+                "\n"+tabs+"Shelf Quantity: "+ shelfQuantity +
+                "\n"+tabs+"Storage Quantity: " + storageQuantity+"\n";
+    }
 }

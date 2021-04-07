@@ -102,4 +102,14 @@ public class Category {
         return null;
     }
 
+    public String toString(String tabs) {
+        StringBuilder output = new StringBuilder("\n" + tabs + "Category: " + name + "\n");
+        for (Item i : items) {
+            output.append(i.toString(tabs + "\t")+"\n");
+        }
+        for (Category c : subCategories) {
+            output.append(c.toString(tabs+"\t"));
+        }
+        return output.toString();
+    }
 }

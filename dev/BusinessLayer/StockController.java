@@ -99,4 +99,12 @@ public class StockController {
         if (c != null)
             c.addManuDiscount(start, end, discountPr, id);
     }
+
+    public String stkReport() {
+        StringBuilder sb = new StringBuilder("");
+        for (Category c : categories) {
+            sb.append(c.toString(""));
+        }
+        return sb.toString();
+    }
 }
