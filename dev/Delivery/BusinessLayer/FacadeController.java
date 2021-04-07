@@ -1,9 +1,6 @@
 package Delivery.BusinessLayer;
 
-import Delivery.DTO.DeliveryDTO;
-import Delivery.DTO.LocationDTO;
-import Delivery.DTO.TaskDTO;
-import Delivery.DTO.TruckDTO;
+import Delivery.DTO.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -119,8 +116,10 @@ public class FacadeController {
 
     public void addTask2Delivery(String id){
         Task task = this.tac.getTaskById(id);
+    }
 
-
+    public void sendDelivery(DeliveryDTO deliveryDTO){
+        this.dec.sendDelivery(deliveryDTO);
     }
 
     // todo - should be integrated with employee module to get all drivers
@@ -199,10 +198,10 @@ public class FacadeController {
     }
 
 
-    public ArrayList<String> getUpdatableDeliveries() {
-        ArrayList<String> ret = new ArrayList<>();
+    public ArrayList<DeliveryDTO> getUpdatableDeliveries() {
+        ArrayList<DeliveryDTO> ret = new ArrayList<>();
         for (Delivery d:dec.getUpdatableDeliveries())
-            ret.add(d.getID());
+            ret.add(new DeliveryDTO(d));
         return ret;
     }
 
@@ -219,5 +218,11 @@ public class FacadeController {
         newDel.setId(null);
         Delivery newD = dec.createNewDelivery(newDel, orig, tasks);
         return new DeliveryDTO(dec.updateDelivery(newD, oldDelId));
+    }
+
+    public Response<String> isLegalDepartureWeight(String input, DeliveryDTO deliveryDTO) {
+        if (trc.getTruckByID(deliveryDTO.getTruckNumber()).getMaxWeight() <  Integer.parseInt(input))
+            return new Response(input + " Exceeded");
+        return new Response(input);
     }
 }

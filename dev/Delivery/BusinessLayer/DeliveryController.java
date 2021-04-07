@@ -10,10 +10,11 @@ import java.util.*;
 public class DeliveryController {
     private HashMap<String, Delivery> deliveries; // changes it to deliveries
     private String nextID = "A000";
-    private DataController dc = DataController.getInstance();
+    private DataController dataController;
 
     public DeliveryController(){
         deliveries = new HashMap<>();
+        dataController = DataController.getInstance();
     }
 
     public void createFullDelivery(String date, String timeOfDeparture, String truckNumber, String driverName, int departureWeight, String modification, Location origin, ArrayList<Task> destinations){
@@ -25,7 +26,10 @@ public class DeliveryController {
         deliveries.get(delID).setDriver(dr);
     }
 
-    public void storeDelivery(Delivery toStore){} // send to database todo
+    public void storeDelivery(Delivery toStore){
+        DeliveryDTO deliveryDTO = new DeliveryDTO(toStore);
+        this.dataController.storeDelivery(deliveryDTO);
+    } // send to database todo
 
     public Delivery updateDelivery(Delivery newDel, String OldDelID){
         Delivery toStore = deliveries.remove(OldDelID);
@@ -150,5 +154,11 @@ public class DeliveryController {
                 return t;
         }
         return null;
+    }
+
+    public void sendDelivery(DeliveryDTO deliveryDTO) {
+        Delivery delivery = this.deliveries.remove(deliveryDTO.getId());
+        delivery.setDepartureWeight(deliveryDTO.getDepartureWeight());
+        storeDelivery(delivery);
     }
 }

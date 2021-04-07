@@ -26,8 +26,8 @@ public class CLI {
         while (!s.equals("exit")) {
             System.out.println("system current state:");
             System.out.println(this.fc.toString());
-            System.out.println("chose action:\n1 add new delivery,\n2 update existing delivery\n3 create new appending task" +
-                    "\n4 add Truck to the sys\n5 add Driver to the sys\n6 add Area to the sys\n7 add location to the sys");
+            System.out.println("chose action:\n1 add new delivery\n2 update existing delivery\n3 create new appending task" +
+                    "\n4 add Truck to the sys\n5 add Driver to the sys\n6 add Area to the sys\n7 add location to the sys\n8 send delivery");
             s = in.nextLine().strip();
             chooseAction(s); // Todo: its tachles nees to be after the while, to the case that press immediate exit
         }
@@ -64,39 +64,70 @@ public class CLI {
                 this.addNewLocation();
                 break;
             }
+            case ("8"): {
+                this.sendDelivery();
+                break;
+            }
         }
+    }
+
+    private void sendDelivery() {
+        Scanner in = new Scanner(System.in);
+        DeliveryDTO deliveryDTO = this.chooseDelivery(in);
+        System.out.println(deliveryDTO + "\n");
+        if (deliveryDTO == null)
+            return;
+        String response = this.insertDepartureWeight(in, deliveryDTO);
+        if (response.split(" ").length == 2) {
+            System.out.println("The delivery can not be send! the delivery is over weight :(\n" +
+                    "Please update this delivery: " + deliveryDTO.getId() + " if you want to send.");
+            System.out.println("press <Enter> to continue");
+            in.nextLine();
+            return;
+        }
+        deliveryDTO.setDepartureWeight(Integer.parseInt(response));
+        System.out.println("Send Delivery? y/n");
+        System.out.println(deliveryDTO + "\n");
+        String inp = in.nextLine();
+        if (inp.equals("y")){
+            this.fc.sendDelivery(deliveryDTO);
+        }
+        return;
+
+
     }
 
     private void updateDelivery() {
 //        System.out.println("Choose delivery to update");
         Scanner in = new Scanner(System.in);
-        String chosen = chooseDelivery(in);
-        if (chosen.equals("exit"))
+        DeliveryDTO chosen = chooseDelivery(in);
+        if (chosen == null)
             return;
+        String delID = chosen.getId();
         if (chosen.equals("")){
             System.out.println("there are no updatable deliveries in the system, press <Enter> to continue");
             in.nextLine();
             return;
         }
-        chooseFieldToUpdate(in, chosen);
+        chooseFieldToUpdate(in, delID);
     }
 
     private void chooseFieldToUpdate(Scanner in, String oldChosenId) {
         String inp = "";
         DeliveryDTO delDTO = fc.getDeliveryById(oldChosenId);
-        while (!(inp.equals("8") || inp.equals("exit"))) {
+        while (!(inp.equals("7") || inp.equals("exit"))) {
             System.out.println("Delivery " + delDTO.getId() +
                     "\nchoose which field you would like to update:");
             System.out.println(" 1) date - " + delDTO.getDate());
             System.out.println(" 2) time of departure - " + delDTO.getTimeOfDeparture());
             System.out.println(" 3) truck - " + delDTO.getTruckNumber());
             System.out.println(" 4) driver - " + delDTO.getDriverName());
-            System.out.println(" 5) departure weight - " + delDTO.getDepartureWeight());
-            System.out.println(" 6) origin - " + delDTO.getOrigin());
-            System.out.println(" 7) destinations and tasks - " + delDTO.getDestinations());
-            System.out.println(" 8) continue");
+//            System.out.println(" 4) departure weight - " + delDTO.getDepartureWeight());
+            System.out.println(" 5) origin - " + delDTO.getOrigin());
+            System.out.println(" 6) destinations and tasks - " + delDTO.getDestinations());
+            System.out.println(" 7) continue");
             inp = in.nextLine();
-            while (!isLegalChoice(8, inp) && !inp.equals("exit")) {
+            while (!isLegalChoice(7, inp) && !inp.equals("exit")) {
                 inp = in.nextLine();
             }
             switch (inp) {
@@ -116,15 +147,15 @@ public class CLI {
                     delDTO.setDriverName(chooseDriver(in));
                     break;
                 }
+//                case ("5"): {
+//                    delDTO.setDepartureWeight(Integer.parseInt(insertDepartureWeight(in)));
+//                    break;
+//                }
                 case ("5"): {
-                    delDTO.setDepartureWeight(Integer.parseInt(insertDepartureWeight(in)));
-                    break;
-                }
-                case ("6"): {
                     delDTO.setOrigin(chooseLocation(in));
                     break;
                 }
-                case ("7"): {
+                case ("6"): {
                     delDTO.setDestinations(handleUpdateDeliveryTasks(in, delDTO));
 //                    delDTO.setDestinations(insertTasksToDelivery(in));
                     break;
@@ -186,23 +217,23 @@ public class CLI {
         return allTasks;
     }
 
-    private String chooseDelivery(Scanner in) {
+    private DeliveryDTO chooseDelivery(Scanner in) {
         String inp = "";
-        ArrayList<String> deliveries = fc.getUpdatableDeliveries();
+        ArrayList<DeliveryDTO> deliveries = fc.getUpdatableDeliveries();
         if (deliveries.size() == 0){
-            System.out.println("there are no updatable deliveries in the system\npress <Enter> to continue");
+            System.out.println("there are no appending deliveries in the system\npress <Enter> to continue");
             in.nextLine();
-            return "exit";
+            return null;
         }
         do {
-            System.out.println("choose a delivery to update: ");
+            System.out.println("choose a delivery: ");
             for (int i = 1; i <= deliveries.size(); i++) {
-                System.out.println(i + ") " + deliveries.get(i - 1));
+                System.out.println(i + ") " + deliveries.get(i - 1).getId() + " "  + deliveries.get(i - 1).getDate());
             }
             inp = in.nextLine();
         } while (!isLegalChoice(deliveries.size(), inp) && !inp.equals("exit"));
         if (inp.equals("exit"))
-            return inp;
+            return null;
         return deliveries.get(Integer.parseInt(inp)-1);
     }
 
@@ -286,10 +317,10 @@ public class CLI {
         if (driverName.equals("exit"))
             return;
 
-        String departureWeight = insertDepartureWeight(in);
-        if (departureWeight.equals("exit"))
-            return;
-        int departureWeightInt = Integer.parseInt(departureWeight);
+//        String departureWeight = insertDepartureWeight(in);
+//        if (departureWeight.equals("exit"))
+//            return;
+//        int departureWeightInt = Integer.parseInt(departureWeight);
 
         LocationDTO originLocation = chooseLocation(in);
         if (originLocation.equals("exit"))
@@ -303,7 +334,7 @@ public class CLI {
 //        System.out.println("your creation:\n Delivery id - " + fc.getNextDeliveryID() + "\n Leaving at - " + date + " " + timeOfDeparture
 //                + "\n Truck - " + truck + "\n Driver - " + driverName + "\n Departure Weight - " + departureWeight + "\n From - " + originLocation
 //                + "\n Tasks - " + arrTask.toString());
-        DeliveryDTO creation = new DeliveryDTO(date, timeOfDeparture, truck.split(" ")[0], driverName, departureWeightInt, "", originLocation, arrTask);
+        DeliveryDTO creation = new DeliveryDTO(date, timeOfDeparture, truck.split(" ")[0], driverName, 0, "", originLocation, arrTask);
         System.out.println(creation);
         String approve = "";
         System.out.println("Create the delivery? y/n");
@@ -451,13 +482,14 @@ public class CLI {
         return true;
     }
 
-    private String insertDepartureWeight(Scanner in) {
+    private String insertDepartureWeight(Scanner in, DeliveryDTO deliveryDTO) {
         String input = "";
         do {
             System.out.println("Insert legal departure weight:");
             input = in.nextLine();
         } while (!isLegalFloat(input));
-        return input;
+        String response = this.fc.isLegalDepartureWeight(input, deliveryDTO).getData();
+        return response;
     }
 
     private String chooseDriver(Scanner in) {
