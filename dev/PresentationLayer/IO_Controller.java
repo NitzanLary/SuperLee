@@ -14,6 +14,9 @@ public class IO_Controller {
         invCtrl = new InvController();
     }
 
+    public void initData() {
+    }
+
     public void act(int action) {
         io = IO.getInstance();
         //add sale
@@ -30,7 +33,6 @@ public class IO_Controller {
         if (action == 3) {
             int id = io.getInt("Enter item ID:");
             String name = io.getString("Enter item Name:");
-            LocalDate expDate = io.getDate("Enter Expiration Date:");
             double price = io.getDouble("Enter item price:");
             double cost = io.getDouble("Enter item cost:");
             int shelf = io.getInt("Enter item shelf");
@@ -38,7 +40,7 @@ public class IO_Controller {
             int shQuant = io.getInt("Enter amount on shelf");
             int stQuant = io.getInt("Enter amount in storage");
             String catName = io.getString("Enter item category:");
-            invCtrl.addItem(id, name, expDate, price, cost, shelf, man, shQuant, stQuant, catName);
+            invCtrl.addItem(id, name, price, cost, shelf, man, shQuant, stQuant, catName);
         }
         // add category
         if (action == 4) {
@@ -53,6 +55,20 @@ public class IO_Controller {
         if (action == 5) {
             LocalDate date = io.getDate("Enter faulty report starting date");
             System.out.println(invCtrl.getFaultyReport(date));
+        }
+
+        if (action == 6) {
+            io.editMenu();
+        }
+    }
+
+    public void editAct(int action) {
+        if(action == 1) {
+            LocalDate start = io.getDate("Enter discount starting date");
+            LocalDate end = io.getDate("Enter discount end date");
+            int dis = io.getInt("Enter the amount of discount");
+            int itemId = io.getInt("Enter Item ID");
+            invCtrl.addDiscount(start, end, dis, itemId);
         }
     }
 }

@@ -20,11 +20,11 @@ public class InvController {
     public void addFaulty(int id) {
         //Need to add the part that removes from stock and such
         Item item = stockCtrl.getItem(id);
-        recCtrl.addFaulty(item.getName(), item.getExpDate());
+        recCtrl.addFaulty(item.getName(), LocalDate.now());
     }
 
-    public void addItem(int id, String name, LocalDate expDate, double price, double cost, int shelf, String man, int shQuan, int stQuan, String catName) {
-        stockCtrl.addItem(id,name,expDate,price,cost,shelf,man,shQuan,stQuan, catName);
+    public void addItem(int id, String name, double price, double cost, int shelf, String man, int shQuan, int stQuan, String catName) {
+        stockCtrl.addItem(id,name,price,cost,shelf,man,shQuan,stQuan, catName);
     }
 
     public void addSubCategory(String name, String superName){
@@ -43,4 +43,7 @@ public class InvController {
         return stockCtrl.deleteItem(id);
     }
 
+    public void addDiscount(LocalDate start, LocalDate end, int dis, int itemID) {
+        stockCtrl.addDiscount(start, end, dis, itemID);
+    }
 }

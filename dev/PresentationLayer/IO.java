@@ -20,6 +20,10 @@ public class IO {
         scanner = new Scanner(System.in);
     }
 
+    public void initData() {
+        ioCtrl.initData();
+    }
+
     public void start() {
         int action;
         do {
@@ -27,14 +31,28 @@ public class IO {
                     "2) Report Faulty\n" +
                     "3) Add Item\n" +
                     "4) Add Category\n" +
-                    "5) Faulty Report");
+                    "5) Faulty Report\n" +
+                    "6) Edit");
             action = scanner.nextInt();
-            if (action > 5 || action < 1)
+            if (action > 6 || action < 1)
                 break;
             scanner.nextLine();
             ioCtrl.act(action);
         } while (true);
 
+    }
+
+    public void editMenu() {
+        int action;
+        do {
+            System.out.println("1) Add Item discount" +
+                    "2) Add Category");
+            action = scanner.nextInt();
+            if (action > 5 || action < 1)
+                break;
+            scanner.nextLine();
+            ioCtrl.editAct(action);
+        } while (true);
     }
 
     public int getInt(String msg) {
