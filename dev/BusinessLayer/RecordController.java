@@ -34,15 +34,15 @@ public class RecordController {
     }
 
     public String faultyReport(LocalDate from, LocalDate to) {
-        String str = "";
+        StringBuilder str = new StringBuilder();
         int i = 1;
         for(FaultyItem fi : faultyItems) {
             if ((fi.getExpDate().isAfter(from) || fi.getExpDate().isEqual(from))
                     && (fi.getExpDate().isBefore(to) || fi.getExpDate().isEqual(to))) {
-                str = i + ")\n" + fi + "\n";
+                str.append(i++).append(")\n").append(fi).append("\n");
             }
         }
-        return str;
+        return str.toString();
     }
 
     public String saleReport(LocalDateTime from) {

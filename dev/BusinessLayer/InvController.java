@@ -86,6 +86,6 @@ public class InvController {
 
     //removes an item from the system
     public void removeItem(int itemId) {
-        stockCtrl.removeItem(litemId);
+        stockCtrl.removeItem(itemId);
     }
 }

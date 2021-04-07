@@ -50,6 +50,27 @@ public class StockController {
         return c.addItem(id, name, price, cost, shelfNum, manufacturer, shelfQuantity, storageQuantity);
     }
 
+    public boolean removeItem(int id) {
+        Category c = getCategory(id);
+        if (c == null)
+            return false;
+        return c.removeItem(id);
+    }
+
+    public boolean removeFromShelf(int id, int amount) {
+        Category c = getCategory(id);
+        if (c == null)
+            return false;
+        return c.removeFromShelf(id, amount);
+    }
+
+    public boolean removeFromStorage(int id, int amount) {
+        Category c = getCategory(id);
+        if (c == null)
+            return false;
+        return c.removeFromStorage(id, amount);
+    }
+
     public Category getCategory(int id) {
         for (Category c : categories) {
             Category output = c.getCategory(id);
@@ -59,19 +80,19 @@ public class StockController {
         return null;
     }
 
-    public int addToStorage(int id, int amount) {
+    public boolean addToStorage(int id, int amount) {
         Category c = getCategory(id);
         return c.addToStorage(id, amount);
     }
 
-    public int moveToShelf(int id, int amount) {
+    public boolean moveToShelf(int id, int amount) {
         Category c = getCategory(id);
         return c.moveToShelf(id, amount);
     }
 
-    public int changeShelf(int id, int shelf) {
+    public boolean changeShelf(int id, int shelf) {
         Category c = getCategory(id);
-        return c.moveToShelf(id, shelf);
+        return c.changeShelf(id, shelf);
     }
 
     public boolean deleteItem(int id) {

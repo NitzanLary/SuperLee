@@ -24,25 +24,25 @@ public class Category {
         i.addPriceDiscount(new Discount(start, end, discountPr));
     }
 
-    public int addToStorage(int id, int amount) {
+    public boolean addToStorage(int id, int amount) {
         Item i = getItem(id);
         if (i == null)
-            return -1;
+            return false;
         return i.addToStorage(amount);
     }
 
-    public int moveToShelf(int id, int amount) {
+    public boolean moveToShelf(int id, int amount) {
         Item i = getItem(id);
         if (i == null)
-            return -1;
+            return false;
         return i.moveToShelf(amount);
     }
 
-    public int changeShelf(int id, int shelf) {
+    public boolean changeShelf(int id, int shelf) {
         Item i = getItem(id);
         if (i == null)
-            return -1;
-        return i.moveToShelf(shelf);
+            return false;
+        return i.changeShelf(shelf);
     }
 
     public void addCategoryDiscount(LocalDate start, LocalDate end, int discountPr) {
@@ -111,5 +111,26 @@ public class Category {
             output.append(c.toString(tabs+"\t"));
         }
         return output.toString();
+    }
+
+    public boolean removeItem(int id) {
+        Item i = getItem(id);
+        if (i == null)
+            return false;
+        return items.remove(i);
+    }
+
+    public boolean removeFromShelf(int id, int amount) {
+        Item i = getItem(id);
+        if (i == null)
+            return false;
+        return i.removeFromShelf(amount);
+    }
+
+    public boolean removeFromStorage(int id, int amount) {
+        Item i = getItem(id);
+        if (i == null)
+            return false;
+        return i.removeFromStorage(amount);
     }
 }

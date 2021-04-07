@@ -31,25 +31,37 @@ public class Item {
         costDiscounts = new LinkedList<>();
     }
 
-    public int addToStorage(int amount) {
+    public boolean addToStorage(int amount) {
         storageQuantity += amount;
-        return storageQuantity;
+        return true;
     }
 
-    public int moveToShelf(int amount) {
+    public boolean removeFromShelf(int amount) {
+        if (amount > shelfQuantity)
+            return false;
+        shelfQuantity -= amount;
+        return true;
+    }
+
+    public boolean removeFromStorage(int amount) {
+        if (amount > storageQuantity)
+            return false;
+        storageQuantity -= amount;
+        return true;
+    }
+
+    public boolean moveToShelf(int amount) {
         if (amount > storageQuantity) {
-            int currStorageQuantity = storageQuantity;
-            shelfQuantity += currStorageQuantity;
-            storageQuantity = 0;
-            return currStorageQuantity;
+            return false;
         }
         storageQuantity -= amount;
         shelfQuantity += amount;
-        return amount;
+        return true;
     }
 
-    public void changeShelf(int newShelf) {
+    public boolean changeShelf(int newShelf) {
         shelfNum = newShelf;
+        return true;
     }
 
     public void addPriceDiscount(Discount d) {
@@ -79,7 +91,13 @@ public class Item {
     }
 
     public Double getCost() {
-        return cost;
+        double currCost = cost;
+        for(Discount dis : costDiscounts) {
+            LocalDate now = LocalDate.now();
+            if (now.isAfter(dis.getStart()) && now.isBefore(dis.getEnd()))
+                currCost -= currCost*dis.getDiscountPr()/100;
+        }
+        return currCost;
     }
 
     public String toString(String tabs) {
@@ -91,4 +109,6 @@ public class Item {
                 "\n"+tabs+"Shelf Quantity: "+ shelfQuantity +
                 "\n"+tabs+"Storage Quantity: " + storageQuantity+"\n";
     }
+
+
 }

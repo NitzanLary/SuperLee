@@ -24,7 +24,7 @@ public class FaultyItem {
     public String toString(){
         String str = "Name:\t\t\t\t" + name +"\n" +
                 "Expiration date: \t" + expDate + "\n" +
-                "Amount: \t\t\t\t" + amount;
+                "Amount: \t\t\t" + amount+"\n";
         return str;
     }
 }
