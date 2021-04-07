@@ -43,7 +43,11 @@ public class InvController {
         return stockCtrl.deleteItem(id);
     }
 
-    public void addDiscount(LocalDate start, LocalDate end, int dis, int itemID) {
-        stockCtrl.addDiscount(start, end, dis, itemID);
+    public void addItemDiscount(LocalDate start, LocalDate end, int dis, int itemID) {
+        stockCtrl.addItemDiscount(start, end, dis, itemID);
+    }
+
+    public void addCategoryDiscount(LocalDate start, LocalDate end, int dis, String category) {
+        stockCtrl.addCategoryDiscount(start, end, dis, category);
     }
 }

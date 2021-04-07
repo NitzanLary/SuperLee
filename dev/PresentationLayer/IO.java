@@ -32,7 +32,8 @@ public class IO {
                     "3) Add Item\n" +
                     "4) Add Category\n" +
                     "5) Faulty Report\n" +
-                    "6) Edit");
+                    "6) Edit\n\n" +
+                    "9) Exit");
             action = scanner.nextInt();
             if (action > 6 || action < 1)
                 break;
@@ -46,9 +47,10 @@ public class IO {
         int action;
         do {
             System.out.println("1) Add Item discount" +
-                    "2) Add Category");
+                    "2) Add Category discount\n\n" +
+                    "9) Exit");
             action = scanner.nextInt();
-            if (action > 5 || action < 1)
+            if (action > 2 || action < 1)
                 break;
             scanner.nextLine();
             ioCtrl.editAct(action);

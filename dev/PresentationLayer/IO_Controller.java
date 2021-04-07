@@ -68,7 +68,15 @@ public class IO_Controller {
             LocalDate end = io.getDate("Enter discount end date");
             int dis = io.getInt("Enter the amount of discount");
             int itemId = io.getInt("Enter Item ID");
-            invCtrl.addDiscount(start, end, dis, itemId);
+            invCtrl.addItemDiscount(start, end, dis, itemId);
+        }
+
+        if(action == 2) {
+            LocalDate start = io.getDate("Enter discount starting date");
+            LocalDate end = io.getDate("Enter discount end date");
+            int dis = io.getInt("Enter the amount of discount");
+            String category  = io.getString("Enter Category name");
+            invCtrl.addCategoryDiscount(start, end, dis, category);
         }
     }
 }
