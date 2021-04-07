@@ -15,8 +15,20 @@ public class Category {
         items = new LinkedList<>();
     }
 
-    public boolean addItem(int id, String name, LocalDate expDate, double price, double cost, int shelfNum, String manufacturer, int shelfQuantity, int storageQuantity) {
-        return items.add(new Item(id, name, expDate, price, cost, shelfNum, manufacturer, shelfQuantity, storageQuantity));
+    public boolean addItem(int id, String name, double price, double cost, int shelfNum, String manufacturer, int shelfQuantity, int storageQuantity) {
+        return items.add(new Item(id, name, price, cost, shelfNum, manufacturer, shelfQuantity, storageQuantity));
+    }
+
+    public void addItemDiscount(LocalDate start, LocalDate end, int discountPr, int id) {
+        Item i = getItem(id);
+        i.addDiscount(new Discount(start, end, discountPr));
+    }
+
+    public void addCategoryDiscount(LocalDate start, LocalDate end, int discountPr) {
+        Discount d = new Discount(start, end, discountPr);
+        for(Item i : items) {
+            i.addDiscount(d);
+        }
     }
 
     public boolean deleteItem(int id) {

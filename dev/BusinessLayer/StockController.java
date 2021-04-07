@@ -12,7 +12,7 @@ public class StockController {
     }
 
     private Category getCategory(String name) {
-        for (Category c: categories){
+        for (Category c : categories) {
             Category curr = c.getCategory(name);
             if (curr != null && curr.getCategory(name) != null)
                 return curr;
@@ -41,13 +41,13 @@ public class StockController {
         return null;
     }
 
-    public boolean addItem(int id, String name, LocalDate expDate, double price, double cost, int shelfNum, String manufacturer, int shelfQuantity, int storageQuantity, String catName) {
+    public boolean addItem(int id, String name, double price, double cost, int shelfNum, String manufacturer, int shelfQuantity, int storageQuantity, String catName) {
         Category c = getCategory(catName);
         if (c == null)
             return false;
         if (getItem(id) != null)
             return false;
-        return c.addItem(id, name, expDate, price, cost, shelfNum, manufacturer, shelfQuantity, storageQuantity);
+        return c.addItem(id, name, price, cost, shelfNum, manufacturer, shelfQuantity, storageQuantity);
     }
 
     public Category getCategory(int id) {
@@ -65,5 +65,17 @@ public class StockController {
         Category c = getCategory(id);
         c.deleteItem(id);
         return true;
+    }
+
+    public void addItemDiscount(LocalDate start, LocalDate end, int discountPr, int id) {
+        Category c = getCategory(id);
+        if (c != null)
+            c.addItemDiscount(start, end, discountPr, id);
+    }
+
+    public void addCategoryDiscount(LocalDate start, LocalDate end, int discountPr, String catName) {
+        Category c = getCategory(catName);
+        if (c != null)
+            c.addCategoryDiscount(start, end, discountPr);
     }
 }
