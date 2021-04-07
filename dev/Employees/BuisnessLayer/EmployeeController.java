@@ -71,5 +71,9 @@ public class EmployeeController {
         employee.getTerms().setDaysOff(newDaysOff);
         return new Response();
     }
+
+    public ResponseT<String> getEmpData(Employee employee) {
+        return employee.getEmpDataTostring();
+    }
 }
 

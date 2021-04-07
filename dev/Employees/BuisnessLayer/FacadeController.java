@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+
 public class FacadeController {
     private static FacadeController facadeController = null;
     private EmployeeController employeeController;
@@ -35,7 +36,6 @@ public class FacadeController {
                 daysOff, roleName, _dateOfHire);
 
         return response;
-
     } // only HR and general manager
 
 
@@ -171,6 +171,13 @@ public class FacadeController {
         return shiftController.closeShift(date, start, end);
     } // only HR and general manager
 
+    public Response openShift(String userID, LocalDate date, LocalTime start, LocalTime end){
+        ResponseT<Employee> rE = checkAuthorization(userID);
+        if (rE.isErrorOccured())
+            return rE;
+        return shiftController.openShift(date, start, end);
+    }
+
 //public Response openShift(String userID, LocalDateTime date, int start, int end)
 
     public ResponseT<String> getWhoIWorkWith(String userID, LocalDate date, LocalTime start, LocalTime end) {
@@ -214,7 +221,12 @@ public class FacadeController {
     }// only shift assigner **Yanay think that General Manager should be authorized as well
 
     public ResponseT<String> getMyData(String userID) {
-        return (EmployeeController.getInstance().getEmployee(userID).getValue().getEmpDataTostring());
+        ResponseT<Employee> rE = employeeController.getEmployee(userID);
+        if(rE.isErrorOccured())
+            return new ResponseT(null, rE.getErrorMessage());
+        return employeeController.getEmpData(rE.getValue());
+
+//        return (EmployeeController.getInstance().getEmployee(userID).getValue().getEmpDataTostring());
         //What kind of Error response should it return?
     } // toString (req 12)
 

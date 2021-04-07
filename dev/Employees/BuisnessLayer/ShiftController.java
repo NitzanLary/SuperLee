@@ -125,6 +125,13 @@ public class ShiftController {
         return rS.getValue().close();
     }
 
+    public Response openShift(LocalDate date, LocalTime start, LocalTime end) {
+        ResponseT<Shift> rS = findShift(date, start, end);
+        if(rS.isErrorOccured())
+            return rS;
+        return rS.getValue().open();
+    }
+
     public ResponseT<String> getEmployeesConstrainsForShift(Employee employee, LocalDate date, LocalTime start, LocalTime end) {
         ResponseT<Shift> rS = findShift(date, start, end);
         if(rS.isErrorOccured())
@@ -145,4 +152,5 @@ public class ShiftController {
             return new ResponseT<>(null, rS.getErrorMessage());
         return rS.getValue().getEmpPreferences(employee);
     }
+
 }
