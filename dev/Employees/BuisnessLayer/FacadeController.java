@@ -113,7 +113,7 @@ public class FacadeController {
 
     } // only HR and general manager
 
-    public Response putConstrain(String userID, LocalDate date, LocalTime start, LocalTime end, int pref/*0-want 1-can 2-cant*/){
+    public Response putConstrain(String userID, LocalDate date, LocalTime start, LocalTime end, int pref/*0-cant 1-can 2-want*/){
         ResponseT<Employee> rE = employeeController.getEmployee(userID);
         if(rE.isErrorOccured())
             return rE;
@@ -156,8 +156,7 @@ public class FacadeController {
         if(rE.isErrorOccured())
             return rE;
         return shiftController.assignToShift(rE.getValue(), date, start, end, role);
-    } // only HR and general manager + check req 14
-
+    }
 
 
     public Response closeShift(String userID, LocalDate date, LocalTime start, LocalTime end){
@@ -174,12 +173,18 @@ public class FacadeController {
 
 //public Response openShift(String userID, LocalDateTime date, int start, int end)
 
-    public ResponseT<List<String>> getWhoIWorkWith(String userID) {
-        return null;
-    } // return names only
+    public ResponseT<String> getWhoIWorkWith(String userID, LocalDate date, LocalTime start, LocalTime end) {
+        ResponseT<Employee> rE = employeeController.getEmployee(userID);
+        if(rE.isErrorOccured())
+            return new ResponseT(null, rE.getErrorMessage());
+        return shiftController.getWhoIWorkWith(rE.getValue(), date, start, end);
+    } // return names and IDs only
 
-    public ResponseT<String> getMyPreferences(String userID){ // Todo: nice toString
-        return null;
+    public ResponseT<String> getMyPreferences(String userID, LocalDate date, LocalTime start, LocalTime end){ // Todo: nice toString
+        ResponseT<Employee> rE = employeeController.getEmployee(userID);
+        if(rE.isErrorOccured())
+            return new ResponseT(null, rE.getErrorMessage());
+        return shiftController.getMyPreferences(rE.getValue(), date, start, end);
     }
 
     /**

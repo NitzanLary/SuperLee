@@ -14,7 +14,7 @@ public class ShiftController {
     private ArrayList<WeeklyShifts> weeklyShifts;
 
     private ShiftController(){
-        weeklyShifts = new ArrayList<WeeklyShifts>();  //creating with 4 weeks slots
+        weeklyShifts = new ArrayList<>();  //creating with 4 weeks slots
 //        ShiftController.add4WeeksSlots();
     }
 
@@ -26,43 +26,56 @@ public class ShiftController {
         return shiftController;
     }
 
+    public List<WeeklyShifts> getWeeklyShifts(){return weeklyShifts;}
+
     public Response add4WeeksSlots(){
-        if (shiftController.weeklyShifts.isEmpty()){
+        if (weeklyShifts.isEmpty()){
             LocalDate tempDate = LocalDate.now();
             for (int i = 0 ; i < 4 ; i++) {
-                shiftController.getInstance().weeklyShifts.add(new WeeklyShifts(tempDate.plusWeeks(i), tempDate.plusWeeks(i+1)));
+                weeklyShifts.add(new WeeklyShifts(tempDate.plusWeeks(i), tempDate.plusWeeks(i+1)));
             }
         }
         else{
             //Star to add slots from day after the last day we have in our weeklyShifts list
-            LocalDate tempDate = shiftController.weeklyShifts.get(shiftController.weeklyShifts.size()-1).getToDate().plusDays(1);
+            LocalDate tempDate = weeklyShifts.get(weeklyShifts.size()-1).getToDate().plusDays(1);
             for (int i = 0 ; i < 4 ; i++) {
-                shiftController.weeklyShifts.add(new WeeklyShifts(tempDate.plusWeeks(i), tempDate.plusWeeks(i+1)));
+                weeklyShifts.add(new WeeklyShifts(tempDate.plusWeeks(i), tempDate.plusWeeks(i+1)));
                 }
         }
         return new Response();
     }
 
     public void add1WeeksSlot(){
-        if (shiftController.weeklyShifts.isEmpty()){
-            LocalDate tempDate = LocalDate.now();
-            shiftController.weeklyShifts.add(new WeeklyShifts(tempDate, tempDate.plusWeeks(1)));
+        LocalDate tempDate;
+        if (weeklyShifts.isEmpty()){
+            tempDate = LocalDate.now();
         }
         else{
             //Star to add slots from day after the last day we have in our weeklyShifts list
-            LocalDate tempDate = shiftController.weeklyShifts.get(shiftController.weeklyShifts.size()-1).getToDate();
-            shiftController.weeklyShifts.add(new WeeklyShifts(tempDate, tempDate.plusWeeks(1)));
+            tempDate = weeklyShifts.get(weeklyShifts.size() - 1).getToDate();
         }
+        weeklyShifts.add(new WeeklyShifts(tempDate, tempDate.plusWeeks(1)));
     }
 
     public ResponseT<Shift> findShift(LocalDate date, LocalTime StartTime, LocalTime EndTime){ // Todo: maybe optimize
         for(WeeklyShifts ws : weeklyShifts){
             for(Shift s : ws.getShifts()){
                 if (s.compare(date, StartTime, EndTime))
-                    return new ResponseT(s);
+                    return new ResponseT<>(s);
             }
         }
-        return new ResponseT(null, "Shift not found");
+        return new ResponseT<>(null, "Shift not found");
+    }
+
+    public ResponseT<List<Shift>> getShiftsByDate(LocalDate date){
+        List<Shift> shifts = new ArrayList<>();
+        for (WeeklyShifts ws: weeklyShifts)
+            for (Shift s: ws.getShifts())
+                if (date.compareTo(s.getDate()) == 0)
+                    shifts.add(s);
+        if (shifts.isEmpty())
+            return new ResponseT<>(null, "No shifts on this date");
+        return new ResponseT<>(shifts);
     }
 
     public Response putConstrain(Employee employee, LocalDate date, LocalTime start, LocalTime end, int pref/*0-want 1-can 2-cant*/) {
@@ -84,12 +97,20 @@ public class ShiftController {
                 }
             }
         }
+        if(shifts.isEmpty())
+            return new ResponseT<>(null, "No future shifts");
         return new ResponseT<>(shifts);
     }
 
     public Response assignToShift(Employee employee, LocalDate date, LocalTime start, LocalTime end, String role){
         if(!employee.haveRoleCheck(role))
             return new Response("The role does not match with the employee's roles");
+        ResponseT<List<Shift>> rShifts = getShiftsByDate(date);
+        if(rShifts.isErrorOccured())
+            return rShifts;
+        for(Shift s: rShifts.getValue())
+            if (s.isAssigned(employee))
+                return new ResponseT<>(null, "The employee already assigned to a shift on this day");
         ResponseT<Shift> rS = findShift(date, start, end);
         if(rS.isErrorOccured())
             return rS;
@@ -107,7 +128,21 @@ public class ShiftController {
     public ResponseT<String> getEmployeesConstrainsForShift(Employee employee, LocalDate date, LocalTime start, LocalTime end) {
         ResponseT<Shift> rS = findShift(date, start, end);
         if(rS.isErrorOccured())
-            return new ResponseT(null, rS.getErrorMessage());
+            return new ResponseT<>(null, rS.getErrorMessage());
         return rS.getValue().getShiftConstrainsString();
+    }
+
+    public ResponseT<String> getWhoIWorkWith(Employee employee, LocalDate date, LocalTime start, LocalTime end) {
+        ResponseT<Shift> rS = findShift(date, start, end);
+        if (rS.isErrorOccured())
+            return new ResponseT<>(null, rS.getErrorMessage());
+        return rS.getValue().getWhoIWorkWith(employee);
+    }
+
+    public ResponseT<String> getMyPreferences(Employee employee, LocalDate date, LocalTime start, LocalTime end) {
+        ResponseT<Shift> rS = findShift(date, start, end);
+        if (rS.isErrorOccured())
+            return new ResponseT<>(null, rS.getErrorMessage());
+        return rS.getValue().getEmpPreferences(employee);
     }
 }

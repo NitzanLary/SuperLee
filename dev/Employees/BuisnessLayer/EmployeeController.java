@@ -43,8 +43,6 @@ public class EmployeeController {
     }
 
     public Response setEmpName(Employee employee, String newEmpName) {
-        if (newEmpName == "")
-            return new Response("Invalid name");
         employee.setName(newEmpName);
         return new Response();
     }
@@ -59,8 +57,8 @@ public class EmployeeController {
         return new Response();
     }
 
-    public Response updateEmpSickDays(Employee employee, int updatedsickDays) {
-        employee.getTerms().setSickDays(updatedsickDays);
+    public Response updateEmpSickDays(Employee employee, int updatedSickDays) {
+        employee.getTerms().setSickDays(updatedSickDays);
         return new Response();
     }
 
