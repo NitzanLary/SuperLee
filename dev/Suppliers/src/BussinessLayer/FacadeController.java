@@ -10,7 +10,9 @@ public class FacadeController {
 
     private SupplierController supController;
     private OrderController orderController;
-    private HashMap<Integer, LinkedList<Order>> supplierOrder;
+    //private HashMap<Integer, LinkedList<Order>> supplierOrder;
+    private HashMap<Integer, LinkedList<Integer>> supplierOrder;
+
 
     private FacadeController() {
         supController = SupplierController.getInstance();
@@ -45,18 +47,22 @@ public class FacadeController {
         supController.deleteBillOfQuantity(supplierID);
     }
 
+    //TODO: FINISH
     public void editMinQuantity(int supplierID, int pid, int newQ) {
 
     }
 
+    //TODO: FINISH
     public void editDiscount(int supplierID, int pid, int discount) {
 
     }
 
+    //TODO: FINISH
     public void addProdToBill(int supplierID, int pid, int minQ, int discount) {
 
     }
 
+    //TODO: FINISH
     public void removeProdFromBill(int supplierID, int pid) {
 
     }
@@ -122,45 +128,78 @@ public class FacadeController {
         return supController.checkBillExist(suppID);
     }
 
+    public boolean checkProductExist(int supID, int prodID){
+        return supController.checkProductExist(supID,prodID);
+    }
+
+    public boolean checkProductInBillOfQ(int supID, int prodID){
+        return supController.checkProductInBillOfQ(supID,prodID);
+    }
 
     /***************** Orders Functions: ***************/
 
 
-    public void createOrder(int supplierID){
-        orderController.createOrder(supplierID);
+    public int createOrder(int supplierID){
+        int orderID = orderController.createOrder(supplierID);
+
+        LinkedList<Integer> ordersOfSupplier = supplierOrder.get(supplierID);
+        if( ordersOfSupplier != null){
+            ordersOfSupplier.add(orderID);
+        }
+        else{
+            ordersOfSupplier = new LinkedList<Integer>();
+            ordersOfSupplier.add(orderID);
+            supplierOrder.put(supplierID,ordersOfSupplier);
+        }
+        return orderID;
     }
 
-    public void addProductToOrder(int supplierID, int productID , int quantity) {
-        orderController.addProductToOrder(supplierID, productID, quantity);
+    public void addProductToOrder(int orderID, int productID , int quantity) {
+        orderController.addProductToOrder(orderID, productID, quantity);
     }
-
-//    public HashMap<Product , Integer> finishOrder() {
-//        return orderController.finishOrder();
-//    }
 
     public void removeFromOrder(int productID , int supplierID) {
         orderController.removeFromOrder(productID , supplierID);
     }
 
-    public void removeOrder() {
-        orderController.removeOrder();
+    public void removeOrder(int orderID) {
+        orderController.removeOrder(orderID);
     }
 
-    public void updateProdQuantity(int productID, int quantity) {
-        orderController.updateProdQuantity(productID,quantity);
-    }
-//
-//    public LinkedList<String> showAllOrders(){
-//        return orderController.showAllOrders();
-//    }
-//
-//    public LinkedList<String> showOrderBySupplier(int supplierID) {
-//        return orderController.showOrderBySupplier(supplierID);
-//    }
-
-    public Double finalPriceForOrder(){
-        return 0.0;
+    public void updateProdQuantity(int orderID, int productID, int quantity) {
+        orderController.updateProdQuantity(orderID, productID,quantity);
     }
 
+    public String showAllOrders(){
+        return orderController.showAllOrders();
+    }
+
+    public String showOrdersBySupplier(int supplierID) {
+        String allOrders = '\n'+ "All Supplier Number:" + supplierID + " Orders Are: " ;
+        if(!checkSuppExist(supplierID)){ throw new IllegalArgumentException("Supplier Does Not Exist");}
+        LinkedList<Integer> listOfOrders = supplierOrder.get(supplierID);
+        if (listOfOrders == null){
+            return allOrders + '\n' + " No Orders Yet For This Supplier";
+        }
+        for(Integer order : listOfOrders){
+            allOrders += '\n' + "Order ID: "+ order +  ", Date: " + orderController.orders.get(order).getDate()  ;
+        }
+        return allOrders + '\n';
+
+    }
+
+    public void finalPriceForOrder(int OrderID, int suppID){
+        orderController.finalPriceForOrder(OrderID, suppID);
+    }
+
+    public String showOrder(int orderID){
+        return orderController.showOrder(orderID);
+    }
+
+    public boolean isEmptyOrder(int orderID){
+        return orderController.isEmptyOrder(orderID);
+    }
+
+    //TODO: where to catch exceptions
 
 }

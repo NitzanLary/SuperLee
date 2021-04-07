@@ -36,6 +36,7 @@ public class SupplierController {
             SupplierCard supCard = new SupplierCard(supplierName,supplierID,address,email,bankAcc,
                     paymentMethod,contacts,infoSupplyDay,pickUp);
             suppliers.put(supplierID , supCard);
+            prodController.newSupplier(supplierID);
         }
     }
 
@@ -152,5 +153,12 @@ public class SupplierController {
         return prodController.checkBillExist(suppID);
     }
 
+    public boolean checkProductExist(int supID, int prodID){
+        return prodController.checkProductExist(supID, prodID);
+    }
+
+    public boolean checkProductInBillOfQ(int supID, int prodID){
+        return prodController.checkProductInBillOfQ(supID, prodID);
+    }
 
 }

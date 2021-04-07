@@ -16,7 +16,10 @@ public class Product {
     }
 
     public String toString(){
-        return "product ID: " + productID + '\t' + "product Name: " + name + '\t' +"Price: " + price;
+        return "product ID: " + productID + ",  product Name: " + name + ",  Price: " + price;
     }
 
+    public double getPrice() {
+        return price;
+    }
 }

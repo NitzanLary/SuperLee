@@ -12,4 +12,12 @@ public class BillOfQuantities {
         this.minQuantityForDis = minQuantityForDis;
         this.discountList = discountList;
     }
+
+    public HashMap<Integer, Integer> getDiscountList() {
+        return discountList;
+    }
+
+    public HashMap<Integer, Integer> getMinQuantityForDis() {
+        return minQuantityForDis;
+    }
 }

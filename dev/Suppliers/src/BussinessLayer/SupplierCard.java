@@ -29,7 +29,7 @@ public class SupplierCard {
         if(pickUp)
             pickupS = "Pickup Is Required";
         else pickupS = "Pickup Is Not Required";
-        return "----- Supplier Info -----  \n" + "Name: " + supplierName + '\n' + "ID: " +supplierID + '\n' + "Address: : " + address + '\n' + "Email: " + email + '\n' +
+        return '\n' + "----- Supplier Info -----  \n" + "Name: " + supplierName + '\n' + "ID: " +supplierID + '\n' + "Address: : " + address + '\n' + "Email: " + email + '\n' +
                 "Bank Account: " + bankAcc + '\n' +"Payment Method: " + paymentMethod + '\n' + "Contacts: " + contacts + '\n'
                 + "Info Supply Day: " + infoSupplyDay + '\n' +  "pickUp: " + pickupS + '\n';
     }

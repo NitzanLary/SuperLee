@@ -82,7 +82,7 @@ public class ProductController {
             throw new IllegalArgumentException("This Supplier Does Not Have Any Products");
         }
 
-        String productsList = "Supplier " + supplierID + " products list: " + '\n';
+        String productsList = '\n' + "products list: " + '\n';
         for(Product p : supItems.values()){
             productsList += p.toString() + '\n';
         }
@@ -96,7 +96,37 @@ public class ProductController {
         else return true;
     }
 
+    public double calculateDiscount(int productId, int quantity, int suppID){
+        double priceBeforeDiscount = supplierProd.get(suppID).get(productId).getPrice() * quantity;
+        BillOfQuantities bill = discounts.get(suppID);
+        if(bill == null ) //no bill for this supplier
+            return priceBeforeDiscount;
+        Integer minQ = bill.getMinQuantityForDis().get(productId);
+        if(minQ == null || (minQ > quantity)) //no discount for this product
+            return priceBeforeDiscount;
+        int percentDis = bill.getDiscountList().get(productId);
+        double substract =  (priceBeforeDiscount * percentDis)/100;
+        return priceBeforeDiscount - substract;
+    }
 
+    public void newSupplier(int supplierID){
+        HashMap<Integer,Product> products = new HashMap<>();
+        supplierProd.put(supplierID, products);
+    }
+
+    public boolean checkProductExist(int supID, int prodID){
+        Product prod = supplierProd.get(supID).get(prodID);
+        return prod != null;
+    }
+
+    //TODO: FLAGGGGGGGGGGGGGG
+    public void addProductToOrder(int supplierID, int productID , int quantity) {
+
+    }
+
+    public boolean checkProductInBillOfQ(int supID, int prodID){
+        return discounts.get(supID).getMinQuantityForDis().containsKey(prodID);
+    }
 
 
 }
