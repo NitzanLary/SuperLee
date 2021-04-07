@@ -46,9 +46,9 @@ public class IO {
     public void editMenu() {
         int action;
         do {
-            System.out.println("1) Add Item discount" +
+            System.out.println("1) Add Item discount\n" +
                     "2) Add Category discount\n\n" +
-                    "9) Exit");
+                    "9) Back");
             action = scanner.nextInt();
             if (action > 2 || action < 1)
                 break;

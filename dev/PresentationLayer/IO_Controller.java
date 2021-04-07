@@ -15,6 +15,8 @@ public class IO_Controller {
     }
 
     public void initData() {
+        invCtrl.addCategory("Dairy");
+        invCtrl.addItem(1,"Milk", 5, 3,11, "Tnova", 10, 15, "Dairy");
     }
 
     public void act(int action) {
