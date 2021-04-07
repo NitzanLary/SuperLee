@@ -130,6 +130,11 @@ public class DeliveryDTO {
 
     @Override
     public String toString() {
+         String departureWeight = "";
+         if (this.departureWeight == 0)
+             departureWeight = " set before departure";
+         else
+             departureWeight = String.valueOf(this.departureWeight);
         return "\n\t\tDelivery : {" +
                 "\n\t\tid ='" + id + '\'' +
                 "\n\t\tdate = '" + date + '\'' +
