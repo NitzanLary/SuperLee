@@ -43,7 +43,7 @@ public class IO {
             if (action > 7 || action < 1)
                 break;
             scanner.nextLine();
-            ioCtrl.act(action);
+            ioCtrl.mainMenu(action);
         } while (true);
 
     }
@@ -58,12 +58,13 @@ public class IO {
                     "4) Add manufacturer discount\n"+
                     "5) Change item shelf\n" +
                     "6) Move item to shelf from storage\n" +
+                    "7) Remove Item" +
                     "\n9) Back");
             action = scanner.nextInt();
             if (action > 2 || action < 1)
                 break;
             scanner.nextLine();
-            ioCtrl.editAct(action);
+            ioCtrl.editMenu(action);
         } while (true);
     }
 

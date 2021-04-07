@@ -12,17 +12,21 @@ public class InvController {
     }
 
     //adds a sale to the records, removes one item from shelf
-    public void addSale(int id) {
-        //Need to add the part that removes from stock and such
+    public void addSale(int id, int amount) {
+        stockCtrl.removeFromShelf(id, amount);
         Item item = stockCtrl.getItem(id);
         recCtrl.addSale(item.getId(), item.getCost(), item.getPrice());
     }
 
     //adds a sale to the records, removes one item from shelf if opt is 1 or from storage if opt is 2
-    public void addFaulty(int id, int opt) {
-        //Need to add the part that removes from stock and such
+    public void addFaulty(int id, int opt, int amountOfFaulty) {
+        if(opt == 1) {
+            stockCtrl.removeFromShelf(id, amountOfFaulty);
+        } else {
+            stockCtrl.removeFromStorage(id, amountOfFaulty);
+        }
         Item item = stockCtrl.getItem(id);
-        recCtrl.addFaulty(item.getName(), LocalDate.now());
+        recCtrl.addFaulty(item.getName(), LocalDate.now() ,amountOfFaulty);
     }
 
     //adds a new Item to the System
@@ -43,10 +47,6 @@ public class InvController {
     //returns a report of all the faulty items that the System found or was reported to it
     public String getFaultyReport(LocalDate startDate) {
         return recCtrl.faultyReport(startDate);
-    }
-
-    public boolean deleteItem(int id) {
-        return stockCtrl.deleteItem(id);
     }
 
     //adds a discount for an item between the `start` and `end` date
@@ -79,7 +79,13 @@ public class InvController {
         stockCtrl.moveToShelf(itemId, amountToMove);
     }
 
+    //returns a report of all items in stock
     public String stkReport() {
         return stockCtrl.stkReport();
+    }
+
+    //removes an item from the system
+    public void removeItem(int itemId) {
+        stockCtrl.removeItem(litemId);
     }
 }
