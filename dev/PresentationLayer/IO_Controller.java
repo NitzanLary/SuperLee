@@ -5,6 +5,8 @@ import BusinessLayer.InvController;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.InputMismatchException;
+import java.util.function.Function;
 
 public class IO_Controller {
     private InvController invCtrl;
@@ -49,7 +51,6 @@ public class IO_Controller {
         if(action == 7) { removeItem(); }
     }
 
-
     public void initData() {
         invCtrl.addCategory("Dairy");
         invCtrl.addItem(1,"Milk", 5, 3,11, "Tnova", 10, 15, "Dairy");
@@ -64,90 +65,173 @@ public class IO_Controller {
         invCtrl.addItem(7,"Fanta", 6, 2,14, "Coka Cola", 20, 1, "Diet");
     }
 
+    private void badInput(String msg){
+        io.badInput("The input you have entered is invalid\n" + msg);
+    }
+
+    private void success() {
+        io.print("Success!");
+    }
+
+    private void failure() {
+        io.print("There was a problem processing your input - did not process");
+    }
+
     private void addSale() {
-        int id = io.getInt("Enter item ID:");
-        int amount = io.getInt("Enter amount: ");
-        invCtrl.addSale(id, amount);
+        try {
+            int id = io.getInt("Enter item ID:");
+            int amount = io.getInt("Enter amount: ");
+            if (id < 0 || amount < 0) {
+                badInput("Please resubmit sale");
+                addSale();
+            }
+            if(invCtrl.addSale(id, amount)) success(); else failure();
+        } catch (InputMismatchException err) {
+            badInput("Please resubmit sale");
+            addSale();
+        }
     }
 
     private void addFaulty() {
-        int itemId = io.getInt("Enter item ID:");
-        int opt = io.getInt("Where was the faulty item found (1 - shelf , 2 - storage)");
-        int amountOfFaulty = io.getInt("How many items are faulty");
-        invCtrl.addFaulty(itemId, opt, amountOfFaulty);
+        try {
+            int itemId = io.getInt("Enter item ID:");
+            int opt = io.getInt("Where was the faulty item found (1 - shelf , 2 - storage)");
+            int amountOfFaulty = io.getInt("How many items are faulty");
+            if((opt != 1 && opt != 2) || itemId < 0 || amountOfFaulty < 0) {
+                badInput("Please resubmit faulty item");
+                addFaulty();
+            }
+            if(invCtrl.addFaulty(itemId, opt, amountOfFaulty)) success(); else failure();
+        } catch (InputMismatchException err) {
+            badInput("Please resubmit faulty item");
+            addFaulty();
+        }
     }
 
     private void addCategory() {
-        String catName = io.getString("Enter catagory name");
-        String subCatOf = io.getString("Enter the name of the catagory above" + catName +": (enter 0 if there isn't one)");
-        if (subCatOf.equals("0"))
-            invCtrl.addCategory(catName);
-        else
-            invCtrl.addSubCategory(catName, subCatOf);
+        try {
+            String catName = io.getString("Enter catagory name");
+            String subCatOf = io.getString("Enter the name of the catagory above" + catName +": (enter 0 if there isn't one)");
+            if (subCatOf.equals("0"))
+                if(invCtrl.addCategory(catName)) success(); else failure();
+            else
+                if(invCtrl.addSubCategory(catName, subCatOf)) success(); else failure();
+        } catch (InputMismatchException err) {
+            badInput("Please resubmit category");
+            addCategory();
+        }
+
     }
 
     private void addItem() {
-        int id = io.getInt("Enter item ID:");
-        String name = io.getString("Enter item Name:");
-        double price = io.getDouble("Enter item price:");
-        double cost = io.getDouble("Enter item cost:");
-        int shelf = io.getInt("Enter item shelf");
-        String man = io.getString("Enter item manufacturer:");
-        int shQuant = io.getInt("Enter amount on shelf");
-        int stQuant = io.getInt("Enter amount in storage");
-        String catName = io.getString("Enter item category:");
-        invCtrl.addItem(id, name, price, cost, shelf, man, shQuant, stQuant, catName);
+        try {
+            int id = io.getInt("Enter item ID:");
+            String name = io.getString("Enter item Name:");
+            double price = io.getDouble("Enter item price:");
+            double cost = io.getDouble("Enter item cost:");
+            int shelf = io.getInt("Enter item shelf");
+            String man = io.getString("Enter item manufacturer:");
+            int shQuant = io.getInt("Enter amount on shelf");
+            int stQuant = io.getInt("Enter amount in storage");
+            String catName = io.getString("Enter item category:");
+            if (invCtrl.addItem(id, name, price, cost, shelf, man, shQuant, stQuant, catName)) success(); else failure();
+        } catch (InputMismatchException err) {
+            badInput("Please resubmit item");
+            addItem();
+        }
     }
 
     private void discountItem() {
-        LocalDate start = io.getDate("Enter discount starting date");
-        LocalDate end = io.getDate("Enter discount end date");
-        int dis = io.getInt("Enter the amount of discount");
-        int itemId = io.getInt("Enter Item ID");
-        invCtrl.addItemDiscount(start, end, dis, itemId);
+        try {
+            LocalDate start = io.getDate("Enter discount starting date");
+            LocalDate end = io.getDate("Enter discount end date");
+            int dis = io.getInt("Enter the amount of discount");
+            int itemId = io.getInt("Enter Item ID");
+            if(invCtrl.addItemDiscount(start, end, dis, itemId)) success(); else failure();
+        } catch (InputMismatchException err){
+            badInput("Please resubmit discount");
+            discountItem();
+        }
     }
 
     private void faultyReport() {
-        LocalDate date = io.getDate("Enter faulty report starting date");
-        io.print(invCtrl.getFaultyReport(date));
+        try {
+            LocalDate date = io.getDate("Enter faulty report starting date");
+            io.print(invCtrl.getFaultyReport(date));
+        } catch (InputMismatchException err) {
+            badInput("Please resubmit Date");
+            faultyReport();
+        }
     }
 
     private void discountCategory() {
-        LocalDate start = io.getDate("Enter discount starting date");
-        LocalDate end = io.getDate("Enter discount end date");
-        int dis = io.getInt("Enter the amount of discount");
-        String category  = io.getString("Enter Category name");
-        invCtrl.addCategoryDiscount(start, end, dis, category);
+        try {
+            LocalDate start = io.getDate("Enter discount starting date");
+            LocalDate end = io.getDate("Enter discount end date");
+            int dis = io.getInt("Enter the amount of discount");
+            String category  = io.getString("Enter Category name");
+            if(invCtrl.addCategoryDiscount(start, end, dis, category)) success(); else failure();
+        } catch (InputMismatchException err) {
+            badInput("Please resubmit discount");
+            discountCategory();
+        }
+
     }
 
     private void addToStorage() {
-        int itemID = io.getInt("Enter item id");
-        int amountToAdd = io.getInt("Enter amount to add");
-        invCtrl.addToStorage(itemID, amountToAdd);
+        try {
+            int itemID = io.getInt("Enter item id");
+            int amountToAdd = io.getInt("Enter amount to add");
+            if (invCtrl.addToStorage(itemID, amountToAdd)) success(); else failure();
+        } catch (InputMismatchException err) {
+            badInput("Please resubmit Item to add and amount");
+            addToStorage();
+        }
     }
 
     private void manuDiscount() {
-        LocalDate start = io.getDate("Enter discount starting date");
-        LocalDate end = io.getDate("Enter discount end date");
-        int dis = io.getInt("Enter the amount of discount");
-        int itemId = io.getInt("Enter Item ID");
-        invCtrl.addManuDiscount(start, end, dis, itemId);
+        try {
+            LocalDate start = io.getDate("Enter discount starting date");
+            LocalDate end = io.getDate("Enter discount end date");
+            int dis = io.getInt("Enter the amount of discount");
+            int itemId = io.getInt("Enter Item ID");
+            if (invCtrl.addManuDiscount(start, end, dis, itemId)) success(); else failure();
+        } catch (InputMismatchException err) {
+            badInput("Please resubmit manufacturer discount");
+            manuDiscount();
+        }
+
     }
 
     private void changeShelf() {
-        int itemId = io.getInt("Enter Item ID");
-        int newShelf = io.getInt("Enter the new shelf for the item");
-        invCtrl.changeShelf(itemId, newShelf);
+        try {
+            int itemId = io.getInt("Enter Item ID");
+            int newShelf = io.getInt("Enter the new shelf for the item");
+            if (invCtrl.changeShelf(itemId, newShelf)) success(); else failure();
+        } catch (InputMismatchException msg){
+            badInput("Please resubmit item and shelf");
+            changeShelf();
+        }
     }
 
     private void moveToShelf(){
-        int itemId = io.getInt("Enter Item ID");
-        int amountToMove = io.getInt("Enter the amount of items to move");
-        invCtrl.moveToShelf(itemId, amountToMove);
+        try {
+            int itemId = io.getInt("Enter Item ID");
+            int amountToMove = io.getInt("Enter the amount of items to move");
+            if (invCtrl.moveToShelf(itemId, amountToMove)) success(); else failure();
+        } catch (InputMismatchException err) {
+            badInput("Please resubmit item and amount");
+            moveToShelf();
+        }
     }
 
     private void removeItem() {
-        int itemId = io.getInt("Enter Item ID");
-        invCtrl.removeItem(itemId);
+        try {
+            int itemId = io.getInt("Enter Item ID");
+            if (invCtrl.removeItem(itemId)) success(); else failure();
+        } catch (InputMismatchException err) {
+            badInput("Please resubmit item");
+            removeItem();
+        }
     }
 }

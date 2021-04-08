@@ -103,4 +103,9 @@ public class IO {
     public void print(String msg) {
         System.out.println(msg);
     }
+
+    public void badInput(String msg) {
+        print(msg);
+        scanner.nextLine();
+    }
 }

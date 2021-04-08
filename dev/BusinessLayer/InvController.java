@@ -58,8 +58,8 @@ public class InvController {
     }
 
     //adds a discount for all the items in a category between the `start` and `end` date
-    public void addCategoryDiscount(LocalDate start, LocalDate end, int dis, String category) {
-        stockCtrl.addCategoryDiscount(start, end, dis, category);
+    public boolean addCategoryDiscount(LocalDate start, LocalDate end, int dis, String category) {
+        return stockCtrl.addCategoryDiscount(start, end, dis, category);
     }
 
     //adds a new supply for an item to the storage
