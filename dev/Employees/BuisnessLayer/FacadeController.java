@@ -91,6 +91,10 @@ public class FacadeController {
         return employeeController.updateEmpDaysOff(EmpID, newDaysOff);
     }
 
+    public Response addRoleToEmp(String userID, String EmpID, int newDaysOff){
+        return null;
+    }
+
     public Response putConstrain(String userID, LocalDate date, LocalTime start, LocalTime end, int pref/*0-cant 1-can 2-want*/){
         ResponseT<Employee> rE = employeeController.getEmployee(userID);
         if(rE.isErrorOccured())
@@ -153,8 +157,6 @@ public class FacadeController {
             return rE;
         return shiftController.openShift(date, start, end);
     }
-
-//public Response openShift(String userID, LocalDateTime date, int start, int end)
 
     public ResponseT<String> getWhoIWorkWith(String userID, LocalDate date, LocalTime start, LocalTime end) {
         ResponseT<Employee> rE = employeeController.getEmployee(userID);
