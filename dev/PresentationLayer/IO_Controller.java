@@ -230,6 +230,8 @@ public class IO_Controller {
         } catch (InputMismatchException msg){
             badInput("Please resubmit item and shelf");
             changeShelf();
+        } catch (RuntimeException err) {
+            io.print(err.getMessage());
         }
     }
 

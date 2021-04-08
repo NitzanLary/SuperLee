@@ -23,17 +23,19 @@ public class StockController {
         return null;
     }
 
-    public boolean addSubCategory(String name, String superName) {
+    public void addSubCategory(String name, String superName) {
         Category superCategory = getCategory(superName);
-        if (superCategory == null || getCategory(name) != null)
-            return false;
-        return superCategory.addSubCategory(new Category(name));
+        if (superCategory == null)
+            throw new RuntimeException("Cannot find Category: "+superName);
+        if( getCategory(name) != null)
+            throw new RuntimeException("Category "+name+" already exists");
+        superCategory.addSubCategory(new Category(name));
     }
 
-    public boolean addCategory(String name) {
+    public void addCategory(String name) {
         if (categories.contains(name))
-            return false;
-        return categories.add(new Category(name));
+            throw new RuntimeException("Category "+name+" already exists");
+        categories.add(new Category(name));
     }
 
     public Item getItem(int id) {
@@ -45,34 +47,35 @@ public class StockController {
         return null;
     }
 
-    public boolean addItem(int id, String name, double price, double cost, int shelfNum, String manufacturer, int shelfQuantity, int storageQuantity, int minAlert, String catName) {
+    public void addItem(int id, String name, double price, double cost, int shelfNum, String manufacturer, int shelfQuantity, int storageQuantity, int minAlert, String catName) {
         Category c = getCategory(catName);
         if (c == null)
-            return false;
+            throw new RuntimeException("Cannot find Category: "+catName);
         if (getItem(id) != null)
-            return false;
-        return c.addItem(id, name, price, cost, shelfNum, manufacturer, shelfQuantity, storageQuantity, minAlert);
+            throw new RuntimeException("Item id "+id+"+ already exists");
+        c.addItem(id, name, price, cost, shelfNum, manufacturer, shelfQuantity, storageQuantity, minAlert);
     }
 
-    public boolean removeItem(int id) {
+    public void removeItem(int id) {
         Category c = getCategory(id);
         if (c == null)
-            return false;
-        return c.removeItem(id);
+            throw new RuntimeException("Cannot find Item id: "+id);
+        c.removeItem(id);
     }
 
-    public boolean removeFromShelf(int id, int amount) {
+    public void removeFromShelf(int id, int amount) {
         Category c = getCategory(id);
         if (c == null)
-            return false;
-        return c.removeFromShelf(id, amount);
+            throw new RuntimeException("Cannot find Item id: "+id);
+        if(!c.removeFromShelf(id, amount))
+            throw new RuntimeException("Amount is too large");
     }
 
-    public boolean removeFromStorage(int id, int amount) {
+    public void removeFromStorage(int id, int amount) {
         Category c = getCategory(id);
         if (c == null)
-            return false;
-        return c.removeFromStorage(id, amount);
+            throw new RuntimeException("Cannot find Item id: "+id);
+        c.removeFromStorage(id, amount);
     }
 
     public Category getCategory(int id) {
@@ -84,50 +87,48 @@ public class StockController {
         return null;
     }
 
-    public boolean addToStorage(int id, int amount) {
+    public void addToStorage(int id, int amount) {
         Category c = getCategory(id);
         if (c == null)
-            return false;
-        return c.addToStorage(id, amount);
+            throw new RuntimeException("Cannot find Item id: "+id);
+        c.addToStorage(id, amount);
     }
 
-    public boolean moveToShelf(int id, int amount) {
+    public void moveToShelf(int id, int amount) {
         Category c = getCategory(id);
         if (c == null)
-            return false;
-        return c.moveToShelf(id, amount);
+            throw new RuntimeException("Cannot find Item id: "+id);
+        if (!c.moveToShelf(id, amount))
+            throw new RuntimeException("Amount is too large");
     }
 
-    public boolean changeShelf(int id, int shelf) {
+    public void changeShelf(int id, int shelf) {
         Category c = getCategory(id);
         if (c == null)
-            return false;
-        return c.changeShelf(id, shelf);
+            throw new RuntimeException("Cannot find Item id: "+id);
+        c.changeShelf(id, shelf);
     }
 
 
-    public boolean addItemDiscount(LocalDate start, LocalDate end, int discountPr, int id) {
+    public void addItemDiscount(LocalDate start, LocalDate end, int discountPr, int id) {
         Category c = getCategory(id);
         if (c == null)
-            return false;
+            throw new RuntimeException("Cannot find Item id: "+id);
         c.addItemDiscount(start, end, discountPr, id);
-        return true;
     }
 
-    public boolean addCategoryDiscount(LocalDate start, LocalDate end, int discountPr, String catName) {
+    public void addCategoryDiscount(LocalDate start, LocalDate end, int discountPr, String catName) {
         Category c = getCategory(catName);
         if (c == null)
-            return false;
+            throw new RuntimeException("Cannot find Category: "+catName);
         c.addCategoryDiscount(start, end, discountPr);
-        return true;
     }
 
-    public boolean addManuDiscount(LocalDate start, LocalDate end, int discountPr, int id) {
+    public void addManuDiscount(LocalDate start, LocalDate end, int discountPr, int id) {
         Category c = getCategory(id);
         if (c == null)
-            return false;
+            throw new RuntimeException("Cannot find Item id: "+id);
         c.addManuDiscount(start, end, discountPr, id);
-        return true;
     }
 
     public String stkReport() {

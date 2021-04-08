@@ -1,4 +1,4 @@
-package BusinessLayer.Test;
+package Test;
 
 import BusinessLayer.Category;
 import BusinessLayer.Item;

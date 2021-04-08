@@ -18,6 +18,9 @@ public class Item {
     private List<Discount> costDiscounts;
     private int minAlert;
 
+    private static final String RED_BOLD = "\033[1;31m";    // RED
+    private static final String RESET = "\033[0m";  // Text Reset
+
 
     public Item(int id, String name, double price, double cost, int shelfNum, String manufacturer, int shelfQuantity, int storageQuantity, int minAlert) {
         this.id = id;
@@ -103,13 +106,16 @@ public class Item {
     }
 
     public String toString(String tabs) {
-        return tabs+"Id: " + id +
-                "\n"+tabs+"Name: " + name +
-                "\n"+tabs+"Shelf Num: "+ shelfNum +
-                "\n"+tabs+"Manufacturer: "+ manufacturer +
-                "\n"+tabs+"Quantity: "+ (shelfQuantity+storageQuantity) +
-                "\n"+tabs+"Shelf Quantity: "+ shelfQuantity +
-                "\n"+tabs+"Storage Quantity: " + storageQuantity+"\n";
+        String s = tabs + "Id: " + id +
+                "\n" + tabs + "Name: " + name +
+                "\n" + tabs + "Shelf Num: " + shelfNum +
+                "\n" + tabs + "Manufacturer: " + manufacturer +
+                "\n" + tabs + "Quantity: " + (shelfQuantity + storageQuantity) +
+                "\n" + tabs + "Shelf Quantity: " + shelfQuantity +
+                "\n" + tabs + "Storage Quantity: " + storageQuantity + "\n";
+        if (shelfQuantity+storageQuantity <= minAlert)
+            s += tabs + RED_BOLD + "Item is below the minimum that was set by: " + (minAlert-(shelfQuantity+storageQuantity)) + RESET + "\n";
+        return s;
     }
 
 

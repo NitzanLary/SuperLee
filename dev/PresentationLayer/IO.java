@@ -1,6 +1,7 @@
 package PresentationLayer;
 
 import java.time.LocalDate;
+import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -42,11 +43,16 @@ public class IO {
                     "7) Inventory report\n" +
                     "8) Categories report\n" +
                     "\n9) Exit");
-            action = scanner.nextInt();
-            if (action > 8 || action < 1)
-                break;
-            scanner.nextLine();
-            ioCtrl.mainMenu(action);
+            try {
+                action = scanner.nextInt();
+                if (action > 8 || action < 1)
+                    break;
+                scanner.nextLine();
+                ioCtrl.mainMenu(action);
+            } catch (InputMismatchException e) {
+                System.out.println("Illegal input");
+                scanner.nextLine();
+            }
         } while (true);
 
     }
@@ -63,11 +69,16 @@ public class IO {
                     "6) Move item to shelf from storage\n" +
                     "7) Remove Item\n" +
                     "\n9) Back");
-            action = scanner.nextInt();
-            if (action > 7 || action < 1)
-                break;
-            scanner.nextLine();
-            ioCtrl.editMenu(action);
+            try {
+                action = scanner.nextInt();
+                if (action > 7 || action < 1)
+                    break;
+                scanner.nextLine();
+                ioCtrl.editMenu(action);
+            } catch (InputMismatchException e) {
+                System.out.println("Illegal input");
+                scanner.nextLine();
+            }
         } while (true);
     }
 

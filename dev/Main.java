@@ -1,8 +1,5 @@
-import BusinessLayer.RecordController;
-import BusinessLayer.Sale;
-import PresentationLayer.IO;
 
-import java.time.LocalDate;
+import PresentationLayer.IO;
 
 public class Main {
     public static void main(String[] args) {

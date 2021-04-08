@@ -19,8 +19,8 @@ public class Category {
         return name;
     }
 
-    public boolean addItem(int id, String name, double price, double cost, int shelfNum, String manufacturer, int shelfQuantity, int storageQuantity, int minAlert) {
-        return items.add(new Item(id, name, price, cost, shelfNum, manufacturer, shelfQuantity, storageQuantity, minAlert));
+    public void addItem(int id, String name, double price, double cost, int shelfNum, String manufacturer, int shelfQuantity, int storageQuantity, int minAlert) {
+        items.add(new Item(id, name, price, cost, shelfNum, manufacturer, shelfQuantity, storageQuantity, minAlert));
     }
 
     public void addItemDiscount(LocalDate start, LocalDate end, int discountPr, int id) {
@@ -58,11 +58,13 @@ public class Category {
 
     public void addManuDiscount(LocalDate start, LocalDate end, int discountPr, int id) {
         Item i = getItem(id);
+        if (i == null)
+            return;
         i.addCostDiscount(new Discount(start, end, discountPr));
     }
 
-    public boolean addSubCategory(Category sub) {
-        return subCategories.add(sub);
+    public void addSubCategory(Category sub) {
+        subCategories.add(sub);
     }
 
     public Item getItem(int id) {
@@ -124,7 +126,7 @@ public class Category {
 
     public boolean removeFromShelf(int id, int amount) {
         Item i = getItem(id);
-        if (i == null)
+        if (i==null)
             return false;
         return i.removeFromShelf(amount);
     }
