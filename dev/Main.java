@@ -11,7 +11,10 @@ public class Main {
     public static void main(String[] args) {
 //        System.out.println("!Hello world");
 
-        FacadeController facade = FacadeController.getInstance();
+//        FacadeController f1 = FacadeController.getInstance();
+//        FacadeController f2 = FacadeController.getInstance();
+
+
 
 
 //        System.out.println("1) Add sale\n" +
@@ -22,23 +25,25 @@ public class Main {
 //                "6) Edit\n" +
 //                "7) Inventory report\n" +
 //                "9) Exit");
-        
 
-//        Employee emp1 = new Employee("Nitzan Lary", "311541214", LocalDate.parse("2019-04-03"));
-//        Employee emp2 = new Employee("Assaf Stern", "224266120", LocalDate.parse("2019-03-03"));
-//        Employee emp3 = new Employee("Refael Farjune", "300545411", LocalDate.parse("2019-06-02"));
-//        ShiftController sc = ShiftController.getInstance();
-//        ShiftController.getInstance().add1WeeksSlot();
-//        ShiftController.getInstance().add1WeeksSlot();
-//        ShiftController.getInstance().add1WeeksSlot();
-//        ShiftController.getInstance().add1WeeksSlot();
-//        ShiftController.getInstance().findShift(LocalDate.parse("2021-04-08"),lt,end).getValue().AddConstrain(emp1, 3);
-//        ShiftController.getInstance().findShift(LocalDate.parse("2021-04-08"),lt,end).getValue().AddConstrain(emp2, 3);
-//        ShiftController.getInstance().findShift(LocalDate.parse("2021-04-08"),lt,end).getValue().AddConstrain(emp3, 3);
-//        System.out.println(ShiftController.getInstance().findShift(LocalDate.parse("2021-04-08"),lt,end).getValue().getShiftConstrainsString().getValue());
-//
-//
-//
+        LocalTime lt = LocalTime.of(6,0);
+        LocalTime end = LocalTime.of(14,0);
+
+        Employee emp1 = new Employee("Nitzan Lary", "311541214", LocalDate.parse("2019-04-03"));
+        Employee emp2 = new Employee("Assaf Stern", "224266120", LocalDate.parse("2019-03-03"));
+        Employee emp3 = new Employee("Refael Farjune", "300545411", LocalDate.parse("2019-06-02"));
+        ShiftController sc = ShiftController.getInstance();
+        sc.add1WeeksSlot();
+        sc.add1WeeksSlot();
+        sc.add1WeeksSlot();
+        sc.add1WeeksSlot();
+        sc.findShift(LocalDate.parse("2021-04-09"),lt,end).getValue().AddConstrain(emp1, 1);
+        sc.findShift(LocalDate.parse("2021-04-09"),lt,end).getValue().AddConstrain(emp2, 1);
+        sc.findShift(LocalDate.parse("2021-04-09"),lt,end).getValue().AddConstrain(emp3, 1);
+        System.out.println(sc.findShift(LocalDate.parse("2021-04-09"),lt,end).getValue().getShiftConstrainsString().getValue());
+
+
+
 //        System.out.println(sc.getWeeklyShifts().size());
 //        for (int i = 0 ; i < sc.getWeeklyShifts().size() ; i++) {
 //            System.out.println("\n");

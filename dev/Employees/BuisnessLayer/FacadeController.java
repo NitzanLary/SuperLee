@@ -41,88 +41,59 @@ public class FacadeController {
      */
     public Response addEmployee(String userID, String EmpID, String name, String bankAccount, int salary,
                                 int sickDays, int studyFund, int daysOff, String roleName, LocalDate _dateOfHire){
-        if (!employeeController.getEmployee(userID).getValue().checkAuthorizedHrOrGenral().getValue())
-            return new Response("Not Authorized! Only HR Manager Or General Manager Authorized For This Action");
-        Response  response = employeeController.AddEmployee(EmpID, name, bankAccount, salary, sickDays, studyFund,
+        ResponseT<Employee> rE = checkAuthorization(userID);
+        if (rE.isErrorOccured())
+            return rE;
+        return employeeController.AddEmployee(EmpID, name, bankAccount, salary, sickDays, studyFund,
                 daysOff, roleName, _dateOfHire);
-
-        return response;
-    } // only HR and general manager
+    }
 
 
     public Response updateEmpName(String userID, String EmpID, String newEmpName){
-//        if (employeeController.getEmployee(userID).getValue().checkAuthorizedHrOrGenral().getValue()){
-//            return employeeController.getEmployee(EmpID).getValue().setName(newEmpName);
-//        }
-//        return new Response("Not Authorized! Only HR Manager Or General Manager Authorized For This Action");
-
         ResponseT<Employee> rE = checkAuthorization(userID);
         if (rE.isErrorOccured())
             return rE;
-        return employeeController.setEmpName(rE.getValue(), newEmpName);
-
-    } // only HR and general manager
+        return employeeController.setEmpName(EmpID, newEmpName);
+    }
 
     public Response updateEmpBankAccount(String userID, String EmpID, String newBankAccount) {
-//        if (employeeController.getEmployee(userID).getValue().checkAuthorizedHrOrGenral().getValue()){
-//            return employeeController.getEmployee(EmpID).getValue().setBankAccount(newBankAccount);
-//        }
-//        return new Response("Not Authorized! Only HR Manager Or General Manager Authorized For This Action");
-
         ResponseT<Employee> rE = checkAuthorization(userID);
         if (rE.isErrorOccured())
             return rE;
-        return employeeController.updateEmpBankAccount(rE.getValue(), newBankAccount);
-    } // only HR and general manager
+        return employeeController.updateEmpBankAccount(EmpID, newBankAccount);
+    }
 
     public Response updateEmpSalary(String userID, String EmpID, int newSalary) {
-//        if (employeeController.getEmployee(userID).getValue().checkAuthorizedHrOrGenral().getValue()){
-//            return employeeController.getEmployee(EmpID).getValue().setSalary(newSalary);
-//        }
-//        return new Response("Not Authorized! Only HR Manager Or General Manager Authorized For This Action");
-
         ResponseT<Employee> rE = checkAuthorization(userID);
         if (rE.isErrorOccured())
             return rE;
-        return employeeController.updateEmpSalary(rE.getValue(), newSalary);
-    } // only HR and general manager
+        return employeeController.updateEmpSalary(EmpID, newSalary);
+    }
 
     public Response updateEmpSickDays(String userID, String EmpID, int UpdatedsickDays){
-//        if (employeeController.getEmployee(userID).getValue().checkAuthorizedHrOrGenral().getValue()){
-//            return employeeController.getEmployee(EmpID).getValue().getTerms().getValue().setSickDays(UpdatedsickDays);
-//        }
-//        return new Response("Not Authorized! Only HR Manager Or General Manager Authorized For This Action");
-
         ResponseT<Employee> rE = checkAuthorization(userID);
         if (rE.isErrorOccured())
             return rE;
-        return employeeController.updateEmpSickDays(rE.getValue(), UpdatedsickDays);
-    } // only HR and general manager
+        return employeeController.updateEmpSickDays(EmpID, UpdatedsickDays);
+    }
 
     public Response updateEmpStudyFund(String userID, String EmpID, int newStudyFund) {
-//        if (employeeController.getEmployee(userID).getValue().checkAuthorizedHrOrGenral().getValue()){
-//            return employeeController.getEmployee(EmpID).getValue().getTerms().getValue().setAdvancedStudyFund(newStudyFund);
-//        }
-//        return new Response("Not Authorized! Only HR Manager Or General Manager Authorized For This Action");
-
         ResponseT<Employee> rE = checkAuthorization(userID);
         if (rE.isErrorOccured())
             return rE;
-        return employeeController.updateEmpStudyFund(rE.getValue(), newStudyFund);
-    } // only HR and general manager
+        return employeeController.updateEmpStudyFund(EmpID, newStudyFund);
+    }
 
     public Response updateEmpDaysOff(String userID, String EmpID, int newDaysOff) {
-//        if (employeeController.getEmployee(userID).getValue().checkAuthorizedHrOrGenral().getValue()){
-//            return employeeController.getEmployee(EmpID).getValue().getTerms().getValue().setDaysOff(newDaysOff);
-//        }
-//        return new Response("Not Authorized! Only HR Manager Or General Manager Authorized For This Action");
-
         ResponseT<Employee> rE = checkAuthorization(userID);
         if (rE.isErrorOccured())
             return rE;
-        return employeeController.updateEmpDaysOff(rE.getValue(), newDaysOff);
+        return employeeController.updateEmpDaysOff(EmpID, newDaysOff);
+    }
 
-    } // only HR and general manager
+    public Response addRoleToEmp(String userID, String EmpID, int newDaysOff){
+        return null;
+    }
 
     public Response putConstrain(String userID, LocalDate date, LocalTime start, LocalTime end, int pref/*0-cant 1-can 2-want*/){
         ResponseT<Employee> rE = employeeController.getEmployee(userID);
@@ -158,17 +129,15 @@ public class FacadeController {
         return shiftController.getFutureShifts();
     }
 
-    public ResponseT<List<Shift>> getShiftsHistory(String userID){
-        return null;
-    }
-
     public Response assignEmpToShift(String userID, String EmpID, LocalDate date, LocalTime start, LocalTime end, String role){
         ResponseT<Employee> rE = checkAuthorization(userID);
         if(rE.isErrorOccured())
             return rE;
+        rE = employeeController.getEmployee(EmpID);
+        if(rE.isErrorOccured())
+            return rE;
         return shiftController.assignToShift(rE.getValue(), date, start, end, role);
     }
-
 
     public Response closeShift(String userID, LocalDate date, LocalTime start, LocalTime end){
 //        if (employeeController.getEmployee(userID).getValue().checkAuthorizedHrOrGenral().getValue()){
@@ -188,8 +157,6 @@ public class FacadeController {
             return rE;
         return shiftController.openShift(date, start, end);
     }
-
-//public Response openShift(String userID, LocalDateTime date, int start, int end)
 
     public ResponseT<String> getWhoIWorkWith(String userID, LocalDate date, LocalTime start, LocalTime end) {
         ResponseT<Employee> rE = employeeController.getEmployee(userID);
@@ -257,7 +224,7 @@ public class FacadeController {
             return new ResponseT<>(null, rA.getErrorMessage());
         if (!rA.getValue())
             return new ResponseT<>(null, "Not Authorized! Only HR Manager Or General Manager Authorized For This Action");
-        return new ResponseT<>(new Employee(employee));
+        return r;
     }
 
     public ResponseT<Boolean> checkAuthorizationBool(String userID){
@@ -276,4 +243,8 @@ public class FacadeController {
         employeeController.initData();
         shiftController.add1WeeksSlot();
     }
+
+//    public ResponseT<List<Shift>> getShiftsHistory(String userID){
+//        return null;
+//    }
 }

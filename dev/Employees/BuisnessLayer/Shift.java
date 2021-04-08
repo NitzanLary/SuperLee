@@ -101,8 +101,11 @@ public abstract class Shift {
         return new Response();
     }
 
-    public Response getAllassignedEmployees(Employee e){
-        return null;
+    public ResponseT<List<Employee>> getAllAssignedEmployees(){
+        List<Employee> employees = new ArrayList<>();
+        for(Map.Entry<String, Employee> entry: assignedEmployees.entrySet())
+            employees.add(new Employee(entry.getValue()));
+        return new ResponseT<>(employees);
     }
 
 
