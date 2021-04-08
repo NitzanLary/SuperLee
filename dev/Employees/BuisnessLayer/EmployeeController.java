@@ -14,9 +14,9 @@ public class EmployeeController {
     }
 
     public static EmployeeController getInstance(){
-        if (employeeController != null)
-            return employeeController;
-        return new EmployeeController();
+        if (employeeController == null)
+            employeeController = new EmployeeController();
+        return employeeController;
     }
 
     public Response AddEmployee(String ID, String name, String bankAccount, int salary,
@@ -44,34 +44,46 @@ public class EmployeeController {
         return new ResponseT<>(employees.get(id));
     }
 
-    public Response setEmpName(Employee employee, String newEmpName) {
-        employee.setName(newEmpName);
-        return new Response();
+    public Response setEmpName(String ID, String newEmpName) {
+        ResponseT<Employee> rE = getEmployee(ID);
+        if(rE.isErrorOccured())
+            return rE;
+        return rE.getValue().setName(newEmpName);
     }
 
-    public Response updateEmpBankAccount(Employee employee, String newBankAccount) {
-        employee.setBankAccount(newBankAccount);
-        return new Response();
+    public Response updateEmpBankAccount(String ID, String newBankAccount) {
+        ResponseT<Employee> rE = getEmployee(ID);
+        if(rE.isErrorOccured())
+            return rE;
+        return rE.getValue().setBankAccount(newBankAccount);
     }
 
-    public Response updateEmpSalary(Employee employee, int newSalary) {
-        employee.setSalary(newSalary);
-        return new Response();
+    public Response updateEmpSalary(String ID, int newSalary) {
+        ResponseT<Employee> rE = getEmployee(ID);
+        if(rE.isErrorOccured())
+            return rE;
+        return rE.getValue().setSalary(newSalary);
     }
 
-    public Response updateEmpSickDays(Employee employee, int updatedSickDays) {
-        employee.getTerms().setSickDays(updatedSickDays);
-        return new Response();
+    public Response updateEmpSickDays(String ID, int updatedSickDays) {
+        ResponseT<Employee> rE = getEmployee(ID);
+        if(rE.isErrorOccured())
+            return rE;
+        return rE.getValue().getTerms().setSickDays(updatedSickDays);
     }
 
-    public Response updateEmpStudyFund(Employee employee, int newStudyFund) {
-        employee.getTerms().setAdvancedStudyFund(newStudyFund);
-        return new Response();
+    public Response updateEmpStudyFund(String ID, int newStudyFund) {
+        ResponseT<Employee> rE = getEmployee(ID);
+        if(rE.isErrorOccured())
+            return rE;
+        return rE.getValue().getTerms().setAdvancedStudyFund(newStudyFund);
     }
 
-    public Response updateEmpDaysOff(Employee employee, int newDaysOff) {
-        employee.getTerms().setDaysOff(newDaysOff);
-        return new Response();
+    public Response updateEmpDaysOff(String ID, int newDaysOff) {
+        ResponseT<Employee> rE = getEmployee(ID);
+        if(rE.isErrorOccured())
+            return rE;
+        return rE.getValue().getTerms().setDaysOff(newDaysOff);
     }
 
     public ResponseT<String> getEmpData(Employee employee) {

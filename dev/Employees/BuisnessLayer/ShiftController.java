@@ -153,4 +153,11 @@ public class ShiftController {
         return rS.getValue().getEmpPreferences(employee);
     }
 
+    public ResponseT<List<Employee>> getAssignedEmps(LocalDate date, LocalTime start, LocalTime end) {
+        ResponseT<Shift> rS = findShift(date, start, end);
+        if(rS.isErrorOccured())
+            return new ResponseT<>(null, rS.getErrorMessage());
+        return rS.getValue().getAllAssignedEmployees();
+    }
+
 }
