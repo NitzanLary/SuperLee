@@ -12,7 +12,7 @@ public class TruckDTO {
         this.id = id;
         this.model = model;
         this.maxWeight = maxWeight;
-        this.truckWeight = maxWeight;
+        this.truckWeight = truckWeight;
     }
 
     public TruckDTO(Truck truck){

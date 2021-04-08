@@ -117,7 +117,8 @@ public class Main {
     private static void initiateSecondScenario(CLI cli) {
         // trucks:
         TruckDTO truck1 = new TruckDTO("4755857","Mercedes x", 15000,8000);
-        TruckDTO truck2 = new TruckDTO("34556123","Renault Fluence", 20000,8500);
+//        TruckDTO truck2 = new TruckDTO("34556123","Renault Fluence", 20000,8500);
+        TruckDTO truck2 = new TruckDTO("34556123","Renault Fluence", 20000,12000);
         cli.getFacade().addTruck(truck1);
         cli.getFacade().addTruck(truck2);
         // area % locations:
@@ -131,7 +132,8 @@ public class Main {
         cli.getFacade().addLocation(south, kg);
         // drivers:
         ArrayList<tmpEmployee> drivers = new ArrayList<>();
-        drivers.add(new tmpEmployee("Yanay the Sunny", 15000));
+//        drivers.add(new tmpEmployee("Yanay the Sunny", 15000));
+        drivers.add(new tmpEmployee("Yanay the Sunny", 11000));
         drivers.add(new tmpEmployee("Nitzan the Lary", 20000));
         cli.getFacade().tempAddDriver(drivers);
         // tasks:
@@ -163,14 +165,14 @@ public class Main {
         destinations2.add(task3);
         destinations3.add(task4);
         // deliveries:
-        DeliveryDTO ddt3 = new DeliveryDTO("23-3-2021","8:00","4755857","Yannay the Sunny",20800,"",bs ,destinations3);
+//        DeliveryDTO ddt3 = new DeliveryDTO("23-3-2021","8:00","4755857","Yannay the Sunny",20800,"",bs ,destinations3);
+//        cli.getFacade().createFullDelivery(ddt3);
+//        DeliveryDTO ddt1 = new DeliveryDTO("23-3-2021","10:30","4755857","Yanay the Sunny",0,"",bs ,destinations1);
+//        cli.getFacade().updateDelivery(ddt1, ddt3.getId());
+        DeliveryDTO ddt3 = new DeliveryDTO("23-3-2021","8:00","4755857","Nitzan the Lary",20800,"",bs ,destinations1);
         cli.getFacade().createFullDelivery(ddt3);
-        DeliveryDTO ddt1 = new DeliveryDTO("23-3-2021","10:30","4755857","Yanay the Sunny",0,"",bs ,destinations1);
-        cli.getFacade().updateDelivery(ddt1, ddt3.getId());
         DeliveryDTO ddt2 = new DeliveryDTO("23-3-2021","16:00","34556123","Nitzan the Lary",0,"",bs ,destinations2);
         cli.getFacade().createFullDelivery(ddt2);
-
-
     }
 
     private static void initiateFirstScenario(CLI cli) {

@@ -40,12 +40,6 @@ public class AreaController {
         dc.storeLocation(areaDTO, locationDTO);
     }
 
-//    public void addLocation(AreaPresentationInterface areaName, String address, String phoneNumber, String contactName){
-//        if (!this.controller.containsKey(areaName.getName())){
-//            throw new InputMismatchException("Area name dose not exist.");
-//        }
-//        controller.get(areaName.getName()).addLocation(new Location(address, phoneNumber, contactName));
-//    }
 
     @Override
     public String toString() {
@@ -57,7 +51,6 @@ public class AreaController {
             }
         }
         return str;
-
     }
 
     public HashMap<Area, ArrayList<Location>> getLocationsByArea() {
@@ -88,11 +81,11 @@ public class AreaController {
     }
 
     public ArrayList<AreaDTO> getAreasData() {
-        ArrayList<AreaDTO> arr = new ArrayList<>();
-//        this.dc.getAreas().values();
-        for (AreaDTO area : this.dc.getAreas().values()){
-            arr.add(area);
-        }
-        return arr;
+//        ArrayList<AreaDTO> arr = new ArrayList<>();
+//        for (AreaDTO area : this.dc.getAreas().values()){
+//            arr.add(area);
+//        }
+//        return arr;
+        return new ArrayList<>(dc.getAreas().values());
     }
 }

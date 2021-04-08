@@ -1,8 +1,10 @@
 package Delivery.PresentationLayer;
 
+import Delivery.BusinessLayer.Driver;
 import Delivery.BusinessLayer.FacadeController;
 import Delivery.DTO.*;
 
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.*;
 import java.time.format.*;
@@ -93,11 +95,28 @@ public class CLI {
     private void displayDoc() {
         Scanner in = new Scanner(System.in);
         String choose = "";
-        System.out.println("Which data do you want to present:");
-        System.out.println("1) Areas\n2) Drivers\n3) Trucks\n4) Tasks\n5) Deliveries");
-         choose = in.nextLine().strip();
-         chooseData(choose);
+        while (true) {
+            do {
+                System.out.println("Which data do you want to present:");
+                System.out.println("1) Areas\n2) Drivers\n3) Trucks\n4) Tasks\n5) Deliveries");
+                choose = in.nextLine().strip();
+            }while (!isLegalChoice(5,choose));
+            chooseData(choose);
+            System.out.println("What would you like to do:");
+            System.out.println("1) back to menu");
+            System.out.println("2) choose another data to present");
+            String inp = "" ;
+            inp = in.nextLine().strip();
+            while (!(isLegalChoice(2, inp) || inp.equals("exit"))) {
+                System.out.println("choose 1, 2 or type 'exit'");
+                inp = in.nextLine().strip();
+            }
+            if (inp.equals("2")) {
+                continue;
+            }else break;
+        }
     }
+
     private void chooseData(String choose){
         switch (choose) {
             case ("1"): {
@@ -121,21 +140,6 @@ public class CLI {
                 break;
             }
         }
-        Scanner in = new Scanner(System.in);
-        System.out.println("What would you like to do:");
-        System.out.println("1) back to menu");
-        System.out.println("2) choose another data to present");
-        String inp = "";
-        inp = in.nextLine();
-        while (!(isLegalChoice(2,inp) || inp.equals("exit"))){
-            System.out.println("choose 1, 2 or type 'exit'");
-            inp = in.nextLine();
-        }
-        if (inp == "2"){
-            displayDoc();
-        }
-
-
     }
 
     private void sendDelivery() {
@@ -193,7 +197,10 @@ public class CLI {
             System.out.println(" 4) driver - " + delDTO.getDriverName());
 //            System.out.println(" 4) departure weight - " + delDTO.getDepartureWeight());
             System.out.println(" 5) origin - " + delDTO.getOrigin());
-            System.out.println(" 6) destinations and tasks - " + delDTO.getDestinations());
+            String destPrint = "";
+            for(TaskDTO tdto:delDTO.getDestinations())
+                destPrint += "\n" +tdto.toString("\t\t");
+            System.out.println(" 6) destinations and tasks - " + destPrint);
             System.out.println(" 7) continue");
             inp = in.nextLine();
             while (!isLegalChoice(7, inp) && !inp.equals("exit")) {
@@ -201,19 +208,22 @@ public class CLI {
             }
             switch (inp) {
                 case ("1"): {
-                    delDTO.setDate(insertDate(in));
+                    delDTO.setDate(insertDate(in).getData());
                     break;
                 }
                 case ("2"): {
-                    delDTO.setTimeOfDeparture(insertTimeOfDeparture(in));
+                    delDTO.setTimeOfDeparture(insertTimeOfDeparture(in).getData());
                     break;
                 }
                 case ("3"): {
-                    delDTO.setTruckNumber(chooseTruck(in));
+                    delDTO.setTruckNumber(chooseTruck(in).getId());
                     break;
                 }
                 case ("4"): {
-                    delDTO.setDriverName(chooseDriver(in).getEmployeeName());
+                    DriverDTO driver = chooseDriver(in, fc.getTruckByDelivery(delDTO));
+                    if (driver == null)
+                        break;
+                    delDTO.setDriverName(driver.getEmployeeName());
                     break;
                 }
 //                case ("5"): {
@@ -323,25 +333,25 @@ public class CLI {
         }
     }
 
-    private String insertDate(Scanner in) {
+    private Response<String> insertDate(Scanner in) {
         String date = "";
         do {
             System.out.println("Insert date: dd-mm-yy");
             date = in.nextLine();
         } while (!isLegalDate(date) && !date.equals("exit"));
-        return date;
+        return new Response<>(date);
     }
 
-    public String insertTimeOfDeparture(Scanner in) {
+    public Response<String> insertTimeOfDeparture(Scanner in) {
         String timeOfDeparture = "";
         do {
             System.out.println("Insert time of departure: hh:mm");
             timeOfDeparture = in.nextLine();
         } while (!isLegalTime(timeOfDeparture) && !timeOfDeparture.equals("exit"));
-        return timeOfDeparture;
+        return new Response<>(timeOfDeparture);
     }
 
-    private String chooseTruck(Scanner in) {
+    private TruckDTO chooseTruck(Scanner in) {
         String inp = "";
         ArrayList<TruckDTO> truckLst = fc.getTrucks();
         do {
@@ -352,8 +362,8 @@ public class CLI {
             inp = in.nextLine();
         } while (!isLegalChoice(truckLst.size(), inp) && !inp.equals("exit"));
         if (inp.equals("exit"))
-            return inp;
-        return truckLst.get(Integer.parseInt(inp)-1).getId();
+            return null;
+        return truckLst.get(Integer.parseInt(inp)-1);
     }
 
     private boolean isLegalChoice(int size, String input) {
@@ -370,21 +380,23 @@ public class CLI {
 
     public void createNewDelivery() {
         Scanner in = new Scanner(System.in);
-        String date = insertDate(in);
+        String date = insertDate(in).getData();
         if (date.equals("exit"))
             return;
 
-        String timeOfDeparture = insertTimeOfDeparture(in);
+        String timeOfDeparture = insertTimeOfDeparture(in).getData();
         if (timeOfDeparture.equals("exit"))
             return;
 
-        String truck = chooseTruck(in);
-        if (truck.equals("exit"))
+        TruckDTO trdto = chooseTruck(in);
+        if (trdto == null)
             return;
+        String truck = trdto.getId();
 
-        String driverName = chooseDriver(in).getEmployeeName();
-        if (driverName.equals("exit"))
+        DriverDTO drdto = chooseDriver(in, trdto);
+        if (drdto == null)
             return;
+        String driverName = drdto.getEmployeeName();
 
 //        String departureWeight = insertDepartureWeight(in);
 //        if (departureWeight.equals("exit"))
@@ -392,7 +404,7 @@ public class CLI {
 //        int departureWeightInt = Integer.parseInt(departureWeight);
 
         LocationDTO originLocation = chooseLocation(in);
-        if (originLocation.equals("exit"))
+        if (originLocation == null)
             return;
 
         ArrayList<TaskDTO> arrTask = insertTasksToDelivery(in, new ArrayList<>());
@@ -553,10 +565,15 @@ public class CLI {
         return response;
     }
 
-    private DriverDTO chooseDriver(Scanner in) {
+    private DriverDTO chooseDriver(Scanner in, TruckDTO ride) {
         String inp = "";
-        ArrayList<DriverDTO> driversLst = fc.getDrivers();
+        ArrayList<DriverDTO> driversLst = fc.getDriversToTruck(ride);
         do {
+            if (driversLst.size() == 0){
+                System.out.println("there are no available drivers in the system that are fit to the chosen truck\npress <Enter> to exit the delivery creator.");
+                inp = "exit";
+                continue;
+            }
             System.out.println("choose a driver for the delivery: ");
             for (int i = 1; i <= driversLst.size(); i++) {
                 System.out.println(i + ") " + driversLst.get(i - 1).getEmployeeName()+" "+driversLst.get(i - 1).getLicenseType());
