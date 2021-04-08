@@ -1,7 +1,6 @@
 package BussinessLayer;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 
 public class OrderController {
 
@@ -104,8 +103,18 @@ public class OrderController {
         prodController.removeProdFromBill(supplierID,pid);
     }
 
-    public boolean productInOrder(int orderID, int prodID){
-        return orders.get(orderID).getProducts().containsKey(prodID);
+    public void productInOrder(int orderID, int prodID){
+        boolean flag = orders.get(orderID).getProducts().containsKey(prodID);
+        if (!flag)
+            throw new IllegalArgumentException("This Product Does Not Exist In This Order, Deletion Failed");
+
     }
 
+    public HashMap<Integer, Order> getOrders() {
+        return orders;
+    }
+
+    public ProductController getProdController() {
+        return prodController;
+    }
 }

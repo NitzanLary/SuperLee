@@ -7,7 +7,7 @@ public class SupplierCard {
     private String email;
     private int bankAcc;
     private String paymentMethod;
-    private String contacts; //TODO: UPDATE IN UML.
+    private String contacts;
     private String infoSupplyDay;
     private boolean pickUp;
 
@@ -78,4 +78,7 @@ public class SupplierCard {
         this.supplierName = supplierName;
     }
 
+    public boolean isPickUp() {
+        return pickUp;
+    }
 }

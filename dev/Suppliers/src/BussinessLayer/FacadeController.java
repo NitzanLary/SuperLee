@@ -10,7 +10,6 @@ public class FacadeController {
 
     private SupplierController supController;
     private OrderController orderController;
-    //private HashMap<Integer, LinkedList<Order>> supplierOrder;
     private HashMap<Integer, LinkedList<Integer>> supplierOrder;
 
 
@@ -30,176 +29,371 @@ public class FacadeController {
 
     /***************** Supplier & Products Functions: ***************/
 
-    public void createSupCard(String supplierName, int supplierID, String address, String email, int bankAcc,
+    public Response createSupCard(String supplierName, int supplierID, String address, String email, int bankAcc,
                               String paymentMethod, String contacts, String infoSupplyDay, boolean pickUp) {
-        supController.createSupCard(supplierName, supplierID, address, email, bankAcc, paymentMethod, contacts, infoSupplyDay, pickUp);
+        try{
+            supController.createSupCard(supplierName, supplierID, address, email, bankAcc, paymentMethod, contacts, infoSupplyDay, pickUp);
+            return new Response();
+        }
+        catch (Exception e){
+            return new Response(e.getMessage());
+        }
     }
 
-    public void deleteSupCard(int supplierID){
-        supController.deleteSupCard(supplierID);
+    public Response deleteSupCard(int supplierID){
+        try {
+            supController.deleteSupCard(supplierID);
+            return new Response();
+        } catch (Exception e) {
+            return new Response(e.getMessage());
+        }
     }
 
-    public void addBillOfQuantity(int supplierID, HashMap<Integer, Integer> minQuantityForDis,  HashMap<Integer, Integer> discountList) {
-        supController.addBillOfQuantity(supplierID, minQuantityForDis,discountList);
+    public Response addBillOfQuantity(int supplierID, HashMap<Integer, Integer> minQuantityForDis,  HashMap<Integer, Integer> discountList) {
+        try{
+            supController.addBillOfQuantity(supplierID, minQuantityForDis,discountList);
+            return new Response();
+        }
+        catch (Exception e){
+            return new Response(e.getMessage());
+        }
     }
 
-    public void deleteBillOfQuantity(int supplierID) {
-        supController.deleteBillOfQuantity(supplierID);
+    public Response deleteBillOfQuantity(int supplierID) {
+        try {
+            supController.deleteBillOfQuantity(supplierID);
+            return new Response();
+        } catch (Exception e) {
+            return new Response(e.getMessage());
+        }
     }
 
-    public void editMinQuantity(int supplierID, int pid, int newQ) {
-        orderController.editMinQuantity(supplierID,pid,newQ);
+    public Response editMinQuantity(int supplierID, int pid, int newQ) {
+        try{
+            orderController.editMinQuantity(supplierID,pid,newQ);
+            return new Response();
+        }
+        catch (Exception e){
+            return new Response(e.getMessage());
+        }
     }
 
-    public void editDiscount(int supplierID, int pid, int discount) {
-        orderController.editDiscount(supplierID,pid,discount);
+    public Response editDiscount(int supplierID, int pid, int discount) {
+        try{
+            orderController.editDiscount(supplierID,pid,discount);
+            return new Response();
+        }
+        catch (Exception e){
+            return new Response(e.getMessage());
+        }
     }
 
-    public void addProdToBill(int supplierID, int pid, int minQ, int discount) {
-        orderController.addProdToBill(supplierID,pid,minQ,discount);
+    public Response addProdToBill(int supplierID, int pid, int minQ, int discount) {
+        try{
+            orderController.addProdToBill(supplierID,pid,minQ,discount);
+            return new Response();
+        }
+        catch (Exception e){
+            return new Response(e.getMessage());
+        }
     }
 
-    public void removeProdFromBill(int supplierID, int pid) {
-        orderController.removeProdFromBill(supplierID,pid);
+    public Response removeProdFromBill(int supplierID, int pid) {
+        try{
+            orderController.removeProdFromBill(supplierID,pid);
+            return new Response();
+        }
+        catch (Exception e){
+            return new Response(e.getMessage());
+        }
     }
 
-    public void EditSupplierName(int supplierID, String supplierName) {
-        supController.EditSupplierName(supplierID , supplierName);
+    public Response EditSupplierName(int supplierID, String supplierName) {
+        try{
+            supController.EditSupplierName(supplierID , supplierName);
+            return new Response();
+        }
+        catch (Exception e){
+            return new Response(e.getMessage());
+        }
     }
 
-    public void EditAddress(int supplierID, String address) {
-        supController.EditAddress(supplierID , address);
+    public Response EditAddress(int supplierID, String address) {
+        try {
+            supController.EditAddress(supplierID, address);
+            return new Response();
+        } catch (Exception e) {
+            return new Response(e.getMessage());
+        }
     }
 
-    public void EditEmail(int supplierID, String email) {
-        supController.EditEmail(supplierID , email);
+    public Response EditEmail(int supplierID, String email) {
+        try{
+            supController.EditEmail(supplierID , email);
+            return new Response();
+        }
+        catch (Exception e){
+            return new Response(e.getMessage());
+        }
     }
 
-    public void EditBankAccount(int supplierID, int bankAccount) {
-        supController.EditBankAccount(supplierID , bankAccount);
+    public Response EditBankAccount(int supplierID, int bankAccount) {
+        try {
+            supController.EditBankAccount(supplierID , bankAccount);
+            return new Response();
+        } catch (Exception e) {
+            return new Response(e.getMessage());
+        }
     }
 
-    public void EditPaymentMethod(int supplierID, String payment) {
-        supController.EditPaymentMethod(supplierID , payment);
+    public Response EditPaymentMethod(int supplierID, String payment) {
+        try {
+            supController.EditPaymentMethod(supplierID , payment);
+            return new Response();
+        } catch (Exception e) {
+            return new Response(e.getMessage());
+        }
     }
 
-    // TODO: if time will allow --> upgrade to Alex idea
-    public void EditContact(int supplierID, String contact) {
-        supController.EditContact(supplierID , contact);
+    public Response EditContact(int supplierID, String contact) {
+        try {
+            supController.EditContact(supplierID , contact);
+            return new Response();
+        } catch (Exception e) {
+            return new Response(e.getMessage());
+        }
     }
 
-    public void EditInfoSupDay(int supplierID, String infoSupDay) {
-        supController.EditInfoSupDay(supplierID , infoSupDay);
+    public Response EditInfoSupDay(int supplierID, String infoSupDay) {
+        try {
+            supController.EditInfoSupDay(supplierID , infoSupDay);
+            return new Response();
+        } catch (Exception e) {
+            return new Response(e.getMessage());
+        }
     }
 
-    public void EditPickup(int supplierID, boolean pickup) {
-        supController.EditPickup(supplierID , pickup);
+    public Response EditPickup(int supplierID, boolean pickup) {
+        try {
+            supController.EditPickup(supplierID , pickup);
+            return new Response();
+        } catch (Exception e) {
+            return new Response(e.getMessage());
+        }
     }
 
-    public String showSupplierCard(int supplierID){
-        return supController.showSupplierCard(supplierID);
+    public ResponseT<String> showSupplierCard(int supplierID){
+        try {
+            String s = supController.showSupplierCard(supplierID);
+            return new ResponseT<>(s);
+        } catch (Exception e) {
+            return new ResponseT<>(e.getMessage());
+        }
     }
 
-    public void addProductToSupplier(int supplierID, int productID, String name, String category, double price) {
-        supController.addProductToSupplier(supplierID, productID, name, category, price);
+    public Response addProductToSupplier(int supplierID, int productID, String name, String category, double price) {
+        try {
+            supController.addProductToSupplier(supplierID, productID, name, category, price);
+            return new Response();
+        } catch (Exception e) {
+            return new Response(e.getMessage());
+        }
     }
 
-    public void removeProductToSupplier(int supplierID, int productID) {
-        supController.removeProductToSupplier(supplierID, productID);
+    public Response removeProductToSupplier(int supplierID, int productID) {
+        try {
+            supController.removeProductToSupplier(supplierID, productID);
+            return new Response();
+        } catch (Exception e) {
+            return new Response(e.getMessage());
+        }
     }
 
-    public String showSupplierProducts(int supplierID){
-        return supController.showSupplierProducts(supplierID);
+    public ResponseT<String> showSupplierProducts(int supplierID){
+        try {
+            String s = supController.showSupplierProducts(supplierID);
+            return new ResponseT<>(s);
+        } catch (Exception e) {
+            return new ResponseT<>(e.getMessage());
+        }
     }
 
-    public String showAllSupplier(){
-        return supController.showAllSupplier();
+    public ResponseT<String> showAllSupplier(){
+        try {
+            String s = supController.showAllSupplier();
+            return new ResponseT<>(s);
+        } catch (Exception e) {
+            return new ResponseT<>(e.getMessage());
+        }
     }
 
-    public boolean checkSuppExist(int suppID){
-        return supController.checkSuppExist(suppID);
+    public Response checkSuppExist(int suppID) {
+        try {
+            supController.checkSuppExist(suppID);
+            return new Response();
+        } catch (Exception e) {
+            return new Response(e.getMessage());
+        }
     }
 
-    public boolean checkBillExist(int suppID){
-        return supController.checkBillExist(suppID);
+    public Response checkSuppNotExist(int suppID){
+        try{
+            supController.checkSuppNotExist(suppID);
+            return new Response();
+        }catch (Exception e){
+            return new Response(e.getMessage());
+        }
     }
 
-    public boolean checkProductExist(int supID, int prodID){
-        return supController.checkProductExist(supID,prodID);
+    public Response checkBillExist(int suppID) {
+        try {
+            supController.checkBillExist(suppID);
+            return new Response();
+        } catch (Exception e) {
+            return new Response(e.getMessage());
+        }
     }
 
-    public boolean checkProductInBillOfQ(int supID, int prodID){
-        return supController.checkProductInBillOfQ(supID,prodID);
+    public Response checkBillNotExist(int suppID) {
+        try {
+            supController.checkBillNotExist(suppID);
+            return new Response();
+        } catch (Exception e) {
+            return new Response(e.getMessage());
+        }
+    }
+
+    public Response checkProductExist(int supID, int prodID){
+        try {
+            supController.checkProductExist(supID,prodID);
+            return new Response();
+        } catch (Exception e) {
+            return new Response(e.getMessage());
+        }
+    }
+
+    public Response checkProductInBillOfQ(int supID, int prodID){
+        try {
+            supController.checkProductInBillOfQ(supID,prodID);
+            return new Response();
+        } catch (Exception e) {
+            return new Response(e.getMessage());
+        }
     }
 
     /***************** Orders Functions: ***************/
 
 
-    public int createOrder(int supplierID){
-        int orderID = orderController.createOrder(supplierID);
-
-        LinkedList<Integer> ordersOfSupplier = supplierOrder.get(supplierID);
-        if( ordersOfSupplier != null){
-            ordersOfSupplier.add(orderID);
+    public ResponseT<Integer> createOrder(int supplierID){
+        try{
+            int orderID = orderController.createOrder(supplierID);
+            LinkedList<Integer> ordersOfSupplier = supplierOrder.get(supplierID);
+            if( ordersOfSupplier != null){
+                ordersOfSupplier.add(orderID);
+            }
+            else{
+                ordersOfSupplier = new LinkedList<>();
+                ordersOfSupplier.add(orderID);
+                supplierOrder.put(supplierID,ordersOfSupplier);
+            }
+            return new ResponseT<>(orderID);
+        }catch(Exception e) {
+            return new ResponseT<>(e.getMessage());
         }
-        else{
-            ordersOfSupplier = new LinkedList<Integer>();
-            ordersOfSupplier.add(orderID);
-            supplierOrder.put(supplierID,ordersOfSupplier);
+    }
+
+    public Response addProductToOrder(int orderID, int productID , int quantity) {
+        try {
+            orderController.addProductToOrder(orderID, productID, quantity);
+            return new Response();
+        } catch (Exception e) {
+            return new Response(e.getMessage());
         }
-        return orderID;
     }
 
-    public void addProductToOrder(int orderID, int productID , int quantity) {
-        orderController.addProductToOrder(orderID, productID, quantity);
-    }
-
-    public void removeFromOrder(int productID , int supplierID) {
-        orderController.removeFromOrder(productID , supplierID);
-    }
-
-    public void removeOrder(int orderID) {
-        orderController.removeOrder(orderID);
-    }
-
-    public void updateProdQuantity(int orderID, int productID, int quantity) {
-        orderController.updateProdQuantity(orderID, productID,quantity);
-    }
-
-    public String showAllOrders(){
-        return orderController.showAllOrders();
-    }
-
-    public String showOrdersBySupplier(int supplierID) {
-        String allOrders = '\n'+ "All Supplier Number:" + supplierID + " Orders Are: " ;
-        if(!checkSuppExist(supplierID)){ throw new IllegalArgumentException("Supplier Does Not Exist");}
-        LinkedList<Integer> listOfOrders = supplierOrder.get(supplierID);
-        if (listOfOrders == null){
-            return allOrders + '\n' + " No Orders Yet For This Supplier";
+    public Response removeFromOrder(int productID , int supplierID) {
+        try {
+            orderController.removeFromOrder(productID , supplierID);
+            return new Response();
+        } catch (Exception e) {
+            return new Response(e.getMessage());
         }
-        for(Integer order : listOfOrders){
-            allOrders += '\n' + "Order ID: "+ order +  ", Date: " + orderController.orders.get(order).getDate()  ;
+    }
+
+    public Response removeOrder(int orderID) {
+        try {
+            orderController.removeOrder(orderID);
+            return new Response();
+        } catch (Exception e) {
+            return new Response(e.getMessage());
         }
-        return allOrders + '\n';
-
     }
 
-    public void finalPriceForOrder(int OrderID, int suppID){
-        orderController.finalPriceForOrder(OrderID, suppID);
+    public Response updateProdQuantity(int orderID, int productID, int quantity) {
+        try {
+            orderController.updateProdQuantity(orderID, productID,quantity);
+            return new Response();
+        } catch (Exception e) {
+            return new Response(e.getMessage());
+        }
     }
 
-    public String showOrder(int orderID){
-        return orderController.showOrder(orderID);
+    public ResponseT<String> showAllOrders(){
+        try {
+            String s = orderController.showAllOrders();
+            return new ResponseT<>(s);
+        } catch (Exception e) {
+            return new ResponseT<>(e.getMessage());
+        }
+    }
+
+    public ResponseT<String> showOrdersBySupplier(int supplierID) {
+        try {
+            String allOrders = '\n'+ "All Supplier Number:" + supplierID + " Orders Are: " ;
+            Response res = checkSuppExist(supplierID); //todo return response
+            LinkedList<Integer> listOfOrders = supplierOrder.get(supplierID);
+            if (listOfOrders == null){
+                return new ResponseT<>('\n' + " No Orders Yet For This Supplier");
+            }
+            for(Integer order : listOfOrders){
+                allOrders += '\n' + "Order ID: "+ order +  ", Date: " + orderController.orders.get(order).getDate()  ;
+            }
+            return new ResponseT<>(allOrders + '\n');
+        } catch (Exception e) {
+            return new ResponseT<>(e.getMessage());
+        }
+    }
+
+    public Response finalPriceForOrder(int OrderID, int suppID){
+        try {
+            orderController.finalPriceForOrder(OrderID, suppID);
+            return new Response();
+        } catch (Exception e) {
+            return new Response(e.getMessage());
+        }
+    }
+
+    public ResponseT<String> showOrder(int orderID){
+        try {
+            String s = orderController.showOrder(orderID);
+            return new ResponseT<>(s);
+        } catch (Exception e) {
+            return new ResponseT<>(e.getMessage());
+        }
     }
 
     public boolean isEmptyOrder(int orderID){
         return orderController.isEmptyOrder(orderID);
     }
 
-    public boolean productInOrder(int orderID, int prodID){
-        return orderController.productInOrder(orderID, prodID);
+    public Response productInOrder(int orderID, int prodID){
+        try {
+            orderController.productInOrder(orderID, prodID);
+            return new Response();
+        } catch (Exception e) {
+            return new Response(e.getMessage());
+        }
     }
 
-    //TODO: where to catch exceptions
 
 }

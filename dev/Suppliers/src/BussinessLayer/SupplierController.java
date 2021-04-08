@@ -41,7 +41,6 @@ public class SupplierController {
     }
 
     public void addBillOfQuantity(int supplierID, HashMap<Integer, Integer> minQuantityForDis,  HashMap<Integer, Integer> discountList){
-        //TODO: this class need to know what is billofQ?
         prodController.addBillOfQuantity(supplierID, minQuantityForDis, discountList);
     }
 
@@ -142,23 +141,35 @@ public class SupplierController {
         suppliers.get(supplierID).setPickUp(pickup);
     }
 
-    public boolean checkSuppExist(int suppID){
+    public void checkSuppExist(int suppID){
         if(!suppliers.containsKey(suppID)){
-            return false;
+            throw new IllegalArgumentException("This Supplier Does Not Exist");
         }
-        else return true;
     }
 
-    public boolean checkBillExist(int suppID){
-        return prodController.checkBillExist(suppID);
+    public void checkSuppNotExist(int suppID){
+        if(suppliers.containsKey(suppID)){
+            throw new IllegalArgumentException("This Supplier Already Exists");
+        }
     }
 
-    public boolean checkProductExist(int supID, int prodID){
-        return prodController.checkProductExist(supID, prodID);
+    public void checkBillExist(int suppID){
+        prodController.checkBillExist(suppID);
     }
 
-    public boolean checkProductInBillOfQ(int supID, int prodID){
-        return prodController.checkProductInBillOfQ(supID, prodID);
+    public void checkBillNotExist(int suppID){
+        prodController.checkBillExist(suppID);
     }
 
+    public void checkProductExist(int supID, int prodID){
+        prodController.checkProductExist(supID, prodID);
+    }
+
+    public void checkProductInBillOfQ(int supID, int prodID){
+        prodController.checkProductInBillOfQ(supID, prodID);
+    }
+
+    public HashMap<Integer, SupplierCard> getSuppliers() {
+        return this.suppliers;
+    }
 }

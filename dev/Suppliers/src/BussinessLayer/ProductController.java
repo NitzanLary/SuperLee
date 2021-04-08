@@ -89,11 +89,16 @@ public class ProductController {
         return productsList;
     }
 
-    public boolean checkBillExist(int suppID){
-        if(!discounts.containsKey(suppID)){
-            return false;
+    public void checkBillExist(int suppID){
+        if(discounts.containsKey(suppID)){
+            throw new IllegalArgumentException("Bill Of Quantity Already Exist");
         }
-        else return true;
+    }
+
+    public void checkBillNotExist(int suppID){
+        if(!discounts.containsKey(suppID)){
+            throw new IllegalArgumentException("Bill Of Quantity Does Not Exist");
+        }
     }
 
     public double calculateDiscount(int productId, int quantity, int suppID){
@@ -114,13 +119,16 @@ public class ProductController {
         supplierProd.put(supplierID, products);
     }
 
-    public boolean checkProductExist(int supID, int prodID){
-        Product prod = supplierProd.get(supID).get(prodID);
-        return prod != null;
+    public void checkProductExist(int supID, int prodID){
+        if(!supplierProd.get(supID).containsKey(prodID)){
+            throw new IllegalArgumentException("This Supplier Does Not Have This Product ID");
+        }
     }
 
-    public boolean checkProductInBillOfQ(int supID, int prodID){
-        return discounts.get(supID).getMinQuantityForDis().containsKey(prodID);
+    public void checkProductInBillOfQ(int supID, int prodID){
+        if(!discounts.get(supID).getMinQuantityForDis().containsKey(prodID)){
+            throw new IllegalArgumentException("This Product Does Not Exist In The Bill Of Quantity");
+        }
     }
 
     public void editMinQuantity(int supplierID, int pid, int newQ) {
@@ -138,7 +146,14 @@ public class ProductController {
 
     public void removeProdFromBill(int supplierID, int pid) {
         discounts.get(supplierID).getDiscountList().remove(pid);
+        discounts.get(supplierID).getMinQuantityForDis().remove(pid);
     }
 
+    public HashMap<Integer, HashMap<Integer, Product>> getSupplierProd() {
+        return supplierProd;
+    }
 
+    public HashMap<Integer,BillOfQuantities> getDiscounts(){
+        return this.discounts;
+    }
 }

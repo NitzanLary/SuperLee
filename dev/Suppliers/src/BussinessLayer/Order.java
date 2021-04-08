@@ -11,7 +11,6 @@ public class Order {
     private double price;
     private LocalDate date;
 
-    //TODO: how to calculate price
     public Order(int orderID, int supplierID, boolean delivered, HashMap<Integer,Integer> products){
         this.orderID = orderID;
         this.supplierID = supplierID;

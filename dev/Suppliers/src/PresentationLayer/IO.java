@@ -1,6 +1,7 @@
 package PresentationLayer;
 import BussinessLayer.FacadeController;
-
+import BussinessLayer.Response;
+import BussinessLayer.ResponseT;
 import java.util.HashMap;
 import java.util.Scanner;
 import static java.lang.System.exit;
@@ -9,9 +10,7 @@ import static java.lang.System.exit;
  * This is the presentation layer of the system.
  * The communication with the users are from here.
  */
-
-//TODO: check if the functions need to be static?
-
+//TODO: check input validation - try/cacth?
 public class IO {
 
     private static IO io = null;
@@ -21,11 +20,11 @@ public class IO {
     private IO() {
         System.out.println('\n' + "----------------------------------------------------------");
         System.out.println('\n' +
-                "8888  8  8  8888  8888  8888              8    8888  8888" + '\n' +
-                "8     8  8  8  8  8     8  8              8    8     8   "+ '\n' +
-                "8888  8  8  8888  8888  888     888888    8    8888  8888"+ '\n' +
-                "   8  8  8  8     8     8 8               8    8     8   "+ '\n' +
-                "8888  8888  8     8888  8  8              8888 8888  8888" + '\n');
+                "0000  0  0  0000  0000  0000              0    0000  0000" + '\n' +
+                "0     0  0  0  0  0     0  0              0    0     0   "+ '\n' +
+                "0000  0  0  0000  0000  000     000000    0    0000  0000"+ '\n' +
+                "   0  0  0  0     0     0 0               0    0     0   "+ '\n' +
+                "0000  0000  0     0000  0  0              0000 0000  0000" + '\n');
         System.out.println("----------------------------------------------------------" + '\n');
 
         System.out.println('\n' + "Welcome To Super-Lee Supplier System!" + '\n' +
@@ -39,7 +38,7 @@ public class IO {
         return io;
     }
 
-    public static void init() {
+    public void init() {
 
         System.out.println( "1. Main Menu " + '\n' + "2. Load Data example " );
 
@@ -48,16 +47,16 @@ public class IO {
         switch (caseNumber) {
             case 2:
                 baseScenario();
-                mainMenu();
+                io.mainMenu();
                 break;
 
             case 1:
-                mainMenu();
+                io.mainMenu();
                 break;
         }
     }
 
-    public static void baseScenario() {
+    public void baseScenario() {
 
         facadeC.createSupCard("Sahar", 001, "Raanana", "kalifa@gmail.com" , 45802000,
                 "credit card","shimon 052-6093400" , "Sunday", false);
@@ -81,7 +80,7 @@ public class IO {
 
     }
 
-    public static void mainMenu() {
+    public void mainMenu() {
 
         while (true) {
             System.out.println('\n' + "1. Suppliers And Products");
@@ -106,7 +105,7 @@ public class IO {
         }
     }
 
-    public static void suppliersAndProducts() {
+    public void suppliersAndProducts() {
 
         System.out.println('\n' + "Please Choose One Of The Following Options : ");
         System.out.println("1. Add New Supplier");
@@ -132,7 +131,11 @@ public class IO {
             case 2:
                 System.out.println('\n' + "Enter Supplier ID You Would Like To Delete: ");
                 int SupplierID = Integer.parseInt(scanner.nextLine());
-                facadeC.deleteSupCard(SupplierID);
+                Response response = facadeC.deleteSupCard(SupplierID);
+                if (response.ErrorMessage != null) {
+                    System.out.println(response.ErrorMessage);
+                    return;
+                }
                 System.out.println("Deleted Successfully" + '\n');
                 break;
 
@@ -147,7 +150,11 @@ public class IO {
             case 5:
                 System.out.println("Enter Supplier ID You Would Like To Delete His Bill Of Quantity: ");
                 int SuppID = Integer.parseInt(scanner.nextLine());
-                facadeC.deleteBillOfQuantity(SuppID);
+                response = facadeC.deleteBillOfQuantity(SuppID);
+                if (response.ErrorMessage != null) {
+                    System.out.println(response.ErrorMessage);
+                    return;
+                }
                 break;
 
             case 6:
@@ -163,26 +170,43 @@ public class IO {
                 int SupplID = Integer.parseInt(scanner.nextLine());
                 System.out.println("Enter Product ID You Would Like To Delete: ");
                 int pid = Integer.parseInt(scanner.nextLine());
-                facadeC.removeProductToSupplier(SupplID,pid);
+                response = facadeC.removeProductToSupplier(SupplID,pid);
+                if (response.ErrorMessage != null) {
+                    System.out.println(response.ErrorMessage);
+                    return;
+                }
                 break;
 
             case 9:
                 System.out.println('\n' + "Enter Supplier ID You Would Like To See His Product: ");
                 int SupID = Integer.parseInt(scanner.nextLine());
-                String allSuppliersProd = facadeC.showSupplierProducts(SupID);
+                ResponseT<String> res = facadeC.showSupplierProducts(SupID);
+                if (res.ErrorMessage != null) {
+                    System.out.println(res.ErrorMessage);
+                    return;
+                }
+                String allSuppliersProd = res.value;
                 System.out.println(allSuppliersProd);
                 break;
 
             case 10:
-                String allSuppliers = facadeC.showAllSupplier();
-                System.out.println('\n' + allSuppliers);
+                res = facadeC.showAllSupplier();
+                if (res.ErrorMessage != null) {
+                    System.out.println(res.ErrorMessage);
+                    return;
+                }
+                System.out.println('\n' + res.value);
                 break;
 
             case 11:
                 System.out.println("Enter Supplier ID You Would Like To See His Details: ");
                 int SupId = Integer.parseInt(scanner.nextLine());
-                String supCard = facadeC.showSupplierCard(SupId);
-                System.out.println(supCard);
+                ResponseT<String> resp = facadeC.showSupplierCard(SupId);
+                if (resp.ErrorMessage != null) {
+                    System.out.println(resp.ErrorMessage);
+                    return;
+                }
+                System.out.println(resp.value);
                 break;
 
             case 12:
@@ -193,7 +217,7 @@ public class IO {
         }
     }
 
-    public static void orders(){
+    public void orders(){
         System.out.println('\n' + "Please Choose One Of The Following Options : ");
         System.out.println("1. Create New Order");
         System.out.println("2. Delete Exist Order");
@@ -210,16 +234,27 @@ public class IO {
             case 2:
                 System.out.println('\n' + "Enter Order ID You Would Like To Delete: ");
                 int orderID = Integer.parseInt(scanner.nextLine());
-                facadeC.removeOrder(orderID);
+                Response res = facadeC.removeOrder(orderID);
+                if (res.ErrorMessage != null) {
+                    System.out.println(res.ErrorMessage);
+                    return;
+                }
+                System.out.println("Deleted Order Successfully");
                 break;
 
             case 3:
-                facadeC.showAllOrders();
+                ResponseT<String> resp = facadeC.showAllOrders();
+                if (resp.ErrorMessage != null) {
+                    System.out.println(resp.ErrorMessage);
+                    return;
+                }
+                System.out.println(resp.value);
                 break;
 
             case 4:
                 System.out.println('\n' + "Enter Supplier ID: ");
                 int supID = Integer.parseInt(scanner.nextLine());
+                if(!checkSupExist(supID)){return;}
                 orderBySupp(supID);
                 break;
 
@@ -231,12 +266,13 @@ public class IO {
         }
     }
 
-    public static void createSupplierCard() {
+    public void createSupplierCard() {
         System.out.println('\n' + "Enter Supplier ID: ");
         int SupplierID = Integer.parseInt(scanner.nextLine());
 
-        if(facadeC.checkSuppExist(SupplierID)){
-            System.out.println("Supplier ID Already Exists");
+        Response res = facadeC.checkSuppNotExist(SupplierID);
+        if( res.ErrorMessage != null){
+            System.out.println(res.ErrorMessage);
             return;
         }
 
@@ -275,17 +311,16 @@ public class IO {
             default:
                 System.out.println("You Need To Choose Only 1-2");
         }
-        facadeC.createSupCard(SupplierName,SupplierID,Address,mail,bankAcc,payment,contacts,infoSupplyDay,pickUp);
+        res = facadeC.createSupCard(SupplierName,SupplierID,Address,mail,bankAcc,payment,contacts,infoSupplyDay,pickUp);
+        if( res.ErrorMessage != null)
+            System.out.println(res.ErrorMessage);
     }
 
-    public static void updateSupplier(){
+    public void updateSupplier(){
         System.out.println('\n' + "Enter Supplier ID You Would Like To Update: ");
         int SupplierID = Integer.parseInt(scanner.nextLine());
 
-        if(!facadeC.checkSuppExist(SupplierID)){
-            System.out.println('\n' + "Supplier ID Does Not Exist " + '\n');
-            return;
-        }
+        if(!checkSupExist(SupplierID)){return;}
 
         System.out.println("1. Edit Supplier Name");
         System.out.println("2. Edit Supplier Address");
@@ -297,48 +332,70 @@ public class IO {
         System.out.println("8. Edit Supplier Pick Up");
 
         int caseNumber = Integer.parseInt(scanner.nextLine());
+        Response res;
 
         switch (caseNumber) {
             case 1:
                 System.out.println("Enter New Name: ");
                 String name = scanner.nextLine();
-                facadeC.EditSupplierName(SupplierID, name);
+                res = facadeC.EditSupplierName(SupplierID, name);
+                if(res.ErrorMessage != null){
+                    System.out.println(res.ErrorMessage);
+                }
                 break;
 
             case 2:
                 System.out.println("Enter New Address: ");
                 String address = scanner.nextLine();
-                facadeC.EditAddress(SupplierID, address);
+                res = facadeC.EditAddress(SupplierID, address);
+                if(res.ErrorMessage != null){
+                    System.out.println(res.ErrorMessage);
+                }
                 break;
 
             case 3:
                 System.out.println("Enter New Email: ");
                 String mail = scanner.nextLine();
-                facadeC.EditEmail(SupplierID, mail);
+                res = facadeC.EditEmail(SupplierID, mail);
+                if(res.ErrorMessage != null){
+                    System.out.println(res.ErrorMessage);
+                }
                 break;
 
             case 4:
                 System.out.println("Enter New Bank Account: ");
                 int bank = Integer.parseInt(scanner.nextLine());
-                facadeC.EditBankAccount(SupplierID, bank);
+                res = facadeC.EditBankAccount(SupplierID, bank);
+                if(res.ErrorMessage != null){
+                    System.out.println(res.ErrorMessage);
+                }
                 break;
 
             case 5:
                 System.out.println("Enter New Payment Method: ");
                 String pay = scanner.nextLine();
-                facadeC.EditPaymentMethod(SupplierID, pay);
+                res = facadeC.EditPaymentMethod(SupplierID, pay);
+                if(res.ErrorMessage != null){
+                    System.out.println(res.ErrorMessage);
+                }
                 break;
 
             case 6:
                 System.out.println("Enter New Contacts: ");
                 String contacts = scanner.nextLine();
-                facadeC.EditContact(SupplierID, contacts);
+                res  = facadeC.EditContact(SupplierID, contacts);
+                if(res.ErrorMessage != null){
+                    System.out.println(res.ErrorMessage);
+                }
                 break;
 
             case 7:
                 System.out.println("Enter New Info Supply Day: ");
                 String supp = scanner.nextLine();
-                facadeC.EditInfoSupDay(SupplierID, supp);
+                res = facadeC.EditInfoSupDay(SupplierID, supp);
+                if(res.ErrorMessage != null){
+                    System.out.println(res.ErrorMessage);
+                }
                 break;
 
             case 8:
@@ -356,75 +413,88 @@ public class IO {
                     default:
                         System.out.println("You Need To Choose Only 1-2");
                 }
-                facadeC.EditPickup(SupplierID, pickUp);
+                res = facadeC.EditPickup(SupplierID, pickUp);
+                if(res.ErrorMessage != null){
+                    System.out.println(res.ErrorMessage);
+                }
                 break;
             default:
                 System.out.println("You Need To Choose Only 1-8");
         }
     }
 
-    public static void createBillOfQ() {
+    public void createBillOfQ() {
         System.out.println("Enter Supplier ID: ");
         int SupplierID = Integer.parseInt(scanner.nextLine());
-        boolean flagSup = facadeC.checkSuppExist(SupplierID);
-        boolean flagBill = facadeC.checkBillExist(SupplierID);
 
-        if(!flagSup){ System.out.println("This Supplier Does Not Exist In The System"); return;}
-        if(flagBill){ System.out.println("This Supplier Already Have Bill Of Quantity"); return;}
-
-        else{
-            boolean exit = false;
-            HashMap<Integer, Integer> minQuantityForDis = new HashMap<>();
-            HashMap<Integer, Integer> discountList = new HashMap<>();
-            while(!exit){
-                System.out.println("Enter Product ID Which You Want To Make Discount: ");
-                int ProdID = Integer.parseInt(scanner.nextLine());
-                if(!facadeC.checkProductExist(SupplierID, ProdID)){
-                    System.out.println("This Supplier Does Not Have This Product ID");
-                    return;
-                }
-                // if the user already insert this product to the supplier's bill of quantity
-                if (minQuantityForDis.get(ProdID) != null){
-                    System.out.println("This Product Already Has A Discount");
-                    return;
-                }
-
-                System.out.println("Enter The Minimum Amount Of Ordering This Product For The Discount: ");
-                int minDis = Integer.parseInt(scanner.nextLine());
-                System.out.println("Enter The Discount In Percentage, 1-100: ");
-                int percentage = Integer.parseInt(scanner.nextLine());
-                if(percentage<1 || percentage> 100){
-                    System.out.println("Invalid Discount");
-                    return;
-                }
-
-                minQuantityForDis.put(ProdID,minDis);
-                discountList.put(ProdID,percentage);
-
-                System.out.println("Do You Want To Add Another Product? " + '\n' + "1. Yes" + '\n' + "2. No");
-                int caseNumber = Integer.parseInt(scanner.nextLine());
-                switch (caseNumber) {
-                    case 1:
-                        break;
-
-                    case 2:
-                        exit = true;
-                        break;
-
-                    default:
-                        System.out.println("You Need To Choose Only 1 Or 2");
-                }
-            }
-            facadeC.addBillOfQuantity(SupplierID,minQuantityForDis,discountList);
+        if (!checkSupExist(SupplierID)) {
+            return;
         }
+        Response res = facadeC.checkBillExist(SupplierID);
+        if (res.ErrorMessage != null) {
+            System.out.println(res.ErrorMessage);
+            return;
+        }
+
+        boolean exit = false;
+        HashMap<Integer, Integer> minQuantityForDis = new HashMap<>();
+        HashMap<Integer, Integer> discountList = new HashMap<>();
+
+        while (!exit) {
+            System.out.println("Enter Product ID Which You Want To Make Discount: ");
+            int ProdID = Integer.parseInt(scanner.nextLine());
+            res = facadeC.checkProductExist(SupplierID, ProdID);
+            if (res.ErrorMessage != null) {
+                System.out.println(res.ErrorMessage);
+                return;
+            }
+            // if the user already insert this product to the supplier's bill of quantity
+            if (minQuantityForDis.get(ProdID) != null) {
+                System.out.println("This Product Already Has A Discount");
+                return;
+            }
+
+            System.out.println("Enter The Minimum Amount Of Ordering This Product For The Discount: ");
+            int minDis = Integer.parseInt(scanner.nextLine());
+            System.out.println("Enter The Discount In Percentage, 1-100: ");
+            int percentage = Integer.parseInt(scanner.nextLine());
+            if (percentage < 1 || percentage > 100) {
+                System.out.println("Invalid Discount");
+                return;
+            }
+
+            minQuantityForDis.put(ProdID, minDis);
+            discountList.put(ProdID, percentage);
+
+            System.out.println("Do You Want To Add Another Product? " + '\n' + "1. Yes" + '\n' + "2. No");
+            int caseNumber = Integer.parseInt(scanner.nextLine());
+            switch (caseNumber) {
+                case 1:
+                    break;
+
+                case 2:
+                    exit = true;
+                    break;
+
+                default:
+                    System.out.println("You Need To Choose Only 1 Or 2");
+            }
+        }
+        res = facadeC.addBillOfQuantity(SupplierID, minQuantityForDis, discountList);
+        if (res.ErrorMessage != null) {
+            System.out.println(res.ErrorMessage);
+            return;
+        }
+
     }
 
-    public static void updateBill(){
+    public void updateBill(){
         System.out.println('\n' + "Enter Supplier ID You Would Like To Update His Bill Of Quantity: ");
         int SupplierID = Integer.parseInt(scanner.nextLine());
 
-        if(!facadeC.checkBillExist(SupplierID)){
-            System.out.println("This Supplier Does Not Have Bill Of Quantity");
+        Response res = facadeC.checkBillNotExist(SupplierID);
+        if (res.ErrorMessage != null) {
+            System.out.println(res.ErrorMessage);
             return;
         }
 
@@ -439,20 +509,27 @@ public class IO {
             case 1:
                 System.out.println("Enter Product ID: ");
                 int pid = Integer.parseInt(scanner.nextLine());
-                if(!facadeC.checkProductInBillOfQ(SupplierID, pid)){
-                    System.out.println("This Product Does Not Exist In The Bill Of Quantity");
+                res = facadeC.checkProductInBillOfQ(SupplierID, pid);
+                if (res.ErrorMessage != null) {
+                    System.out.println(res.ErrorMessage);
                     return;
                 }
                 System.out.println("Enter New Minimum Quantity: ");
                 int min = Integer.parseInt(scanner.nextLine());
-                facadeC.editMinQuantity(SupplierID, pid, min);
+                res = facadeC.editMinQuantity(SupplierID, pid, min);
+                if (res.ErrorMessage != null) {
+                    System.out.println(res.ErrorMessage);
+                    return;
+                }
                 break;
 
             case 2:
                 System.out.println("Enter Product ID: ");
                 pid = Integer.parseInt(scanner.nextLine());
-                if(!facadeC.checkProductInBillOfQ(SupplierID, pid)){
-                    System.out.println("This Product Does Not Exist In The Bill Of Quantity");
+                res = facadeC.checkProductInBillOfQ(SupplierID, pid);
+                if (res.ErrorMessage != null) {
+                    System.out.println(res.ErrorMessage);
+                    return;
                 }
                 System.out.println("Enter New Discount: ");
                 int discount = Integer.parseInt(scanner.nextLine());
@@ -460,19 +537,25 @@ public class IO {
                     System.out.println("Invalid Discount");
                     return;
                 }
-                facadeC.editDiscount(SupplierID, pid, discount);
+                res = facadeC.editDiscount(SupplierID, pid, discount);
+                if (res.ErrorMessage != null) {
+                    System.out.println(res.ErrorMessage);
+                    return;
+                }
                 break;
 
             case 3:
                 System.out.println("Enter Product ID: ");
                 pid = Integer.parseInt(scanner.nextLine());
-                if(!facadeC.checkProductExist(SupplierID, pid)){
-                    System.out.println("This Supplier Does Not Have This Product ID");
+                res = facadeC.checkProductInBillOfQ(SupplierID, pid);
+                if (res.ErrorMessage != null) {
+                    System.out.println(res.ErrorMessage);
                     return;
                 }
                 // if the user already insert this product to the supplier's bill of quantity
-                if (facadeC.checkProductInBillOfQ(SupplierID,pid)){
-                    System.out.println("This Product Already Has A Discount");
+                res = facadeC.checkProductInBillOfQ(SupplierID,pid);
+                if (res.ErrorMessage != null) {
+                    System.out.println(res.ErrorMessage);
                     return;
                 }
                 System.out.println("Enter New Minimum Quantity:");
@@ -483,13 +566,21 @@ public class IO {
                     System.out.println("Invalid Discount");
                     return;
                 }
-                facadeC.addProdToBill(SupplierID, pid, minQ, disc);
+                res = facadeC.addProdToBill(SupplierID, pid, minQ, disc);
+                if (res.ErrorMessage != null) {
+                    System.out.println(res.ErrorMessage);
+                    return;
+                }
                 break;
 
             case 4:
                 System.out.println("Enter Product ID: ");
                 pid = Integer.parseInt(scanner.nextLine());
-                facadeC.removeProdFromBill(SupplierID, pid);
+                res = facadeC.removeProdFromBill(SupplierID, pid);
+                if (res.ErrorMessage != null) {
+                    System.out.println(res.ErrorMessage);
+                    return;
+                }
                 break;
 
             default:
@@ -498,21 +589,14 @@ public class IO {
         }
     }
 
-    public static void addProdToSupp(){
+    public void addProdToSupp(){
         System.out.println("Enter Supplier ID: ");
         int SupplierID = Integer.parseInt(scanner.nextLine());
 
-        boolean exist = facadeC.checkSuppExist (SupplierID);
-        if (!exist){
-            System.out.println("This Supplier Did Not Exist In The System");
-            return;
-        }
+        if(!checkSupExist(SupplierID)){return;}
 
         System.out.println("Enter Product ID: ");
         int pid = Integer.parseInt(scanner.nextLine());
-        if(facadeC.checkProductExist(SupplierID, pid)){
-            System.out.println("This Product Already Exist In Supplier List");
-        }
 
         System.out.println("Enter Product Name : ");
         String name = scanner.nextLine();
@@ -527,18 +611,24 @@ public class IO {
             return;
         }
 
-        facadeC.addProductToSupplier(SupplierID,pid,name,category,price);
-    }
-
-    public static void creatNewOrder(){
-        System.out.println('\n' + "Enter Supplier ID Which You Would Like To Take Order From: ");
-        int SupplierID = Integer.parseInt(scanner.nextLine());
-        if(!facadeC.checkSuppExist(SupplierID)){
-            System.out.println("Supplier Does Not Exist");
+        Response res = facadeC.addProductToSupplier(SupplierID,pid,name,category,price);
+        if (res.ErrorMessage != null) {
+            System.out.println(res.ErrorMessage);
             return;
         }
-        int orderID = facadeC.createOrder(SupplierID);
 
+    }
+
+    public void creatNewOrder(){
+        System.out.println('\n' + "Enter Supplier ID Which You Would Like To Take Order From: ");
+        int SupplierID = Integer.parseInt(scanner.nextLine());
+        if(!checkSupExist(SupplierID)){return;}
+        ResponseT<Integer> res = facadeC.createOrder(SupplierID);
+        if (res.ErrorMessage != null) {
+            System.out.println(res.ErrorMessage);
+            return;
+        }
+        int orderID = res.value;
         boolean finishOrder = false;
 
         while (!finishOrder) {
@@ -554,59 +644,93 @@ public class IO {
                 case 1:
                     System.out.println('\n' + "Enter Product ID:");
                     int productID = Integer.parseInt(scanner.nextLine());
-                    if(!facadeC.checkProductExist(SupplierID, productID)){
-                        System.out.println("This Supplier Does Not Have This Product ID");
+                    Response response = facadeC.checkProductExist(SupplierID, productID);
+                    if (response.ErrorMessage != null) {
+                        System.out.println(res.ErrorMessage);
                         return;
                     }
                     System.out.println('\n' + "Enter Product Quantity:");
                     int quantity = Integer.parseInt(scanner.nextLine());
-                    facadeC.addProductToOrder(orderID,productID,quantity);
+                    response = facadeC.addProductToOrder(orderID,productID,quantity);
+                    if (response.ErrorMessage != null) {
+                        System.out.println(res.ErrorMessage);
+                        return;
+                    }
                     break;
 
                 case 2:
                     System.out.println('\n' + "Enter Product ID You Would Like To Remove:");
                     productID = Integer.parseInt(scanner.nextLine());
-                    if(!facadeC.checkProductExist(SupplierID, productID)){
-                        System.out.println("This Supplier Does Not Have This Product ID");
+                    response = facadeC.checkProductExist(SupplierID, productID);
+                    if (response.ErrorMessage != null) {
+                        System.out.println(res.ErrorMessage);
                         return;
                     }
-                    if(!facadeC.productInOrder(orderID,productID)){
-                        System.out.println("This Product Does Not Exist In This Order, Deletion Failed");
+                    response = facadeC.productInOrder(orderID,productID);
+                    if (response.ErrorMessage != null) {
+                        System.out.println(res.ErrorMessage);
                         return;
                     }
-                    facadeC.removeFromOrder(productID,SupplierID);
+                    response = facadeC.removeFromOrder(productID,SupplierID);
+                    if (response.ErrorMessage != null) {
+                        System.out.println(res.ErrorMessage);
+                        return;
+                    }
                     break;
 
                 case 3:
                     System.out.println('\n' + "Enter Product ID:");
                     productID = Integer.parseInt(scanner.nextLine());
-                    if(!facadeC.checkProductExist(SupplierID, productID)){
-                        System.out.println("This Supplier Does Not Have This Product ID");
+                    response = facadeC.checkProductExist(SupplierID, productID);
+                    if (response.ErrorMessage != null) {
+                        System.out.println(res.ErrorMessage);
                         return;
                     }
-                    if(!facadeC.productInOrder(orderID,productID)){
-                        System.out.println("This Product Does Not Exist In This Order, You Need To Add It First");
+                    response = facadeC.productInOrder(orderID,productID);
+                    if (response.ErrorMessage != null) {
+                        System.out.println(res.ErrorMessage);
                         return;
                     }
                     System.out.println('\n' + "Enter New Product Quantity:");
                     quantity = Integer.parseInt(scanner.nextLine());
-                    facadeC.updateProdQuantity(orderID,productID,quantity);
+                    response = facadeC.updateProdQuantity(orderID,productID,quantity);
+                    if (response.ErrorMessage != null) {
+                        System.out.println(res.ErrorMessage);
+                        return;
+                    }
                     break;
 
                 case 4:
-                    String products = facadeC.showSupplierProducts(SupplierID);
-                    System.out.println(products);
+                    ResponseT<String> resp = facadeC.showSupplierProducts(SupplierID);
+                    if (resp.ErrorMessage != null) {
+                        System.out.println(res.ErrorMessage);
+                        return;
+                    }
+                    System.out.println(resp.value);
                     break;
 
                 case 5:
                     finishOrder = true;
                     if(facadeC.isEmptyOrder(orderID)){
                         System.out.println('\n' + "No Products In This Order, This Order Will Be Deleted");
-                        facadeC.removeOrder(orderID);
+                        response = facadeC.removeOrder(orderID);
+                        if (response.ErrorMessage != null) {
+                            System.out.println(res.ErrorMessage);
+                            return;
+                        }
                     }
                     else{
-                        facadeC.finalPriceForOrder(orderID, SupplierID);
-                        System.out.println('\n' + "Order Summary: " + facadeC.showOrder(orderID));
+                        response = facadeC.finalPriceForOrder(orderID, SupplierID);
+                        if (response.ErrorMessage != null) {
+                            System.out.println(res.ErrorMessage);
+                            return;
+                        }
+                        resp = facadeC.showOrder(orderID);
+                        if (resp.ErrorMessage != null) {
+                            System.out.println(res.ErrorMessage);
+                            return;
+                        }
+                        System.out.println('\n' + "Order Summary: " + resp.value);
                     }
                     break;
                 default:
@@ -617,25 +741,43 @@ public class IO {
 
     }
 
-    public static void orderBySupp(int supID){
+    public void orderBySupp(int supID){
         System.out.println('\n' + "Please Choose One Of The Following Options : ");
         System.out.println("1. Show All From Supplier");
         System.out.println("2. Show Specific Order From Supplier");
-        //TODO: check if the supplier exist
 
         int caseNumber = Integer.parseInt(scanner.nextLine());
         switch (caseNumber) {
             case 1:
-                facadeC.showOrdersBySupplier(supID);
+                ResponseT<String> res = facadeC.showOrdersBySupplier(supID);
+                if(res.ErrorMessage != null){
+                    System.out.println(res.ErrorMessage);
+                    return;
+                }
+                System.out.println(res.value);
                 break;
 
             case 2:
                 System.out.println("Enter Order ID You Would Like To Show: ");
                 int orderID = Integer.parseInt(scanner.nextLine());
-                facadeC.showOrder(orderID);
+                res = facadeC.showOrder(orderID);
+                if(res.ErrorMessage != null){
+                    System.out.println(res.ErrorMessage);
+                    return;
+                }
+                System.out.println(res.value);
                 break;
 
         }
+    }
+
+    public boolean checkSupExist(int SupplierID){
+        Response res = facadeC.checkSuppExist(SupplierID);
+        if(res.ErrorMessage != null){
+            System.out.println(res.ErrorMessage);
+            return false;
+        }
+        return true;
     }
 
 
