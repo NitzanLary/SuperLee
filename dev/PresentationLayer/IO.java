@@ -84,16 +84,27 @@ public class IO {
 
     //display `msg` to the user and returns an int read from the user
     public int getInt(String msg) {
-        System.out.println(msg);
-        int out = scanner.nextInt();
-        scanner.nextLine();
-        return out;
+        try {
+            System.out.println(msg);
+            int out = scanner.nextInt();
+            scanner.nextLine();
+            return out;
+        } catch (InputMismatchException err) {
+            scanner.nextLine();
+            return getInt("Invalid input - please enter a whole number");
+        }
     }
 
     //display `msg` to the user and returns a double read from the user
     public double getDouble(String msg) {
-        System.out.println(msg);
-        return scanner.nextDouble();
+        try {
+            System.out.println(msg);
+            return scanner.nextDouble();
+        } catch (InputMismatchException err) {
+            scanner.nextLine();
+            return getDouble("Invalid input - please enter a number");
+        }
+
     }
 
     //display `msg` to the user and returns a string read from the user
@@ -104,14 +115,20 @@ public class IO {
 
     //display `msg` to the user and returns LocalDate read from the user
     public LocalDate getDate(String msg) {
-        System.out.println(msg);
-        System.out.println("Enter the day:");
-        int day = scanner.nextInt();
-        System.out.println("Enter the month:");
-        int month = scanner.nextInt();
-        System.out.println("Enter the year:");
-        int year = scanner.nextInt();
-        return LocalDate.of(year,month,day);
+        try {
+            System.out.println(msg);
+            System.out.println("Enter the day:");
+            int day = scanner.nextInt();
+            System.out.println("Enter the month:");
+            int month = scanner.nextInt();
+            System.out.println("Enter the year:");
+            int year = scanner.nextInt();
+            return LocalDate.of(year,month,day);
+        } catch (InputMismatchException err) {
+            scanner.nextLine();
+            return getDate("Invalid input - please enter the date as whole numbers");
+        }
+
     }
     //display `msg` to the user
     public void print(String msg) {
