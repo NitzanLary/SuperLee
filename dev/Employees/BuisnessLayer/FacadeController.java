@@ -109,9 +109,9 @@ public class FacadeController {
 
 //public ResponseT<shift> generateCustomShift(String userID, LocalDate from, LocalDate to) // only HR and general manager
 
-    public Response generate4WeeklyShifts(String userID) {
+    public Response generate2WeeklyShifts(String userID) {
         if (employeeController.getEmployee(userID).getValue().checkAuthorizedHrOrGenral().getValue()){
-            return shiftController.add4WeeksSlots();
+            return shiftController.add2WeeksSlots();
         }
         return new Response("Not Authorized! Only HR Manager Or General Manager Authorized For This Action");
     } // only HR and general manager
