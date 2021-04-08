@@ -56,8 +56,8 @@ public class Truck {
 
     public String toString(){
         String ret = "";
-        ret.concat("id-"+id);
-        ret.concat("\nmodel-"+model).concat("\nmaxWeight-"+maxWeight).concat("\ntruckWeight-"+truckWeight);
+        ret += ("id-"+id);
+        ret += ("\nmodel-"+model) + ("\nmaxWeight-"+maxWeight) + ("\ntruckWeight-"+truckWeight);
         return ret;
     }
 

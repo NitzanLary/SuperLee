@@ -117,6 +117,11 @@ public class Delivery {
 
     @Override
     public String toString() {
+        ArrayList<String> destin = new ArrayList<>();
+        for (Task t: destinations){
+            destin.add("\n"+t.toString("\t\t\t")+"\n\t\t");
+        }
+        String destinSTR = destin.toString().substring(0,destin.toString().length()-3);
         return "\n\t\tDelivery : {" +
                 "\n\t\tid ='" + id + '\'' +
                 "\n\t\tdate = '" + date + '\'' +
@@ -125,8 +130,8 @@ public class Delivery {
                 "\n\t\tdriverName = '" + driverName + '\'' +
                 "\n\t\tdepartureWeight = " + departureWeight +
                 "\n\t\tmodification = '" + modification + '\'' +
-                "\n\t\torigin = " + origin +
-                "\n\t\tdestinations= " + destinations +
+                "\n\t\torigin = " + origin.getAddress() +
+                "\n\t\tdestinations= " + destinSTR +
                 '}';
     }
 

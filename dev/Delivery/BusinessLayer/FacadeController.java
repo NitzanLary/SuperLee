@@ -21,6 +21,15 @@ public class FacadeController {
         trc = new TruckController();
     }
 
+    public Response<String> toStringResponse() {
+        return new Response<>("\n\nSystem current state:\nDeliveries=" + dec +
+                "\nDrivers=" + drc +
+                "\nAreas=" + arc +
+                "\nTasks=" + tac +
+                "\nTrucks=" + trc +
+                '}');
+    }
+
     @Override
     public String toString() {
         return "Deliveries=" + dec +
@@ -68,7 +77,7 @@ public class FacadeController {
     }
 
     // - Task -
-    public TaskDTO addTask(HashMap<String, Integer> listOfProduct, String loadingOrUnloading,
+    public String addTask(HashMap<String, Integer> listOfProduct, String loadingOrUnloading,
                         String Destination){
         Location destination = arc.getLocation(Destination);
         return this.tac.addTask(listOfProduct, loadingOrUnloading, destination);
@@ -76,9 +85,11 @@ public class FacadeController {
 
     public TaskDTO addTask(TaskDTO t){
         if (t.getId() == null){
-            return addTask(t.getListOfProduct(),t.getLoadingOrUnloading(),t.getDestination().getAddress());
+            t.setId(addTask(t.getListOfProduct(),t.getLoadingOrUnloading(),t.getDestination().getAddress()));
+            return t;
         }
         return null;
+
     }
     public Task getTaskById(String id){
         return this.tac.getTaskById(id);
@@ -119,8 +130,8 @@ public class FacadeController {
         Task task = this.tac.getTaskById(id);
     }
 
-    public void sendDelivery(DeliveryDTO deliveryDTO){
-        this.dec.sendDelivery(deliveryDTO);
+    public void sendDelivery(DeliveryDTO deliveryDTO, Response<Boolean> storeIt){
+        this.dec.sendDelivery(deliveryDTO, storeIt.getData());
     }
 
     // todo - should be integrated with employee module to get all drivers
@@ -136,6 +147,8 @@ public class FacadeController {
         ret.add(emp4);
         return ret;
     }
+
+
     public void tempAddDriver(ArrayList<tmpEmployee> arr){
         this.drc.tmpAddDriver(arr);
     }
@@ -146,11 +159,11 @@ public class FacadeController {
     }
 
 
-    public ArrayList<String> getDrivers() {
-        ArrayList<String> ret = new ArrayList<>();
-//        for (Driver d : drc.getDrivers())
-        for (tmpEmployee d : drc.tmpGetDrivers())
-            ret.add(d.getName()+"\t"+d.getLicenceType());
+    public ArrayList<DriverDTO> getDrivers() {
+        ArrayList<DriverDTO> ret = new ArrayList<>();
+        for (Driver d : drc.getDrivers()){
+            ret.add(new DriverDTO(d.getLicenceType(),d.getName()));
+        }
         return ret;
     }
 
@@ -177,11 +190,12 @@ public class FacadeController {
 //        dec.createFullDelivery(date, timeOfDeparture, truckNumber, driverName, departureWeight, modification, locationOrigin, tasks);
 //    }
 
-    public void createFullDelivery(DeliveryDTO del){
+    public DeliveryDTO createFullDelivery(DeliveryDTO del){
         ArrayList<Task> tasks = new ArrayList<>();
         for (TaskDTO t: del.getDestinations())
             tasks.add(tac.getAndRemoveTaskById(t.getId()));
-        dec.createFullDelivery(del.getDate(),del.getTimeOfDeparture(),del.getTruckNumber(),del.getDriverName(),del.getDepartureWeight(),del.getModification(), arc.getLocation(del.getOrigin().getAddress()),tasks);
+        del.setId(dec.createFullDelivery(del.getDate(),del.getTimeOfDeparture(),del.getTruckNumber(),del.getDriverName(),del.getDepartureWeight(),del.getModification(), arc.getLocation(del.getOrigin().getAddress()),tasks));
+        return del;
     }
 
     public String getNextDeliveryID() {

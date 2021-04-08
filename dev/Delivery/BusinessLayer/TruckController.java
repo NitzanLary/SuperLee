@@ -34,9 +34,7 @@ public class TruckController {
 
     @Override
     public String toString() {
-        return "TruckController{" +
-                "controller=" + controller +
-                '}';
+        return controller.values().toString();
     }
 
     public Truck getTruckByID(String truckNumber) {

@@ -33,6 +33,10 @@ public class Task {
     }
 
     public String toString(){
-        return "id-"+this.id+"\nlist of products "+this.listOfProduct+"\nmission-"+this.loadingOrUnloading;
+        return "id - "+this.id+"\nlist of products - "+this.listOfProduct+"\nmission - "+this.loadingOrUnloading+"\ndestination - "+destination.getAddress()+" | "+destination.getContactName()+" | "+destination.getPhoneNumber();
+    }
+
+    public String toString(String tabs){
+        return tabs+"id - "+this.id+"\n"+tabs+"list of products - "+this.listOfProduct+"\n"+tabs+"mission - "+this.loadingOrUnloading+"\n"+tabs+"destination - "+destination.getAddress()+" | "+destination.getContactName()+" | "+destination.getPhoneNumber();
     }
 }

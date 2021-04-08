@@ -7,13 +7,11 @@ import java.util.HashMap;
 
 public class DriverController {
     private HashMap<String, Driver> controller;
-    private HashMap<String, tmpEmployee> tempController;// REMOVE - TEMP !
     private DataController dc = DataController.getInstance();
 
     public DriverController(){
         this.controller = new HashMap<String, Driver>();
-        tempController = new HashMap<>();
-
+//        tempController = new HashMap<>();
     }
 
     public boolean containsDriver(String name){
@@ -22,16 +20,15 @@ public class DriverController {
 
     public void tmpAddDriver(ArrayList<tmpEmployee> arr){
         for (tmpEmployee driver : arr){
-            this.tempController.put(driver.getName(), driver);
-
+            Driver d = new Driver(driver);
+//            this.tempController.put(driver.getName(), driver);
+            this.controller.put(driver.getName(),d);
         }
     }
 
     @Override
     public String toString() {
-        return "DriverController{" +
-                "controller=" + controller +
-                '}';
+        return  controller.values().toString();
     }
 
     public ArrayList<Driver> getDrivers() {
@@ -42,11 +39,11 @@ public class DriverController {
         return ret;
     }
 
-    public ArrayList<tmpEmployee> tmpGetDrivers() {
-        ArrayList<tmpEmployee> ret = new ArrayList<>();
-        for (tmpEmployee d : tempController.values()){
-            ret.add(d);
-        }
-        return ret;
-    }
+//    public ArrayList<tmpEmployee> tmpGetDrivers() {
+//        ArrayList<tmpEmployee> ret = new ArrayList<>();
+//        for (tmpEmployee d : tempController.values()){
+//            ret.add(d);
+//        }
+//        return ret;
+//    }
 }

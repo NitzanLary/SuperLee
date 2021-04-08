@@ -20,10 +20,22 @@ public class CLI {
         Scanner in = new Scanner(System.in);
         System.out.println("welcome to Delivery Module!");
         System.out.println("for exit the simulation type 'exit' as input at any point");
+        System.out.println("press <Enter> to continue!");
+        in.nextLine();
         String s = "";
+        boolean isFirstIteration = true;
         while (!s.equals("exit")) {
-            System.out.println("system current state:");
-            System.out.println(this.fc.toString());
+            if (isFirstIteration) {
+                System.out.println("now the system will show you its current state:\n press <Enter> to continue");
+                in.nextLine();
+                System.out.println(this.fc.toStringResponse().getData());
+                System.out.println("Press <Enter> to see what action can you do on the system");
+                in.nextLine();
+            }
+            else{
+                System.out.println(this.fc.toStringResponse().getData());
+            }
+            isFirstIteration = false;
             System.out.println("chose action:\n1 add new delivery\n2 update existing delivery\n3 create new appending task" +
                     "\n4 add Truck to the sys\n5 add Driver to the sys\n6 add Area to the sys\n7 add location to the sys\n8 send delivery");
             s = in.nextLine().strip();
@@ -72,15 +84,17 @@ public class CLI {
     private void sendDelivery() {
         Scanner in = new Scanner(System.in);
         DeliveryDTO deliveryDTO = this.chooseDelivery(in);
-        System.out.println(deliveryDTO + "\n");
         if (deliveryDTO == null)
             return;
+        System.out.println(deliveryDTO + "\n");
         String response = this.insertDepartureWeight(in, deliveryDTO);
         if (response.split(" ").length == 2) {
             System.out.println("The delivery can not be send! the delivery is over weight :(\n" +
-                    "Please update this delivery: " + deliveryDTO.getId() + " if you want to send.");
+                    "Please update this delivery: " + deliveryDTO.getId() + " if you wish to send.");
             System.out.println("press <Enter> to continue");
             in.nextLine();
+            deliveryDTO.setDepartureWeight(Integer.parseInt(response.split(" ")[0]));
+            this.fc.sendDelivery(deliveryDTO, new Response<>(false));
             return;
         }
         deliveryDTO.setDepartureWeight(Integer.parseInt(response));
@@ -88,7 +102,7 @@ public class CLI {
         System.out.println(deliveryDTO + "\n");
         String inp = in.nextLine();
         if (inp.equals("y")){
-            this.fc.sendDelivery(deliveryDTO);
+            this.fc.sendDelivery(deliveryDTO,new Response<>(true));
         }
         return;
 
@@ -142,7 +156,7 @@ public class CLI {
                     break;
                 }
                 case ("4"): {
-                    delDTO.setDriverName(chooseDriver(in));
+                    delDTO.setDriverName(chooseDriver(in).getEmployeeName());
                     break;
                 }
 //                case ("5"): {
@@ -311,7 +325,7 @@ public class CLI {
         if (truck.equals("exit"))
             return;
 
-        String driverName = chooseDriver(in);
+        String driverName = chooseDriver(in).getEmployeeName();
         if (driverName.equals("exit"))
             return;
 
@@ -494,18 +508,18 @@ public class CLI {
         return response;
     }
 
-    private String chooseDriver(Scanner in) {
+    private DriverDTO chooseDriver(Scanner in) {
         String inp = "";
-        ArrayList<String> driversLst = fc.getDrivers();
+        ArrayList<DriverDTO> driversLst = fc.getDrivers();
         do {
             System.out.println("choose a driver for the delivery: ");
             for (int i = 1; i <= driversLst.size(); i++) {
-                System.out.println(i + ") " + driversLst.get(i - 1));
+                System.out.println(i + ") " + driversLst.get(i - 1).getEmployeeName()+" "+driversLst.get(i - 1).getLicenseType());
             }
             inp = in.nextLine();
         } while (!isLegalChoice(driversLst.size(), inp) && !inp.equals("exit"));
         if (inp.equals("exit"))
-            return inp;
+            return null;
         return driversLst.get(Integer.parseInt(inp) - 1);
     }
 

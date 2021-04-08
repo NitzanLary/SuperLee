@@ -17,11 +17,12 @@ public class TaskController {
         controller = new HashMap<String, Task>();
     }
 
-    public TaskDTO addTask(HashMap<String, Integer> listOfProduct, String loadingOrUnloading, Location destination){
+    public String addTask(HashMap<String, Integer> listOfProduct, String loadingOrUnloading, Location destination){
         String id = getNewTaskID();
         Task newTask = new Task(id, listOfProduct, loadingOrUnloading, destination);
         controller.put(id, newTask);
-        return new TaskDTO(newTask);
+        return id;
+//        return new TaskDTO(newTask);
     }
 
     public Task getTaskById(String id){
@@ -54,9 +55,12 @@ public class TaskController {
 
     @Override
     public String toString() {
-        return "TaskController{" +
-                "controller=" + controller +
-                '}';
+        ArrayList<String> destin = new ArrayList<>();
+        for (Task t: controller.values()){
+            destin.add("\n"+t.toString("\t")+"\n");
+        }
+        String destinSTR = destin.toString().substring(1,destin.toString().length()-1);
+        return destinSTR;
     }
 
     public void storeTask(Task tsk){

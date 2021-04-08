@@ -17,9 +17,10 @@ public class DeliveryController {
         dataController = DataController.getInstance();
     }
 
-    public void createFullDelivery(String date, String timeOfDeparture, String truckNumber, String driverName, int departureWeight, String modification, Location origin, ArrayList<Task> destinations){
+    public String createFullDelivery(String date, String timeOfDeparture, String truckNumber, String driverName, int departureWeight, String modification, Location origin, ArrayList<Task> destinations){
         String id = getNewDeliveryID();
         deliveries.put(id ,new Delivery(id, date, timeOfDeparture, truckNumber, driverName, departureWeight, modification, origin, destinations));
+        return id;
     }
 
     public void addDriver(Driver dr, String delID){
@@ -33,8 +34,8 @@ public class DeliveryController {
 
     public Delivery updateDelivery(Delivery newDel, String OldDelID){
         Delivery toStore = deliveries.remove(OldDelID);
-        toStore.addModification("- new "+newDel.getID()+" -");
-        newDel.addModification("- old "+OldDelID+" -");
+        toStore.addModification("- newer "+newDel.getID()+" -");
+        newDel.addModification("- older "+OldDelID+" -");
         storeDelivery(toStore);
 //        Delivery newDel = cloneDelivery(toStore);
 //        return null;
@@ -125,8 +126,7 @@ public class DeliveryController {
 
     @Override
     public String toString() {
-        return "DeliveryController{" +
-                "\ndeliveries =\n\t" + deliveries +
+        return "\n\t" + deliveries +
                 '}';
     }
 
@@ -156,9 +156,12 @@ public class DeliveryController {
         return null;
     }
 
-    public void sendDelivery(DeliveryDTO deliveryDTO) {
-        Delivery delivery = this.deliveries.remove(deliveryDTO.getId());
+    public void sendDelivery(DeliveryDTO deliveryDTO, boolean storeIt) {
+        Delivery delivery = this.deliveries.get(deliveryDTO.getId());
         delivery.setDepartureWeight(deliveryDTO.getDepartureWeight());
-        storeDelivery(delivery);
+        if (storeIt) {
+            this.deliveries.remove(deliveryDTO.getId());
+            storeDelivery(delivery);
+        }
     }
 }
