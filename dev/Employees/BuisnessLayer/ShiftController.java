@@ -93,7 +93,7 @@ public class ShiftController {
             if (now.compareTo(week.getToDate()) <= 0){ // positive if now date is after week.getToDate()
                 for (Shift s: week.getShifts()){
                     if (now.compareTo(s.getDate()) <= 0)
-                        shifts.add(s);
+                        shifts.add(s.clone()); // added clone() method
                 }
             }
         }

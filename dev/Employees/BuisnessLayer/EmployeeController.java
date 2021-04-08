@@ -32,6 +32,8 @@ public class EmployeeController {
             return new Response(exception.getMessage());
         }
         e.setTerms(terms);
+        e.setBankAccount(bankAccount);
+        e.setSalary(salary);
         e.AddRole(role);
         employees.put(e.getID().getValue(), e);
         return new Response();
@@ -39,7 +41,7 @@ public class EmployeeController {
 
     public ResponseT<Employee> getEmployee(String id){
         if (!employees.containsKey(id)) return new ResponseT(null, "No employee with this ID");
-        return new ResponseT<Employee>(employees.get(id), null);
+        return new ResponseT<>(employees.get(id));
     }
 
     public Response setEmpName(Employee employee, String newEmpName) {
@@ -74,6 +76,13 @@ public class EmployeeController {
 
     public ResponseT<String> getEmpData(Employee employee) {
         return employee.getEmpDataTostring();
+    }
+
+    public void initData() {
+        AddEmployee("312174295", "Yanay", "12345", 1000, 30, 500, 30,
+                "General Manager", LocalDate.now());
+        AddEmployee("205952971", "Nitzan", "12345", 1000, 30, 500, 30,
+                "HR Manager", LocalDate.now());
     }
 }
 

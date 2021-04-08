@@ -10,4 +10,12 @@ public class MorningShift extends Shift{
         start = LocalTime.of(6,0);
         end = LocalTime.of(14,0);
     }
+
+    @Override
+    public MorningShift clone() {
+        MorningShift cloned = new MorningShift(date);
+        cloned.start = start;
+        cloned.end = end;
+        return cloned;
+    }
 }

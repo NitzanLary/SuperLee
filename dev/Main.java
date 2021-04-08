@@ -11,33 +11,18 @@ public class Main {
     public static void main(String[] args) {
 //        System.out.println("!Hello world");
 
+        FacadeController facade = FacadeController.getInstance();
 
 
-//        LocalTime time = LocalTime.of(14, 50);
-//        System.out.println(time);
-//        System.out.println(time.getHour());
-//        System.out.println(time.getMinute());
-
-//        LocalDate now = LocalDate.now();
-//        LocalDate later = LocalDate.of(2022, 5,12);
-//        System.out.println(later.compareTo(now));
-//
-//        LocalTime lt = LocalTime.of(14,0);
-//        LocalTime end = LocalTime.of(22,0);
-//
-//
-//        MassageHandler mh = s -> System.out.println(s);
-//
-//        mh.print("Nitzan the king on the whole complex");
-
-        System.out.println("1) Add sale\n" +
-                "2) Report Faulty\n" +
-                "3) Add Item\n" +
-                "4) Add Category\n" +
-                "5) Faulty Report\n" +
-                "6) Edit\n" +
-                "7) Inventory report\n" +
-                "9) Exit");
+//        System.out.println("1) Add sale\n" +
+//                "2) Report Faulty\n" +
+//                "3) Add Item\n" +
+//                "4) Add Category\n" +
+//                "5) Faulty Report\n" +
+//                "6) Edit\n" +
+//                "7) Inventory report\n" +
+//                "9) Exit");
+        
 
 //        Employee emp1 = new Employee("Nitzan Lary", "311541214", LocalDate.parse("2019-04-03"));
 //        Employee emp2 = new Employee("Assaf Stern", "224266120", LocalDate.parse("2019-03-03"));

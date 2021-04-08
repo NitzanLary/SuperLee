@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Employee {
-
-
     private String name;
     private String ID;
     private String bankAccount;

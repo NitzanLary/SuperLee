@@ -5,7 +5,7 @@ import java.util.Comparator;
 public class Role{
     private String name;
 
-    Role(String _name) {name = _name;}
+    public Role(String _name) {name = _name;}
 
     public String getName() {
         return name;

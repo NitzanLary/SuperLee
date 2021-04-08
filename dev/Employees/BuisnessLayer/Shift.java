@@ -6,7 +6,7 @@ import java.util.*;
 
 public abstract class Shift {
 
-    private LocalDate date;
+    protected LocalDate date;
     protected LocalTime start;
     protected LocalTime end;
     private boolean closed;
@@ -21,6 +21,8 @@ public abstract class Shift {
         constrains = new HashMap<Employee, Integer>();
         assignedEmployees = new HashMap<String, Employee>();
     }
+
+    public abstract Shift clone();
 
     public LocalDate getDate() {
         return date;

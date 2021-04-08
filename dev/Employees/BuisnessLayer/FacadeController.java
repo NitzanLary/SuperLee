@@ -259,4 +259,10 @@ public class FacadeController {
             return new ResponseT<>(null, "Not Authorized! Only HR Manager Or General Manager Authorized For This Action");
         return r;
     }
+
+    // init with 2 managers and 1 week forward
+    public void initData(){
+        employeeController.initData();
+        shiftController.add1WeeksSlot();
+    }
 }

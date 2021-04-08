@@ -11,4 +11,12 @@ public class EvningShift extends Shift {
         start = LocalTime.of(14,0);
         end = LocalTime.of(22,0);
     }
+
+    @Override
+    public EvningShift clone() {
+        EvningShift cloned = new EvningShift(date);
+        cloned.start = start;
+        cloned.end = end;
+        return cloned;
+    }
 }
