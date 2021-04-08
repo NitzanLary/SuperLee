@@ -40,8 +40,8 @@ public class IO {
                     "5) Faulty Report\n" +
                     "6) Edit\n" +
                     "7) Inventory report\n" +
-                    "8) Categories report" +
-                    "9) Exit");
+                    "8) Categories report\n" +
+                    "\n9) Exit");
             action = scanner.nextInt();
             if (action > 8 || action < 1)
                 break;
@@ -61,7 +61,7 @@ public class IO {
                     "4) Add manufacturer discount\n"+
                     "5) Change item shelf\n" +
                     "6) Move item to shelf from storage\n" +
-                    "7) Remove Item" +
+                    "7) Remove Item\n" +
                     "\n9) Back");
             action = scanner.nextInt();
             if (action > 7 || action < 1)
@@ -117,10 +117,10 @@ public class IO {
         List<String> cats = new LinkedList<>();
         String ans = "";
         int i = 1;
-        while (ans != "-1") {
+        while (!ans.equals("-1")) {
             System.out.println("'-1' to exit");
             ans = getString("Enter category name #" + i++);
-            if (ans != "-1") {
+            if (!ans.equals("-1")) {
                 cats.add(ans);
             }
         }

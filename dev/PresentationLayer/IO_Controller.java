@@ -138,7 +138,7 @@ public class IO_Controller {
             int stQuant = io.getInt("Enter amount in storage");
             String catName = io.getString("Enter item category:");
             int min = io.getInt("Enter minimum amount left before getting alert");
-            if (invCtrl.addItem(id, name, price, cost, shelf, man, shQuant, stQuant, catName, min)) success(); else failure();
+            if (invCtrl.addItem(id, name, price, cost, shelf, man, shQuant, stQuant, min, catName)) success(); else failure();
         } catch (InputMismatchException err) {
             badInput("Please resubmit item");
             addItem();

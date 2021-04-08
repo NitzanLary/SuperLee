@@ -139,7 +139,7 @@ public class StockController {
     }
 
     public String catReport(List<String> catNames) {
-        StringBuilder sb = new StringBuilder("\nReport of categories: "+catNames.toString()+"\n\n");
+        StringBuilder sb = new StringBuilder("\nReport of categories: "+catNames.toString()+"\n");
         for (String cat : catNames) {
             Category c = getCategory(cat);
             if (c == null)
