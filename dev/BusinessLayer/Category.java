@@ -57,15 +57,8 @@ public class Category {
         i.addCostDiscount(new Discount(start, end, discountPr));
     }
 
-    public boolean deleteItem(int id) {
-        Item toDelete = getItem(id);
-        if (toDelete == null)
-            return false;
-        return items.remove(toDelete);
-    }
-
-    public void addSubCategory(Category sub) {
-        subCategories.add(sub);
+    public boolean addSubCategory(Category sub) {
+        return subCategories.add(sub);
     }
 
     public Item getItem(int id) {

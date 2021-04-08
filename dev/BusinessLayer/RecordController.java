@@ -15,17 +15,15 @@ public class RecordController {
     }
 
     //adds a sale to list of sales and return Sale object
-    public Sale addSale(int itemId, double itemCost, double salePrice) {
+    public boolean addSale(int itemId, double itemCost, double salePrice) {
         Sale newSale = new Sale(itemId, itemCost, salePrice);
-        sales.add(newSale);
-        return newSale;
+        return sales.add(newSale);
     }
 
     //adds a faulty item to list of faulty items returns faulty item object
-    public FaultyItem addFaulty(String name, LocalDate expDate, int amountOfFaulyt) {
+    public boolean addFaulty(String name, LocalDate expDate, int amountOfFaulyt) {
         FaultyItem newFI = new FaultyItem(name, expDate, amountOfFaulyt);
-        faultyItems.add(newFI);
-        return newFI;
+        return faultyItems.add(newFI);
     }
 
     //returns a string that

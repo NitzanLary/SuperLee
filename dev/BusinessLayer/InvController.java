@@ -12,36 +12,39 @@ public class InvController {
     }
 
     //adds a sale to the records, removes one item from shelf
-    public void addSale(int id, int amount) {
-        stockCtrl.removeFromShelf(id, amount);
+    public boolean addSale(int id, int amount) {
+        if (!stockCtrl.removeFromShelf(id, amount))
+            return false;
         Item item = stockCtrl.getItem(id);
-        recCtrl.addSale(item.getId(), item.getCost(), item.getPrice());
+        return recCtrl.addSale(item.getId(), item.getCost(), item.getPrice());
     }
 
     //adds a sale to the records, removes one item from shelf if opt is 1 or from storage if opt is 2
-    public void addFaulty(int id, int opt, int amountOfFaulty) {
+    public boolean addFaulty(int id, int opt, int amountOfFaulty) {
         if(opt == 1) {
-            stockCtrl.removeFromShelf(id, amountOfFaulty);
+            if(!stockCtrl.removeFromShelf(id, amountOfFaulty))
+                return false;
         } else {
-            stockCtrl.removeFromStorage(id, amountOfFaulty);
+            if(!stockCtrl.removeFromStorage(id, amountOfFaulty))
+                return false;
         }
         Item item = stockCtrl.getItem(id);
-        recCtrl.addFaulty(item.getName(), LocalDate.now() ,amountOfFaulty);
+        return recCtrl.addFaulty(item.getName(), LocalDate.now() ,amountOfFaulty);
     }
 
     //adds a new Item to the System
-    public void addItem(int id, String name, double price, double cost, int shelf, String man, int shQuan, int stQuan, String catName) {
-        stockCtrl.addItem(id,name,price,cost,shelf,man,shQuan,stQuan, catName);
+    public boolean addItem(int id, String name, double price, double cost, int shelf, String man, int shQuan, int stQuan, String catName) {
+        return stockCtrl.addItem(id,name,price,cost,shelf,man,shQuan,stQuan, catName);
     }
 
     //adds a category which is a sub category of `superName`
-    public void addSubCategory(String name, String superName){
-        stockCtrl.addSubCategory(name, superName);
+    public boolean addSubCategory(String name, String superName){
+        return stockCtrl.addSubCategory(name, superName);
     }
 
     //adds a category which is not a sub category of any
-    public void addCategory(String name) {
-        stockCtrl.addCategory(name);
+    public boolean addCategory(String name) {
+        return stockCtrl.addCategory(name);
     }
 
     //returns a report of all the faulty items that the System found or was reported to it
@@ -50,8 +53,8 @@ public class InvController {
     }
 
     //adds a discount for an item between the `start` and `end` date
-    public void addItemDiscount(LocalDate start, LocalDate end, int dis, int itemID) {
-        stockCtrl.addItemDiscount(start, end, dis, itemID);
+    public boolean addItemDiscount(LocalDate start, LocalDate end, int dis, int itemID) {
+        return stockCtrl.addItemDiscount(start, end, dis, itemID);
     }
 
     //adds a discount for all the items in a category between the `start` and `end` date
@@ -60,23 +63,23 @@ public class InvController {
     }
 
     //adds a new supply for an item to the storage
-    public void addToStorage(int itemID, int amountToAdd) {
-        stockCtrl.addToStorage(itemID, amountToAdd);
+    public boolean addToStorage(int itemID, int amountToAdd) {
+        return stockCtrl.addToStorage(itemID, amountToAdd);
     }
 
     //adds a manufacturer discount for an item
-    public void addManuDiscount(LocalDate start, LocalDate end, int dis, int itemId) {
-        stockCtrl.addManuDiscount(start, end, dis, itemId);
+    public boolean addManuDiscount(LocalDate start, LocalDate end, int dis, int itemId) {
+        return stockCtrl.addManuDiscount(start, end, dis, itemId);
     }
 
     //changes an item shelf
-    public void changeShelf(int itemId, int newShelf) {
-        stockCtrl.changeShelf(itemId, newShelf);
+    public boolean changeShelf(int itemId, int newShelf) {
+        return stockCtrl.changeShelf(itemId, newShelf);
     }
 
     //moves `amountToMove` items from storage to shelf
-    public void moveToShelf(int itemId, int amountToMove) {
-        stockCtrl.moveToShelf(itemId, amountToMove);
+    public boolean moveToShelf(int itemId, int amountToMove) {
+        return stockCtrl.moveToShelf(itemId, amountToMove);
     }
 
     //returns a report of all items in stock
@@ -85,7 +88,7 @@ public class InvController {
     }
 
     //removes an item from the system
-    public void removeItem(int itemId) {
-        stockCtrl.removeItem(itemId);
+    public boolean removeItem(int itemId) {
+        return stockCtrl.removeItem(itemId);
     }
 }

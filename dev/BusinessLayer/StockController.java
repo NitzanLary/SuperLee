@@ -20,16 +20,17 @@ public class StockController {
         return null;
     }
 
-    public void addSubCategory(String name, String superName) {
+    public boolean addSubCategory(String name, String superName) {
         Category superCategory = getCategory(superName);
-        if (superCategory == null)
-            categories.add(new Category(name));
-        else
-            superCategory.addSubCategory(new Category(name));
+        if (superCategory == null || getCategory(name) != null)
+            return false;
+        return superCategory.addSubCategory(new Category(name));
     }
 
-    public void addCategory(String name) {
-        categories.add(new Category(name));
+    public boolean addCategory(String name) {
+        if (categories.contains(name))
+            return false;
+        return categories.add(new Category(name));
     }
 
     public Item getItem(int id) {
@@ -82,43 +83,48 @@ public class StockController {
 
     public boolean addToStorage(int id, int amount) {
         Category c = getCategory(id);
+        if (c == null)
+            return false;
         return c.addToStorage(id, amount);
     }
 
     public boolean moveToShelf(int id, int amount) {
         Category c = getCategory(id);
+        if (c == null)
+            return false;
         return c.moveToShelf(id, amount);
     }
 
     public boolean changeShelf(int id, int shelf) {
         Category c = getCategory(id);
+        if (c == null)
+            return false;
         return c.changeShelf(id, shelf);
     }
 
-    public boolean deleteItem(int id) {
-        if (getItem(id) == null)
-            return false;
+
+    public boolean addItemDiscount(LocalDate start, LocalDate end, int discountPr, int id) {
         Category c = getCategory(id);
-        c.deleteItem(id);
+        if (c == null)
+            return false;
+        c.addItemDiscount(start, end, discountPr, id);
         return true;
     }
 
-    public void addItemDiscount(LocalDate start, LocalDate end, int discountPr, int id) {
-        Category c = getCategory(id);
-        if (c != null)
-            c.addItemDiscount(start, end, discountPr, id);
-    }
-
-    public void addCategoryDiscount(LocalDate start, LocalDate end, int discountPr, String catName) {
+    public boolean addCategoryDiscount(LocalDate start, LocalDate end, int discountPr, String catName) {
         Category c = getCategory(catName);
-        if (c != null)
-            c.addCategoryDiscount(start, end, discountPr);
+        if (c == null)
+            return false;
+        c.addCategoryDiscount(start, end, discountPr);
+        return true;
     }
 
-    public void addManuDiscount(LocalDate start, LocalDate end, int discountPr, int id) {
+    public boolean addManuDiscount(LocalDate start, LocalDate end, int discountPr, int id) {
         Category c = getCategory(id);
-        if (c != null)
-            c.addManuDiscount(start, end, discountPr, id);
+        if (c == null)
+            return false;
+        c.addManuDiscount(start, end, discountPr, id);
+        return true;
     }
 
     public String stkReport() {
