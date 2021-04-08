@@ -3,11 +3,8 @@ package PresentationLayer;
 import BusinessLayer.InvController;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.InputMismatchException;
 import java.util.List;
-import java.util.function.Function;
 
 public class IO_Controller {
     private InvController invCtrl;
@@ -72,14 +69,6 @@ public class IO_Controller {
         io.badInput("The input you have entered is invalid\n" + msg);
     }
 
-    private void success() {
-        io.print("Success!");
-    }
-
-    private void failure() {
-        io.print("There was a problem processing your input - did not process");
-    }
-
     private void addSale() {
         try {
             int id = io.getInt("Enter item ID:");
@@ -88,10 +77,13 @@ public class IO_Controller {
                 badInput("Please resubmit sale");
                 addSale();
             }
-            if(invCtrl.addSale(id, amount)) success(); else failure();
+            invCtrl.addSale(id, amount);
+            io.print("Sale added");
         } catch (InputMismatchException err) {
             badInput("Please resubmit sale");
             addSale();
+        } catch (RuntimeException err) {
+            io.print(err.getMessage());
         }
     }
 
@@ -104,10 +96,13 @@ public class IO_Controller {
                 badInput("Please resubmit faulty item");
                 addFaulty();
             }
-            if(invCtrl.addFaulty(itemId, opt, amountOfFaulty)) success(); else failure();
+            invCtrl.addFaulty(itemId, opt, amountOfFaulty);
+            io.print("Faulty item added");
         } catch (InputMismatchException err) {
             badInput("Please resubmit faulty item");
             addFaulty();
+        } catch (RuntimeException err) {
+            io.print(err.getMessage());
         }
     }
 
@@ -115,15 +110,19 @@ public class IO_Controller {
         try {
             String catName = io.getString("Enter catagory name");
             String subCatOf = io.getString("Enter the name of the catagory above" + catName +": (enter 0 if there isn't one)");
-            if (subCatOf.equals("0"))
-                if(invCtrl.addCategory(catName)) success(); else failure();
-            else
-                if(invCtrl.addSubCategory(catName, subCatOf)) success(); else failure();
+            if (subCatOf.equals("0")) {
+                invCtrl.addCategory(catName);
+            }
+            else {
+                invCtrl.addSubCategory(catName, subCatOf);
+            }
+            io.print("Category added");
         } catch (InputMismatchException err) {
             badInput("Please resubmit category");
             addCategory();
+        } catch (RuntimeException err) {
+            io.print(err.getMessage());
         }
-
     }
 
     private void addItem() {
@@ -138,10 +137,13 @@ public class IO_Controller {
             int stQuant = io.getInt("Enter amount in storage");
             String catName = io.getString("Enter item category:");
             int min = io.getInt("Enter minimum amount left before getting alert");
-            if (invCtrl.addItem(id, name, price, cost, shelf, man, shQuant, stQuant, min, catName)) success(); else failure();
+            invCtrl.addItem(id, name, price, cost, shelf, man, shQuant, stQuant, min, catName);
+            io.print("Item added");
         } catch (InputMismatchException err) {
             badInput("Please resubmit item");
             addItem();
+        } catch (RuntimeException err) {
+            io.print(err.getMessage());
         }
     }
 
@@ -151,10 +153,13 @@ public class IO_Controller {
             LocalDate end = io.getDate("Enter discount end date");
             int dis = io.getInt("Enter the amount of discount");
             int itemId = io.getInt("Enter Item ID");
-            if(invCtrl.addItemDiscount(start, end, dis, itemId)) success(); else failure();
+            invCtrl.addItemDiscount(start, end, dis, itemId);
+            io.print("Discount added");
         } catch (InputMismatchException err){
             badInput("Please resubmit discount");
             discountItem();
+        } catch (RuntimeException err) {
+            io.print(err.getMessage());
         }
     }
 
@@ -165,6 +170,8 @@ public class IO_Controller {
         } catch (InputMismatchException err) {
             badInput("Please resubmit Date");
             faultyReport();
+        } catch (RuntimeException err) {
+            io.print(err.getMessage());
         }
     }
 
@@ -174,10 +181,12 @@ public class IO_Controller {
             LocalDate end = io.getDate("Enter discount end date");
             int dis = io.getInt("Enter the amount of discount");
             String category  = io.getString("Enter Category name");
-            if(invCtrl.addCategoryDiscount(start, end, dis, category)) success(); else failure();
+            invCtrl.addCategoryDiscount(start, end, dis, category);
         } catch (InputMismatchException err) {
             badInput("Please resubmit discount");
             discountCategory();
+        } catch (RuntimeException err) {
+            io.print(err.getMessage());
         }
 
     }
@@ -186,10 +195,13 @@ public class IO_Controller {
         try {
             int itemID = io.getInt("Enter item id");
             int amountToAdd = io.getInt("Enter amount to add");
-            if (invCtrl.addToStorage(itemID, amountToAdd)) success(); else failure();
+            invCtrl.addToStorage(itemID, amountToAdd);
+            io.print("Added to storage");
         } catch (InputMismatchException err) {
             badInput("Please resubmit Item to add and amount");
             addToStorage();
+        } catch (RuntimeException err) {
+            io.print(err.getMessage());
         }
     }
 
@@ -199,19 +211,22 @@ public class IO_Controller {
             LocalDate end = io.getDate("Enter discount end date");
             int dis = io.getInt("Enter the amount of discount");
             int itemId = io.getInt("Enter Item ID");
-            if (invCtrl.addManuDiscount(start, end, dis, itemId)) success(); else failure();
+            invCtrl.addManuDiscount(start, end, dis, itemId);
+            io.print("Discount added");
         } catch (InputMismatchException err) {
             badInput("Please resubmit manufacturer discount");
             manuDiscount();
+        } catch (RuntimeException err) {
+            io.print(err.getMessage());
         }
-
     }
 
     private void changeShelf() {
         try {
             int itemId = io.getInt("Enter Item ID");
             int newShelf = io.getInt("Enter the new shelf for the item");
-            if (invCtrl.changeShelf(itemId, newShelf)) success(); else failure();
+            invCtrl.changeShelf(itemId, newShelf);
+            io.print("Changed Shelf");
         } catch (InputMismatchException msg){
             badInput("Please resubmit item and shelf");
             changeShelf();
@@ -222,20 +237,26 @@ public class IO_Controller {
         try {
             int itemId = io.getInt("Enter Item ID");
             int amountToMove = io.getInt("Enter the amount of items to move");
-            if (invCtrl.moveToShelf(itemId, amountToMove)) success(); else failure();
+            invCtrl.moveToShelf(itemId, amountToMove);
+            io.print("Items moved to shelf");
         } catch (InputMismatchException err) {
             badInput("Please resubmit item and amount");
             moveToShelf();
+        } catch (RuntimeException err) {
+            io.print(err.getMessage());
         }
     }
 
     private void removeItem() {
         try {
             int itemId = io.getInt("Enter Item ID");
-            if (invCtrl.removeItem(itemId)) success(); else failure();
+            invCtrl.removeItem(itemId);
+            io.print("Item removed");
         } catch (InputMismatchException err) {
             badInput("Please resubmit item");
             removeItem();
+        } catch (RuntimeException err) {
+            io.print(err.getMessage());
         }
     }
 
@@ -246,6 +267,8 @@ public class IO_Controller {
         } catch (InputMismatchException err) {
             badInput("Please resubmit categories");
             catReport();
+        } catch (RuntimeException err) {
+            io.print(err.getMessage());
         }
     }
 }

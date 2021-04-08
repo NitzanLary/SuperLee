@@ -15,6 +15,10 @@ public class Category {
         items = new LinkedList<>();
     }
 
+    public String getName() {
+        return name;
+    }
+
     public boolean addItem(int id, String name, double price, double cost, int shelfNum, String manufacturer, int shelfQuantity, int storageQuantity, int minAlert) {
         return items.add(new Item(id, name, price, cost, shelfNum, manufacturer, shelfQuantity, storageQuantity, minAlert));
     }
