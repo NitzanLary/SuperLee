@@ -11,6 +11,10 @@ public class Role{
         return name;
     }
 
+    public Role(Role other){
+        name = other.name;
+    }
+
     public boolean compare(String r2){
         return name.equals(r2);
     }

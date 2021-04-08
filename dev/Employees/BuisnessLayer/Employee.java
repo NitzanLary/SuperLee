@@ -26,6 +26,19 @@ public class Employee {
         roles = new ArrayList<>();
     }
 
+    // copy ctr
+    public Employee(Employee other){
+        name = other.name;
+        ID = other.ID;
+        bankAccount = other.bankAccount;
+        salary = other.salary;
+        List<Role> roles = new ArrayList<>();
+        for (Role role : other.roles)
+            roles.add(new Role(role));
+        terms = new TermsOfEmployee(other.terms);
+        dateOfHire = other.dateOfHire;
+    }
+
     private boolean isNameValid(String name){
         return name != null && !name.equals("") && !name.equals(" ");
     }

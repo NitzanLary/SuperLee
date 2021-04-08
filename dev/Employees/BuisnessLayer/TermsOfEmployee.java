@@ -11,6 +11,12 @@ public class TermsOfEmployee {
         daysOff = _daysOff;
     }
 
+    TermsOfEmployee(TermsOfEmployee other){
+        sickDays = other.sickDays;
+        advancedStudyFund = other.advancedStudyFund;
+        daysOff = other.daysOff;
+    }
+
     public int getAdvancedStudyFund() {
         return advancedStudyFund;
     }
