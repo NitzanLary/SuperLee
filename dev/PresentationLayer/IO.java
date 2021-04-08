@@ -1,6 +1,8 @@
 package PresentationLayer;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 
 public class IO {
@@ -38,9 +40,10 @@ public class IO {
                     "5) Faulty Report\n" +
                     "6) Edit\n" +
                     "7) Inventory report\n" +
+                    "8) Categories report" +
                     "9) Exit");
             action = scanner.nextInt();
-            if (action > 7 || action < 1)
+            if (action > 8 || action < 1)
                 break;
             scanner.nextLine();
             ioCtrl.mainMenu(action);
@@ -61,7 +64,7 @@ public class IO {
                     "7) Remove Item" +
                     "\n9) Back");
             action = scanner.nextInt();
-            if (action > 2 || action < 1)
+            if (action > 7 || action < 1)
                 break;
             scanner.nextLine();
             ioCtrl.editMenu(action);
@@ -102,5 +105,25 @@ public class IO {
     //display `msg` to the user
     public void print(String msg) {
         System.out.println(msg);
+    }
+
+    public void badInput(String msg) {
+        print(msg);
+        scanner.nextLine();
+    }
+
+    public List<String> getList(String msg) {
+        System.out.println(msg);
+        List<String> cats = new LinkedList<>();
+        String ans = "";
+        int i = 1;
+        while (ans != "-1") {
+            System.out.println("'-1' to exit");
+            ans = getString("Enter category name #" + i++);
+            if (ans != "-1") {
+                cats.add(ans);
+            }
+        }
+        return cats;
     }
 }
