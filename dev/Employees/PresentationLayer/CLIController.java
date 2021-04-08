@@ -21,4 +21,7 @@ public class CLIController {
     }
 
 
+    public static void initData() {
+        // todo
+    }
 }
