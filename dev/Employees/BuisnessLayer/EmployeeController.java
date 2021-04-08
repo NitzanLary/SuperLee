@@ -1,7 +1,6 @@
 package Employees.BuisnessLayer;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 
 public class EmployeeController {
@@ -86,6 +85,13 @@ public class EmployeeController {
         return rE.getValue().getTerms().setDaysOff(newDaysOff);
     }
 
+    public Response addRoleToEmp(String ID, String role) {
+        ResponseT<Employee> rE = getEmployee(ID);
+        if(rE.isErrorOccured())
+            return rE;
+        return rE.getValue().AddRole(new Role(role));
+    }
+
     public ResponseT<String> getEmpData(Employee employee) {
         return employee.getEmpDataTostring();
     }
@@ -98,5 +104,6 @@ public class EmployeeController {
         AddEmployee("123456789", "PIPI", "12345", 1000, 30, 500, 30,
                 "OSE KAKI", LocalDate.now());
     }
+
 }
 

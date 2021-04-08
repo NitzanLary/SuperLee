@@ -91,8 +91,11 @@ public class FacadeController {
         return employeeController.updateEmpDaysOff(EmpID, newDaysOff);
     }
 
-    public Response addRoleToEmp(String userID, String EmpID, int newDaysOff){
-        return null;
+    public Response addRoleToEmp(String userID, String EmpID, String role){
+        ResponseT<Employee> rE = checkAuthorization(userID);
+        if (rE.isErrorOccured())
+            return rE;
+        return employeeController.addRoleToEmp(EmpID, role);
     }
 
     public Response putConstrain(String userID, LocalDate date, LocalTime start, LocalTime end, int pref/*0-cant 1-can 2-want*/){
@@ -107,7 +110,6 @@ public class FacadeController {
 //        return new Response("ERROR! No Matches Found For This Shift");
     }
 
-//public ResponseT<shift> generateCustomShift(String userID, LocalDate from, LocalDate to) // only HR and general manager
 
     public Response generate2WeeklyShifts(String userID) {
         if (employeeController.getEmployee(userID).getValue().checkAuthorizedHrOrGenral().getValue()){
@@ -184,7 +186,6 @@ public class FacadeController {
 
      the function will return Failure Response if the user that call the function is not HR Manager Or General Manager
      */
-
     public ResponseT<String> getEmployeesConstrainsForShift(String userID, LocalDate date, LocalTime start, LocalTime end) {
 
 //        if (employeeController.getEmployee(userID).getValue().checkAuthorizedHrOrGenral().getValue()){
@@ -235,16 +236,14 @@ public class FacadeController {
         return employee.checkAuthorizedHrOrGenral();
     }
 
-
-
-
     // init with 2 managers and 1 week forward
     public void initData(){
         employeeController.initData();
         shiftController.add1WeeksSlot();
     }
 
-//    public ResponseT<List<Shift>> getShiftsHistory(String userID){
-//        return null;
-//    }
+//    public ResponseT<List<Shift>> getShiftsHistory(String userID){}
+
+    //public ResponseT<shift> generateCustomShift(String userID, LocalDate from, LocalDate to) // only HR and general manager
+
 }
