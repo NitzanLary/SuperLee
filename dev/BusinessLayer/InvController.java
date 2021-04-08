@@ -1,6 +1,7 @@
 package BusinessLayer;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class InvController {
     private RecordController recCtrl;
@@ -33,8 +34,8 @@ public class InvController {
     }
 
     //adds a new Item to the System
-    public boolean addItem(int id, String name, double price, double cost, int shelf, String man, int shQuan, int stQuan, String catName) {
-        return stockCtrl.addItem(id,name,price,cost,shelf,man,shQuan,stQuan, catName);
+    public boolean addItem(int id, String name, double price, double cost, int shelf, String man, int shQuan, int stQuan, int minAlert, String catName) {
+        return stockCtrl.addItem(id,name,price,cost,shelf,man,shQuan,stQuan, minAlert, catName);
     }
 
     //adds a category which is a sub category of `superName`
@@ -85,6 +86,10 @@ public class InvController {
     //returns a report of all items in stock
     public String stkReport() {
         return stockCtrl.stkReport();
+    }
+
+    public String catReport(List<String> catNames) {
+        return stockCtrl.catReport(catNames);
     }
 
     //removes an item from the system

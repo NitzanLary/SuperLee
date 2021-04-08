@@ -16,9 +16,10 @@ public class Item {
     private int storageQuantity;
     private List<Discount> priceDiscounts;
     private List<Discount> costDiscounts;
+    private int minAlert;
 
 
-    public Item(int id, String name, double price, double cost, int shelfNum, String manufacturer, int shelfQuantity, int storageQuantity) {
+    public Item(int id, String name, double price, double cost, int shelfNum, String manufacturer, int shelfQuantity, int storageQuantity, int minAlert) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -29,6 +30,7 @@ public class Item {
         this.storageQuantity = storageQuantity;
         priceDiscounts = new LinkedList<>();
         costDiscounts = new LinkedList<>();
+        this.minAlert = minAlert;
     }
 
     public boolean addToStorage(int amount) {

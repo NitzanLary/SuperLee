@@ -15,8 +15,8 @@ public class Category {
         items = new LinkedList<>();
     }
 
-    public boolean addItem(int id, String name, double price, double cost, int shelfNum, String manufacturer, int shelfQuantity, int storageQuantity) {
-        return items.add(new Item(id, name, price, cost, shelfNum, manufacturer, shelfQuantity, storageQuantity));
+    public boolean addItem(int id, String name, double price, double cost, int shelfNum, String manufacturer, int shelfQuantity, int storageQuantity, int minAlert) {
+        return items.add(new Item(id, name, price, cost, shelfNum, manufacturer, shelfQuantity, storageQuantity, minAlert));
     }
 
     public void addItemDiscount(LocalDate start, LocalDate end, int discountPr, int id) {
@@ -103,7 +103,12 @@ public class Category {
         for (Category c : subCategories) {
             output.append(c.toString(tabs+"\t"));
         }
-        return output.toString();
+        return output.toString()+"\n";
+    }
+
+    @Override
+    public String toString() {
+        return toString("");
     }
 
     public boolean removeItem(int id) {

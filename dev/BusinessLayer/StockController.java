@@ -6,6 +6,9 @@ import java.util.List;
 
 public class StockController {
     private List<Category> categories;
+    public static final String RED_BOLD = "\033[1;31m";    // RED
+    public static final String RESET = "\033[0m";  // Text Reset
+
 
     public StockController() {
         categories = new LinkedList<>();
@@ -42,13 +45,13 @@ public class StockController {
         return null;
     }
 
-    public boolean addItem(int id, String name, double price, double cost, int shelfNum, String manufacturer, int shelfQuantity, int storageQuantity, String catName) {
+    public boolean addItem(int id, String name, double price, double cost, int shelfNum, String manufacturer, int shelfQuantity, int storageQuantity, int minAlert, String catName) {
         Category c = getCategory(catName);
         if (c == null)
             return false;
         if (getItem(id) != null)
             return false;
-        return c.addItem(id, name, price, cost, shelfNum, manufacturer, shelfQuantity, storageQuantity);
+        return c.addItem(id, name, price, cost, shelfNum, manufacturer, shelfQuantity, storageQuantity, minAlert);
     }
 
     public boolean removeItem(int id) {
@@ -128,9 +131,21 @@ public class StockController {
     }
 
     public String stkReport() {
-        StringBuilder sb = new StringBuilder("");
+        StringBuilder sb = new StringBuilder("\n");
         for (Category c : categories) {
-            sb.append(c.toString(""));
+            sb.append(c.toString());
+        }
+        return sb.toString();
+    }
+
+    public String catReport(List<String> catNames) {
+        StringBuilder sb = new StringBuilder("\nReport of categories: "+catNames.toString()+"\n\n");
+        for (String cat : catNames) {
+            Category c = getCategory(cat);
+            if (c == null)
+                sb.append("Could not found category: "+RED_BOLD+cat+RESET+"\n");
+            else
+                sb.append(c.toString()+"\n");
         }
         return sb.toString();
     }
