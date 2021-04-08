@@ -56,6 +56,9 @@ public class TruckDTO {
 
     @Override
     public String toString() {
-        return id + " "+ model + " " + " "+maxWeight +" "+ truckWeight;
+        String ret = "";
+        ret += ("id-"+id);
+        ret += ("\nmodel-"+model) + ("\nmaxWeight-"+maxWeight) + ("\ntruckWeight-"+truckWeight);
+        return ret;
     }
 }

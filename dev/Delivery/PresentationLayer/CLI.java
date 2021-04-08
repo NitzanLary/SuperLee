@@ -121,6 +121,21 @@ public class CLI {
                 break;
             }
         }
+        Scanner in = new Scanner(System.in);
+        System.out.println("What would you like to do:");
+        System.out.println("1) back to menu");
+        System.out.println("2) choose another data to present");
+        String inp = "";
+        inp = in.nextLine();
+        while (!(isLegalChoice(2,inp) || inp.equals("exit"))){
+            System.out.println("choose 1, 2 or type 'exit'");
+            inp = in.nextLine();
+        }
+        if (inp == "2"){
+            displayDoc();
+        }
+
+
     }
 
     private void sendDelivery() {

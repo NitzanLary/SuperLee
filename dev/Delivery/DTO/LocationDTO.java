@@ -47,8 +47,10 @@ public class LocationDTO {
 
     @Override
     public String toString() {
-        return  address + " " +
-                 phoneNumber + " " +
-                 contactName;
+        return "{" +
+                "address='" + address + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", contactName='" + contactName + '\'' +
+                '}';
     }
 }

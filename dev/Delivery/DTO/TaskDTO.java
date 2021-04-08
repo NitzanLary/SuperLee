@@ -11,23 +11,24 @@ public class TaskDTO {
     private String loadingOrUnloading;
     LocationDTO destination;
 
-    public TaskDTO(String id, HashMap<String, Integer> listOfProduct, String loadingOrUnloading, LocationDTO destination){
+    public TaskDTO(String id, HashMap<String, Integer> listOfProduct, String loadingOrUnloading, LocationDTO destination) {
         this.id = id;
         this.listOfProduct = listOfProduct;
         this.loadingOrUnloading = loadingOrUnloading;
         this.destination = destination;
     }
 
-    public TaskDTO(){}
+    public TaskDTO() {
+    }
 
-    public TaskDTO(HashMap<String, Integer> listOfProduct, String loadingOrUnloading, LocationDTO destination){
+    public TaskDTO(HashMap<String, Integer> listOfProduct, String loadingOrUnloading, LocationDTO destination) {
         this.id = null;
         this.listOfProduct = listOfProduct;
         this.loadingOrUnloading = loadingOrUnloading;
         this.destination = destination;
     }
 
-    public TaskDTO(Task task){
+    public TaskDTO(Task task) {
         this.id = task.getId();
         this.listOfProduct = task.getListOfProduct();
         this.loadingOrUnloading = task.getLoadingOrUnloading();
@@ -68,6 +69,10 @@ public class TaskDTO {
 
     @Override
     public String toString() {
-        return id+" "+listOfProduct+" "+loadingOrUnloading+" "+destination;
+        return "id - " + this.id + "\nlist of products - " + this.listOfProduct + "\nmission - " + this.loadingOrUnloading + "\ndestination - " + destination.getAddress() + " | " + destination.getContactName() + " | " + destination.getPhoneNumber();
+    }
+
+    public String toString(String tabs) {
+        return tabs + "id - " + this.id + "\n" + tabs + "list of products - " + this.listOfProduct + "\n" + tabs + "mission - " + this.loadingOrUnloading + "\n" + tabs + "destination - " + destination.getAddress() + " | " + destination.getContactName() + " | " + destination.getPhoneNumber();
     }
 }

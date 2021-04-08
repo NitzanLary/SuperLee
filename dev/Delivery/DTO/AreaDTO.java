@@ -37,4 +37,18 @@ public class AreaDTO {
         this.locations = new ArrayList<>();
         this.areaName = areaName;
     }
+    public String toString() {
+        String str = "";
+        str += locations.toString() + ", ";
+
+//        for (int i = 0; i < locations.size(); i++){
+//            System.out.println(locations);
+//            str += locations.toString() + ", ";
+//        }
+//        if (str.equals(""))
+//            return str;
+        str = str.substring(0, str.length() - 2);
+
+        return areaName + ": " + str;
+    }
 }

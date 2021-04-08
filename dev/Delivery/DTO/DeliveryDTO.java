@@ -130,11 +130,26 @@ public class DeliveryDTO {
 
     @Override
     public String toString() {
-         String departureWeight = "";
-         if (this.departureWeight == 0)
-             departureWeight = " set before departure";
-         else
-             departureWeight = String.valueOf(this.departureWeight);
+//         String departureWeight = "";
+//         if (this.departureWeight == 0)
+//             departureWeight = " set before departure";
+//         else
+//             departureWeight = String.valueOf(this.departureWeight);
+//        return  "\t\tid ='" + id + '\'' +
+//                "\n\t\tdate = '" + date + '\'' +
+//                "\n\t\ttimeOfDeparture = '" + timeOfDeparture + '\'' +
+//                "\n\t\ttruckNumber = '" + truckNumber + '\'' +
+//                "\n\t\tdriverName = '" + driverName + '\'' +
+//                "\n\t\tdepartureWeight = " + departureWeight +
+//                "\n\t\tmodification = '" + modification + '\'' +
+//                "\n\t\torigin = " + origin +
+//                "\n\t\tdestinations= " + destinations;
+
+        ArrayList<String> destin = new ArrayList<>();
+        for (TaskDTO t: destinations){
+            destin.add("\n"+t.toString("\t\t\t")+"\n\t\t");
+        }
+        String destinSTR = destin.toString().substring(0,destin.toString().length()-3);
         return  "\t\tid ='" + id + '\'' +
                 "\n\t\tdate = '" + date + '\'' +
                 "\n\t\ttimeOfDeparture = '" + timeOfDeparture + '\'' +
@@ -142,7 +157,7 @@ public class DeliveryDTO {
                 "\n\t\tdriverName = '" + driverName + '\'' +
                 "\n\t\tdepartureWeight = " + departureWeight +
                 "\n\t\tmodification = '" + modification + '\'' +
-                "\n\t\torigin = " + origin +
-                "\n\t\tdestinations= " + destinations;
+                "\n\t\torigin = " + origin.getAddress() +
+                "\n\t\tdestinations= " + destinSTR;
     }
 }
