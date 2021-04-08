@@ -1,5 +1,6 @@
 package Delivery.BusinessLayer;
 
+import Delivery.DTO.DriverDTO;
 import Delivery.DTO.TruckDTO;
 import Delivery.DataAccessLayer.DataController;
 
@@ -43,5 +44,10 @@ public class TruckController {
                 return truck;
         }
         return null;
+    }
+
+    public ArrayList<TruckDTO> getTruckData() {
+        //        this.dc.getAreas().values();
+        return new ArrayList<>(this.dataController.getTrucks().values());
     }
 }

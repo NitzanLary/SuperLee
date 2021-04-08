@@ -1,5 +1,6 @@
 package Delivery.BusinessLayer;
 
+import Delivery.DTO.DriverDTO;
 import Delivery.DTO.TaskDTO;
 import Delivery.DataAccessLayer.DataController;
 
@@ -79,5 +80,10 @@ public class TaskController {
         for (Task t: controller.values())
             ret.add(t);
         return ret;
+    }
+
+    public ArrayList<TaskDTO> getTasksData() {
+        //        this.dc.getAreas().values();
+        return new ArrayList<>(this.dc.getTasks().values());
     }
 }

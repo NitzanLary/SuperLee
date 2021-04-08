@@ -164,4 +164,8 @@ public class DeliveryController {
             storeDelivery(delivery);
         }
     }
+
+    public ArrayList<DeliveryDTO> getTasksFromDeliveriesData() {
+        return new ArrayList<DeliveryDTO>(this.dataController.getDeliveries().values());
+    }
 }

@@ -37,7 +37,7 @@ public class CLI {
             }
             isFirstIteration = false;
             System.out.println("chose action:\n1 add new delivery\n2 update existing delivery\n3 create new appending task" +
-                    "\n4 add Truck to the sys\n5 add Driver to the sys\n6 add Area to the sys\n7 add location to the sys\n8 send delivery");
+                    "\n4 add Truck to the sys\n5 add Driver to the sys\n6 add Area to the sys\n7 add location to the sys\n8 send delivery\n9 display documentation");
             s = in.nextLine().strip();
             chooseAction(s); // Todo: its tachles nees to be after the while, to the case that press immediate exit
         }
@@ -76,6 +76,43 @@ public class CLI {
             }
             case ("8"): {
                 this.sendDelivery();
+                break;
+            }
+            case ("9"): {
+                this.displayDoc();
+                break;
+            }
+        }
+    }
+
+    private void displayDoc() {
+        Scanner in = new Scanner(System.in);
+        String choose = "";
+        System.out.println("Which data do you want to present:");
+        System.out.println("1) Areas\n2) Drivers\n3) Trucks\n4) Tasks\n5) Deliveries");
+         choose = in.nextLine().strip();
+         chooseData(choose);
+    }
+    private void chooseData(String choose){
+        switch (choose) {
+            case ("1"): {
+                System.out.println(this.fc.getAreasData());
+                break;
+            }
+            case ("2"): {
+                System.out.println(this.fc.getDriversData());
+                break;
+            }
+            case ("3"): {
+                System.out.println(this.fc.getTrucksData());
+                break;
+            }
+            case ("4"): {
+                System.out.println(this.fc.getTasksData());
+                break;
+            }
+            case ("5"): {
+                System.out.println(this.fc.getDeliveryData());
                 break;
             }
         }

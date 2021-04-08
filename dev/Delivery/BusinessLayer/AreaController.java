@@ -83,4 +83,13 @@ public class AreaController {
         }
         return arr;
     }
+
+    public ArrayList<AreaDTO> getAreasData() {
+        ArrayList<AreaDTO> arr = new ArrayList<>();
+//        this.dc.getAreas().values();
+        for (AreaDTO area : this.dc.getAreas().values()){
+            arr.add(area);
+        }
+        return arr;
+    }
 }

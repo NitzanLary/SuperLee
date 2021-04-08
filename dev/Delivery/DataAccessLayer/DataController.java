@@ -47,6 +47,26 @@ public class DataController {
         this.areas.put(areaDTO.getAreaName(), areaDTO);
     }
 
+    public HashMap<String, DeliveryDTO> getDeliveries() {
+        return deliveries;
+    }
+
+    public HashMap<String, TaskDTO> getTasks() {
+        return tasks;
+    }
+
+    public HashMap<String, AreaDTO> getAreas() {
+        return areas;
+    }
+
+    public HashMap<String, TruckDTO> getTrucks() {
+        return trucks;
+    }
+
+    public HashMap<String, DriverDTO> getDrivers() {
+        return drivers;
+    }
+
     public void storeLocation(AreaDTO areaDTO, LocationDTO locationDTO){
         areas.get(areaDTO.getAreaName()).addLocation(locationDTO);
     }

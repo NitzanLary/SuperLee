@@ -240,4 +240,24 @@ public class FacadeController {
             return new Response(input + " Exceeded");
         return new Response(input);
     }
+
+    public ArrayList<AreaDTO> getAreasData() {
+        return this.arc.getAreasData();
+    }
+
+    public ArrayList<DriverDTO> getDriversData() {
+        return this.drc.getDriversData();
+    }
+
+    public ArrayList<TruckDTO> getTrucksData() {
+        return this.trc.getTruckData();
+    }
+
+    public ArrayList<TaskDTO> getTasksData() {
+        return tac.getTasksData();
+    }
+
+    public ArrayList<DeliveryDTO> getDeliveryData() {
+        return this.dec.getTasksFromDeliveriesData();
+    }
 }

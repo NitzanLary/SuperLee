@@ -1,5 +1,7 @@
 package Delivery.BusinessLayer;
 
+import Delivery.DTO.AreaDTO;
+import Delivery.DTO.DriverDTO;
 import Delivery.DataAccessLayer.DataController;
 
 import java.util.ArrayList;
@@ -37,6 +39,12 @@ public class DriverController {
             ret.add(d);
         }
         return ret;
+    }
+
+    public ArrayList<DriverDTO> getDriversData() {
+        //        this.dc.getAreas().values();
+        ArrayList<DriverDTO> arr = new ArrayList<>(this.dc.getDrivers().values());
+        return arr;
     }
 
 //    public ArrayList<tmpEmployee> tmpGetDrivers() {
