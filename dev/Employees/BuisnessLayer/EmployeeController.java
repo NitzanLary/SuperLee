@@ -14,9 +14,9 @@ public class EmployeeController {
     }
 
     public static EmployeeController getInstance(){
-        if (employeeController != null)
-            return employeeController;
-        return new EmployeeController();
+        if (employeeController == null)
+            employeeController = new EmployeeController();
+        return employeeController;
     }
 
     public Response AddEmployee(String ID, String name, String bankAccount, int salary,
@@ -83,6 +83,8 @@ public class EmployeeController {
                 "General Manager", LocalDate.now());
         AddEmployee("205952971", "Nitzan", "12345", 1000, 30, 500, 30,
                 "HR Manager", LocalDate.now());
+        AddEmployee("123456789", "PIPI", "12345", 1000, 30, 500, 30,
+                "OSE KAKI", LocalDate.now());
     }
 }
 

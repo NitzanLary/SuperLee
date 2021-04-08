@@ -28,17 +28,17 @@ public class ShiftController {
 
     public List<WeeklyShifts> getWeeklyShifts(){return weeklyShifts;}
 
-    public Response add4WeeksSlots(){
+    public Response add2WeeksSlots(){
         if (weeklyShifts.isEmpty()){
             LocalDate tempDate = LocalDate.now();
-            for (int i = 0 ; i < 4 ; i++) {
+            for (int i = 0 ; i < 2 ; i++) {
                 weeklyShifts.add(new WeeklyShifts(tempDate.plusWeeks(i), tempDate.plusWeeks(i+1)));
             }
         }
         else{
             //Star to add slots from day after the last day we have in our weeklyShifts list
             LocalDate tempDate = weeklyShifts.get(weeklyShifts.size()-1).getToDate().plusDays(1);
-            for (int i = 0 ; i < 4 ; i++) {
+            for (int i = 0 ; i < 2 ; i++) {
                 weeklyShifts.add(new WeeklyShifts(tempDate.plusWeeks(i), tempDate.plusWeeks(i+1)));
                 }
         }
@@ -97,9 +97,13 @@ public class ShiftController {
                 }
             }
         }
-        if(shifts.isEmpty())
-            return new ResponseT<>(null, "No future shifts");
-        return new ResponseT<>(shifts);
+        if(shifts.size() < 28) { // 2 Weeks shifts
+            add2WeeksSlots();
+        }
+        else {
+            return new ResponseT<>(shifts);
+        }
+        return getFutureShifts();
     }
 
     public Response assignToShift(Employee employee, LocalDate date, LocalTime start, LocalTime end, String role){
