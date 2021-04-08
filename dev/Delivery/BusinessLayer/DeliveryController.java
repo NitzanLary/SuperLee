@@ -126,8 +126,13 @@ public class DeliveryController {
 
     @Override
     public String toString() {
-        return "\n\t" + deliveries +
-                '}';
+        String ret = "";
+        for (Delivery d: deliveries.values()){
+            ret += d.toString()+"\n";
+        }
+        return ret;
+//        return "\t" + deliveries +
+//                '}';
     }
 
     public ArrayList<Delivery> getUpdatableDeliveries() {

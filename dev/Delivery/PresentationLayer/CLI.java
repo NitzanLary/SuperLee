@@ -1,6 +1,6 @@
 package Delivery.PresentationLayer;
 
-import Delivery.BusinessLayer.*;
+import Delivery.BusinessLayer.FacadeController;
 import Delivery.DTO.*;
 
 import java.time.LocalDate;
@@ -28,7 +28,7 @@ public class CLI {
             if (isFirstIteration) {
                 System.out.println("now the system will show you its current state:\n press <Enter> to continue");
                 in.nextLine();
-                System.out.println(this.fc.toStringResponse().getData());
+                printSystemCurrentState();
                 System.out.println("Press <Enter> to see what action can you do on the system");
                 in.nextLine();
             }
@@ -42,6 +42,11 @@ public class CLI {
             chooseAction(s); // Todo: its tachles nees to be after the while, to the case that press immediate exit
         }
 
+    }
+
+    private void printSystemCurrentState() {
+        // getting String current state from the facade.
+        System.out.println(this.fc.toStringResponse().getData());
     }
 
     private void chooseAction(String s) {
@@ -380,9 +385,6 @@ public class CLI {
             return;
 
         // summery:
-//        System.out.println("your creation:\n Delivery id - " + fc.getNextDeliveryID() + "\n Leaving at - " + date + " " + timeOfDeparture
-//                + "\n Truck - " + truck + "\n Driver - " + driverName + "\n Departure Weight - " + departureWeight + "\n From - " + originLocation
-//                + "\n Tasks - " + arrTask.toString());
         DeliveryDTO creation = new DeliveryDTO(date, timeOfDeparture, truck.split(" ")[0], driverName, 0, "", originLocation, arrTask);
         System.out.println(creation);
         String approve = "";
@@ -390,11 +392,6 @@ public class CLI {
         while (!(approve.equals("y") || approve.equals("n")))
             approve = in.nextLine();
         if (approve.equals("y")) {
-//            ArrayList<String> tasksForDelIDs = new ArrayList<>();
-//            for (TaskDTO al : arrTask){
-//                tasksForDelIDs.add(al.getId());
-//            }
-//            fc.createFullDelivery(date, timeOfDeparture, truck.split(" ")[0], driverName, departureWeightInt, "", originLocation, tasksForDelIDs);
             fc.createFullDelivery(creation);
         }
     }
@@ -402,7 +399,6 @@ public class CLI {
 
     private ArrayList<TaskDTO> insertTasksToDelivery(Scanner in, ArrayList<TaskDTO> alreadyIn) {
         String op = "";
-//        ArrayList<ArrayList<String>> arrTaskStr = new ArrayList<>();
         ArrayList<TaskDTO> arrTask = new ArrayList<>();
         ArrayList<TaskDTO> allTasks = new ArrayList<>();
         for (TaskDTO t1 : fc.getTasks()){
@@ -439,9 +435,6 @@ public class CLI {
         }
         if (op.equals("exit"))
             return null;
-//        ArrayList<TaskDTO> ret = new ArrayList<>();
-//        for (ArrayList<String> as : arrTaskStr)
-//            ret.add(new TaskDTO())
         return arrTask;
     }
 
@@ -600,32 +593,8 @@ public class CLI {
         return arr;
     }
 
-//    public void addNewLocation(){
-//        // Todo: fix input -3 bug and input more than the size
-//        Scanner in = new Scanner(System.in);
-////        ArrayList<String> areas;
-//        ArrayList<AreaPresentationInterface> areas;
-//        String inp = "";
-//        String areaName = "";
-//        ArrayList<String> arr = this.addNewLocationHelper();
-//        if (arr == null)
-//            return;
-//        do {
-//            System.out.println("Choose an area name for the location:");
-//            areas = this.fc.getAreas();
-//            for (int i = 1; i <= areas.size(); i++){
-//                System.out.println(i + ") " + areas.get(i - 1).getName());
-//            }
-//            inp = in.nextLine();
-//        } while (!isLegalChoice(areas.size(), inp) && !inp.equals("exit"));
-//        if (inp.equals("exit"))
-//            return;
-//        this.fc.addLocation(areas.get(Integer.parseInt(inp) - 1), arr.get(0), arr.get(1), arr.get(2));
-//    }
-
     public void addNewLocation(){
         Scanner in = new Scanner(System.in);
-//        ArrayList<String> areas;
         ArrayList<AreaDTO> areas;
         String inp = "";
         String areaName = "";
@@ -776,9 +745,6 @@ public class CLI {
             return;
         AreaDTO areaDTO = new AreaDTO(areaName);
         this.fc.addNewArea(areaDTO);
-    }
-    public void tempAddArea(String s, Area area){
-        this.fc.tempAddNewArea(s, area);
     }
 
 

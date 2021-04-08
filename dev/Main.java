@@ -117,7 +117,7 @@ public class Main {
     private static void initiateSecondScenario(CLI cli) {
         // trucks:
         TruckDTO truck1 = new TruckDTO("4755857","Mercedes x", 15000,8000);
-        TruckDTO truck2 = new TruckDTO("34556123","Renult Fluance", 20000,8500);
+        TruckDTO truck2 = new TruckDTO("34556123","Renault Fluence", 20000,8500);
         cli.getFacade().addTruck(truck1);
         cli.getFacade().addTruck(truck2);
         // area % locations:

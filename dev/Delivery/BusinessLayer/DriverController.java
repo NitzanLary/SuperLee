@@ -28,9 +28,12 @@ public class DriverController {
         }
     }
 
-    @Override
-    public String toString() {
-        return  controller.values().toString();
+    public String toString(String tabs) {
+        String ret = "";
+        for (Driver d: controller.values()){
+            ret += tabs+d.getName()+" | "+d.getLicenceType()+"\n";
+        }
+        return  ret;
     }
 
     public ArrayList<Driver> getDrivers() {
@@ -53,5 +56,4 @@ public class DriverController {
 //            ret.add(d);
 //        }
 //        return ret;
-//    }
 }

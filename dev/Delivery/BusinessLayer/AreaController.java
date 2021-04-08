@@ -50,8 +50,11 @@ public class AreaController {
     @Override
     public String toString() {
         String str = "";
-        for (String areaName : controller.keySet()){
-            str += controller.get(areaName).toString() + "\n";
+        for (Area a : controller.values()){
+            str += "\t"+a.getAreaName()+"\n";
+            for (Location l: a.getLocations()){
+                str += "\t\t"+l.getAddress()+"\n";
+            }
         }
         return str;
 

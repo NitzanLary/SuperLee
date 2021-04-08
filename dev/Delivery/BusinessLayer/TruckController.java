@@ -1,6 +1,5 @@
 package Delivery.BusinessLayer;
 
-import Delivery.DTO.DriverDTO;
 import Delivery.DTO.TruckDTO;
 import Delivery.DataAccessLayer.DataController;
 
@@ -46,8 +45,15 @@ public class TruckController {
         return null;
     }
 
+    public String toString(String tabs) {
+        String ret = "";
+        for (Truck t: controller.values()){
+            ret += tabs + t.getModel()+" | "+t.getId()+" | "+t.getTruckWeight()+" | "+t.getMaxWeight()+"\n";
+        }
+        return ret;
+    }
+
     public ArrayList<TruckDTO> getTruckData() {
-        //        this.dc.getAreas().values();
         return new ArrayList<>(this.dataController.getTrucks().values());
     }
 }

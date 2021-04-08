@@ -22,12 +22,12 @@ public class FacadeController {
     }
 
     public Response<String> toStringResponse() {
-        return new Response<>("\n\nSystem current state:\nDeliveries=" + dec +
-                "\nDrivers=" + drc +
-                "\nAreas=" + arc +
-                "\nTasks=" + tac +
-                "\nTrucks=" + trc +
-                '}');
+        return new Response<>("\n\n-----  System Current State:  -----\n"+
+                "\nDeliveries=\n" + dec +
+                "\nDrivers=\n" + drc.toString("\t") +
+                "\nAreas=\n" + arc +
+                "\nTasks=\n" + tac +
+                "\nTrucks=\n" + trc.toString("\t")+"\n");
     }
 
     @Override

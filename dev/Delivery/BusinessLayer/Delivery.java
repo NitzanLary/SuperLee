@@ -122,8 +122,7 @@ public class Delivery {
             destin.add("\n"+t.toString("\t\t\t")+"\n\t\t");
         }
         String destinSTR = destin.toString().substring(0,destin.toString().length()-3);
-        return "\n\t\tDelivery : {" +
-                "\n\t\tid ='" + id + '\'' +
+        return  "\t\tid ='" + id + '\'' +
                 "\n\t\tdate = '" + date + '\'' +
                 "\n\t\ttimeOfDeparture = '" + timeOfDeparture + '\'' +
                 "\n\t\ttruckNumber = '" + truckNumber + '\'' +
@@ -131,8 +130,7 @@ public class Delivery {
                 "\n\t\tdepartureWeight = " + departureWeight +
                 "\n\t\tmodification = '" + modification + '\'' +
                 "\n\t\torigin = " + origin.getAddress() +
-                "\n\t\tdestinations= " + destinSTR +
-                '}';
+                "\n\t\tdestinations= " + destinSTR;
     }
 
     public String getID() {

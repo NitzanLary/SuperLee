@@ -135,8 +135,7 @@ public class DeliveryDTO {
              departureWeight = " set before departure";
          else
              departureWeight = String.valueOf(this.departureWeight);
-        return "\n\t\tDelivery : {" +
-                "\n\t\tid ='" + id + '\'' +
+        return  "\t\tid ='" + id + '\'' +
                 "\n\t\tdate = '" + date + '\'' +
                 "\n\t\ttimeOfDeparture = '" + timeOfDeparture + '\'' +
                 "\n\t\ttruckNumber = '" + truckNumber + '\'' +
@@ -144,7 +143,6 @@ public class DeliveryDTO {
                 "\n\t\tdepartureWeight = " + departureWeight +
                 "\n\t\tmodification = '" + modification + '\'' +
                 "\n\t\torigin = " + origin +
-                "\n\t\tdestinations= " + destinations +
-                '}';
+                "\n\t\tdestinations= " + destinations;
     }
 }
