@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.function.Function;
 
 public class IO_Controller {
@@ -32,6 +33,8 @@ public class IO_Controller {
         if (action == 6) { io.editMenu(); }
         //inventory report
         if (action == 7) { io.print(invCtrl.stkReport()); }
+        //categories report
+        if(action == 8) { catReport(); }
     }
 
     public void editMenu(int action) {
@@ -53,16 +56,16 @@ public class IO_Controller {
 
     public void initData() {
         invCtrl.addCategory("Dairy");
-        invCtrl.addItem(1,"Milk", 5, 3,11, "Tnova", 10, 15, "Dairy");
-        invCtrl.addItem(2,"Cheese", 10, 5,10, "Tnova", 10, 15, "Dairy");
+        invCtrl.addItem(1,"Milk", 5, 3,11, "Tnova", 10, 15,  25, "Dairy");
+        invCtrl.addItem(2,"Cheese", 10, 5,10, "Tnova", 10, 15, 7, "Dairy");
         invCtrl.addCategory("Drinks");
         invCtrl.addSubCategory("Soda", "Drinks");
-        invCtrl.addItem(3,"Water", 4, 1,12, "Ein Gedi", 10, 20, "Drinks");
-        invCtrl.addItem(4,"Cola", 6, 2,13, "Coka Cola", 20, 1, "Soda");
-        invCtrl.addItem(5,"Fanta", 6, 2,13, "Coka Cola", 20, 1, "Soda");
+        invCtrl.addItem(3,"Water", 4, 1,12, "Ein Gedi", 10, 20, 30, "Drinks");
+        invCtrl.addItem(4,"Cola", 6, 2,13, "Coka Cola", 20, 1, 20, "Soda");
+        invCtrl.addItem(5,"Fanta", 6, 2,13, "Coka Cola", 20, 1, 20, "Soda");
         invCtrl.addSubCategory("Diet", "Soda");
-        invCtrl.addItem(6,"Cola", 6, 2,14, "Coka Cola", 20, 1, "Diet");
-        invCtrl.addItem(7,"Fanta", 6, 2,14, "Coka Cola", 20, 1, "Diet");
+        invCtrl.addItem(6,"Cola", 6, 2,14, "Coka Cola", 20, 1, 21, "Diet");
+        invCtrl.addItem(7,"Fanta", 6, 2,14, "Coka Cola", 20, 1, 10, "Diet");
     }
 
     private void badInput(String msg){
@@ -134,7 +137,8 @@ public class IO_Controller {
             int shQuant = io.getInt("Enter amount on shelf");
             int stQuant = io.getInt("Enter amount in storage");
             String catName = io.getString("Enter item category:");
-            if (invCtrl.addItem(id, name, price, cost, shelf, man, shQuant, stQuant, catName)) success(); else failure();
+            int min = io.getInt("Enter minimum amount left before getting alert");
+            if (invCtrl.addItem(id, name, price, cost, shelf, man, shQuant, stQuant, catName, min)) success(); else failure();
         } catch (InputMismatchException err) {
             badInput("Please resubmit item");
             addItem();
@@ -232,6 +236,16 @@ public class IO_Controller {
         } catch (InputMismatchException err) {
             badInput("Please resubmit item");
             removeItem();
+        }
+    }
+
+    public void catReport() {
+        try {
+            List<String> cats = io.getList("Enter the names of the categories to view");
+            io.print(invCtrl.catReport(cats));
+        } catch (InputMismatchException err) {
+            badInput("Please resubmit categories");
+            catReport();
         }
     }
 }
