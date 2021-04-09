@@ -175,7 +175,7 @@ public class FacadeController {
         return shiftController.getWhoIWorkWith(rE.getValue(), date, start, end);
     } // return names and IDs only
 
-    public ResponseT<String> getMyPreferences(String userID, LocalDate date, LocalTime start, LocalTime end){ // Todo: nice toString
+    public ResponseT<String> getMyPreferences(String userID, LocalDate date, LocalTime start, LocalTime end){
         ResponseT<Employee> rE = employeeController.getEmployee(userID);
         if(rE.isErrorOccured())
             return new ResponseT(null, rE.getErrorMessage());
@@ -190,18 +190,7 @@ public class FacadeController {
         return shiftController.getFutureWeeklyShifts();
     }
 
-    /**
-     *
-     This function return all the constrains for a specific shift given as parameter as a Response<String> while
-     the Response's Value look like this:
 
-     ID: 1233214544
-     Name: Nitzan Lary
-     Preference: 3
-     TODO: need to change instead of numbers to strings(Can/Cant/Want)
-
-     the function will return Failure Response if the user that call the function is not HR Manager Or General Manager
-     */
     public ResponseT<String> getEmployeesConstrainsForShift(String userID, LocalDate date, LocalTime start, LocalTime end) {
         ResponseT<Employee> rE = checkAuthorization(userID);
         if (rE.isErrorOccured())

@@ -23,7 +23,7 @@ public class EmployeeController {
         if (sickDays < 0 || studyFund < 0 || daysOff < 0)
             return new Response("All values of terms must be greater than 0");
         TermsOfEmployee terms = new TermsOfEmployee(sickDays, studyFund, daysOff);
-        Role role = new Role(roleName); // Todo: validate roleName
+        Role role = new Role(roleName);
         Employee e;
         try{
              e = new Employee(name, ID, _dateOfHire);

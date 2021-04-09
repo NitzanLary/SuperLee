@@ -128,13 +128,13 @@ public class Employee {
 
 
     //Check if this employee is HR/generarManager authorize
-    public ResponseT<Boolean> checkAuthorizedHrOrGenral(){ //TODO; how should we work with those strings??
+    public ResponseT<Boolean> checkAuthorizedHrOrGenral(){
         if(this.haveRoleCheck("HR Manager") || this.haveRoleCheck("General Manager"))
             return new ResponseT<Boolean>(true);
         return new ResponseT<Boolean>(false);
     }
 
-    public ResponseT<String> getEmpDataTostring(){ //TODO: should we consider terms of employye as well??
+    public ResponseT<String> getEmpDataTostring(){
         return new ResponseT<String>("Name: %s \nID: %s \nBank Account: %s \nSalary: %s \nRoles: %s \nDate Of Hire: %s".formatted(
                 name, ID, bankAccount, salary, getRolesTostring(), dateOfHire)
         );

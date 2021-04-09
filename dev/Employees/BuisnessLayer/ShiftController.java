@@ -58,7 +58,7 @@ public class ShiftController {
         return new Response();
     }
 
-    public ResponseT<Shift> findShift(LocalDate date, LocalTime StartTime, LocalTime EndTime){ // Todo: maybe optimize
+    public ResponseT<Shift> findShift(LocalDate date, LocalTime StartTime, LocalTime EndTime){
         for(WeeklyShifts ws : weeklyShifts){
             for(Shift s : ws.getShifts()){
                 if (s.compare(date, StartTime, EndTime))
@@ -100,7 +100,7 @@ public class ShiftController {
 
     }
 
-    public ResponseT<List<Shift>> getFutureShifts(){ // todo: need to be tested
+    public ResponseT<List<Shift>> getFutureShifts(){
         List<Shift> shifts = new ArrayList<>();
         LocalDate now = LocalDate.now();
         for(WeeklyShifts week: weeklyShifts){
