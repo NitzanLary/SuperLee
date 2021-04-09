@@ -2,6 +2,7 @@ package Employees.PresentationLayer;
 
 import Employees.BuisnessLayer.Employee;
 import Employees.BuisnessLayer.FacadeController;
+import Employees.BuisnessLayer.Response;
 import Employees.BuisnessLayer.ResponseT;
 
 import java.time.LocalDate;
@@ -116,15 +117,11 @@ public class CLIController {
         if (action == 1){ cli.print(showAllMyInformation()); }
         //Show employee preferences for a shift
         if (action == 2){ cli.print(showMyPreferences()); }
-        //add item
+        //Assign employee preferences for a specific shift
         if (action == 3){ assignPreferenceForShift(); }
-        // add category
-        if (action == 4) { updateEmployeeSickDays(); }
-        // faulty report
-        if (action == 5) { updateEmployeeStudyFound(); }
-        //go to edit menu
-//        if (action == 6) { io.editMenu(); }
-        //inventory report
+        // Show colleagues whom the employee work with in a shift
+        if (action == 4) { showColleaguesWorkWithMe(); }
+
 
     }
 
@@ -199,12 +196,13 @@ public class CLIController {
         LocalDate shiftDate = cli.getDate("Enter Shift Date ID");
         String MorningEvning = cli.getString("Enter M for morning shift || Enter E for evning shift");
         if (MorningEvning.equals("M")){
-            return facade.getEmployeesConstrainsForShift(clientController.userID, shiftDate,
-                    LocalTime.of(6, 0), LocalTime.of(14,0)).getValue();
+            return facade.getMyPreferences(userID, shiftDate,
+                    LocalTime.of(6,0), LocalTime.of(14,0)).getValue() + "\n";
         }
         else
-            return facade.getEmployeesConstrainsForShift(clientController.userID, shiftDate,
-                    LocalTime.of(14, 0), LocalTime.of(22,0)).getValue();
+            return facade.getMyPreferences(userID, shiftDate,
+                    LocalTime.of(14,0), LocalTime.of(22,0)).getValue() + "\n";
+
     }
 
 

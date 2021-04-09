@@ -113,6 +113,19 @@ public class Employee {
         return false;
     }
 
+    private String getRolesTostring(){
+        StringBuilder res = new StringBuilder("[");
+        for(int i = 0 ; i < roles.size() ; i++){
+            if(i < roles.size() - 1){
+                res.append(roles.get(i).getName()).append(", ");
+            }
+            else{
+                res.append(roles.get(i).getName()).append("]");
+            }
+        }
+        return res.toString();
+    }
+
 
     //Check if this employee is HR/generarManager authorize
     public ResponseT<Boolean> checkAuthorizedHrOrGenral(){ //TODO; how should we work with those strings??
@@ -122,8 +135,8 @@ public class Employee {
     }
 
     public ResponseT<String> getEmpDataTostring(){ //TODO: should we consider terms of employye as well??
-        return new ResponseT<String>("Name: %s \nID: %s \nBank Account: %s \nSalary: %s \nDate Of Hire: %s".formatted(
-                name, ID, bankAccount, salary, dateOfHire)
+        return new ResponseT<String>("Name: %s \nID: %s \nBank Account: %s \nSalary: %s \nRoles: %s \nDate Of Hire: %s".formatted(
+                name, ID, bankAccount, salary, getRolesTostring(), dateOfHire)
         );
         //what kind of error Response should it return??
     }

@@ -66,10 +66,10 @@ public class CLI {
                 //The User is Regular Employee (not Hr or General manager)
                 DisEmainMenu();
                 action = scanner.nextInt();
-                if (action == 9)
+                if (action == 5)
                     break;
                 scanner.nextLine();
-                cliController.Mmainmanue(action);
+                cliController.EmainMenu(action);
             } while (true);
 
         }
@@ -261,16 +261,13 @@ public class CLI {
         return out;
     }
 
-    //display `msg` to the user and returns a double read from the user
-    public double getDouble(String msg) {
-        System.out.println(msg);
-        return scanner.nextDouble();
-    }
 
     //display `msg` to the user and returns a string read from the user
     public String getString(String msg) {
         System.out.println(msg);
-        return scanner.nextLine();
+        String out = scanner.nextLine();
+        scanner.nextLine();
+        return out;
     }
 
     //display `msg` to the user and returns LocalDate read from the user

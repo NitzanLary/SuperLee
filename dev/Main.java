@@ -1,4 +1,6 @@
 import Employees.BuisnessLayer.*;
+import Employees.PresentationLayer.CLI;
+import Employees.PresentationLayer.CLIController;
 import Employees.PresentationLayer.MassageHandler;
 
 import java.time.LocalDate;
@@ -58,6 +60,9 @@ public class Main {
 //            }
 //
 //        }
+
+        FacadeController.getInstance().initData();
+        CLI.getInstance().start();
 
     }
 

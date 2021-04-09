@@ -240,6 +240,8 @@ public class FacadeController {
     public void initData(){
         employeeController.initData();
         shiftController.add1WeeksSlot();
+        assignEmpToShift("312174295", "123456789", LocalDate.now().plusDays(1), LocalTime.of(14,0), LocalTime.of(22,0), "Ose LOLAVIM");
+        putConstrain("123456", LocalDate.now().plusDays(1), LocalTime.of(14,0), LocalTime.of(22,0), 2);
     }
 
 //    public ResponseT<List<Shift>> getShiftsHistory(String userID){}

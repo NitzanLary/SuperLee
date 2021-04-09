@@ -103,7 +103,11 @@ public class EmployeeController {
                 "HR Manager", LocalDate.now());
         AddEmployee("123456789", "PIPI", "12345", 1000, 30, 500, 30,
                 "OSE KAKI", LocalDate.now());
+        addRoleToEmp("123456789", "Ose LOLAVIM");
+
     }
+
+
 
 }
 
