@@ -284,6 +284,14 @@ public class CLI {
         int year = scanner.nextInt();
         return LocalDate.of(year,month,day);
     }
+
+    public char getChar(String msg) {
+        System.out.println(msg);
+        char out = scanner.next().charAt(0);
+        scanner.nextLine();
+        return out;
+    }
+
     //display `msg` to the user
     public void print(String msg) {
         System.out.println(msg);
