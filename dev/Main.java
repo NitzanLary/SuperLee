@@ -66,8 +66,8 @@ public class Main {
 //
 //        }
 
-        FacadeController.getInstance().initData();
-        CLI.getInstance().start();
+//        FacadeController.getInstance().initData();
+//        CLI.getInstance().start();
 
     }
 

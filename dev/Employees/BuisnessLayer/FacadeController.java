@@ -27,8 +27,8 @@ public class FacadeController {
     /**
      *This function add new Employee to EmployeeController Hashmap of Employees only if userID is
      *HR manage or General Manger and return Response if successful, else return Response(error message)
-     * @param userID
-     * @param EmpID
+     * @param userID The ID of the user itself
+     * @param EmpID The ID of the new employee
      * @param name
      * @param bankAccount
      * @param salary
@@ -37,7 +37,7 @@ public class FacadeController {
      * @param daysOff
      * @param roleName
      * @param _dateOfHire
-     * @return
+     * @return A Response in case an error has occurred.
      */
     public Response addEmployee(String userID, String EmpID, String name, String bankAccount, int salary,
                                 int sickDays, int studyFund, int daysOff, String roleName, LocalDate _dateOfHire){
@@ -48,7 +48,13 @@ public class FacadeController {
                 daysOff, roleName, _dateOfHire);
     }
 
-
+    /**
+     *
+     * @param userID The ID of the user
+     * @param EmpID  The ID of the employee
+     * @param newEmpName The new Name
+     * @return A response
+     */
     public Response updateEmpName(String userID, String EmpID, String newEmpName){
         ResponseT<Employee> rE = checkAuthorization(userID);
         if (rE.isErrorOccured())
@@ -56,6 +62,13 @@ public class FacadeController {
         return employeeController.setEmpName(EmpID, newEmpName);
     }
 
+    /**
+     *
+     * @param userID The ID of the user
+     * @param EmpID  The ID of the employee
+     * @param newBankAccount the new bank account
+     * @return
+     */
     public Response updateEmpBankAccount(String userID, String EmpID, String newBankAccount) {
         ResponseT<Employee> rE = checkAuthorization(userID);
         if (rE.isErrorOccured())
