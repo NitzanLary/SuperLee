@@ -45,7 +45,7 @@ public class ShiftController {
         return new Response();
     }
 
-    public void add1WeeksSlot(){
+    public Response add1WeeksSlot(){
         LocalDate tempDate;
         if (weeklyShifts.isEmpty()){
             tempDate = LocalDate.now();
@@ -55,6 +55,7 @@ public class ShiftController {
             tempDate = weeklyShifts.get(weeklyShifts.size() - 1).getToDate();
         }
         weeklyShifts.add(new WeeklyShifts(tempDate, tempDate.plusWeeks(1)));
+        return new Response();
     }
 
     public ResponseT<Shift> findShift(LocalDate date, LocalTime StartTime, LocalTime EndTime){ // Todo: maybe optimize
@@ -68,12 +69,16 @@ public class ShiftController {
     }
 
     public ResponseT<Shift> findShift(LocalDate date, String type) {
+        ResponseT<Shift> shift;
         if (type.equals('E'))
-            return findShift(date, LocalTime.of(6,0), LocalTime.of(14,0));
-        if (type.equals('M'))
-            return findShift(date, LocalTime.of(14,0), LocalTime.of(22,0));
+            shift = findShift(date, LocalTime.of(6,0), LocalTime.of(14,0));
+        else if (type.equals('M'))
+            shift = findShift(date, LocalTime.of(14,0), LocalTime.of(22,0));
         else
             return new ResponseT<>(null, "Incorrect type");
+        if (shift.isErrorOccured())
+            return shift;
+        return new ResponseT<>(shift.getValue().clone());
     }
 
     public ResponseT<List<Shift>> getShiftsByDate(LocalDate date){

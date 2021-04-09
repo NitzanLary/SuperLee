@@ -107,22 +107,23 @@ public class FacadeController {
 
 
     public Response generate2WeeklyShifts(String userID) {
-        if (employeeController.getEmployee(userID).getValue().checkAuthorizedHrOrGenral().getValue()){
-            return shiftController.add2WeeksSlots();
-        }
-        return new Response("Not Authorized! Only HR Manager Or General Manager Authorized For This Action");
+        ResponseT<Employee> rE = checkAuthorization(userID);
+        if (rE.isErrorOccured())
+            return rE;
+        return shiftController.add2WeeksSlots();
     } // only HR and general manager
 
     public Response generate1weeklyShifts(String userID) {
-        if (!employeeController.getEmployee(userID).getValue().checkAuthorizedHrOrGenral().getValue())
-            return new Response("Not Authorized! Only HR Manager Or General Manager Authorized For This Action");
-        shiftController.add1WeeksSlot();
-        return new Response();
+        ResponseT<Employee> rE = checkAuthorization(userID);
+        if (rE.isErrorOccured())
+            return rE;
+        return shiftController.add1WeeksSlot();
     }
 
-    public ResponseT<List<Shift>> getFutureShifts(String userID){ //
-        if (!employeeController.getEmployee(userID).getValue().checkAuthorizedHrOrGenral().getValue())
-            return new ResponseT<>(null, "Not Authorized! Only HR Manager Or General Manager Authorized For This Action");
+    public ResponseT<List<Shift>> getFutureShifts(String userID){
+        ResponseT<Employee> rE = checkAuthorization(userID);
+        if (rE.isErrorOccured())
+            return new ResponseT<>(null, rE.getErrorMessage());
         return shiftController.getFutureShifts();
     }
 
@@ -137,11 +138,6 @@ public class FacadeController {
     }
 
     public Response closeShift(String userID, LocalDate date, LocalTime start, LocalTime end){
-//        if (employeeController.getEmployee(userID).getValue().checkAuthorizedHrOrGenral().getValue()){
-//            return shiftController.findShift(date, start, end).setClosed(true);
-//        }
-//        return new Response("Not Authorized! Only HR Manager Or General Manager Authorized For This Action");
-
         ResponseT<Employee> rE = checkAuthorization(userID);
         if (rE.isErrorOccured())
             return rE;
@@ -186,12 +182,6 @@ public class FacadeController {
      the function will return Failure Response if the user that call the function is not HR Manager Or General Manager
      */
     public ResponseT<String> getEmployeesConstrainsForShift(String userID, LocalDate date, LocalTime start, LocalTime end) {
-
-//        if (employeeController.getEmployee(userID).getValue().checkAuthorizedHrOrGenral().getValue()){
-//            return (shiftController.findShift(date, start, end).getShiftConstrainsString());
-//        }
-//        return new ResponseT("Not Authorized! Only HR Manager Or General Manager Authorized For This Action");
-
         ResponseT<Employee> rE = checkAuthorization(userID);
         if (rE.isErrorOccured())
             return new ResponseT(null, rE.getErrorMessage());
@@ -204,7 +194,6 @@ public class FacadeController {
             return new ResponseT(null, rE.getErrorMessage());
         return employeeController.getEmpData(rE.getValue());
 
-//        return (EmployeeController.getInstance().getEmployee(userID).getValue().getEmpDataTostring());
         //What kind of Error response should it return?
     } // toString (req 12)
 

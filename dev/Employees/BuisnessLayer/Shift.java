@@ -110,7 +110,7 @@ public abstract class Shift {
 
 
     public ResponseT<String> getWhoIWorkWith(Employee employee){
-        if (!assignedEmployees.containsKey(employee.getID()))
+        if (!assignedEmployees.containsKey(employee.getID().getValue()))
             return new ResponseT<>(null, "This employee is not assigned to this shift");
         return new ResponseT<String>(getIdsNames());
     }
@@ -119,9 +119,9 @@ public abstract class Shift {
         StringBuilder sb = new StringBuilder();
         sb.append("|\t").append(date.toString()).append('\n');
         sb.append("|\t").append(start.toString()).append('\n');
-        sb.append("|\t").append(end.toString()).append('\n');
+        sb.append("|\t").append(end.toString()).append("\n\n");
         for(Map.Entry<String,Employee> entry: assignedEmployees.entrySet()) {
-            sb.append(entry.getKey()).append('\t').append(entry.getValue()).append('\n');
+            sb.append(entry.getKey()).append('\t').append(entry.getValue().getName().getValue()).append('\n');
         }
         sb.deleteCharAt(sb.length()-1); // remove the last \n
         return sb.toString();

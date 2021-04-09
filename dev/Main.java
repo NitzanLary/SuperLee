@@ -7,7 +7,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
@@ -17,6 +19,9 @@ public class Main {
 //        FacadeController f2 = FacadeController.getInstance();
 
 
+        Map<String, Integer> map = new HashMap<>();
+        map.put("123", 5);
+        System.out.println(map.containsKey("123"));
 
 
 //        System.out.println("1) Add sale\n" +
@@ -28,21 +33,21 @@ public class Main {
 //                "7) Inventory report\n" +
 //                "9) Exit");
 
-        LocalTime lt = LocalTime.of(6,0);
-        LocalTime end = LocalTime.of(14,0);
-
-        Employee emp1 = new Employee("Nitzan Lary", "311541214", LocalDate.parse("2019-04-03"));
-        Employee emp2 = new Employee("Assaf Stern", "224266120", LocalDate.parse("2019-03-03"));
-        Employee emp3 = new Employee("Refael Farjune", "300545411", LocalDate.parse("2019-06-02"));
-        ShiftController sc = ShiftController.getInstance();
-        sc.add1WeeksSlot();
-        sc.add1WeeksSlot();
-        sc.add1WeeksSlot();
-        sc.add1WeeksSlot();
-        sc.findShift(LocalDate.parse("2021-04-09"),lt,end).getValue().AddConstrain(emp1, 1);
-        sc.findShift(LocalDate.parse("2021-04-09"),lt,end).getValue().AddConstrain(emp2, 1);
-        sc.findShift(LocalDate.parse("2021-04-09"),lt,end).getValue().AddConstrain(emp3, 1);
-        System.out.println(sc.findShift(LocalDate.parse("2021-04-09"),lt,end).getValue().getShiftConstrainsString().getValue());
+//        LocalTime lt = LocalTime.of(6,0);
+//        LocalTime end = LocalTime.of(14,0);
+//
+//        Employee emp1 = new Employee("Nitzan Lary", "311541214", LocalDate.parse("2019-04-03"));
+//        Employee emp2 = new Employee("Assaf Stern", "224266120", LocalDate.parse("2019-03-03"));
+//        Employee emp3 = new Employee("Refael Farjune", "300545411", LocalDate.parse("2019-06-02"));
+//        ShiftController sc = ShiftController.getInstance();
+//        sc.add1WeeksSlot();
+//        sc.add1WeeksSlot();
+//        sc.add1WeeksSlot();
+//        sc.add1WeeksSlot();
+//        sc.findShift(LocalDate.parse("2021-04-09"),lt,end).getValue().AddConstrain(emp1, 1);
+//        sc.findShift(LocalDate.parse("2021-04-09"),lt,end).getValue().AddConstrain(emp2, 1);
+//        sc.findShift(LocalDate.parse("2021-04-09"),lt,end).getValue().AddConstrain(emp3, 1);
+//        System.out.println(sc.findShift(LocalDate.parse("2021-04-09"),lt,end).getValue().getShiftConstrainsString().getValue());
 
 
 
@@ -61,8 +66,8 @@ public class Main {
 //
 //        }
 
-        FacadeController.getInstance().initData();
-        CLI.getInstance().start();
+//        FacadeController.getInstance().initData();
+//        CLI.getInstance().start();
 
     }
 

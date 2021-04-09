@@ -5,6 +5,7 @@ import Employees.BuisnessLayer.FacadeController;
 import Employees.BuisnessLayer.Shift;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 
 public class CLI {
@@ -76,6 +77,21 @@ public class CLI {
         }
     }
 
+    public void DisloginMenu(){
+        System.out.println("""
+                Welcome!
+                Please Enter ID:
+                """);
+    }
+
+
+    public void DisMmainMenu(){
+        System.out.println("""
+                1) Employees Menu
+                2) Shifts Menu
+                3) Exit""");
+    }
+
     //------------------------------MANAGER ONLY----------------------------------
 
     public void MempMenu() {
@@ -91,6 +107,13 @@ public class CLI {
 
     }
 
+    public void DisMempMenu(){
+        System.out.println("""
+                1) Add new employee to the system
+                2) update or edit existing employee
+                3) Exit""");
+    }
+
     public void MempUpdateMenu() {
         int action;
         do {
@@ -104,17 +127,64 @@ public class CLI {
 
     }
 
+    public void DisMempUpdateMenu(){
+        System.out.println("""
+                1) Update employee name
+                2) Update employee bank account
+                3) Update employee salary
+                4) Update employee sick days
+                5) Update employee study found
+                6) Update employee days off
+                7) Update employee role
+                8) Exit""");
+    }
+
     public void MshiftsMenu() {
         int action;
         do {
             DisMshiftsMenu();
             action = scanner.nextInt();
-            if (action == 4)
+            if (action == 0)
                 break;
             scanner.nextLine();
             cliController.MshiftsMenu(action);
         } while (true);
 
+    }
+
+    public void DisMshiftsMenu(){
+        System.out.println("""
+                1) Choose shift by date
+                2) Choose shift from future shifts
+                3) Generate 1 Week Shifts to future shifts
+                4) Exit""");
+    }
+
+    public void MSingleShiftMenu(Shift shift) {
+        int action;
+        do {
+            MSingleShiftDisplay(shift);
+            action = scanner.nextInt();
+            if (action == 0)
+                break;
+            scanner.nextLine();
+            cliController.MSingleShiftOptions(action, shift);
+        }while (true);
+    }
+
+    private void MSingleShiftDisplay(Shift shift) {
+        System.out.println("""
+                Shift Date: %s
+                Start: %s\tEnd: %s
+                
+                """.formatted(shift.getDate(), shift.getStart(), shift.getEnd()));
+
+        System.out.println("""
+                1) Assign Employee
+                2) Get Employees Preferences
+                3) Close Shift
+                4) Open Shift
+                """);
     }
 
 //    public void MfutureShiftsMenu() {
@@ -143,53 +213,6 @@ public class CLI {
 //
 //    }
 
-
-
-
-
-
-    public void DisloginMenu(){
-        System.out.println("""
-                Welcome!
-                Please Enter ID:
-                """);
-    }
-
-    public void DisMmainMenu(){
-        System.out.println("""
-                1) Employees Menu
-                2) Shifts Menu
-                3) Exit""");
-    }
-
-
-
-    public void DisMempMenu(){
-        System.out.println("""
-                1) Add new employee to the system
-                2) update or edit existing employee
-                3) Exit""");
-    }
-
-    public void DisMempUpdateMenu(){
-        System.out.println("""
-                1) Update employee name
-                2) Update employee bank account
-                3) Update employee salary
-                4) Update employee sick days
-                5) Update employee study found
-                6) Update employee days off
-                7) Update employee role
-                8) Exit""");
-    }
-
-    public void DisMshiftsMenu(){
-        System.out.println("""
-                1) Choose shift by date
-                2) Choose shift from future shifts
-                3) Generate 1 Week Shifts to future shifts
-                4) Exit""");
-    }
 
     public void  DisMfutureShiftMenu(){
         System.out.println("""
@@ -236,13 +259,6 @@ public class CLI {
 
     }
 
-
-
-
-
-
-
-
     public void DisEmainMenu(){
         System.out.println("""
                 1) Show all my information
@@ -254,6 +270,17 @@ public class CLI {
 
     //-----------------------------------------------------------------------------
 
+
+    public void displayShifts(List<Shift> shifts) {
+        for(Shift s: shifts){
+            System.out.println("""
+                    Date: %s
+                    Start: %s\tEnd: %s
+                    
+                    """.formatted(s.getDate(), s.getStart(), s.getEnd()));
+        }
+    }
+
     //display `msg` to the user and returns an int read from the user
     public int getInt(String msg) {
         System.out.println(msg);
@@ -261,7 +288,6 @@ public class CLI {
         scanner.nextLine();
         return out;
     }
-
 
     //display `msg` to the user and returns a string read from the user
     public String getString(String msg) {
@@ -286,41 +312,4 @@ public class CLI {
     public void print(String msg) {
         System.out.println(msg);
     }
-
-
-    public void MShiftMenu(Shift shift) {
-        int action;
-        do {
-            MShiftDisplay(shift);
-            action = scanner.nextInt();
-            if (action == 0)
-                return; // todo: deleted do while here
-            scanner.nextLine();
-            cliController.MShiftOptions(action, shift);
-        }while (true);
-    }
-
-    private void MShiftDisplay(Shift shift) {
-        System.out.println("""
-                Shift Date: %s
-                Start: %s\tEnd: %s
-                
-                """.formatted(shift.getDate(), shift.getStart(), shift.getEnd()));
-
-        System.out.println("""
-                1) Assign Employee
-                2) Get Employees Preferences
-                3) Close Shift
-                4) Open Shift
-                """);
-    }
 }
-
-
-
-
-
-
-
-
-

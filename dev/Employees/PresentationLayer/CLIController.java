@@ -4,6 +4,7 @@ import Employees.BuisnessLayer.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 public class CLIController {
     private static CLIController clientController = null;
@@ -90,7 +91,6 @@ public class CLIController {
             handleSingleShiftMenu();
         if (action == 2)
             MFutureShiftsMenu();
-
     }
 
     private void handleSingleShiftMenu() {
@@ -98,35 +98,24 @@ public class CLIController {
         String type;
         do{
             type = cli.getString("Enter 'M' for Morning shift or 'E' for Evening shift");
-        }while(!type.equals('E') && !type.equals('M'));
+        }while(!type.equals("E") && !type.equals("M"));
         ResponseT<Shift> shift = facade.getShift(date, type);
         if (shift.isErrorOccured()) {
             cli.print(shift.getErrorMessage());
             return;
         }
-        cli.MShiftMenu(shift.getValue());
+        cli.MSingleShiftMenu(shift.getValue());
     }
 
     public void MFutureShiftsMenu() {
-
+        ResponseT<List<Shift>> shifts = facade.getFutureShifts(userID);
+        if (shifts.isErrorOccured()){
+            cli.print(shifts.getErrorMessage());
+            return;
+        }
+        cli.displayShifts(shifts.getValue());
+        handleSingleShiftMenu();
     }
-
-
-//    public void MsingleShiftMenu(int action) {
-//        //add sale
-//        if (action == 1){ addSale(); }
-//        //add faulty
-//        if (action == 2){ addFaulty(); }
-//        //add item
-//        if (action == 3){ addItem(); }
-//        // add category
-//        if (action == 4) { addCategory(); }
-//        // faulty report
-//        if (action == 5) { faultyReport(); }
-//        //go to edit menu
-//        if (action == 6) { io.editMenu(); }
-//
-//    }
 
     public void EmainMenu(int action) {
         //Show employee information
@@ -140,8 +129,6 @@ public class CLIController {
 
 
     }
-
-
 
     public void addNewEmployee(){
         String EmpID = cli.getString("Enter employee ID:");
@@ -192,8 +179,6 @@ public class CLIController {
         int newDaysOff = cli.getInt("Enter new employee's days off:");
         facade.updateEmpDaysOff(clientController.userID, EmpID, newDaysOff);
     }
-
-
 
 
     //Todo, nitzan should do updateRole
@@ -251,7 +236,7 @@ public class CLIController {
                     LocalTime.of(14, 0), LocalTime.of(22,0)).getValue();
     }
 
-    public void MShiftOptions(int action, Shift shift) {
+    public void MSingleShiftOptions(int action, Shift shift) {
         if (action == 1)
             assignEmployee(shift);
         if(action == 2)

@@ -34,6 +34,12 @@ class FacadeControllerTest {
                 30, 30, 30, "cashier", LocalDate.now());
         rE = employeeController.getEmployee("111111111");
         assertFalse(rE.isErrorOccured());
+
+
+        facade.addEmployee("205952971", "987654321", "Eyal", "12345", 1000,
+                30, 30, 30, "cashier", LocalDate.now());
+        rE = employeeController.getEmployee("987654321");
+        assertFalse(rE.isErrorOccured());
     }
 
     @Test
@@ -41,7 +47,6 @@ class FacadeControllerTest {
         facade.updateEmpName("205952971", "312174295", "new");
         ResponseT<Employee> rE = employeeController.getEmployee("312174295");
         assertFalse(rE.isErrorOccured());
-        System.out.println(rE.getValue().getName());
         assertFalse(rE.getValue().getName().isErrorOccured());
         assertTrue(rE.getValue().getName().getValue().equals("new"));
     }
@@ -114,31 +119,35 @@ class FacadeControllerTest {
 //
 //    }
 
+    /**
+     * We check here getWhoIWorkWith in addition.
+     */
     @Test
     void assignEmpToShift() {
         LocalDate date = LocalDate.now();
         LocalTime start = LocalTime.of(6,0);
         LocalTime end = LocalTime.of(14,0);
         Response r = facade.assignEmpToShift("205952971", "312174295", date, start, end, "General Manager");
-        assertFalse(r.isErrorOccured());
+        Response r2 = facade.assignEmpToShift("205952971", "123456789", date, start, end, "OSE KAKI");
+        assertFalse(r.isErrorOccured() || r2.isErrorOccured());
         ResponseT<List<Employee>> res = shiftController.getAssignedEmps(date, start, end);
         assertFalse(res.isErrorOccured());
         assertTrue(res.getValue().get(0).getID().getValue().equals("312174295"));
+        ResponseT<String> r3 = facade.getWhoIWorkWith("312174295", date, start, end);
+        System.out.println(r3.getValue());
+        assertFalse(r3.isErrorOccured());
     }
 
 
-    @Test
-    void closeShift() {
+//    @Test
+//    void closeShift() {
+//
+//    }
+//
+//    @Test
+//    void openShift() {
+//    }
 
-    }
-
-    @Test
-    void openShift() {
-    }
-
-    @Test
-    void getWhoIWorkWith() {
-    }
 
     @Test
     void getMyData() {
