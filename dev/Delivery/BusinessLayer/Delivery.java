@@ -157,8 +157,6 @@ public class Delivery {
                 return false;
             }
         }
-        if (l1.compareTo(current) < 0)
-            return false;
-        return true;
+        return l1.compareTo(current) >= 0;
     }
 }

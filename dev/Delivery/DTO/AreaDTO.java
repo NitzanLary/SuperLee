@@ -7,12 +7,14 @@ import java.util.ArrayList;
 
 public class AreaDTO {
     private ArrayList<LocationDTO> locations;
+    private String areaName; // we didnt put this data type in the diagram - but its necessary
 
     public AreaDTO(Area a){
         locations = new ArrayList<>();
         for (Location l : a.getLocations()){
             locations.add(new LocationDTO(l));
         }
+        this.areaName = a.getAreaName();
     }
 
     public ArrayList<LocationDTO> getLocations() {
@@ -31,7 +33,7 @@ public class AreaDTO {
         this.areaName = areaName;
     }
 
-    private String areaName; // we didnt put this data type in the diagram - but its necessary
+
 
     public AreaDTO(String areaName){
         this.locations = new ArrayList<>();

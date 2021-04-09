@@ -28,6 +28,12 @@ public class DriverDTO {
         this.licenseType = licenseType;
         this.employeeName = employeeName;
     }
+
+    public DriverDTO(Driver driver){
+        this.licenseType = driver.getLicenceType();
+        this.employeeName = driver.getName();
+    }
+
     public String toString() {
         return "Driver{" +
                 "licenseType=" + licenseType +

@@ -5,6 +5,7 @@ import Delivery.DTO.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class FacadeController {
     DeliveryController dec;
@@ -231,5 +232,13 @@ public class FacadeController {
         for (Delivery d:dec.getDeliveries().values())
             ret.add(new DeliveryDTO(d));
         return ret;
+    }
+
+    public ArrayList<DriverDTO> getAllDrivers() {
+        ArrayList<DriverDTO> arr = new ArrayList<>();
+        for (Driver driver : drc.getDrivers()){
+            arr.add(new DriverDTO(driver));
+        }
+        return arr;
     }
 }
