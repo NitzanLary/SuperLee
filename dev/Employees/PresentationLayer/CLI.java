@@ -199,6 +199,8 @@ public class CLI {
                 4) Open Shift
                 5) Get shift's status
                 To return to the previous menu press 0
+                6) Get Assigned Employees
+                To return to the previous menu press 0
                 
                 """);
     }

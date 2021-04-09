@@ -248,6 +248,12 @@ public class CLIController {
             openShift(shift);
         if(action == 5)
             showStatus(shift);
+        if(action == 6)
+            getAssignedEmployees();
+    }
+
+    private void getAssignedEmployees() {
+//        ResponseT<String> r = facade.get
     }
 
     private void showStatus(Shift shift) {
