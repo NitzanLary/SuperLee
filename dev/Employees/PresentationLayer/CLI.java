@@ -48,22 +48,16 @@ public class CLI {
         action = scanner.nextInt();
         if(action == 1)
             initData();
-
         do {
-
             DisloginMenu();
-
-
-
             ID = scanner.next();
             if(ID.equals("0"))
                 break;
-
             cliController.setUserID(ID);
-
-
-
-            if (cliController.checkAuthorizedHrOrGenral(ID).getValue()) {
+            ResponseT<Boolean> r = cliController.checkAuthorizedHrOrGenral(ID);
+            while(r.isErrorOccured())
+                r = cliController.checkAuthorizedHrOrGenral(ID);
+            if (r.getValue()) {
                 do {
                     //The User is Hr or General manager
                     DisMmainMenu();
