@@ -51,12 +51,28 @@ public class CLI {
         String ID;
         int action;
 
+        System.out.println("""
+                ****** If you want to initialize example data press '1' ******
+                ******           Else press any other Digit             ******
+                """);
+        action = scanner.nextInt();
+        if(action == 1)
+            initData();
+
         do {
 
-
             DisloginMenu();
+
+
+
             ID = scanner.next();
+            if(ID.equals("0"))
+                break;
+
             cliController.setUserID(ID);
+
+
+
             if (cliController.checkAuthorizedHrOrGenral(ID).getValue()) {
                 do {
                     //The User is Hr or General manager
@@ -84,8 +100,13 @@ public class CLI {
 
     public void DisloginMenu(){
         System.out.println("""
-                Welcome!
+                *** Welcome! ****
+               
                 Please Enter ID:
+                
+                
+                
+                To exit press 0 
                 """);
     }
 

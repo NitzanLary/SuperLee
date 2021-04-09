@@ -38,7 +38,7 @@ public class CLIController {
 
 
     public static void initData() {
-        // todo
+
     }
 
     public ResponseT<Boolean> checkAuthorizedHrOrGenral(String id){
@@ -76,12 +76,10 @@ public class CLIController {
         if (action == 4) { updateEmployeeSickDays(); }
         // faulty report
         if (action == 5) { updateEmployeeStudyFound(); }
-        //go to edit menu
-//        if (action == 6) { io.editMenu(); }
-        //inventory report
+
         if (action == 6) { updateEmployeeDaysOff(); }
-        //TODO after nitzan's update function complete
-//        if (action == 7) { updateEmployeeRole(); }
+
+        if (action == 7) { updateEmployeeRole(); }
     }
 
     public void MshiftsMenu(int action) {
@@ -182,12 +180,11 @@ public class CLIController {
     }
 
 
-    //Todo, nitzan should do updateRole
-//    public void updateEmployeeRole(){
-//        String EmpID = cli.getString("Enter employee's ID:");
-//        int newRole = cli.getString("Enter new employee's Role:");
-//        facade.updateEmpRole(clientController.userID, EmpID, newRole);
-//    }
+    public void updateEmployeeRole(){
+        String EmpID = cli.getString("Enter employee's ID:");
+        String newRole = cli.getString("Enter new employee's Role:");
+        facade.addRoleToEmp(clientController.userID, EmpID, newRole);
+    }
 
 
     public String showAllMyInformation(){
