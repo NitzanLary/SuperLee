@@ -1,6 +1,5 @@
 package BussinessLayer;
 
-//TODO: check readonly
 public class Response {
     public String ErrorMessage;
 

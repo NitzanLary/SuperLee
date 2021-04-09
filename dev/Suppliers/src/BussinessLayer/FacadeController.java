@@ -350,7 +350,7 @@ public class FacadeController {
     public ResponseT<String> showOrdersBySupplier(int supplierID) {
         try {
             String allOrders = '\n'+ "All Supplier Number:" + supplierID + " Orders Are: " ;
-            Response res = checkSuppExist(supplierID); //todo return response
+            Response res = checkSuppExist(supplierID);
             LinkedList<Integer> listOfOrders = supplierOrder.get(supplierID);
             if (listOfOrders == null){
                 return new ResponseT<>('\n' + " No Orders Yet For This Supplier");
