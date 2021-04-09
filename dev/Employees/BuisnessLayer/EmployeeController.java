@@ -98,7 +98,7 @@ public class EmployeeController {
 
     public void initData() {
         AddEmployee("312174295", "Yanay", "12345", 1000, 30, 500, 30,
-                "Shift Manager", LocalDate.now());
+                "General Manager", LocalDate.now());
         AddEmployee("205952971", "Nitzan", "12345", 1000, 30, 500, 30,
                 "HR Manager", LocalDate.now());
         AddEmployee("123456789", "Dana", "12345", 1000, 30, 500, 30,
