@@ -37,11 +37,7 @@ public class DriverController {
     }
 
     public ArrayList<Driver> getDrivers() {
-        ArrayList<Driver> ret = new ArrayList<>();
-        for (Driver d : controller.values()){
-            ret.add(d);
-        }
-        return ret;
+        return new ArrayList<>(controller.values());
     }
 
     public ArrayList<DriverDTO> getDriversData() {
