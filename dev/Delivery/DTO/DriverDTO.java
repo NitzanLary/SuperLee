@@ -1,5 +1,6 @@
 package Delivery.DTO;
 
+import Delivery.BusinessLayer.Driver;
 import Delivery.BusinessLayer.Employee;
 
 public class DriverDTO {
@@ -32,5 +33,13 @@ public class DriverDTO {
                 "licenseType=" + licenseType +
                 ", employee=" + employeeName +
                 '}';
+    }
+
+    public boolean equals(Object other){
+        if (other instanceof DriverDTO){
+            DriverDTO oth = (DriverDTO) other;
+            return oth.getEmployeeName().equals(getEmployeeName());
+        }
+        return false;
     }
 }

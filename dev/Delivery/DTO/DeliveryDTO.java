@@ -160,4 +160,13 @@ public class DeliveryDTO {
                 "\n\t\torigin = " + origin.getAddress() +
                 "\n\t\tdestinations= " + destinSTR;
     }
+
+
+    public boolean equals(Object other){
+        if (other instanceof DeliveryDTO){
+            DeliveryDTO oth = (DeliveryDTO) other;
+            return oth.getId().equals(getId());
+        }
+        return false;
+    }
 }

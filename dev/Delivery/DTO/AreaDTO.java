@@ -51,4 +51,12 @@ public class AreaDTO {
 
         return areaName + ": " + str;
     }
+
+    public boolean equals(Object other){
+        if (other instanceof AreaDTO){
+            AreaDTO otherArea = (AreaDTO) other;
+            return otherArea.getAreaName().equals(getAreaName());
+        }
+        return false;
+    }
 }

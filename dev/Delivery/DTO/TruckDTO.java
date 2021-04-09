@@ -61,4 +61,12 @@ public class TruckDTO {
         ret += ("\nmodel-"+model) + ("\nmaxWeight-"+maxWeight) + ("\ntruckWeight-"+truckWeight);
         return ret;
     }
+
+    public boolean equals(Object other){
+        if (other instanceof TruckDTO){
+            TruckDTO oth = (TruckDTO) other;
+            return oth.getId().equals(getId());
+        }
+        return false;
+    }
 }

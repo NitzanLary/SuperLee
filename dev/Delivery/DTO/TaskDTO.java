@@ -75,4 +75,12 @@ public class TaskDTO {
     public String toString(String tabs) {
         return tabs + "id - " + this.id + "\n" + tabs + "list of products - " + this.listOfProduct + "\n" + tabs + "mission - " + this.loadingOrUnloading + "\n" + tabs + "destination - " + destination.getAddress() + " | " + destination.getContactName() + " | " + destination.getPhoneNumber();
     }
+
+    public boolean equals(Object other){
+        if (other instanceof TaskDTO){
+            TaskDTO oth = (TaskDTO) other;
+            return oth.getId().equals(getId());
+        }
+        return false;
+    }
 }

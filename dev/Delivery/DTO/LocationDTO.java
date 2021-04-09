@@ -53,4 +53,12 @@ public class LocationDTO {
                 ", contactName='" + contactName + '\'' +
                 '}';
     }
+
+    public boolean equals(Object other){
+        if (other instanceof LocationDTO){
+            LocationDTO oth = (LocationDTO) other;
+            return oth.getAddress().equals(getAddress());
+        }
+        return false;
+    }
 }
