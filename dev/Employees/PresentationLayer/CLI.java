@@ -62,7 +62,7 @@ public class CLI {
                     //The User is Hr or General manager
                     DisMmainMenu();
                     action = scanner.nextInt();
-                    if (action == 3)
+                    if (action == 0)
                         break;
                     scanner.nextLine();
                     cliController.Mmainmanue(action);
@@ -72,7 +72,7 @@ public class CLI {
                     //The User is Regular Employee (not Hr or General manager)
                     DisEmainMenu();
                     action = scanner.nextInt();
-                    if (action == 5)
+                    if (action == 0)
                         break;
                     scanner.nextLine();
                     cliController.EmainMenu(action);
@@ -94,7 +94,9 @@ public class CLI {
         System.out.println("""
                 1) Employees Menu
                 2) Shifts Menu
-                3) Exit""");
+                To return to the previous menu press 0
+                
+                """);
     }
 
     //------------------------------MANAGER ONLY----------------------------------
@@ -104,7 +106,7 @@ public class CLI {
         do {
             DisMempMenu();
             action = scanner.nextInt();
-            if (action == 3)
+            if (action == 0)
                 break;
             scanner.nextLine();
             cliController.MempMenu(action);
@@ -116,7 +118,9 @@ public class CLI {
         System.out.println("""
                 1) Add new employee to the system
                 2) update or edit existing employee
-                3) Exit""");
+                To return to the previous menu press 0
+                
+                """);
     }
 
     public void MempUpdateMenu() {
@@ -124,7 +128,7 @@ public class CLI {
         do {
             DisMempUpdateMenu();
             action = scanner.nextInt();
-            if (action == 8)
+            if (action == 0)
                 break;
             scanner.nextLine();
             cliController.MupdateEmployeeMenu(action);
@@ -141,7 +145,9 @@ public class CLI {
                 5) Update employee study found
                 6) Update employee days off
                 7) Update employee role
-                8) Exit""");
+                To return to the previous menu press 0
+                
+                """);
     }
 
     public void MshiftsMenu() {
@@ -162,7 +168,9 @@ public class CLI {
                 1) Choose shift by date
                 2) Choose shift from future shifts
                 3) Generate 1 Week Shifts to future shifts
-                4) Exit""");
+                To return to the previous menu press 0
+                
+                """);
     }
 
     public void MSingleShiftMenu(Shift shift) {
@@ -190,6 +198,7 @@ public class CLI {
                 3) Close Shift
                 4) Open Shift
                 5) Get shift's status
+                To return to the previous menu press 0
                 
                 """);
     }
@@ -210,8 +219,10 @@ public class CLI {
     public void DisMWeeksShiftMenu(){
         System.out.println("""
                 1) This week shifts 
-                1) Next week shifts
-                3) Exit""");
+                2) Next week shifts
+                To return to the previous menu press 0
+                
+                """);
     }
 
 
@@ -241,7 +252,9 @@ public class CLI {
                 2) Show my preferences for a shift
                 3) Apply preferences for a shift
                 4) Show colleagues whom work with me in a shift
-                5) Exit""");
+                To return to the previous menu press 0
+                
+                """);
     }
 
     //-----------------------------------------------------------------------------
