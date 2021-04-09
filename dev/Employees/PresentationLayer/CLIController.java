@@ -90,11 +90,22 @@ public class CLIController {
         if (action == 1)
             handleSingleShiftMenu();
         if (action == 2)
-            MFutureShiftsMenu();
+            cli.weeksMenu();
+//            MFutureShiftsMenu();
+        if (action == 3)
+            generate1weeklyShift();
+    }
+
+    private void generate1weeklyShift() {
+        Response r = facade.generate1weeklyShifts(userID);
+        if(r.isErrorOccured())
+            cli.print(r.getErrorMessage());
+        else
+            cli.print("The generation has done");
     }
 
     private void handleSingleShiftMenu() {
-        LocalDate date = cli.getDate("");
+        LocalDate date = cli.getDate("Choose shift from the menu and enter the date");
         String type;
         do{
             type = cli.getString("Enter 'M' for Morning shift or 'E' for Evening shift");
@@ -108,14 +119,16 @@ public class CLIController {
     }
 
     public void MFutureShiftsMenu() {
-        ResponseT<List<Shift>> shifts = facade.getFutureShifts(userID);
-        if (shifts.isErrorOccured()){
-            cli.print(shifts.getErrorMessage());
-            return;
-        }
-        cli.displayShifts(shifts.getValue());
-        handleSingleShiftMenu();
+//        ResponseT<List<Shift>> shifts = facade.getFutureShifts(userID);
+//        if (shifts.isErrorOccured()){
+//            cli.print(shifts.getErrorMessage());
+//            return;
+//        }
+//        cli.displayShifts(shifts.getValue());
+//        handleSingleShiftMenu();
     }
+
+
 
     public void EmainMenu(int action) {
         //Show employee information
@@ -245,6 +258,15 @@ public class CLIController {
             closeShift(shift);
         if(action == 4)
             openShift(shift);
+        if(action == 5)
+            showStatus(shift);
+    }
+
+    private void showStatus(Shift shift) {
+        if(shift.isClosed())
+            cli.print("Shift is close");
+        else
+            cli.print("Shift is open");
     }
 
     private void openShift(Shift shift) {
@@ -281,6 +303,13 @@ public class CLIController {
 
     private boolean isValidID(String empID) {
         return true;
+    }
+
+    public void MWeeksMenu(int action) {
+        ResponseT<List<WeeklyShifts>> weeklyShifts = facade.getFutureWeeklyShifts();
+        if(action == 1)
+            cli.
+
     }
 
 //    public String showThisShiftStatus(){

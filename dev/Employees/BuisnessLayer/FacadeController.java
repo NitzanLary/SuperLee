@@ -169,6 +169,10 @@ public class FacadeController {
         return shiftController.findShift(date, type);
     }
 
+    public ResponseT<List<WeeklyShifts>> getFutureWeeklyShifts(){
+        return shiftController.getFutureWeeklyShifts();
+    }
+
     /**
      *
      This function return all the constrains for a specific shift given as parameter as a Response<String> while
