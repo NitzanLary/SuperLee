@@ -103,11 +103,6 @@ public class FacadeController {
         if(rE.isErrorOccured())
             return rE;
         return shiftController.putConstrain(rE.getValue(), date, start, end, pref);
-//        Shift shift = shiftController.findShift(date, start, end);
-//        if (shift != null){
-//            return shift.AddConstrain(employeeController.getEmployee(userID).getValue(), pref);
-//        }
-//        return new Response("ERROR! No Matches Found For This Shift");
     }
 
 
