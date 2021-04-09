@@ -70,9 +70,9 @@ public class ShiftController {
 
     public ResponseT<Shift> findShift(LocalDate date, String type) {
         ResponseT<Shift> shift;
-        if (type.equals('E'))
+        if (type.equals("E"))
             shift = findShift(date, LocalTime.of(6,0), LocalTime.of(14,0));
-        else if (type.equals('M'))
+        else if (type.equals("M"))
             shift = findShift(date, LocalTime.of(14,0), LocalTime.of(22,0));
         else
             return new ResponseT<>(null, "Incorrect type");

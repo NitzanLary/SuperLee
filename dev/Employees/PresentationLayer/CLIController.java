@@ -104,11 +104,11 @@ public class CLIController {
     }
 
     private void handleSingleShiftMenu() {
-        LocalDate date = cli.getDate("Choose shift from the menu and enter the date");
-        String type;
-        do{
+        LocalDate date = cli.getDate("");
+        String type = cli.getString("Enter 'M' for Morning shift or 'E' for Evening shift");
+        while(!type.equals("E") && !type.equals("M")){
             type = cli.getString("Enter 'M' for Morning shift or 'E' for Evening shift");
-        }while(!type.equals("E") && !type.equals("M"));
+        }
         ResponseT<Shift> shift = facade.getShift(date, type);
         if (shift.isErrorOccured()) {
             cli.print(shift.getErrorMessage());
