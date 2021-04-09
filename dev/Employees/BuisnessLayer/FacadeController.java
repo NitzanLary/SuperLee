@@ -150,6 +150,10 @@ public class FacadeController {
         return shiftController.assignToShift(rE.getValue(), date, start, end, role);
     }
 
+    public ResponseT<List<Employee>> getAssignedEmpForShift(LocalDate date, LocalTime start, LocalTime end){
+        return shiftController.getAssignedEmps(date, start, end);
+    }
+
     public Response closeShift(String userID, LocalDate date, LocalTime start, LocalTime end){
         ResponseT<Employee> rE = checkAuthorization(userID);
         if (rE.isErrorOccured())
@@ -245,8 +249,8 @@ public class FacadeController {
     public void initData(){
         employeeController.initData();
         shiftController.add1WeeksSlot();
-        assignEmpToShift("312174295", "123456789", LocalDate.now().plusDays(1), LocalTime.of(14,0), LocalTime.of(22,0), "Ose LOLAVIM");
-        assignEmpToShift("312174295", "987654321", LocalDate.now().plusDays(1), LocalTime.of(14,0), LocalTime.of(22,0), "Ose ETROGIM");
+        assignEmpToShift("312174295", "123456789", LocalDate.now().plusDays(1), LocalTime.of(14,0), LocalTime.of(22,0), "Cashier");
+        assignEmpToShift("312174295", "987654321", LocalDate.now().plusDays(1), LocalTime.of(14,0), LocalTime.of(22,0), "Storage");
 
     }
 

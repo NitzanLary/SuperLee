@@ -128,13 +128,17 @@ class FacadeControllerTest {
         LocalTime start = LocalTime.of(6,0);
         LocalTime end = LocalTime.of(14,0);
         Response r = facade.assignEmpToShift("205952971", "312174295", date, start, end, "General Manager");
-        Response r2 = facade.assignEmpToShift("205952971", "123456789", date, start, end, "OSE KAKI");
+        Response r2 = facade.assignEmpToShift("205952971", "123456789", date, start, end, "Cashier");
         assertFalse(r.isErrorOccured() || r2.isErrorOccured());
         ResponseT<List<Employee>> res = shiftController.getAssignedEmps(date, start, end);
         assertFalse(res.isErrorOccured());
         assertTrue(res.getValue().get(0).getID().getValue().equals("312174295"));
         ResponseT<String> r3 = facade.getWhoIWorkWith("312174295", date, start, end);
         assertFalse(r3.isErrorOccured());
+
+        ResponseT<List<Employee>> employees = facade.getAssignedEmpForShift(date, start, end);
+        assertFalse(employees.isErrorOccured());
+        assertTrue(employees.getValue().size() == 2);
     }
 
 

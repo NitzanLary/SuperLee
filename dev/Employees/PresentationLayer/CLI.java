@@ -1,9 +1,6 @@
 package Employees.PresentationLayer;
 
-import Employees.BuisnessLayer.EmployeeController;
-import Employees.BuisnessLayer.FacadeController;
-import Employees.BuisnessLayer.Shift;
-import Employees.BuisnessLayer.WeeklyShifts;
+import Employees.BuisnessLayer.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -37,13 +34,6 @@ public class CLI {
     private boolean isIdValid(String id){
         return id.length() == 9;
     }
-
-//    private boolean isDateValid(LocalDate date){
-//        LocalDate now = LocalDate.now();
-//        return true;
-//    }
-
-
 
     //starts the login menu of the program
     public void start() {
@@ -188,7 +178,7 @@ public class CLI {
         System.out.println("""
                 1) Choose shift by date
                 2) Choose shift from future shifts
-                3) Generate 1 Week Shifts to future shifts
+                3) Generate 1 Week Shifts forward 
                 To return to the previous menu press 0
                 
                 """);
@@ -219,7 +209,6 @@ public class CLI {
                 3) Close Shift
                 4) Open Shift
                 5) Get shift's status
-                To return to the previous menu press 0
                 6) Get Assigned Employees
                 To return to the previous menu press 0
                 
@@ -318,8 +307,18 @@ public class CLI {
         System.out.println(msg);
         System.out.println("Enter the day:");
         int day = scanner.nextInt();
+        while(day <= 0 || day > 31){
+            System.out.println("Invalid day");
+            day = scanner.nextInt();
+        }
+
         System.out.println("Enter the month:");
         int month = scanner.nextInt();
+        while(month <= 0 || month > 12){
+            System.out.println("Invalid month");
+            month = scanner.nextInt();
+        }
+
         System.out.println("Enter the year:");
         int year = scanner.nextInt();
         return LocalDate.of(year,month,day);
@@ -338,5 +337,12 @@ public class CLI {
     }
 
 
-
+    public void displayEmployees(List<Employee> employees) {
+        for (Employee e: employees){
+            System.out.println("""
+                    ID: %s\tName: %s
+                    
+                    """.formatted(e.getID().getValue(), e.getName().getValue()));
+        }
+    }
 }

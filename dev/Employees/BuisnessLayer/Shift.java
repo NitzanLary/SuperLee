@@ -53,8 +53,18 @@ public abstract class Shift {
     }
 
     public Response close() {
+        if(!hasManager())
+            return new Response("Can not close before a shift manager is assigned to the shift");
         closed = true;
         return new Response();
+    }
+
+    protected boolean hasManager(){
+        for(Map.Entry<String, Employee> entry: assignedEmployees.entrySet()){
+            if(entry.getValue().haveRoleCheck("HR Manager") || entry.getValue().haveRoleCheck("Shift Manager"))
+                return true;
+        }
+        return false;
     }
 
     public Response open() {
