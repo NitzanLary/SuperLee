@@ -6,8 +6,6 @@ import java.util.List;
 
 public class StockController {
     private List<Category> categories;
-    public static final String RED_BOLD = "\033[1;31m";    // RED
-    public static final String RESET = "\033[0m";  // Text Reset
 
 
     public StockController() {
@@ -144,7 +142,7 @@ public class StockController {
         for (String cat : catNames) {
             Category c = getCategory(cat);
             if (c == null)
-                sb.append("Could not found category: "+RED_BOLD+cat+RESET+"\n");
+                sb.append("Could not found category: "+cat+"\n");
             else
                 sb.append(c.toString()+"\n");
         }
