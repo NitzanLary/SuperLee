@@ -134,7 +134,6 @@ class FacadeControllerTest {
         assertFalse(res.isErrorOccured());
         assertTrue(res.getValue().get(0).getID().getValue().equals("312174295"));
         ResponseT<String> r3 = facade.getWhoIWorkWith("312174295", date, start, end);
-        System.out.println(r3.getValue());
         assertFalse(r3.isErrorOccured());
     }
 

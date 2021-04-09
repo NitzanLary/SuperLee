@@ -3,6 +3,7 @@ package Employees.PresentationLayer;
 import Employees.BuisnessLayer.EmployeeController;
 import Employees.BuisnessLayer.FacadeController;
 import Employees.BuisnessLayer.Shift;
+import Employees.BuisnessLayer.WeeklyShifts;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -209,42 +210,6 @@ public class CLI {
                 3) Exit""");
     }
 
-    public void  DisWeeksMenu(){
-        System.out.println("""
-                1) Next Week Shifts
-                2) Week after next week shifts
-                3) Exit""");
-    }
-
-
-//    public void MfutureShiftsMenu() {
-//        int action;
-//        do {
-//            DisMshiftsMenu();
-//            action = scanner.nextInt();
-//            if (action == 3)
-//                break;
-//            scanner.nextLine();
-//            cliController.MfutureShiftsMenu(action);
-//        } while (true);
-//
-//    }
-
-//    public void MsingleShiftMenu() {
-//        int action;
-//        do {
-//            DisMsingleShiftMenu();
-//            action = scanner.nextInt();
-//            if (action == 6)
-//                break;
-//            scanner.nextLine();
-//            cliController.MfutureShiftsMenu(action);
-//        } while (true);
-//
-//    }
-
-
-
 
     //----------------------------------------------------------------------------
 
@@ -278,14 +243,18 @@ public class CLI {
     //-----------------------------------------------------------------------------
 
 
-    public void displayShifts(List<Shift> shifts) {
-        for(Shift s: shifts){
-            System.out.println("""
-                    Date: %s
-                    Start: %s\tEnd: %s
-                    
-                    """.formatted(s.getDate(), s.getStart(), s.getEnd()));
-        }
+    public void displayShift(Shift s) {
+        System.out.println("""
+                Date: %s
+                Start: %s\tEnd: %s
+                
+                """.formatted(s.getDate(), s.getStart(), s.getEnd()));
+    }
+
+    public void displayWeekly(List<WeeklyShifts> weeks) {
+        for(WeeklyShifts week: weeks)
+            for(Shift s: week.getShifts())
+                displayShift(s);
     }
 
     //display `msg` to the user and returns an int read from the user
@@ -319,6 +288,7 @@ public class CLI {
     public void print(String msg) {
         System.out.println(msg);
     }
+
 
 
 }

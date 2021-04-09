@@ -19,9 +19,6 @@ public class Main {
 //        FacadeController f2 = FacadeController.getInstance();
 
 
-        Map<String, Integer> map = new HashMap<>();
-        map.put("123", 5);
-        System.out.println(map.containsKey("123"));
 
 
 //        System.out.println("1) Add sale\n" +

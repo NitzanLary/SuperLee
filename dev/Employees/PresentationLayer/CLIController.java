@@ -46,7 +46,6 @@ public class CLIController {
     }
 
 
-
     public void Mmainmanue(int action) {
         //add sale
         if (action == 1){
@@ -117,17 +116,6 @@ public class CLIController {
         }
         cli.MSingleShiftMenu(shift.getValue());
     }
-
-    public void MFutureShiftsMenu() {
-//        ResponseT<List<Shift>> shifts = facade.getFutureShifts(userID);
-//        if (shifts.isErrorOccured()){
-//            cli.print(shifts.getErrorMessage());
-//            return;
-//        }
-//        cli.displayShifts(shifts.getValue());
-//        handleSingleShiftMenu();
-    }
-
 
 
     public void EmainMenu(int action) {
@@ -298,7 +286,7 @@ public class CLIController {
         Response r = facade.assignEmpToShift(userID, empID, shift.getDate(), shift.getStart(), shift.getEnd(), role);
         if(r.isErrorOccured())
             cli.print(r.getErrorMessage());
-        cli.print("Assigning accomplished");
+        else cli.print("Assigning accomplished");
     }
 
     private boolean isValidID(String empID) {
@@ -307,9 +295,15 @@ public class CLIController {
 
     public void MWeeksMenu(int action) {
         ResponseT<List<WeeklyShifts>> weeklyShifts = facade.getFutureWeeklyShifts();
+        if(weeklyShifts.isErrorOccured()) {
+            cli.print(weeklyShifts.getErrorMessage());
+            return;
+        }
         if(action == 1)
-            cli.
-
+            cli.displayWeekly(weeklyShifts.getValue().subList(0,1));
+        if(action == 1)
+            cli.displayWeekly(weeklyShifts.getValue().subList(0,2));
+        handleSingleShiftMenu();
     }
 
 //    public String showThisShiftStatus(){
