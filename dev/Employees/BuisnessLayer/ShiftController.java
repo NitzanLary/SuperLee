@@ -179,4 +179,13 @@ public class ShiftController {
     }
 
 
+    public ResponseT<List<WeeklyShifts>> getFutureWeeklyShifts() {
+        List<WeeklyShifts> weeklyShift = new ArrayList<>();
+        LocalDate now = LocalDate.now();
+        for(WeeklyShifts week: weeklyShifts){
+            if (now.compareTo(week.getToDate()) <= 0)
+                weeklyShift.add(new WeeklyShifts(week));
+        }
+        return new ResponseT<>(weeklyShift);
+    }
 }

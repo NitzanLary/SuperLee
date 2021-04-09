@@ -188,8 +188,38 @@ public class CLI {
                 2) Get Employees Preferences
                 3) Close Shift
                 4) Open Shift
+                5) Get shift's status
+                
                 """);
     }
+
+    public void weeksMenu() {
+        int action;
+        do {
+            DisMWeeksShiftMenu();
+            action = scanner.nextInt();
+            if (action == 0)
+                break;
+            scanner.nextLine();
+            cliController.MWeeksMenu(action);
+        }while (true);
+    }
+
+
+    public void DisMWeeksShiftMenu(){
+        System.out.println("""
+                1) This week shifts 
+                1) Next week shifts
+                3) Exit""");
+    }
+
+    public void  DisWeeksMenu(){
+        System.out.println("""
+                1) Next Week Shifts
+                2) Week after next week shifts
+                3) Exit""");
+    }
+
 
 //    public void MfutureShiftsMenu() {
 //        int action;
@@ -218,30 +248,7 @@ public class CLI {
 //    }
 
 
-    public void  DisMfutureShiftMenu(){
-        System.out.println("""
-                1) This week shifts 
-                1) Next week shifts
-                2) Week after next week shifts
-                3) Exit""");
-    }
 
-    public void  DisWeeksMenu(){
-        System.out.println("""
-                1) Next Week Shifts
-                2) Week after next week shifts
-                3) Exit""");
-    }
-
-    public void  DisMsingleShiftMenu(){
-        System.out.println("""
-                1) Show this shift's status 
-                2) Show employees preferences for this shift 
-                3) Assign employee to this shift 
-                4) Change this shift's status to CLOSE
-                5) Change this Shift's status to OPEN
-                6) Exit""");
-    }
 
     //----------------------------------------------------------------------------
 
@@ -316,4 +323,6 @@ public class CLI {
     public void print(String msg) {
         System.out.println(msg);
     }
+
+
 }

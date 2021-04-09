@@ -23,6 +23,14 @@ public class WeeklyShifts {
 
     }
 
+    public WeeklyShifts(WeeklyShifts other){
+        fromDate = other.fromDate;
+        toDate = other.toDate;
+        shifts = new ArrayList<>();
+        for(Shift s: other.shifts)
+            shifts.add(s.clone());
+    }
+
     public LocalDate getFromDate() {
         return fromDate;
     }
