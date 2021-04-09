@@ -24,7 +24,7 @@ public class CLI {
     }
 
     public void initData(){
-        CLIController.initData();
+        cliController.initData();
     }
 
     private boolean isNameValid(String name){
@@ -56,6 +56,7 @@ public class CLI {
             cliController.setUserID(ID);
             ResponseT<Boolean> r = cliController.checkAuthorizedHrOrGenral(ID);
             while(r.isErrorOccured())
+                System.out.println("ID not found, please try again");
                 r = cliController.checkAuthorizedHrOrGenral(ID);
             if (r.getValue()) {
                 do {

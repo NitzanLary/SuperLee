@@ -37,8 +37,8 @@ public class CLIController {
     }
 
 
-    public static void initData() {
-
+    public void initData() {
+        facade.initData();
     }
 
     public ResponseT<Boolean> checkAuthorizedHrOrGenral(String id){
