@@ -104,7 +104,7 @@ public class CLIController {
     }
 
     private void handleSingleShiftMenu() {
-        LocalDate date = cli.getDate("Please enter day");
+        LocalDate date = cli.getDate("Please enter date");
         char type = cli.getChar("Enter 'M' for Morning shift or 'E' for Evening shift");
         while(type != 'E' && type != 'M'){
             type = cli.getChar("Enter 'M' for Morning shift or 'E' for Evening shift");
@@ -248,6 +248,12 @@ public class CLIController {
             openShift(shift);
         if(action == 5)
             showStatus(shift);
+        if(action == 6)
+            getAssignedEmployees();
+    }
+
+    private void getAssignedEmployees() {
+//        ResponseT<String> r = facade.get
     }
 
     private void showStatus(Shift shift) {

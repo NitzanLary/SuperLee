@@ -53,15 +53,11 @@ public abstract class Shift {
     }
 
     public Response close() {
-        if (closed)
-            return new Response("Already closed");
         closed = true;
         return new Response();
     }
 
     public Response open() {
-        if (!closed)
-            return new Response("Already open");
         closed = false;
         return new Response();
     }

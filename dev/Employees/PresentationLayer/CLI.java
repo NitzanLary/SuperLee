@@ -186,6 +186,8 @@ public class CLI {
                 3) Close Shift
                 4) Open Shift
                 5) Get shift's status
+                6) Get Assigned Employees
+                To return to the previous menu press 0
                 
                 """);
     }
@@ -206,7 +208,7 @@ public class CLI {
     public void DisMWeeksShiftMenu(){
         System.out.println("""
                 1) This week shifts 
-                1) Next week shifts
+                2) Next week shifts
                 3) Exit""");
     }
 
