@@ -316,8 +316,9 @@ public class CLI {
         return deliveries.get(Integer.parseInt(inp)-1);
     }
 
-    private void addNewDriver() { // REMOVE - NOT NEED THIS FUCKSHIT
-        System.out.println("helooo i'm here !!");
+    private void addNewDriver() {
+        System.out.println("this pitcher isn't available in the current non-integrated module's version\npress <Enter> to continue");
+        new Scanner(System.in).nextLine();
     }
 
     public boolean isLegalDate(String date) {
