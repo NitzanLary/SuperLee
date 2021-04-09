@@ -178,7 +178,7 @@ public class FacadeController {
         return shiftController.getMyPreferences(rE.getValue(), date, start, end);
     }
 
-    public ResponseT<Shift> getShift(LocalDate date, String type){
+    public ResponseT<Shift> getShift(LocalDate date, char type){
         return shiftController.findShift(date, type);
     }
 
