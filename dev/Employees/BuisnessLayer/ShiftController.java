@@ -67,6 +67,15 @@ public class ShiftController {
         return new ResponseT<>(null, "Shift not found");
     }
 
+    public ResponseT<Shift> findShift(LocalDate date, String type) {
+        if (type.equals('E'))
+            return findShift(date, LocalTime.of(6,0), LocalTime.of(14,0));
+        if (type.equals('M'))
+            return findShift(date, LocalTime.of(14,0), LocalTime.of(22,0));
+        else
+            return new ResponseT<>(null, "Incorrect type");
+    }
+
     public ResponseT<List<Shift>> getShiftsByDate(LocalDate date){
         List<Shift> shifts = new ArrayList<>();
         for (WeeklyShifts ws: weeklyShifts)
@@ -163,4 +172,6 @@ public class ShiftController {
             return new ResponseT<>(null, rS.getErrorMessage());
         return rS.getValue().getAllAssignedEmployees();
     }
+
+
 }

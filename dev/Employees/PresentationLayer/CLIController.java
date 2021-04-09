@@ -1,9 +1,6 @@
 package Employees.PresentationLayer;
 
-import Employees.BuisnessLayer.Employee;
-import Employees.BuisnessLayer.FacadeController;
-import Employees.BuisnessLayer.Response;
-import Employees.BuisnessLayer.ResponseT;
+import Employees.BuisnessLayer.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -88,11 +85,30 @@ public class CLIController {
     }
 
     public void MshiftsMenu(int action) {
-        System.out.println("s");
+        // get shift
+        if (action == 1)
+            handleSingleShiftMenu();
+        if (action == 2)
+            MFutureShiftsMenu();
+
     }
 
-    public void MfutureShiftsMenu(int action) {
-        System.out.println("s");
+    private void handleSingleShiftMenu() {
+        LocalDate date = cli.getDate("");
+        String type;
+        do{
+            type = cli.getString("Enter 'M' for Morning shift or 'E' for Evening shift");
+        }while(!type.equals('E') && !type.equals('M'));
+        ResponseT<Shift> shift = facade.getShift(date, type);
+        if (shift.isErrorOccured()) {
+            cli.print(shift.getErrorMessage());
+            return;
+        }
+        cli.MShiftMenu(shift.getValue());
+    }
+
+    public void MFutureShiftsMenu() {
+
     }
 
 
@@ -233,6 +249,53 @@ public class CLIController {
         else
             return facade.getWhoIWorkWith(clientController.userID, shiftDate,
                     LocalTime.of(14, 0), LocalTime.of(22,0)).getValue();
+    }
+
+    public void MShiftOptions(int action, Shift shift) {
+        if (action == 1)
+            assignEmployee(shift);
+        if(action == 2)
+            getEmployeesPreferences(shift);
+        if(action == 3)
+            closeShift(shift);
+        if(action == 4)
+            openShift(shift);
+    }
+
+    private void openShift(Shift shift) {
+        Response r = facade.openShift(userID, shift.getDate(), shift.getStart(), shift.getEnd());
+        if(r.isErrorOccured())
+            cli.print(r.getErrorMessage());
+        cli.print("Shift Opened");
+    }
+
+    private void closeShift(Shift shift) {
+        Response r = facade.closeShift(userID, shift.getDate(), shift.getStart(), shift.getEnd());
+        if(r.isErrorOccured())
+            cli.print(r.getErrorMessage());
+        cli.print("Shift Closed");
+    }
+
+    private void getEmployeesPreferences(Shift shift) {
+        ResponseT<String> r = facade.getEmployeesConstrainsForShift(userID, shift.getDate(), shift.getStart(), shift.getEnd());
+        if(r.isErrorOccured())
+            cli.print(r.getErrorMessage());
+        cli.print(r.getValue());
+    }
+
+    private void assignEmployee(Shift shift) {
+        String empID = cli.getString("Enter the employee's ID");
+        while(!isValidID(empID))
+            empID = cli.getString("Invalid ID, please try again");
+        String role = cli.getString("Enter employee's role you want to assign to");
+        Response r = facade.assignEmpToShift(userID, empID, shift.getDate(), shift.getStart(), shift.getEnd(), role);
+        if(r.isErrorOccured())
+            cli.print(r.getErrorMessage());
+        cli.print("Assigning accomplished");
+    }
+
+    private boolean isValidID(String empID) {
+        return true;
     }
 
 //    public String showThisShiftStatus(){

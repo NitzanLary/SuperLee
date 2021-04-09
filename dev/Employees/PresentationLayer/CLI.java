@@ -2,6 +2,7 @@ package Employees.PresentationLayer;
 
 import Employees.BuisnessLayer.EmployeeController;
 import Employees.BuisnessLayer.FacadeController;
+import Employees.BuisnessLayer.Shift;
 
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -116,31 +117,31 @@ public class CLI {
 
     }
 
-    public void MfutureShiftsMenu() {
-        int action;
-        do {
-            DisMshiftsMenu();
-            action = scanner.nextInt();
-            if (action == 3)
-                break;
-            scanner.nextLine();
-            cliController.MfutureShiftsMenu(action);
-        } while (true);
+//    public void MfutureShiftsMenu() {
+//        int action;
+//        do {
+//            DisMshiftsMenu();
+//            action = scanner.nextInt();
+//            if (action == 3)
+//                break;
+//            scanner.nextLine();
+//            cliController.MfutureShiftsMenu(action);
+//        } while (true);
+//
+//    }
 
-    }
-
-    public void MsingleShiftMenu() {
-        int action;
-        do {
-            DisMsingleShiftMenu();
-            action = scanner.nextInt();
-            if (action == 6)
-                break;
-            scanner.nextLine();
-            cliController.MfutureShiftsMenu(action);
-        } while (true);
-
-    }
+//    public void MsingleShiftMenu() {
+//        int action;
+//        do {
+//            DisMsingleShiftMenu();
+//            action = scanner.nextInt();
+//            if (action == 6)
+//                break;
+//            scanner.nextLine();
+//            cliController.MfutureShiftsMenu(action);
+//        } while (true);
+//
+//    }
 
 
 
@@ -287,7 +288,32 @@ public class CLI {
     }
 
 
+    public void MShiftMenu(Shift shift) {
+        int action;
+        do {
+            MShiftDisplay(shift);
+            action = scanner.nextInt();
+            if (action == 0)
+                return; // todo: deleted do while here
+            scanner.nextLine();
+            cliController.MShiftOptions(action, shift);
+        }while (true);
+    }
 
+    private void MShiftDisplay(Shift shift) {
+        System.out.println("""
+                Shift Date: %s
+                Start: %s\tEnd: %s
+                
+                """.formatted(shift.getDate(), shift.getStart(), shift.getEnd()));
+
+        System.out.println("""
+                1) Assign Employee
+                2) Get Employees Preferences
+                3) Close Shift
+                4) Open Shift
+                """);
+    }
 }
 
 

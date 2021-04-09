@@ -169,6 +169,10 @@ public class FacadeController {
         return shiftController.getMyPreferences(rE.getValue(), date, start, end);
     }
 
+    public ResponseT<Shift> getShift(LocalDate date, String type){
+        return shiftController.findShift(date, type);
+    }
+
     /**
      *
      This function return all the constrains for a specific shift given as parameter as a Response<String> while
