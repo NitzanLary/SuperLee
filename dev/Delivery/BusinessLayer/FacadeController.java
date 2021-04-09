@@ -164,7 +164,6 @@ public class FacadeController {
         return ret;
     }
 
-
     public ArrayList<DeliveryDTO> getUpdatableDeliveries() {
         ArrayList<DeliveryDTO> ret = new ArrayList<>();
         for (Delivery d:dec.getUpdatableDeliveries())
@@ -225,5 +224,12 @@ public class FacadeController {
 
     public TruckDTO getTruckByDelivery(DeliveryDTO ddto) {
         return new TruckDTO(trc.getTruckByID(ddto.getTruckNumber()));
+    }
+
+    public ArrayList<DeliveryDTO> getAllAppendingDeliveries() {
+        ArrayList<DeliveryDTO> ret = new ArrayList<>();
+        for (Delivery d:dec.getDeliveries().values())
+            ret.add(new DeliveryDTO(d));
+        return ret;
     }
 }

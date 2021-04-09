@@ -144,7 +144,7 @@ public class CLI {
 
     private void sendDelivery() {
         Scanner in = new Scanner(System.in);
-        DeliveryDTO deliveryDTO = this.chooseDelivery(in);
+        DeliveryDTO deliveryDTO = this.chooseDelivery(in, true);
         if (deliveryDTO == null)
             return;
         System.out.println(deliveryDTO + "\n");
@@ -173,7 +173,7 @@ public class CLI {
     private void updateDelivery() {
 //        System.out.println("Choose delivery to update");
         Scanner in = new Scanner(System.in);
-        DeliveryDTO chosen = chooseDelivery(in);
+        DeliveryDTO chosen = chooseDelivery(in, true);
         if (chosen == null)
             return;
         String delID = chosen.getId();
@@ -296,9 +296,13 @@ public class CLI {
         return allTasks;
     }
 
-    private DeliveryDTO chooseDelivery(Scanner in) {
+    private DeliveryDTO chooseDelivery(Scanner in, boolean allDeliveries) {
         String inp = "";
-        ArrayList<DeliveryDTO> deliveries = fc.getUpdatableDeliveries();
+        ArrayList<DeliveryDTO> deliveries;
+        if (!allDeliveries)
+            deliveries = fc.getUpdatableDeliveries();
+        else
+            deliveries = fc.getAllAppendingDeliveries();
         if (deliveries.size() == 0){
             System.out.println("there are no appending deliveries in the system\npress <Enter> to continue");
             in.nextLine();
