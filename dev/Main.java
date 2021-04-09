@@ -117,8 +117,8 @@ public class Main {
     private static void initiateSecondScenario(CLI cli) {
         // trucks:
         TruckDTO truck1 = new TruckDTO("4755857","Mercedes x", 15000,8000);
-//        TruckDTO truck2 = new TruckDTO("34556123","Renault Fluence", 20000,8500);
-        TruckDTO truck2 = new TruckDTO("34556123","Renault Fluence", 20000,12000);
+        TruckDTO truck2 = new TruckDTO("34556123","Renault Fluence", 20000,8500);
+//        TruckDTO truck2 = new TruckDTO("34556123","Renault Fluence", 20000,12000);
         cli.getFacade().addTruck(truck1);
         cli.getFacade().addTruck(truck2);
         // area % locations:
@@ -132,8 +132,8 @@ public class Main {
         cli.getFacade().addLocation(south, kg);
         // drivers:
         ArrayList<tmpEmployee> drivers = new ArrayList<>();
-//        drivers.add(new tmpEmployee("Yanay the Sunny", 15000));
-        drivers.add(new tmpEmployee("Yanay the Sunny", 11000));
+        drivers.add(new tmpEmployee("Yanay the Sunny", 15000));
+//        drivers.add(new tmpEmployee("Yanay the Sunny", 11000));
         drivers.add(new tmpEmployee("Nitzan the Lary", 20000));
         cli.getFacade().tempAddDriver(drivers);
         // tasks:
