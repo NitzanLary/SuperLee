@@ -301,7 +301,7 @@ public class CLIController {
         }
         if(action == 1)
             cli.displayWeekly(weeklyShifts.getValue().subList(0,1));
-        if(action == 1)
+        if(action == 2)
             cli.displayWeekly(weeklyShifts.getValue().subList(0,2));
         handleSingleShiftMenu();
     }
