@@ -46,35 +46,39 @@ public class CLI {
 
     //starts the login menu of the program
     public void start() {
+
         String ID;
         int action;
-        DisloginMenu();
-        ID = scanner.next();
-        cliController.setUserID(ID);
-        if(cliController.checkAuthorizedHrOrGenral(ID).getValue()) {
-            do {
-                //The User is Hr or General manager
-                DisMmainMenu();
-                action = scanner.nextInt();
-                if (action == 3)
-                    break;
-                scanner.nextLine();
-                cliController.Mmainmanue(action);
-            } while (true);
-        }
 
-        else {
-            do { //TODO
-                //The User is Regular Employee (not Hr or General manager)
-                DisEmainMenu();
-                action = scanner.nextInt();
-                if (action == 5)
-                    break;
-                scanner.nextLine();
-                cliController.EmainMenu(action);
-            } while (true);
+        do {
 
-        }
+
+            DisloginMenu();
+            ID = scanner.next();
+            cliController.setUserID(ID);
+            if (cliController.checkAuthorizedHrOrGenral(ID).getValue()) {
+                do {
+                    //The User is Hr or General manager
+                    DisMmainMenu();
+                    action = scanner.nextInt();
+                    if (action == 3)
+                        break;
+                    scanner.nextLine();
+                    cliController.Mmainmanue(action);
+                } while (true);
+            } else {
+                do { //TODO
+                    //The User is Regular Employee (not Hr or General manager)
+                    DisEmainMenu();
+                    action = scanner.nextInt();
+                    if (action == 5)
+                        break;
+                    scanner.nextLine();
+                    cliController.EmainMenu(action);
+                } while (true);
+
+            }
+        }while (true);
     }
 
     public void DisloginMenu(){
@@ -99,7 +103,7 @@ public class CLI {
         do {
             DisMempMenu();
             action = scanner.nextInt();
-            if (action == 6)
+            if (action == 3)
                 break;
             scanner.nextLine();
             cliController.MempMenu(action);
@@ -293,7 +297,7 @@ public class CLI {
     public String getString(String msg) {
         System.out.println(msg);
         String out = scanner.nextLine();
-        scanner.nextLine();
+//        scanner.nextLine();
         return out;
     }
 

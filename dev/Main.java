@@ -18,10 +18,10 @@ public class Main {
 //        FacadeController f1 = FacadeController.getInstance();
 //        FacadeController f2 = FacadeController.getInstance();
 
-
-        Map<String, Integer> map = new HashMap<>();
-        map.put("123", 5);
-        System.out.println(map.containsKey("123"));
+//
+//        Map<String, Integer> map = new HashMap<>();
+//        map.put("123", 5);
+//        System.out.println(map.containsKey("123"));
 
 
 //        System.out.println("1) Add sale\n" +
@@ -66,8 +66,8 @@ public class Main {
 //
 //        }
 
-//        FacadeController.getInstance().initData();
-//        CLI.getInstance().start();
+        FacadeController.getInstance().initData();
+        CLI.getInstance().start();
 
     }
 

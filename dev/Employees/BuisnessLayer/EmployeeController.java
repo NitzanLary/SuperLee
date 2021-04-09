@@ -104,6 +104,9 @@ public class EmployeeController {
         AddEmployee("123456789", "PIPI", "12345", 1000, 30, 500, 30,
                 "OSE KAKI", LocalDate.now());
         addRoleToEmp("123456789", "Ose LOLAVIM");
+        AddEmployee("987654321", "KAKO", "54321", 10000, 30, 500, 30,
+                "OSE PIPI", LocalDate.now());
+        addRoleToEmp("987654321", "Ose ETROGIM");
 
     }
 

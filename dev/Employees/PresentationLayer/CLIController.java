@@ -125,7 +125,7 @@ public class CLIController {
         //Assign employee preferences for a specific shift
         if (action == 3){ assignPreferenceForShift(); }
         // Show colleagues whom the employee work with in a shift
-        if (action == 4) { showColleaguesWorkWithMe(); }
+        if (action == 4) { cli.print(showColleaguesWorkWithMe()); }
 
 
     }
@@ -145,8 +145,8 @@ public class CLIController {
     }
 
     public void updateEmployeeName(){
-        String EmpID = cli.getString("Enter old employee's ID:");
-        String newEmpID = cli.getString("Enter new employee's ID:");
+        String EmpID = cli.getString("Enter employee's ID:");
+        String newEmpID = cli.getString("Enter new employee's name:");
         facade.updateEmpName(clientController.userID, EmpID, newEmpID);
     }
 
@@ -190,7 +190,7 @@ public class CLIController {
 
 
     public String showAllMyInformation(){
-        return facade.getMyData(clientController.userID).getValue();
+        return facade.getMyData(clientController.userID).getValue() + "\n";
     }
 
     public String showMyPreferences(){
@@ -229,11 +229,11 @@ public class CLIController {
         String MorningEvning = cli.getString("Enter M for morning shift || Enter E for evening shift");
         if (MorningEvning.equals("M")){
             return facade.getWhoIWorkWith(clientController.userID, shiftDate,
-                    LocalTime.of(6, 0), LocalTime.of(14,0)).getValue();
+                    LocalTime.of(6, 0), LocalTime.of(14,0)).getValue() + "\n";
         }
         else
             return facade.getWhoIWorkWith(clientController.userID, shiftDate,
-                    LocalTime.of(14, 0), LocalTime.of(22,0)).getValue();
+                    LocalTime.of(14, 0), LocalTime.of(22,0)).getValue() + "\n";
     }
 
     public void MSingleShiftOptions(int action, Shift shift) {
