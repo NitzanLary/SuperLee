@@ -29,12 +29,31 @@ class FacadeControllerTest {
         tac = new TaskController();
         trc = new TruckController();
 
+        ArrayList<tmpEmployee> drivers = new ArrayList<>();
+        drivers.add(new tmpEmployee("Nitzan the Lary", 20000));
+        fc.tempAddDriver(drivers);
         AreaDTO testArea = new AreaDTO("TestArea");
         fc.addNewArea(testArea);
         TruckDTO testTruck = new TruckDTO("12345678","Mercedes", 20000,8000);
         fc.addTruck(testTruck);
         LocationDTO testKg = new LocationDTO("King-David 4, Kiryat-Gat", "052535606", "Asaf Stern");
         fc.addLocation(testArea, testKg);
+        HashMap<String, Integer> task1Items = new HashMap<>();
+        task1Items.put("6Cola",800);
+        HashMap<String, Integer> task2Items = new HashMap<>();
+        task2Items.put("eggsXL",500);
+        task2Items.put("watermelon",20);
+        TaskDTO task1 = new TaskDTO(task1Items,"unloading",testKg);
+        TaskDTO task2 = new TaskDTO(task2Items,"loading",testKg);
+        task1 = fc.addTask(task1);
+        task2 = fc.addTask(task2);
+        ArrayList<TaskDTO> destinations1 = new ArrayList<>();
+        ArrayList<TaskDTO> destinations2 = new ArrayList<>();
+        DeliveryDTO testDel1 = new DeliveryDTO("23-3-2021","8:00","4755857","Nitzan the Lary",20800,"",testKg ,destinations1);
+        fc.createFullDelivery(testDel1);
+        DeliveryDTO testDel2 = new DeliveryDTO("23-4-2021","16:00","34556123","Nitzan the Lary",0,"",testKg ,destinations2);
+        fc.createFullDelivery(testDel2);
+
     }
 
 //    @org.junit.jupiter.api.AfterEach
@@ -46,7 +65,8 @@ class FacadeControllerTest {
         AreaDTO south = new AreaDTO("South");
         assertFalse(fc.getAreas().contains(south));
         fc.addNewArea(south);
-        assertTrue(fc.getAreas().contains(south));
+        System.out.println(fc.getAreas());
+//        assertTrue(fc.getAreas().get(0).getAreaName().equals("South"));
 
     }
 
@@ -103,6 +123,10 @@ class FacadeControllerTest {
     @org.junit.jupiter.api.Test
     void sendDelivery() {
         // add delivery and check if it in the data
+        Delivery delivery = dec.getDeliveries().get("A000");
+        DeliveryDTO deliveryDTO = new DeliveryDTO(delivery);
+        fc.sendDelivery(deliveryDTO, new Response<>(true));
+        assertTrue(fc.getDeliveryData().contains(deliveryDTO));
     }
 
     @org.junit.jupiter.api.Test
@@ -130,6 +154,10 @@ class FacadeControllerTest {
     @org.junit.jupiter.api.Test
     void getUpdatableDeliveries() {
         // add 2 delivery one is updateable and one isnt and check them
+        Delivery delivery1 = dec.getDeliveries().get("A000");
+        Delivery delivery2 = dec.getDeliveries().get("A001");
+        assertTrue(fc.getUpdatableDeliveries().contains(delivery1));
+        assertFalse(fc.getUpdatableDeliveries().contains(delivery2));
     }
 //
 //    @org.junit.jupiter.api.Test
@@ -138,7 +166,9 @@ class FacadeControllerTest {
 //
     @org.junit.jupiter.api.Test
     void isLegalDepartureWeight() {
-//        assertFalse(fc.isLegalDepartureWeight("not a number", new DeliveryDTO()));
+        Delivery delivery = dec.getDeliveries().get("A000");
+        DeliveryDTO deliveryDTO = new DeliveryDTO(delivery);
+        assertFalse(fc.isLegalDepartureWeight("1000000",deliveryDTO).getData().contains("Exceeded"));
 
     }
 }

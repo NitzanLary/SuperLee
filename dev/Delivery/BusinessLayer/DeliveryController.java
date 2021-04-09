@@ -17,6 +17,10 @@ public class DeliveryController {
         dataController = DataController.getInstance();
     }
 
+    public HashMap<String, Delivery> getDeliveries() {
+        return deliveries;
+    }
+
     public String createFullDelivery(String date, String timeOfDeparture, String truckNumber, String driverName, int departureWeight, String modification, Location origin, ArrayList<Task> destinations){
         String id = getNewDeliveryID();
         deliveries.put(id ,new Delivery(id, date, timeOfDeparture, truckNumber, driverName, departureWeight, modification, origin, destinations));
