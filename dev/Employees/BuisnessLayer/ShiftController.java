@@ -180,6 +180,8 @@ public class ShiftController {
 
 
     public ResponseT<List<WeeklyShifts>> getFutureWeeklyShifts() {
+        if (weeklyShifts.size() < 2)
+            add2WeeksSlots();
         List<WeeklyShifts> weeklyShift = new ArrayList<>();
         LocalDate now = LocalDate.now();
         for(WeeklyShifts week: weeklyShifts){
