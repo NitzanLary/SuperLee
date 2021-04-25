@@ -150,7 +150,7 @@ public class FacadeController {
         return shiftController.assignToShift(rE.getValue(), date, start, end, role);
     }
 
-    public Response removeEmpFromShift(String userID, String EmpID, LocalDate date, LocalTime start, LocalTime end, String role){
+    public Response removeEmpFromShift(String userID, String EmpID, LocalDate date, LocalTime start, LocalTime end){
         ResponseT<Employee> rE = checkAuthorization(userID);
         if(rE.isErrorOccured())
             return rE;

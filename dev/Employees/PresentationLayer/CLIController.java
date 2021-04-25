@@ -301,6 +301,18 @@ public class CLIController {
             showStatus(shift);
         if(action == 6)
             getAssignedEmployees(shift);
+        if(action == 7)
+            removeEmpFromShift(shift);
+    }
+
+    private void removeEmpFromShift(Shift shift) {
+        String empID = cli.getString("Enter the employee's ID");
+        while(!isValidID(empID))
+            empID = cli.getString("Invalid ID, please try again");
+        Response r = facade.removeEmpFromShift(userID, empID, shift.getDate(), shift.getStart(), shift.getEnd());
+        if(r.isErrorOccured())
+            cli.print(r.getErrorMessage());
+        else cli.print("Remove accomplished");
     }
 
     private void getAssignedEmployees(Shift shift) {

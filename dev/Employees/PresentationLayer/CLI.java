@@ -207,9 +207,10 @@ public class CLI {
                 2) Get Employees Preferences
                 3) Close Shift
                 4) Open Shift
-                5) Get shift's status
+                5) Get Shift's Status
                 6) Get Assigned Employees
-                To return to the previous menu press 0
+                7) Remove Employee From Shift
+                To Return to the previous menu press 0
                 
                 """);
     }
