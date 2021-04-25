@@ -139,6 +139,13 @@ class FacadeControllerTest {
         ResponseT<List<Employee>> employees = facade.getAssignedEmpForShift(date, start, end);
         assertFalse(employees.isErrorOccured());
         assertTrue(employees.getValue().size() == 2);
+
+        // assigning to a shift at the same day with another shift
+        start = end;
+        end = LocalTime.of(22, 0);
+        r = facade.assignEmpToShift("205952971", "123456789",date, start, end, "Cashier");
+        r2 = facade.assignEmpToShift("205952971", "123456789",date, start, end, "Cashier");
+        assertTrue(r2.isErrorOccured());
     }
 
 

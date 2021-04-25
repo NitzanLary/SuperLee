@@ -150,6 +150,16 @@ public class FacadeController {
         return shiftController.assignToShift(rE.getValue(), date, start, end, role);
     }
 
+    public Response removeEmpFromShift(String userID, String EmpID, LocalDate date, LocalTime start, LocalTime end, String role){
+        ResponseT<Employee> rE = checkAuthorization(userID);
+        if(rE.isErrorOccured())
+            return rE;
+        rE = employeeController.getEmployee(EmpID);
+        if(rE.isErrorOccured())
+            return rE;
+        return shiftController.removeEmpFromShift(rE.getValue(), date, start, end);
+    }
+
     public ResponseT<List<Employee>> getAssignedEmpForShift(LocalDate date, LocalTime start, LocalTime end){
         return shiftController.getAssignedEmps(date, start, end);
     }

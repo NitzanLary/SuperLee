@@ -135,6 +135,13 @@ public class ShiftController {
         return rS.getValue().AssignEmployee(employee);
     }
 
+    public Response removeEmpFromShift(Employee employee, LocalDate date, LocalTime start, LocalTime end) {
+        ResponseT<Shift> rS = findShift(date, start, end);
+        if(rS.isErrorOccured())
+            return rS;
+        return rS.getValue().removeEmp(employee);
+    }
+
 
     public Response closeShift(LocalDate date, LocalTime start, LocalTime end) {
         ResponseT<Shift> rS = findShift(date, start, end);
@@ -190,4 +197,6 @@ public class ShiftController {
         }
         return new ResponseT<>(weeklyShift);
     }
+
+
 }

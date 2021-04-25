@@ -46,8 +46,10 @@ public class CLI {
                 ******           Else press any other Digit             ******
                 """);
         action = scanner.nextInt();
-        if(action == 1)
+        if(action == 1) {
             initData();
+            System.out.println("Data loaded successfully\n");
+        }
         do {
             DisloginMenu();
             ID = scanner.next();
@@ -55,9 +57,11 @@ public class CLI {
                 break;
             cliController.setUserID(ID);
             ResponseT<Boolean> r = cliController.checkAuthorizedHrOrGenral(ID);
-            while(r.isErrorOccured())
+            while(r.isErrorOccured()) {
                 System.out.println("ID not found, please try again");
+                ID = scanner.next();
                 r = cliController.checkAuthorizedHrOrGenral(ID);
+            }
             if (r.getValue()) {
                 do {
                     //The User is Hr or General manager

@@ -150,6 +150,13 @@ public abstract class Shift {
     }
 
     public boolean isAssigned(Employee employee){
-        return assignedEmployees.containsKey(employee);
+        return assignedEmployees.containsKey(employee.getID().getValue());
+    }
+
+    public Response removeEmp(Employee employee){
+        if (!isAssigned(employee))
+            return new Response("Employee is not assigned to this shift");
+        assignedEmployees.remove(employee.getID().getValue());
+        return new Response();
     }
 }
