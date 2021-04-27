@@ -157,7 +157,7 @@ public class ShiftController {
         return rS.getValue().open();
     }
 
-    public ResponseT<String> getEmployeesConstrainsForShift(Employee employee, LocalDate date, LocalTime start, LocalTime end) {
+    public ResponseT<String> getEmployeesConstrainsForShift(LocalDate date, LocalTime start, LocalTime end) {
         ResponseT<Shift> rS = findShift(date, start, end);
         if(rS.isErrorOccured())
             return new ResponseT<>(null, rS.getErrorMessage());
