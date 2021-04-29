@@ -32,7 +32,7 @@ public class Employee {
         ID = other.ID;
         bankAccount = other.bankAccount;
         salary = other.salary;
-        List<Role> roles = new ArrayList<>();
+        roles = new ArrayList<>();
         for (Role role : other.roles)
             roles.add(new Role(role));
         terms = new TermsOfEmployee(other.terms);

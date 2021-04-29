@@ -120,7 +120,7 @@ class FacadeControllerTest {
 //    }
 
     /**
-     * We check here getWhoIWorkWith in addition.
+     * We check here getWhoIWorkWith, getAssignedEmpForShift in addition.
      */
     @Test
     void assignEmpToShift() {
@@ -139,6 +139,7 @@ class FacadeControllerTest {
         ResponseT<List<Employee>> employees = facade.getAssignedEmpForShift(date, start, end);
         assertFalse(employees.isErrorOccured());
         assertTrue(employees.getValue().size() == 2);
+        System.out.println(employees.getValue().get(0).getRoles().getValue().get(0));
 
         // assigning to a shift at the same day with another shift
         start = end;

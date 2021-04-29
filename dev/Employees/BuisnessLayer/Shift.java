@@ -10,8 +10,6 @@ public abstract class Shift {
     protected LocalTime start;
     protected LocalTime end;
     private boolean closed;
-
-
     private HashMap<Employee, Integer> constrains;
     private HashMap<String, Employee> assignedEmployees;
 
