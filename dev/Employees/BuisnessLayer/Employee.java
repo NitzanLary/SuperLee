@@ -113,7 +113,7 @@ public class Employee {
         return false;
     }
 
-    private String getRolesTostring(){
+    public String getRolesTostring(){
         StringBuilder res = new StringBuilder("[");
         for(int i = 0 ; i < roles.size() ; i++){
             if(i < roles.size() - 1){

@@ -106,7 +106,7 @@ public class EmployeeController {
         addRoleToEmp("123456789", "Cleaner");
         AddEmployee("987654321", "Dafna", "54321", 10000, 30, 500, 30,
                 "Storage", LocalDate.now());
-        addRoleToEmp("987654321", "Watcher");
+        addRoleToEmp("987654321", "Driver");
 
     }
 

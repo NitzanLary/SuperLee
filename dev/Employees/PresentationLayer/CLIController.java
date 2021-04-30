@@ -302,6 +302,8 @@ public class CLIController {
         if(action == 6)
             getAssignedEmployees(shift);
         if(action == 7)
+            getAssignedDrivers(shift);
+        if(action == 8)
             removeEmpFromShift(shift);
     }
 
@@ -317,6 +319,15 @@ public class CLIController {
 
     private void getAssignedEmployees(Shift shift) {
         ResponseT<List<Employee>> employees = facade.getAssignedEmpForShift(shift.getDate(), shift.getStart(), shift.getEnd());
+        if(employees.isErrorOccured()){
+            cli.print(employees.getErrorMessage());
+            return;
+        }
+        cli.displayEmployees(employees.getValue());
+    }
+
+    private void getAssignedDrivers(Shift shift) {
+        ResponseT<List<Employee>> employees = facade.getAssignedDriversForShift(shift.getDate(), shift.getStart(), shift.getEnd());
         if(employees.isErrorOccured()){
             cli.print(employees.getErrorMessage());
             return;

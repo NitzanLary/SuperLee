@@ -157,4 +157,16 @@ public abstract class Shift {
         assignedEmployees.remove(employee.getID().getValue());
         return new Response();
     }
+
+
+    public ResponseT<List<Employee>> getAllAssignedDrivers(){
+        List<Employee> employees = new ArrayList<>();
+        for(Map.Entry<String, Employee> entry: assignedEmployees.entrySet()){
+            for(Role role : entry.getValue().getRoles().getValue()){
+                if (role.compare("Driver"))
+                    employees.add(new Employee(entry.getValue()));
+            }
+        }
+        return new ResponseT<>(employees);
+    }
 }
