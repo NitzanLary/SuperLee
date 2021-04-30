@@ -209,7 +209,8 @@ public class CLI {
                 4) Open Shift
                 5) Get Shift's Status
                 6) Get Assigned Employees
-                7) Remove Employee From Shift
+                7) Get Asiigned Drivers
+                8) Remove Employee From Shift
                 To Return to the previous menu press 0
                 
                 """);
@@ -340,9 +341,9 @@ public class CLI {
     public void displayEmployees(List<Employee> employees) {
         for (Employee e: employees){
             System.out.println("""
-                    ID: %s\tName: %s
+                    ID: %s\tName: %s\t\tRoles: %s
                     
-                    """.formatted(e.getID().getValue(), e.getName().getValue()));
+                    """.formatted(e.getID().getValue(), e.getName().getValue(), e.getRolesTostring()));
         }
     }
 }

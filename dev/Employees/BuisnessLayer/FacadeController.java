@@ -242,12 +242,25 @@ public class FacadeController {
 
     /**
      * Changing the status of a given shift to close
+     * @param date
+     * @param start
+     * @param end
+     * @return A response
+     */
+
+    public ResponseT<List<Employee>> getAssignedDriversForShift(LocalDate date, LocalTime start, LocalTime end){
+        return shiftController.getAllAssignedDrivers(date, start, end);
+    }
+
+    /**
+     * Changing the status of a given shift to close
      * @param userID
      * @param date
      * @param start
      * @param end
      * @return A response
      */
+
     public Response closeShift(String userID, LocalDate date, LocalTime start, LocalTime end){
         ResponseT<Employee> rE = checkAuthorization(userID);
         if (rE.isErrorOccured())
@@ -384,7 +397,7 @@ public class FacadeController {
         employeeController.initData();
         shiftController.add1WeeksSlot();
         assignEmpToShift("312174295", "123456789", LocalDate.now().plusDays(1), LocalTime.of(14,0), LocalTime.of(22,0), "Cashier");
-        assignEmpToShift("312174295", "987654321", LocalDate.now().plusDays(1), LocalTime.of(14,0), LocalTime.of(22,0), "Storage");
+        assignEmpToShift("312174295", "987654321", LocalDate.now().plusDays(1), LocalTime.of(14,0), LocalTime.of(22,0), "Driver");
 
     }
 

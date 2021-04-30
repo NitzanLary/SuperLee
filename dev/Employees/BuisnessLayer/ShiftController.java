@@ -185,6 +185,13 @@ public class ShiftController {
         return rS.getValue().getAllAssignedEmployees();
     }
 
+    public ResponseT<List<Employee>> getAllAssignedDrivers(LocalDate date, LocalTime start, LocalTime end) {
+        ResponseT<Shift> rS = findShift(date, start, end);
+        if (rS.isErrorOccured())
+            return new ResponseT<>(null, rS.getErrorMessage());
+        return rS.getValue().getAllAssignedDrivers();
+    }
+
 
     public ResponseT<List<WeeklyShifts>> getFutureWeeklyShifts() {
         if (weeklyShifts.size() < 2)
