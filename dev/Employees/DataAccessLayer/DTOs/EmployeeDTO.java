@@ -24,6 +24,10 @@ public class EmployeeDTO {
         return name;
     }
 
+    public void setName(String name){
+        // TODO
+    }
+
     public String getID() {
         return ID;
     }
