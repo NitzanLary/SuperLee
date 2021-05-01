@@ -2,6 +2,7 @@ package Delivery.BusinessLayer;
 
 import Delivery.DTO.DeliveryDTO;
 import Delivery.DataAccessLayer.DataController;
+import Delivery.DataAccessLayer.DeliveryDAO;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,11 +11,11 @@ import java.util.*;
 public class DeliveryController {
     private HashMap<String, Delivery> deliveries; // changes it to deliveries
     private String nextID = "A000";
-    private DataController dataController;
+    private DeliveryDAO dataController;
 
     public DeliveryController(){
         deliveries = new HashMap<>();
-        dataController = DataController.getInstance();
+        dataController = DeliveryDAO.getInstance();
     }
 
     public HashMap<String, Delivery> getDeliveries() {

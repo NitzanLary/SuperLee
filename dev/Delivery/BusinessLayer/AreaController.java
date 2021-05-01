@@ -3,6 +3,7 @@ package Delivery.BusinessLayer;
 import Delivery.BusinessLayer.Delivery;
 import Delivery.DTO.AreaDTO;
 import Delivery.DTO.LocationDTO;
+import Delivery.DataAccessLayer.AreaDAO;
 import Delivery.DataAccessLayer.DataController;
 
 import java.util.ArrayList;
@@ -12,11 +13,11 @@ import java.util.Set;
 
 public class AreaController {
     private HashMap<String, Area> controller;
-    private DataController dc = DataController.getInstance();
+    private AreaDAO dc;
 
     public AreaController(){
         this.controller = new HashMap<>();
-
+        dc = AreaDAO.getInstance();
     }
 
     public boolean containsArea(String areaName){

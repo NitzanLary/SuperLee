@@ -223,6 +223,7 @@ public class FacadeController {
     }
 
 
+
     public TruckDTO getTruckByDelivery(DeliveryDTO ddto) {
         return new TruckDTO(trc.getTruckByID(ddto.getTruckNumber()));
     }
