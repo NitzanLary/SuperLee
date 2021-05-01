@@ -12,7 +12,7 @@ public abstract class Shift {
     private boolean closed;
     private HashMap<Employee, Integer> constrains;
     private HashMap<String, Employee> assignedEmployees;
-    private HashMap<Role, Employee> assignedRolesEmp; //Yanay's Plaster for getting the specific roles that emps assigned to.
+    private HashMap<Role, Employee> assignedRolesEmp; //Yanay's Plaster for getting the specific roles that emps assigned to..
 
     Shift(LocalDate _date) {
         closed = false; // **added default to be false by Yanay.
