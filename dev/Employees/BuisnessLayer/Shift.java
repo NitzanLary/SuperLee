@@ -12,12 +12,14 @@ public abstract class Shift {
     private boolean closed;
     private HashMap<Employee, Integer> constrains;
     private HashMap<String, Employee> assignedEmployees;
+    private HashMap<Role, Employee> assignedRolesEmp; //Yanay's Plaster for getting the specific roles that emps assigned to.
 
     Shift(LocalDate _date) {
         closed = false; // **added default to be false by Yanay.
         date = _date;
         constrains = new HashMap<Employee, Integer>();
         assignedEmployees = new HashMap<String, Employee>();
+        assignedRolesEmp = new HashMap<Role, Employee>();
     }
 
     public abstract Shift clone();
@@ -98,10 +100,11 @@ public abstract class Shift {
 
     }
 
-    public Response AssignEmployee(Employee e){
+    public Response AssignEmployee(Employee e, String role){
         if (isClosed())
             return new Response("Shift already closed");
         assignedEmployees.put(e.getID().getValue(), e);
+        assignedRolesEmp.put(new Role(role), e);
         return new Response();
     }
 
@@ -161,12 +164,12 @@ public abstract class Shift {
 
     public ResponseT<List<Employee>> getAllAssignedDrivers(){
         List<Employee> employees = new ArrayList<>();
-        for(Map.Entry<String, Employee> entry: assignedEmployees.entrySet()){
-            for(Role role : entry.getValue().getRoles().getValue()){
-                if (role.compare("Driver"))
+        for(Map.Entry<Role, Employee> entry: assignedRolesEmp.entrySet()){
+//            for(Role role : entry.getValue().getRoles().getValue()){
+                if (entry.getKey().compare("Driver"))
                     employees.add(new Employee(entry.getValue()));
             }
-        }
+
         return new ResponseT<>(employees);
     }
 }
