@@ -1,5 +1,6 @@
 import Delivery.BusinessLayer.*;
 import Delivery.DTO.*;
+import Delivery.DataAccessLayer.TruckDAO;
 import Delivery.PresentationLayer.CLI;
 
 import java.util.ArrayList;
@@ -15,7 +16,9 @@ public class Main {
 //            System.out.println(dc.getNewDeliveryID());
 //        ///////////////////////////////////////
         CLI cli = new CLI();
-
+        TruckDTO trucktest = new TruckDTO("1111111","Mercedes x", 15000,8000);
+        TruckDAO truckDAO = TruckDAO.getInstance();
+        truckDAO.storeTruck(trucktest);
 
         /////////////  legal date tests
 //        System.out.println(cli.isLegalDate("31-7-20"));

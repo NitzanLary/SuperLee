@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+
+// TODO : everything related to "get data" (lines 206, 214) are in comment now for testing SQL
 public class FacadeController {
     DeliveryController dec;
     DriverController drc;
@@ -201,17 +203,17 @@ public class FacadeController {
         return this.drc.getDriversData();
     }
 
-    public ArrayList<TruckDTO> getTrucksData() {
-        return this.trc.getTruckData();
-    }
+//    public ArrayList<TruckDTO> getTrucksData() {
+//        return this.trc.getTruckData();
+//    }
 
     public ArrayList<TaskDTO> getTasksData() {
         return tac.getTasksData();
     }
 
-    public ArrayList<DeliveryDTO> getDeliveryData() {
-        return this.dec.getTasksFromDeliveriesData();
-    }
+//    public ArrayList<DeliveryDTO> getDeliveryData() {
+//        return this.dec.getTasksFromDeliveriesData();
+//    }
 
     public ArrayList<DriverDTO> getDriversToTruck(TruckDTO ride) {
         ArrayList<DriverDTO> ret = new ArrayList<>();

@@ -87,6 +87,7 @@ public class AreaController {
 //            arr.add(area);
 //        }
 //        return arr;
-        return new ArrayList<>(dc.getAreas().values());
+//        return new ArrayList<>(dc.getAreas().values());
+        return null;
     }
 }

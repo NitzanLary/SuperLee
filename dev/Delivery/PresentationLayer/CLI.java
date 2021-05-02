@@ -16,7 +16,7 @@ public class CLI {
     public CLI() {
         fc = new FacadeController();
     }
-
+// TODO : everything related to "choose data" (lines 104, 120) are in comment now for testing SQL
 
     public void runWithConsole() {
         Scanner in = new Scanner(System.in);
@@ -101,7 +101,7 @@ public class CLI {
                 System.out.println("1) Areas\n2) Drivers\n3) Trucks\n4) Tasks\n5) Deliveries");
                 choose = in.nextLine().strip();
             }while (!isLegalChoice(5,choose));
-            chooseData(choose);
+//            chooseData(choose);
             System.out.println("What would you like to do:");
             System.out.println("1) back to menu");
             System.out.println("2) choose another data to present");
@@ -117,30 +117,30 @@ public class CLI {
         }
     }
 
-    private void chooseData(String choose){
-        switch (choose) {
-            case ("1"): {
-                System.out.println(this.fc.getAreasData());
-                break;
-            }
-            case ("2"): {
-                System.out.println(this.fc.getDriversData());
-                break;
-            }
-            case ("3"): {
-                System.out.println(this.fc.getTrucksData());
-                break;
-            }
-            case ("4"): {
-                System.out.println(this.fc.getTasksData());
-                break;
-            }
-            case ("5"): {
-                System.out.println(this.fc.getDeliveryData());
-                break;
-            }
-        }
-    }
+//    private void chooseData(String choose){
+//        switch (choose) {
+//            case ("1"): {
+//                System.out.println(this.fc.getAreasData());
+//                break;
+//            }
+//            case ("2"): {
+//                System.out.println(this.fc.getDriversData());
+//                break;
+//            }
+//            case ("3"): {
+//                System.out.println(this.fc.getTrucksData());
+//                break;
+//            }
+//            case ("4"): {
+//                System.out.println(this.fc.getTasksData());
+//                break;
+//            }
+//            case ("5"): {
+//                System.out.println(this.fc.getDeliveryData());
+//                break;
+//            }
+//        }
+//    }
 
     private void sendDelivery() {
         Scanner in = new Scanner(System.in);

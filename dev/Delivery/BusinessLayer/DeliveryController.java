@@ -175,7 +175,7 @@ public class DeliveryController {
         }
     }
 
-    public ArrayList<DeliveryDTO> getTasksFromDeliveriesData() {
-        return new ArrayList<DeliveryDTO>(this.dataController.getDeliveries().values());
-    }
+//    public ArrayList<DeliveryDTO> getTasksFromDeliveriesData() {
+//        return new ArrayList<DeliveryDTO>(this.dataController.getDeliveries().values());
+//    }
 }

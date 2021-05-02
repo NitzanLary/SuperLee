@@ -2,17 +2,18 @@ package Delivery.BusinessLayer;
 
 import Delivery.DTO.TruckDTO;
 import Delivery.DataAccessLayer.DataController;
+import Delivery.DataAccessLayer.TruckDAO;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TruckController {
     HashMap<String, Truck> controller;
-    private DataController dataController;
+    private TruckDAO dataController;
 
     public TruckController(){
         controller = new HashMap<String, Truck>();
-        dataController = DataController.getInstance();
+        dataController = TruckDAO.getInstance();
     }
 
     public void addTruck(TruckDTO truckDTO){
@@ -53,7 +54,7 @@ public class TruckController {
         return ret;
     }
 
-    public ArrayList<TruckDTO> getTruckData() {
-        return new ArrayList<>(this.dataController.getTrucks().values());
-    }
+//    public ArrayList<TruckDTO> getTruckData() { // Todo add get trucks to the new database
+//        return new ArrayList<>(this.dataController.getTrucks().values());
+//    }
 }
