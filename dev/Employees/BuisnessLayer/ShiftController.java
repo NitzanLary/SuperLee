@@ -132,7 +132,7 @@ public class ShiftController {
         ResponseT<Shift> rS = findShift(date, start, end);
         if(rS.isErrorOccured())
             return rS;
-        return rS.getValue().AssignEmployee(employee);
+        return rS.getValue().AssignEmployee(employee, role);
     }
 
     public Response removeEmpFromShift(Employee employee, LocalDate date, LocalTime start, LocalTime end) {
