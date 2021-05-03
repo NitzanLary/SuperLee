@@ -1,6 +1,7 @@
 package Employees.Tests;
 
 import Employees.BuisnessLayer.*;
+import Employees.DataAccessLayer.DAOs.DAO;
 import Employees.DataAccessLayer.DAOs.EmployeeDAO;
 import Employees.DataAccessLayer.DTOs.EmployeeDTO;
 import org.junit.jupiter.api.Test;
@@ -152,13 +153,43 @@ class FacadeControllerTest {
     }
 
 
-//    @Test
-//    void closeShift() {
-//
-//    }
-//
-//    @Test
-//    void openShift() {
-//    }
+    @Test
+    void DAL_insert() {
+        Response r = new EmployeeDAO().insert("313150013", "eyal", 12345, 1000, 30,
+                30, 30, LocalDate.now(),"someRole", null);
+        if (r.isErrorOccured()){
+            System.out.println(r.getErrorMessage());
+            fail();
+        }
+
+    }
+
+    @Test
+    void DAL_update() {
+        Response r = new EmployeeDAO().update("Salary", "313150013", 20000);
+        if (r.isErrorOccured()){
+            System.out.println(r.getErrorMessage());
+            fail();
+        }
+    }
+
+    @Test
+    void DAL_addRole() {
+        Response r = new EmployeeDAO().addRole("313150013", "someRole");
+        if (r.isErrorOccured()){
+            System.out.println(r.getErrorMessage());
+            fail();
+        }
+    }
+
+    @Test
+    void DAL_get() {
+        ResponseT<EmployeeDTO> r = new EmployeeDAO().get("313150013");
+        if (r.isErrorOccured()){
+            System.out.println(r.getErrorMessage());
+            fail();
+        }
+        System.out.println(r.getValue());
+    }
 
 }
