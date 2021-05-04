@@ -11,8 +11,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeDAO extends DAO{
+    private static class EmpDAO_Holder {
+        private static EmployeeDAO instance = new EmployeeDAO();
+    }
 
-    public Response insert(String ID, String name, int BankAccount, int salary, int sickDays, int studyFund,
+    private EmployeeDAO(){}
+
+    public static EmployeeDAO getInstance(){
+        return EmpDAO_Holder.instance;
+    }
+
+    public Response insert(String ID, String name, String BankAccount, int salary, int sickDays, int studyFund,
                            int daysOff, LocalDate date, String role, String driverLicence){
 
         String sql = """
@@ -35,7 +44,7 @@ public class EmployeeDAO extends DAO{
             // inserting to employee table
             pstmt.setString(1, ID);
             pstmt.setString(2, name);
-            pstmt.setInt(3,BankAccount);
+            pstmt.setString(3,BankAccount);
             pstmt.setInt(4,salary);
             pstmt.setInt(5,sickDays);
             pstmt.setInt(6,studyFund);
@@ -56,9 +65,16 @@ public class EmployeeDAO extends DAO{
         return new Response();
     }
 
-    public Response insert(String ID, String name, int BankAccount, int salary, int sickDays, int studyFund,
+    public Response insert(String ID, String name, String BankAccount, int salary, int sickDays, int studyFund,
                            int daysOff, LocalDate date, String role){
         return insert(ID, name, BankAccount, salary, sickDays, studyFund, daysOff, date, role, null);
+    }
+
+    public Response insert(EmployeeDTO employee){
+        RoleDTO role = employee.getRoles().get(0);
+        return insert(employee.getID(), employee.getName(), employee.getBankAccount(), employee.getSalary(),
+                employee.getSickDays(), employee.getAdvancedStudyFund(), employee.getDaysOff(),
+                employee.getDateOfHire(), role.getName(), role.getLicense());
     }
 
 

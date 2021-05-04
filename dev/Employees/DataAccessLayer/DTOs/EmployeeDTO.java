@@ -63,6 +63,10 @@ public class EmployeeDTO {
         return dateOfHire;
     }
 
+    public List<RoleDTO> getRoles() {
+        return roles;
+    }
+
     @Override
     public String toString() {
         return "EmployeeDTO{" +

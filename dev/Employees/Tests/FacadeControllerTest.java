@@ -155,7 +155,7 @@ class FacadeControllerTest {
 
     @Test
     void DAL_insert() {
-        Response r = new EmployeeDAO().insert("313150013", "eyal", 12345, 1000, 30,
+        Response r = EmployeeDAO.getInstance().insert("313150013", "eyal", "12345", 1000, 30,
                 30, 30, LocalDate.now(),"someRole", null);
         if (r.isErrorOccured()){
             System.out.println(r.getErrorMessage());
@@ -166,7 +166,7 @@ class FacadeControllerTest {
 
     @Test
     void DAL_update() {
-        Response r = new EmployeeDAO().update("Salary", "313150013", 20000);
+        Response r = EmployeeDAO.getInstance().update("Salary", "313150013", 20000);
         if (r.isErrorOccured()){
             System.out.println(r.getErrorMessage());
             fail();
@@ -175,7 +175,7 @@ class FacadeControllerTest {
 
     @Test
     void DAL_addRole() {
-        Response r = new EmployeeDAO().addRole("313150013", "someRole");
+        Response r = EmployeeDAO.getInstance().addRole("313150013", "someRole");
         if (r.isErrorOccured()){
             System.out.println(r.getErrorMessage());
             fail();
@@ -184,7 +184,7 @@ class FacadeControllerTest {
 
     @Test
     void DAL_get() {
-        ResponseT<EmployeeDTO> r = new EmployeeDAO().get("313150013");
+        ResponseT<EmployeeDTO> r = EmployeeDAO.getInstance().get("313150013");
         if (r.isErrorOccured()){
             System.out.println(r.getErrorMessage());
             fail();

@@ -2,11 +2,15 @@ package Employees.DataAccessLayer.DTOs;
 
 public class RoleDTO {
     private String name;
-    private String license;
+    private String license = null;
 
     public RoleDTO(String name, String license){
         this.name = name;
         this.license= license;
+    }
+
+    public RoleDTO(String name){
+        this.name = name;
     }
 
     public String getName(){
