@@ -61,6 +61,7 @@ public class EmployeeDAO extends DAO{
         return insert(ID, name, BankAccount, salary, sickDays, studyFund, daysOff, date, role, null);
     }
 
+
     public Response update(String col, String ID, String newVal){
         String sql = String.format("""
                 UPDATE Employees SET %s = ?
