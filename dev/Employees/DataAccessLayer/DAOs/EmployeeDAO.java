@@ -152,6 +152,8 @@ public class EmployeeDAO extends DAO{
                 roles.add(new RoleDTO(rolesRs.getString(1), rolesRs.getString(2)));
 
             empRs.next();
+            if(empRs.isClosed())
+                return new ResponseT<>(null, String.format("ID %s not found", id));
             EmployeeDTO employee = new EmployeeDTO(empRs.getString("Name"), id,
                     empRs.getString("BankAccount"), empRs.getInt("Salary"),
                     empRs.getInt("SickDays"), empRs.getInt("StudyFund"),
