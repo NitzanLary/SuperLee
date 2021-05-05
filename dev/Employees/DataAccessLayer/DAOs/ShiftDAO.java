@@ -76,6 +76,10 @@ public class ShiftDAO extends DAO{
         }
     }
 
+    public Response addConstrain(ShiftDate shiftDate, String id, int pref){
+        return addConstrain(shiftDate.getDate(), shiftDate.getStart(), shiftDate.getEnd(), id, pref);
+    }
+
     public Response assignEmployee(LocalDate date, LocalTime start, LocalTime end, String empID, String role){
         String sql = """
                 INSERT INTO ShiftAssignees (Date, Start, End, EmpID, Role)

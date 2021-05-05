@@ -13,9 +13,7 @@ import java.util.Objects;
 
 public class ShiftDTO {
 
-    private LocalDate date;
-    private LocalTime start;
-    private LocalTime end;
+    private ShiftDate shiftDate;
     private boolean closed;
     private Map<EmployeeDTO, Integer> constrains;
     private Map<String, EmployeeDTO> assignedEmployees;
@@ -24,9 +22,7 @@ public class ShiftDTO {
 
     public ShiftDTO(LocalDate date, LocalTime start, LocalTime end, boolean closed, Map<EmployeeDTO, Integer> constrains,
                     Map<String, EmployeeDTO> assignedEmployees, Map<String, List<EmployeeDTO>> rolesMap, ShiftDAO dao){
-        this.date = date;
-        this.start = start;
-        this.end = end;
+        shiftDate = new ShiftDate(date, start, end);
         this.closed = closed;
         this.constrains = constrains;
         this.assignedEmployees = assignedEmployees;
@@ -35,15 +31,15 @@ public class ShiftDTO {
     }
 
     public LocalDate getDate() {
-        return date;
+        return shiftDate.getDate();
     }
 
     public LocalTime getStart() {
-        return start;
+        return shiftDate.getStart();
     }
 
     public LocalTime getEnd() {
-        return end;
+        return shiftDate.getEnd();
     }
 
     public boolean isClosed() {
@@ -52,11 +48,15 @@ public class ShiftDTO {
 
     public Response setClosed(boolean closed) {
         this.closed = closed;
-        return dao.setClose(new ShiftDate(date, start, end), closed);
+        return dao.setClose(shiftDate, closed);
     }
 
     public Map<EmployeeDTO, Integer> getConstrains() {
         return constrains;
+    }
+
+    public Response addConstrain(String id, int pref){
+        return dao.addConstrain(shiftDate, id, pref);
     }
 
     public Map<String, EmployeeDTO> getAssignedEmployees() {
@@ -72,20 +72,21 @@ public class ShiftDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ShiftDTO shiftDTO = (ShiftDTO) o;
-        return date.equals(shiftDTO.date) && start.equals(shiftDTO.start) && end.equals(shiftDTO.end);
+        return shiftDate.getDate().equals(shiftDTO.getDate()) && shiftDate.getStart().equals(shiftDTO.shiftDate.getStart())
+                && shiftDate.getEnd().equals(shiftDTO.shiftDate.getEnd());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(date, start, end);
+        return Objects.hash(shiftDate.getDate(), shiftDate.getStart(), shiftDate.getEnd());
     }
 
     @Override
     public String toString() {
         return "ShiftDTO{" +
-                "date=" + date +
-                ", start=" + start +
-                ", end=" + end +
+                "date=" + shiftDate.getDate() +
+                ", start=" + shiftDate.getStart() +
+                ", end=" + shiftDate.getEnd() +
                 ", closed=" + closed +
                 ", \nconstrains=" + constrains +
                 ", \nassignedEmployees=" + assignedEmployees +
