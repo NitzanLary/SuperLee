@@ -45,6 +45,34 @@ public class Item {
         return true;
     }
 
+    public int getShelfNum() {
+        return shelfNum;
+    }
+
+    public String getManufacturer() {
+        return manufacturer;
+    }
+
+    public int getStorageQuantity() {
+        return storageQuantity;
+    }
+
+    public int getShelfQuantity() {
+        return shelfQuantity;
+    }
+
+    public List<Discount> getPriceDiscounts() {
+        return priceDiscounts;
+    }
+
+    public List<Discount> getCostDiscounts() {
+        return costDiscounts;
+    }
+
+    public int getMinAlert() {
+        return minAlert;
+    }
+
     public boolean removeFromStorage(int amount) {
         if (amount > storageQuantity)
             return false;
