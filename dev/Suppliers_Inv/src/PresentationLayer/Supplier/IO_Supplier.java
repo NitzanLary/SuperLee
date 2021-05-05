@@ -18,17 +18,7 @@ public class IO_Supplier {
     public static Scanner scanner = new Scanner(System.in);
 
     private IO_Supplier() {
-        System.out.println('\n' + "----------------------------------------------------------");
-        System.out.println('\n' +
-                "0000  0  0  0000  0000  0000              0    0000  0000" + '\n' +
-                "0     0  0  0  0  0     0  0              0    0     0   "+ '\n' +
-                "0000  0  0  0000  0000  000     000000    0    0000  0000"+ '\n' +
-                "   0  0  0  0     0     0 0               0    0     0   "+ '\n' +
-                "0000  0000  0     0000  0  0              0000 0000  0000" + '\n');
-        System.out.println("----------------------------------------------------------" + '\n');
 
-        System.out.println('\n' + "Welcome To Super-Lee Supplier System!" + '\n' +
-                "Choose What You Want To Do: "+ '\n');
     }
 
     public static IO_Supplier getInstance() {
@@ -39,7 +29,7 @@ public class IO_Supplier {
     }
 
     public void init() {
-        System.out.println( "1. Main Menu " + '\n' + "2. Load Data example " );
+        System.out.println( "1. Main Menu " + '\n' + "2. Load Data example " + '\n' + "3. Exit From System ");
         try{
             int caseNumber = Integer.parseInt(scanner.nextLine());
             switch (caseNumber) {
@@ -52,8 +42,12 @@ public class IO_Supplier {
                     ioSupplier.mainMenu();
                     break;
 
+                case 3:
+                    System.out.println('\n'+ "You Are Log Out From The System, Have A Nice Day.\n");
+                    exit(0);
+
                 default:
-                    System.out.println("Please Choose Only 1-2" + '\n');
+                    System.out.println("Please Choose Only 1-3" + '\n');
                     init();
             }
         }catch(Exception e){
@@ -93,7 +87,7 @@ public class IO_Supplier {
             while (true) {
                 System.out.println('\n' + "1. Suppliers And Products");
                 System.out.println("2. Orders");
-                System.out.println("3. Exit");
+                System.out.println("3. Return Back");
 
                 int caseNumber = Integer.parseInt(scanner.nextLine());
                 switch (caseNumber) {
@@ -104,8 +98,7 @@ public class IO_Supplier {
                         orders();
                         break;
                     case 3:
-                        System.out.println('\n'+ "You Are Log Out From The System, Have A Nice Day.\n");
-                        exit(0);
+                        init();
                     default:
                         System.out.println("You Need To Choose Only 1-3");
                 }

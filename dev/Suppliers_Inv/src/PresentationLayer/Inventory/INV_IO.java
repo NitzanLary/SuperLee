@@ -13,7 +13,7 @@ public class INV_IO {
     private IO_Controller ioCtrl;
     private Scanner scanner;
 
-    //singletone class
+    // Singletone class
     public static INV_IO getInstance() {
         if (instance == null) {
             instance = new INV_IO();
