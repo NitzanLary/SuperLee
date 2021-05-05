@@ -1,3 +1,7 @@
 Manifest-Version: 1.0
+<<<<<<< HEAD
 Main-Class: PresentationLayer.Main_tmp
+=======
+Main-Class: Main
+>>>>>>> 319f002905b2f659acc82b4e9161a0424ad63b00
 
