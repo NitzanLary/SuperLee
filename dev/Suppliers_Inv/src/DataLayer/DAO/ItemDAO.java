@@ -12,7 +12,7 @@ public class ItemDAO extends DAO {
 
     public Response create(Item item) {
         ItemDTO toInsert = new ItemDTO(item);
-        String SQL = "INSERT INTO item (itemId, name, price, shelfNum, manufacturer, shelfQuantity, storageQuantity, minAlert, cost) VALUE (?,?,?,?,?,?,?,?)";
+        String SQL = "INSERT INTO item (itemId, name, price, shelfNum, manufacturer, shelfQuantity, storageQuantity, minAlert, cost) VALUES (?,?,?,?,?,?,?,?)";
         try {
             ResponseT<Connection> r = getConn();
             if(!r.ErrorOccured()) {

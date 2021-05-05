@@ -10,6 +10,8 @@ import DataLayer.DTO.ItemDTO;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.time.LocalDate;
 
 public class DiscountDAO extends DAO{
     private String table;
@@ -18,9 +20,34 @@ public class DiscountDAO extends DAO{
         this.table = table;
     }
 
+    public ResponseT<DiscountDTO> get(int itemId, LocalDate start, LocalDate end) {
+        String SQL = "SELECT * FROM " + table + " WHERE itemId = ? AND start = ? AND end = ?";
+        DiscountDTO toGet = null;
+        try {
+            ResponseT<Connection> r = getConn();
+            if(!r.ErrorOccured()) {
+                PreparedStatement ps = r.value.prepareStatement(SQL);
+                ps.setInt(1, itemId);
+                ps.setDate(2 , Date.valueOf(start));
+                ps.setDate(3 , Date.valueOf(end));
+                ResultSet rs = ps.executeQuery();
+                if(!rs.isClosed()) {
+                    toGet =  new DiscountDTO(rs.getDate("start").toLocalDate(), rs.getDate("end").toLocalDate(),
+                    rs.getInt("discountPr"), rs.getInt("itemId"));
+                }
+                if (toGet == null) {
+                    return new ResponseT<>(null, "cannot get");
+                }
+            }
+        }catch (Exception e) {
+            return new ResponseT(null,"cannot get");
+        }
+        return new ResponseT<DiscountDTO>(toGet);
+    }
+
     public Response create(Discount dis, int itemId) {
         DiscountDTO toInsert = new DiscountDTO(dis, itemId);
-        String SQL = "INSERT INTO " + table + " (itemId, start, end, discountPr) VALUE (?,?,?,?)";
+        String SQL = "INSERT INTO " + table + " (itemId, start, end, discountPr) VALUES (?,?,?,?)";
         try {
             ResponseT<Connection> r = getConn();
             if(!r.ErrorOccured()) {
