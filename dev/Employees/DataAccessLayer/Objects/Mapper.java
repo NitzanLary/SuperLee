@@ -25,8 +25,8 @@ public class Mapper {
         }
 
     private Mapper() {
-        employeeDAO = EmployeeDAO.getInstance();
-        shiftDAO = ShiftDAO.getInstance();
+        employeeDAO = new EmployeeDAO();
+        shiftDAO = new ShiftDAO();
         shifts = new HashMap<>();
         employees = new HashMap<>();
     }
@@ -42,6 +42,15 @@ public class Mapper {
         if (!employee.isErrorOccured())
             employees.put(ID, employee.getValue());
         return employee;
+    }
+
+    public ResponseT<ShiftDTO> getShift(ShiftDate shiftDate){
+        if (shifts.containsKey(shiftDate))
+            return new ResponseT<>(shifts.get(shiftDate));
+        ResponseT<ShiftDTO> shift = shiftDAO.get(shiftDate);
+        if (!shift.isErrorOccured())
+            shifts.put(shiftDate, shift.getValue());
+        return shift;
     }
 
 

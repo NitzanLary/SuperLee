@@ -11,15 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeDAO extends DAO{
-    private static class EmpDAO_Holder {
-        private static EmployeeDAO instance = new EmployeeDAO();
-    }
-
-    private EmployeeDAO(){}
-
-    public static EmployeeDAO getInstance(){
-        return EmpDAO_Holder.instance;
-    }
 
     public Response insert(String ID, String name, String BankAccount, int salary, int sickDays, int studyFund,
                            int daysOff, LocalDate date, String role, String driverLicence){
@@ -157,7 +148,7 @@ public class EmployeeDAO extends DAO{
             EmployeeDTO employee = new EmployeeDTO(empRs.getString("Name"), id,
                     empRs.getString("BankAccount"), empRs.getInt("Salary"),
                     empRs.getInt("SickDays"), empRs.getInt("StudyFund"),
-                    empRs.getInt("DaysOff"), empRs.getString("DateOfHire"), roles);
+                    empRs.getInt("DaysOff"), empRs.getString("DateOfHire"), roles, this);
 
             return new ResponseT<>(employee);
 

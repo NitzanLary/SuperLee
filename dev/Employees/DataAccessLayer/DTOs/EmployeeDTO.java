@@ -1,5 +1,7 @@
 package Employees.DataAccessLayer.DTOs;
 
+import Employees.DataAccessLayer.DAOs.EmployeeDAO;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -11,11 +13,13 @@ public class EmployeeDTO {
     private int sickDays;
     private int advancedStudyFund;
     private int daysOff;
-    LocalDate dateOfHire;
-    List<RoleDTO> roles;
+    private LocalDate dateOfHire;
+    private  List<RoleDTO> roles;
+    private EmployeeDAO dao;
+
 
     public EmployeeDTO(String name, String id, String bankAccount, int salary, int sickDays, int advancedStudyFund,
-                       int daysOff, String date, List<RoleDTO> roles){
+                       int daysOff, String date, List<RoleDTO> roles, EmployeeDAO dao){
         this.name = name;
         this.ID = id;
         this.bankAccount = bankAccount;
@@ -25,6 +29,7 @@ public class EmployeeDTO {
         this.daysOff = daysOff;
         dateOfHire = LocalDate.parse(date);
         this.roles = roles;
+        this.dao = dao;
     }
 
     public String getName() {

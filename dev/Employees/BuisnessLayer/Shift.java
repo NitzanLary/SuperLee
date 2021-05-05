@@ -172,4 +172,17 @@ public abstract class Shift {
 
         return new ResponseT<>(employees);
     }
+
+    @Override
+    public String toString() {
+        return "Shift{" +
+                "date=" + date +
+                ", start=" + start +
+                ", end=" + end +
+                ", closed=" + closed +
+                ", \nconstrains=" + constrains +
+                ", \nassignedEmployees=" + assignedEmployees +
+                ", \nassignedRolesEmp=" + assignedRolesEmp +
+                '}';
+    }
 }

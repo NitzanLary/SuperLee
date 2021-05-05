@@ -1,6 +1,9 @@
 package Employees.DataAccessLayer.DTOs;
 
 import Employees.BuisnessLayer.Employee;
+import Employees.BuisnessLayer.Response;
+import Employees.DataAccessLayer.DAOs.ShiftDAO;
+import Employees.DataAccessLayer.Objects.ShiftDate;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -17,9 +20,10 @@ public class ShiftDTO {
     private Map<EmployeeDTO, Integer> constrains;
     private Map<String, EmployeeDTO> assignedEmployees;
     private Map<String, List<EmployeeDTO>> rolesMap;
+    private ShiftDAO dao;
 
     public ShiftDTO(LocalDate date, LocalTime start, LocalTime end, boolean closed, Map<EmployeeDTO, Integer> constrains,
-                    Map<String, EmployeeDTO> assignedEmployees, Map<String, List<EmployeeDTO>> rolesMap){
+                    Map<String, EmployeeDTO> assignedEmployees, Map<String, List<EmployeeDTO>> rolesMap, ShiftDAO dao){
         this.date = date;
         this.start = start;
         this.end = end;
@@ -27,6 +31,7 @@ public class ShiftDTO {
         this.constrains = constrains;
         this.assignedEmployees = assignedEmployees;
         this.rolesMap = rolesMap;
+        this.dao = dao;
     }
 
     public LocalDate getDate() {
@@ -43,6 +48,11 @@ public class ShiftDTO {
 
     public boolean isClosed() {
         return closed;
+    }
+
+    public Response setClosed(boolean closed) {
+        this.closed = closed;
+        return dao.setClose(new ShiftDate(date, start, end), closed);
     }
 
     public Map<EmployeeDTO, Integer> getConstrains() {
@@ -68,5 +78,18 @@ public class ShiftDTO {
     @Override
     public int hashCode() {
         return Objects.hash(date, start, end);
+    }
+
+    @Override
+    public String toString() {
+        return "ShiftDTO{" +
+                "date=" + date +
+                ", start=" + start +
+                ", end=" + end +
+                ", closed=" + closed +
+                ", \nconstrains=" + constrains +
+                ", \nassignedEmployees=" + assignedEmployees +
+                ", \nrolesMap=" + rolesMap +
+                '}';
     }
 }

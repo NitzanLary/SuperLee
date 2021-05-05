@@ -1,9 +1,11 @@
 package Employees.Tests;
 
 import Employees.BuisnessLayer.*;
-import Employees.DataAccessLayer.DAOs.DAO;
 import Employees.DataAccessLayer.DAOs.EmployeeDAO;
+import Employees.DataAccessLayer.DAOs.ShiftDAO;
 import Employees.DataAccessLayer.DTOs.EmployeeDTO;
+import Employees.DataAccessLayer.DTOs.ShiftDTO;
+import Employees.DataAccessLayer.Objects.ShiftDate;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -154,19 +156,18 @@ class FacadeControllerTest {
 
 
     @Test
-    void DAL_insert() {
-        Response r = EmployeeDAO.getInstance().insert("313150013", "eyal", "12345", 1000, 30,
+    void DAL_Emp_insert() {
+        Response r = new EmployeeDAO().insert("313150013", "eyal", "12345", 1000, 30,
                 30, 30, LocalDate.now(),"someRole", null);
         if (r.isErrorOccured()){
             System.out.println(r.getErrorMessage());
             fail();
         }
-
     }
 
     @Test
-    void DAL_update() {
-        Response r = EmployeeDAO.getInstance().update("Salary", "313150013", 20000);
+    void DAL_Emp_update() {
+        Response r = new EmployeeDAO().update("Salary", "313150013", 20000);
         if (r.isErrorOccured()){
             System.out.println(r.getErrorMessage());
             fail();
@@ -174,8 +175,8 @@ class FacadeControllerTest {
     }
 
     @Test
-    void DAL_addRole() {
-        Response r = EmployeeDAO.getInstance().addRole("313150013", "someRole");
+    void DAL_Emp_addRole() {
+        Response r = new EmployeeDAO().addRole("313150013", "otherRole");
         if (r.isErrorOccured()){
             System.out.println(r.getErrorMessage());
             fail();
@@ -183,8 +184,8 @@ class FacadeControllerTest {
     }
 
     @Test
-    void DAL_get() {
-        ResponseT<EmployeeDTO> r = EmployeeDAO.getInstance().get("313150013");
+    void DAL_Emp_get() {
+        ResponseT<EmployeeDTO> r = new EmployeeDAO().get("313150013");
         if (r.isErrorOccured()){
             System.out.println(r.getErrorMessage());
             fail();
@@ -192,4 +193,36 @@ class FacadeControllerTest {
         System.out.println(r.getValue());
     }
 
+    @Test
+    void DAL_Shift_insert() {
+        LocalDate date = LocalDate.now();
+        LocalTime start = LocalTime.of(6,0);
+        LocalTime end = LocalTime.of(14,0);
+        ShiftDAO s = new ShiftDAO();
+        Response r = s.insertShift(date, start, end, true);
+        if (r.isErrorOccured()){
+            System.out.println(r.getErrorMessage());
+            fail();
+        }
+        // check here addConstrain
+        r = s.addConstrain(date, start, end, "205952971", 2);
+        if (r.isErrorOccured()){
+            System.out.println(r.getErrorMessage());
+            fail();
+        }
+        // check here assignEmployee
+        r = s.assignEmployee(date, start, end, "205952971", "HA Manager");
+        if (r.isErrorOccured()){
+            System.out.println(r.getErrorMessage());
+            fail();
+        }
+        // check here get
+        ResponseT<ShiftDTO> shiftDTO = s.get(new ShiftDate(date, start, end));
+        if (shiftDTO.isErrorOccured()){
+            System.out.println(shiftDTO.getErrorMessage());
+            fail();
+        }
+
+        System.out.println(shiftDTO.getValue());
+    }
 }

@@ -19,19 +19,14 @@ import java.util.Map;
 
 public class ShiftDAO extends DAO{
     private Mapper mapper;
-    private static class ShiftDAO_Holder {
-        private static ShiftDAO instance = new ShiftDAO();
-    }
 
-    private ShiftDAO() {}
-
-    public static ShiftDAO getInstance(){
-        return ShiftDAO_Holder.instance;
+    public ShiftDAO() {
+        mapper = Mapper.getInstance();
     }
 
     public Response insertShift(LocalDate date, LocalTime start, LocalTime end, boolean closed){
         String sql = """
-                INSERT INTO Shift (Date, Start, End, Closed)
+                INSERT INTO Shifts (Date, Start, End, Closed)
                 VALUES
                 (?, ?, ?, ?)
                 """;
@@ -42,7 +37,9 @@ public class ShiftDAO extends DAO{
             pstmt.setString(1, date.toString());
             pstmt.setString(2, start.toString());
             pstmt.setString(3, end.toString());
-            pstmt.setString(4, String.valueOf(closed));
+            pstmt.setInt(4, (closed ? 1 : 0));
+
+            pstmt.executeUpdate();
 
         }catch(SQLException e){
             return new Response(e.getMessage());
@@ -70,6 +67,8 @@ public class ShiftDAO extends DAO{
             pstmt.setString(4, empID);
             pstmt.setInt(5, preference);
 
+            pstmt.executeUpdate();
+
             return new Response();
 
         }catch(SQLException e){
@@ -77,7 +76,7 @@ public class ShiftDAO extends DAO{
         }
     }
 
-    public Response addEmployee(LocalDate date, LocalTime start, LocalTime end, String empID, String role){
+    public Response assignEmployee(LocalDate date, LocalTime start, LocalTime end, String empID, String role){
         String sql = """
                 INSERT INTO ShiftAssignees (Date, Start, End, EmpID, Role)
                 VALUES
@@ -93,6 +92,8 @@ public class ShiftDAO extends DAO{
             pstmt.setString(4, empID);
             pstmt.setString(5, role);
 
+            pstmt.executeUpdate();
+
         }catch(SQLException e){
             return new Response(e.getMessage());
         }
@@ -101,7 +102,7 @@ public class ShiftDAO extends DAO{
 
     public ResponseT<ShiftDTO> get(ShiftDate shiftDate){
         String shiftSql = """
-                SELECT* FROM Shift
+                SELECT* FROM Shifts
                 WHERE Date = ? AND Start = ? AND End = ?
                 """;
 
@@ -125,7 +126,7 @@ public class ShiftDAO extends DAO{
             shiftRs.next();
             if (shiftRs.isClosed())
                 return new ResponseT<>(null, "Shift not found");
-            boolean closed = shiftRs.getBoolean(5);
+            boolean closed = shiftRs.getInt(4) == 1;
 
             shiftRs.close();
             // constrains part
@@ -142,7 +143,7 @@ public class ShiftDAO extends DAO{
                 return new ResponseT<>(null, r.getErrorMessage());
 
             ShiftDTO shift = new ShiftDTO(shiftDate.getDate(), shiftDate.getStart(), shiftDate.getEnd(), closed,
-                    constrains.getValue(), assignedEmployees, rolesMap);
+                    constrains.getValue(), assignedEmployees, rolesMap, this);
 
             return new ResponseT<>(shift);
 
@@ -164,7 +165,6 @@ public class ShiftDAO extends DAO{
             List<EmployeeDTO> emps = rolesMap.computeIfAbsent(roleName, k -> new ArrayList<>());
             emps.add(employee.getValue());
         }
-        // TODO very important: I WAS VERY TIRED! POSSIBLY A LOT OF MISTAKES
         return new Response();
     }
 
@@ -184,5 +184,49 @@ public class ShiftDAO extends DAO{
         shiftSqlStmt.setString(1, shiftDate.getDate().toString());
         shiftSqlStmt.setString(2, shiftDate.getStart().toString());
         shiftSqlStmt.setString(3, shiftDate.getEnd().toString());
+    }
+
+    public Response deleteAssignee(ShiftDate shiftDate, String ID){
+        String sql = """
+                DELETE FROM ShiftAssignees
+                WHERE Date = ? AND Start = ? AND End = ? AND EmpID = ?
+                """;
+
+        try(Connection conn = getConn().getValue();
+            PreparedStatement pstmt = conn.prepareStatement(sql)){
+
+            pstmt.setString(1, shiftDate.getDate().toString());
+            pstmt.setString(2, shiftDate.getStart().toString());
+            pstmt.setString(3, shiftDate.getEnd().toString());
+            pstmt.setString(4, ID);
+
+            pstmt.executeUpdate();
+
+        }catch(SQLException e){
+            return new Response(e.getMessage());
+        }
+        return new Response();
+    }
+
+    public Response setClose(ShiftDate shiftDate, boolean cond){
+        String sql = """
+                UPDATE Shifts SET Closed = ?
+                WHERE WHERE Date = ? AND Start = ? AND End = ?
+                """;
+
+        try(Connection conn = getConn().getValue();
+            PreparedStatement pstmt = conn.prepareStatement(sql)){
+
+            pstmt.setString(2, shiftDate.getDate().toString());
+            pstmt.setString(3, shiftDate.getStart().toString());
+            pstmt.setString(4, shiftDate.getEnd().toString());
+            pstmt.setInt(4, (cond ? 1 : 0));
+
+            pstmt.executeUpdate();
+
+        }catch(SQLException e){
+            return new Response(e.getMessage());
+        }
+        return new Response();
     }
 }
