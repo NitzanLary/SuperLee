@@ -11,13 +11,13 @@ import static java.lang.System.exit;
  * The communication with the users are from here.
  */
 
-public class IO {
+public class IO_Supplier {
 
-    private static IO io = null;
+    private static IO_Supplier ioSupplier = null;
     public static FacadeController facadeC = FacadeController.getInstance();
     public static Scanner scanner = new Scanner(System.in);
 
-    private IO() {
+    private IO_Supplier() {
         System.out.println('\n' + "----------------------------------------------------------");
         System.out.println('\n' +
                 "0000  0  0  0000  0000  0000              0    0000  0000" + '\n' +
@@ -31,11 +31,11 @@ public class IO {
                 "Choose What You Want To Do: "+ '\n');
     }
 
-    public static IO getInstance() {
-        if (io == null)
-            io = new IO();
+    public static IO_Supplier getInstance() {
+        if (ioSupplier == null)
+            ioSupplier = new IO_Supplier();
 
-        return io;
+        return ioSupplier;
     }
 
     public void init() {
@@ -45,11 +45,11 @@ public class IO {
             switch (caseNumber) {
                 case 2:
                     baseScenario();
-                    io.mainMenu();
+                    ioSupplier.mainMenu();
                     break;
 
                 case 1:
-                    io.mainMenu();
+                    ioSupplier.mainMenu();
                     break;
 
                 default:
