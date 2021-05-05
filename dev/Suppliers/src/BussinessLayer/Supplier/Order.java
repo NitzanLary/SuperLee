@@ -1,4 +1,4 @@
-package BussinessLayer;
+package BussinessLayer.Supplier;
 
 import java.time.LocalDate;
 import java.util.HashMap;

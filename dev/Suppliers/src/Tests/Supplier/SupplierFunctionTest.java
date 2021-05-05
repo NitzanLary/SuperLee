@@ -1,8 +1,8 @@
-package Tests;
+package Tests.Supplier;
 
-import BussinessLayer.ProductController;
-import BussinessLayer.SupplierCard;
-import BussinessLayer.SupplierController;
+import BussinessLayer.Supplier.ProductController;
+import BussinessLayer.Supplier.SupplierCard;
+import BussinessLayer.Supplier.SupplierController;
 
 import java.util.HashMap;
 

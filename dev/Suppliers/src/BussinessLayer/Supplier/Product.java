@@ -1,4 +1,4 @@
-package BussinessLayer;
+package BussinessLayer.Supplier;
 
 public class Product {
     private int productID;

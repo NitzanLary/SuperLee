@@ -1,4 +1,4 @@
-package BussinessLayer;
+package BussinessLayer.Supplier;
 
 public class SupplierCard {
     private String supplierName;

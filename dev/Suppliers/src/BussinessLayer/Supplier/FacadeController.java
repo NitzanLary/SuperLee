@@ -1,4 +1,7 @@
-package BussinessLayer;
+package BussinessLayer.Supplier;
+import BussinessLayer.Response;
+import BussinessLayer.ResponseT;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -30,7 +33,7 @@ public class FacadeController {
     /***************** Supplier & Products Functions: ***************/
 
     public Response createSupCard(String supplierName, int supplierID, String address, String email, int bankAcc,
-                              String paymentMethod, String contacts, String infoSupplyDay, boolean pickUp) {
+                                  String paymentMethod, String contacts, String infoSupplyDay, boolean pickUp) {
         try{
             supController.createSupCard(supplierName, supplierID, address, email, bankAcc, paymentMethod, contacts, infoSupplyDay, pickUp);
             return new Response();

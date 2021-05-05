@@ -1,9 +1,9 @@
-package Tests;
+package Tests.Supplier;
 
-import BussinessLayer.BillOfQuantities;
-import BussinessLayer.Order;
-import BussinessLayer.OrderController;
-import BussinessLayer.Product;
+import BussinessLayer.Supplier.BillOfQuantities;
+import BussinessLayer.Supplier.Order;
+import BussinessLayer.Supplier.OrderController;
+import BussinessLayer.Supplier.Product;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

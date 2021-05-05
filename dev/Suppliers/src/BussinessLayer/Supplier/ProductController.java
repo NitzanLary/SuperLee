@@ -1,15 +1,13 @@
-package BussinessLayer;
+package BussinessLayer.Supplier;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 
 public class ProductController {
 
     private static ProductController productController = null;
 
-    private HashMap<Integer, HashMap<Integer,Product>> supplierProd; // <supID: Integer, HashMap<Integer:productID,Product>>
-    private HashMap<Integer,BillOfQuantities> discounts; // <supID: Integer, List<Product>>
+    private HashMap<Integer, HashMap<Integer, BussinessLayer.Supplier.Product>> supplierProd; // <supID: Integer, HashMap<Integer:productID,Product>>
+    private HashMap<Integer, BussinessLayer.Supplier.BillOfQuantities> discounts; // <supID: Integer, List<Product>>
 
     private ProductController()
     {
@@ -31,7 +29,7 @@ public class ProductController {
             throw new IllegalArgumentException("This Supplier Already Have Bill Of Quantities");
         }
         else{
-            BillOfQuantities billOfQ = new BillOfQuantities(minQuantityForDis,discountList );
+            BussinessLayer.Supplier.BillOfQuantities billOfQ = new BussinessLayer.Supplier.BillOfQuantities(minQuantityForDis,discountList );
             discounts.put(supplierID , billOfQ);
         }
     }
@@ -42,7 +40,7 @@ public class ProductController {
     }
 
     public void deleteBillOfQuantity(int supplierID) {
-        BillOfQuantities tmp = discounts.remove(supplierID);
+        BussinessLayer.Supplier.BillOfQuantities tmp = discounts.remove(supplierID);
         if (tmp == null){
             throw new IllegalArgumentException("This Supplier Does Not Have Bill Of Quantity To Delete");
         }
@@ -56,7 +54,7 @@ public class ProductController {
             throw new IllegalArgumentException("This Item Already Exists In The Supplier Products List");
         }
         else{
-            Product prod = new Product(productID,supplierID, name,category, price);
+            BussinessLayer.Supplier.Product prod = new BussinessLayer.Supplier.Product(productID,supplierID, name,category, price);
             supplierProd.get(supplierID).put(productID,prod);
         }
     }
@@ -77,13 +75,13 @@ public class ProductController {
         if (!supplierProd.containsKey(supplierID)){
             throw new IllegalArgumentException("This Supplier Does Not Exists In The System");
         }
-        HashMap<Integer,Product> supItems = supplierProd.get(supplierID);
+        HashMap<Integer, BussinessLayer.Supplier.Product> supItems = supplierProd.get(supplierID);
         if (supItems.isEmpty()){
             throw new IllegalArgumentException("This Supplier Does Not Have Any Products");
         }
 
         String productsList = '\n' + "products list: " + '\n';
-        for(Product p : supItems.values()){
+        for(BussinessLayer.Supplier.Product p : supItems.values()){
             productsList += p.toString() + '\n';
         }
         return productsList;
@@ -103,7 +101,7 @@ public class ProductController {
 
     public double calculateDiscount(int productId, int quantity, int suppID){
         double priceBeforeDiscount = supplierProd.get(suppID).get(productId).getPrice() * quantity;
-        BillOfQuantities bill = discounts.get(suppID);
+        BussinessLayer.Supplier.BillOfQuantities bill = discounts.get(suppID);
         if(bill == null ) //no bill for this supplier
             return priceBeforeDiscount;
         Integer minQ = bill.getMinQuantityForDis().get(productId);
@@ -115,7 +113,7 @@ public class ProductController {
     }
 
     public void newSupplier(int supplierID){
-        HashMap<Integer,Product> products = new HashMap<>();
+        HashMap<Integer, BussinessLayer.Supplier.Product> products = new HashMap<>();
         supplierProd.put(supplierID, products);
     }
 
@@ -153,7 +151,7 @@ public class ProductController {
         return supplierProd;
     }
 
-    public HashMap<Integer,BillOfQuantities> getDiscounts(){
+    public HashMap<Integer, BillOfQuantities> getDiscounts(){
         return this.discounts;
     }
 }
