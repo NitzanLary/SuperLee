@@ -5,6 +5,7 @@ import Employees.DataAccessLayer.DAOs.EmployeeDAO;
 import Employees.DataAccessLayer.DAOs.ShiftDAO;
 import Employees.DataAccessLayer.DTOs.EmployeeDTO;
 import Employees.DataAccessLayer.DTOs.ShiftDTO;
+import Employees.DataAccessLayer.Objects.Mapper;
 import Employees.DataAccessLayer.Objects.ShiftDate;
 import org.junit.jupiter.api.Test;
 
@@ -164,10 +165,28 @@ class FacadeControllerTest {
             fail();
         }
     }
-
     @Test
     void DAL_Emp_update() {
-        Response r = new EmployeeDAO().update("Salary", "313150013", 20000);
+        ResponseT<EmployeeDTO> emp = Mapper.getInstance().getEmployee("313150013");
+        if (emp.isErrorOccured()) {
+            System.out.println(emp.getErrorMessage());
+            fail();
+        }
+        Response r = emp.getValue().setName("yanay");
+        if (r.isErrorOccured()){
+            System.out.println(r.getErrorMessage());
+            fail();
+        }
+    }
+
+    @Test
+    void DAL_Emp_update2() {
+        ResponseT<EmployeeDTO> emp = Mapper.getInstance().getEmployee("313150013");
+        if (emp.isErrorOccured()) {
+            System.out.println(emp.getErrorMessage());
+            fail();
+        }
+        Response r = new EmployeeDAO().update(emp.getValue());
         if (r.isErrorOccured()){
             System.out.println(r.getErrorMessage());
             fail();

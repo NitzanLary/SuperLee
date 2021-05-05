@@ -69,17 +69,28 @@ public class EmployeeDAO extends DAO{
     }
 
 
-    public Response update(String col, String ID, String newVal){
-        String sql = String.format("""
-                UPDATE Employees SET %s = ?
+    public Response update(EmployeeDTO employeeDTO){
+        String sql = """
+                UPDATE Employees
+                SET Name = ?,
+                    BankAccount = ?,
+                    Salary = ?,
+                    SickDays = ?,
+                    StudyFund = ?,
+                    DaysOff = ?
                 WHERE EmpID = ?
-                """, col);
+                """;
         
         try(Connection conn = getConn().getValue();
             PreparedStatement pstmt = conn.prepareStatement(sql)){
 
-            pstmt.setString(1, newVal);
-            pstmt.setString(2, ID);
+            pstmt.setString(1, employeeDTO.getName());
+            pstmt.setString(2, employeeDTO.getBankAccount());
+            pstmt.setInt(3, employeeDTO.getSalary());
+            pstmt.setInt(4, employeeDTO.getSickDays());
+            pstmt.setInt(5, employeeDTO.getAdvancedStudyFund());
+            pstmt.setInt(6, employeeDTO.getDaysOff());
+            pstmt.setString(7, employeeDTO.getID());
 
             pstmt.executeUpdate();
 
@@ -88,10 +99,6 @@ public class EmployeeDAO extends DAO{
         }
 
         return new Response();
-    }
-
-    public Response update(String col, String ID, int newVal){
-        return update(col, ID, String.valueOf(newVal));
     }
 
     public Response addRole(String ID, String role, String driverLicence){
@@ -118,6 +125,10 @@ public class EmployeeDAO extends DAO{
 
     public Response addRole(String ID, String role){
         return addRole(ID, role, null);
+    }
+
+    public Response addRole(String ID, RoleDTO role){
+        return addRole(ID, role.getName(), role.getLicense());
     }
 
     public ResponseT<EmployeeDTO> get(String id){

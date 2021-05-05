@@ -104,6 +104,10 @@ public class ShiftDAO extends DAO{
         return new Response();
     }
 
+    public Response assignEmployee(ShiftDate shiftDate, String ID, String role){
+        return assignEmployee(shiftDate.getDate(), shiftDate.getStart(), shiftDate.getEnd(), ID, role);
+    }
+
     public ResponseT<ShiftDTO> get(ShiftDate shiftDate){
         String shiftSql = """
                 SELECT* FROM Shifts
@@ -233,4 +237,6 @@ public class ShiftDAO extends DAO{
         }
         return new Response();
     }
+
+
 }

@@ -11,7 +11,16 @@ import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
-        CLI.getInstance().start();
+//        CLI.getInstance().start();
+        LocalDate date = LocalDate.now();
+        LocalTime time = LocalTime.now();
+        ShiftDate s1 = new ShiftDate(date, time, time);
+        ShiftDate s2 = new ShiftDate(date, time, time);
+
+        Map<ShiftDate, Integer> map = new HashMap<>();
+        map.put(s1, 5);
+        System.out.println(map.get(s2));
+
     }
 
 
