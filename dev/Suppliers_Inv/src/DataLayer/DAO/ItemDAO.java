@@ -1,14 +1,38 @@
 package DataLayer.DAO;
-
 import BussinessLayer.Inventory.Item;
 import BussinessLayer.Response;
 import BussinessLayer.ResponseT;
+import DataLayer.DTO.DiscountDTO;
 import DataLayer.DTO.ItemDTO;
-
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class ItemDAO extends DAO {
+
+    public ResponseT<ItemDTO> get(int itemId) {
+        String SQL = "SELECT * FROM items WHERE itemId = ?";
+        ItemDTO toGet = null;
+        try {
+            ResponseT<Connection> r = getConn();
+            if(!r.ErrorOccured()) {
+                PreparedStatement ps = r.value.prepareStatement(SQL);
+                ps.setInt(1, itemId);
+                ResultSet rs = ps.executeQuery();
+                if(!rs.isClosed()) {
+                    toGet =  new ItemDTO(rs.getInt("itemID"), rs.getString("name"), rs.getDouble("price"), rs.getDouble("cost"),
+                            rs.getInt("shelfNum"), rs.getString("manufacturer"), rs.getInt("shelfQuantity"), rs.getInt("storageQuantity"));
+                }
+                if (toGet == null) {
+                    return new ResponseT<>(null, "cannot get");
+                }
+            }
+        }catch (Exception e) {
+            return new ResponseT(null,"cannot get");
+        }
+        return new ResponseT<ItemDTO>(toGet);
+    }
 
     public Response create(Item item) {
         ItemDTO toInsert = new ItemDTO(item);

@@ -1,5 +1,7 @@
 package DataLayer.DTO;
 import BussinessLayer.Inventory.Discount;
+import BussinessLayer.Inventory.Item;
+
 import java.util.List;
 
 public class ItemDTO {
@@ -11,12 +13,10 @@ public class ItemDTO {
     private String manufacturer;
     private int shelfQuantity;
     private int storageQuantity;
-    private List<Discount> priceDiscounts;
-    private List<Discount> costDiscounts;
     private int minAlert;
 
 
-    public ItemDTO(BussinessLayer.Inventory.Item blItem) {
+    public ItemDTO(Item blItem) {
         this.id = blItem.getId();
         this.name = blItem.getName();
         this.price = blItem.getPrice();
@@ -25,9 +25,18 @@ public class ItemDTO {
         this.manufacturer = blItem.getManufacturer();
         this.shelfQuantity = blItem.getShelfQuantity();
         this.storageQuantity = blItem.getStorageQuantity();
-        priceDiscounts = blItem.getPriceDiscounts();
-        costDiscounts = blItem.getCostDiscounts();
         this.minAlert = blItem.getMinAlert();
+    }
+
+    public ItemDTO(int id, String name, double price, double cost, int shelfNum, String manufacturer, int shelfQuantity, int storageQuantity) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.cost = cost;
+        this.shelfNum = shelfNum;
+        this.manufacturer = manufacturer;
+        this.shelfQuantity = shelfQuantity;
+        this.shelfQuantity = storageQuantity;
     }
 
     public int getId() {
@@ -60,14 +69,6 @@ public class ItemDTO {
 
     public int getMinAlert() {
         return minAlert;
-    }
-
-    public List<Discount> getCostDiscounts() {
-        return costDiscounts;
-    }
-
-    public List<Discount> getPriceDiscounts() {
-        return priceDiscounts;
     }
 
     public Double getCost() {

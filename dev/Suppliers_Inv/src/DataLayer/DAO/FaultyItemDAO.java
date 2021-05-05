@@ -12,11 +12,37 @@ import DataLayer.DTO.ItemDTO;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.time.LocalDate;
 
 public class FaultyItemDAO extends DAO{
     public FaultyItemDAO() {
 
     }
+
+    public ResponseT<FaultyItemDTO> get(int itemID, LocalDate expDate) {
+        String SQL = "SELECT * FROM faultyItem WHERE itemId = ? AND expDate = ?";
+        FaultyItemDTO toGet = null;
+        try {
+            ResponseT<Connection> r = getConn();
+            if(!r.ErrorOccured()) {
+                PreparedStatement ps = r.value.prepareStatement(SQL);
+                ps.setInt(1, itemID);
+                ps.setDate(2 , Date.valueOf(expDate));
+                ResultSet rs = ps.executeQuery();
+                if(!rs.isClosed()) {
+                    toGet =  new FaultyItemDTO(rs.getInt("itemID"), rs.getDate("expDate").toLocalDate(), rs.getInt("amount"));
+                }
+                if (toGet == null) {
+                    return new ResponseT<>(null, "cannot get");
+                }
+            }
+        }catch (Exception e) {
+            return new ResponseT(null,"cannot get");
+        }
+        return new ResponseT<FaultyItemDTO>(toGet);
+    }
+
     public Response create(FaultyItem fi) {
         FaultyItemDTO toInsert = new FaultyItemDTO(fi);
         String SQL = "INSERT INTO faultyItem (itemId, exp, amount) VALUES (?,?,?)";
