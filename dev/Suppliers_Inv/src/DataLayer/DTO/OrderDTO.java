@@ -1,5 +1,6 @@
 package DataLayer.DTO;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 public class OrderDTO {
@@ -10,7 +11,7 @@ public class OrderDTO {
     private LocalDate supplyDate;
     private double price;
 
-    public OrderDTO(Integer orderID, Integer supplierID, boolean delivered, LocalDate supplyDate, double price) {
+    public OrderDTO(Integer orderID, Integer supplierID, boolean delivered, Date supplyDate, double price) {
         this.orderID = orderID;
         this.supplierID = supplierID;
         this.delivered = delivered;

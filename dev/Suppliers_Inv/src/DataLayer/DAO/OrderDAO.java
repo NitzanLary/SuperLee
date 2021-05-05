@@ -1,12 +1,10 @@
 package DataLayer.DAO;
 
 import BussinessLayer.Response;
+import BussinessLayer.ResponseT;
 import DataLayer.DTO.OrderDTO;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 
 public class OrderDAO extends DAO{
@@ -42,6 +40,32 @@ public class OrderDAO extends DAO{
 
     public Response insert(OrderDTO order){
         return insert(order.getOrderID(), order.getSupplierID(), order.isDelivered(), order.getSupplyDate(), order.getPrice());
+    }
+
+    //SELECT
+    public ResponseT<OrderDTO> get(Integer orderID){
+        String orderSQL = String.format("""
+                SELECT * FROM Orders
+                WHERE orderID = %s
+                """, orderID);
+
+        try(Connection conn = getConn().value;
+            Statement ordStmt = conn.createStatement();
+            ResultSet ordRs = ordStmt.executeQuery(orderSQL);){
+
+            if(ordRs.isClosed())
+                return new ResponseT<>(null, String.format("orderID %s not found", orderID));
+            OrderDTO order = new OrderDTO(ordRs.getInt("orderID"),
+                    ordRs.getInt("supplierID"), ordRs.getBoolean("delivered"),
+                    ordRs.getDate("supplyDate"), ordRs.getFloat("price"));
+
+            return new ResponseT<>(order);
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            return new ResponseT<>(null, e.getMessage());
+        }
+
     }
 
     //TODO: update delete functions
