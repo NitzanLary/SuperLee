@@ -1,6 +1,6 @@
-package DataLayer;
+package DataLayer.DTO;
 
-public class supplierDTO {
+public class SupplierDTO {
 
         private Integer ID;
         private String name;
@@ -13,7 +13,7 @@ public class supplierDTO {
         private  boolean pickUp;
 
 
-        public supplierDTO(Integer ID, String name, String address, String email, Integer bankAcc, String paymentMethod,
+        public SupplierDTO(Integer ID, String name, String address, String email, Integer bankAcc, String paymentMethod,
                            String infoSupDay, String contacts, boolean pickUp){
             this.ID = ID;
             this.name = name;

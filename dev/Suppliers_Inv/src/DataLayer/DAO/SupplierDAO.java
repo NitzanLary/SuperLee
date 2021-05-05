@@ -1,13 +1,11 @@
-package DataLayer;
-
+package DataLayer.DAO;
 import BussinessLayer.Response;
-import org.omg.CORBA.INTERNAL;
+import DataLayer.DTO.SupplierDTO;
 
 import java.sql.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
 
-public class supplierDAO extends DAO {
+
+public class SupplierDAO extends DAO {
 
     public Response insert(Integer ID, String name, String address, String email, Integer bankAcc, String paymentMethod,
                            String infoSupDay, String contacts, boolean pickUp) {
@@ -41,7 +39,7 @@ public class supplierDAO extends DAO {
     }
 
 
-    public Response insert(supplierDTO supplier){
+    public Response insert(SupplierDTO supplier){
         return insert(supplier.getID(), supplier.getName(), supplier.getAddress(), supplier.getEmail(),
                 supplier.getBankAcc(), supplier.getPaymentMethod(), supplier.getInfoSupDay(),
                 supplier.getContacts(), supplier.isPickUp());
