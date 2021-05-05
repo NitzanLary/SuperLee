@@ -21,8 +21,8 @@ public class RecordController {
     }
 
     //adds a faulty item to list of faulty items returns faulty item object
-    public boolean addFaulty(String name, LocalDate expDate, int amountOfFaulyt) {
-        FaultyItem newFI = new FaultyItem(name, expDate, amountOfFaulyt);
+    public boolean addFaulty(int itemId, LocalDate expDate, int amountOfFaulyt) {
+        FaultyItem newFI = new FaultyItem(itemId, expDate, amountOfFaulyt);
         return faultyItems.add(newFI);
     }
 

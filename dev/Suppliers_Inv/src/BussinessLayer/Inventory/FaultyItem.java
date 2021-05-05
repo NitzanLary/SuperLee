@@ -4,26 +4,30 @@ package BussinessLayer.Inventory;
 import java.time.LocalDate;
 
 public class FaultyItem {
-    private String name;
+    private int itemId;
     private LocalDate expDate;
     private int amount;
 
-    public FaultyItem(String name, LocalDate expDate, int amount){
-        this.name = name;
+    public FaultyItem(int itemId, LocalDate expDate, int amount){
+        this.itemId = itemId;
         this.expDate = expDate;
         this.amount = amount;
     }
 
-    public String getName() {
-        return name;
+    public int getItemId() {
+        return itemId;
     }
 
     public LocalDate getExpDate() {
         return expDate;
     }
 
+    public int getAmount() {
+        return amount;
+    }
+
     public String toString(){
-        String str = "Name:\t\t\t\t" + name +"\n" +
+        String str = "id:\t\t\t\t" + itemId +"\n" +
                 "Expiration date: \t" + expDate + "\n" +
                 "Amount: \t\t\t" + amount+"\n";
         return str;
