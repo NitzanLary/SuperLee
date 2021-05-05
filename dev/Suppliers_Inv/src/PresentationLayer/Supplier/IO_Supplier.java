@@ -687,14 +687,14 @@ public class IO_Supplier {
                         int productID = Integer.parseInt(scanner.nextLine());
                         Response response = facadeC.checkProductExist(SupplierID, productID);
                         if (response.ErrorMessage != null) {
-                            System.out.println(res.ErrorMessage);
+                            System.out.println(response.ErrorMessage);
                             return;
                         }
                         System.out.println('\n' + "Enter Product Quantity:");
                         int quantity = Integer.parseInt(scanner.nextLine());
                         response = facadeC.addProductToOrder(orderID,productID,quantity);
                         if (response.ErrorMessage != null) {
-                            System.out.println(res.ErrorMessage);
+                            System.out.println(response.ErrorMessage);
                             return;
                         }
                         break;
@@ -702,19 +702,9 @@ public class IO_Supplier {
                     case 2:
                         System.out.println('\n' + "Enter Product ID You Would Like To Remove:");
                         productID = Integer.parseInt(scanner.nextLine());
-                        response = facadeC.checkProductExist(SupplierID, productID);
+                        response = facadeC.removeFromOrder(productID,orderID);
                         if (response.ErrorMessage != null) {
-                            System.out.println(res.ErrorMessage);
-                            return;
-                        }
-                        response = facadeC.productInOrder(orderID,productID);
-                        if (response.ErrorMessage != null) {
-                            System.out.println(res.ErrorMessage);
-                            return;
-                        }
-                        response = facadeC.removeFromOrder(productID,SupplierID);
-                        if (response.ErrorMessage != null) {
-                            System.out.println(res.ErrorMessage);
+                            System.out.println(response.ErrorMessage);
                             return;
                         }
                         break;
@@ -729,14 +719,14 @@ public class IO_Supplier {
                         }
                         response = facadeC.productInOrder(orderID,productID);
                         if (response.ErrorMessage != null) {
-                            System.out.println(res.ErrorMessage);
+                            System.out.println(response.ErrorMessage);
                             return;
                         }
                         System.out.println('\n' + "Enter New Product Quantity:");
                         quantity = Integer.parseInt(scanner.nextLine());
                         response = facadeC.updateProdQuantity(orderID,productID,quantity);
                         if (response.ErrorMessage != null) {
-                            System.out.println(res.ErrorMessage);
+                            System.out.println(response.ErrorMessage);
                             return;
                         }
                         break;
@@ -744,7 +734,7 @@ public class IO_Supplier {
                     case 4:
                         ResponseT<String> resp = facadeC.showSupplierProducts(SupplierID);
                         if (resp.ErrorMessage != null) {
-                            System.out.println(res.ErrorMessage);
+                            System.out.println(resp.ErrorMessage);
                             return;
                         }
                         System.out.println(resp.value);
@@ -756,19 +746,19 @@ public class IO_Supplier {
                             System.out.println('\n' + "No Products In This Order, This Order Will Be Deleted");
                             response = facadeC.removeOrder(orderID);
                             if (response.ErrorMessage != null) {
-                                System.out.println(res.ErrorMessage);
+                                System.out.println(response.ErrorMessage);
                                 return;
                             }
                         }
                         else{
                             response = facadeC.finalPriceForOrder(orderID, SupplierID);
                             if (response.ErrorMessage != null) {
-                                System.out.println(res.ErrorMessage);
+                                System.out.println(response.ErrorMessage);
                                 return;
                             }
                             resp = facadeC.showOrder(orderID);
                             if (resp.ErrorMessage != null) {
-                                System.out.println(res.ErrorMessage);
+                                System.out.println(resp.ErrorMessage);
                                 return;
                             }
                             System.out.println('\n' + "Order Summary: " + resp.value);

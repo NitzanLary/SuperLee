@@ -314,9 +314,9 @@ public class FacadeController {
         }
     }
 
-    public Response removeFromOrder(int productID , int supplierID) {
+    public Response removeFromOrder(int productID , int orderID) {
         try {
-            orderController.removeFromOrder(productID , supplierID);
+            orderController.removeFromOrder(productID ,orderID);
             return new Response();
         } catch (Exception e) {
             return new Response(e.getMessage());

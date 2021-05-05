@@ -40,7 +40,11 @@ public class OrderController {
         orders.get(orderID).getProducts().put(productID, quantity);
     }
 
-    public void removeFromOrder(int productID , int supplierID) {
+    public void removeFromOrder(int productID, int orderID) {
+        Integer remove = orders.get(orderID).getProducts().remove(productID);
+        if(remove == null){
+            throw new IllegalArgumentException("The Item Does Not Exist In This Order");
+        }
     }
 
     public void removeOrder(int orderID) {
