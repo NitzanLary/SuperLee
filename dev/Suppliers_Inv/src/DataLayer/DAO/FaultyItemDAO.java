@@ -20,7 +20,7 @@ public class FaultyItemDAO extends DAO{
 
     }
 
-    public ResponseT<FaultyItemDTO> get(int itemID, LocalDate expDate) {
+    public Response read(int itemID, LocalDate expDate) {
         String SQL = "SELECT * FROM faultyItem WHERE itemId = ? AND expDate = ?";
         FaultyItemDTO toGet = null;
         try {
@@ -34,11 +34,11 @@ public class FaultyItemDAO extends DAO{
                     toGet =  new FaultyItemDTO(rs.getInt("itemID"), rs.getDate("expDate").toLocalDate(), rs.getInt("amount"));
                 }
                 if (toGet == null) {
-                    return new ResponseT<>(null, "cannot get");
+                    return new Response("cannot get faulty item");
                 }
             }
         }catch (Exception e) {
-            return new ResponseT(null,"cannot get");
+            return new Response("cannot get faulty item");
         }
         return new ResponseT<FaultyItemDTO>(toGet);
     }

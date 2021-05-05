@@ -20,7 +20,7 @@ public class DiscountDAO extends DAO{
         this.table = table;
     }
 
-    public ResponseT<DiscountDTO> get(int itemId, LocalDate start, LocalDate end) {
+    public Response read(int itemId, LocalDate start, LocalDate end) {
         String SQL = "SELECT * FROM " + table + " WHERE itemId = ? AND start = ? AND end = ?";
         DiscountDTO toGet = null;
         try {
@@ -36,11 +36,11 @@ public class DiscountDAO extends DAO{
                     rs.getInt("discountPr"), rs.getInt("itemId"));
                 }
                 if (toGet == null) {
-                    return new ResponseT<>(null, "cannot get");
+                    return new Response("failed to get discount");
                 }
             }
         }catch (Exception e) {
-            return new ResponseT(null,"cannot get");
+            return new Response("failed to get discount");
         }
         return new ResponseT<DiscountDTO>(toGet);
     }

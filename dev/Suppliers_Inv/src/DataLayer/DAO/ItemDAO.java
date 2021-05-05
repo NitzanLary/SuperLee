@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 
 public class ItemDAO extends DAO {
 
-    public ResponseT<ItemDTO> get(int itemId) {
+    public Response read(int itemId) {
         String SQL = "SELECT * FROM items WHERE itemId = ?";
         ItemDTO toGet = null;
         try {
@@ -25,11 +25,11 @@ public class ItemDAO extends DAO {
                             rs.getInt("shelfNum"), rs.getString("manufacturer"), rs.getInt("shelfQuantity"), rs.getInt("storageQuantity"));
                 }
                 if (toGet == null) {
-                    return new ResponseT<>(null, "cannot get");
+                    return new Response("failed to get item");
                 }
             }
         }catch (Exception e) {
-            return new ResponseT(null,"cannot get");
+            return new Response("failed to get item");
         }
         return new ResponseT<ItemDTO>(toGet);
     }
