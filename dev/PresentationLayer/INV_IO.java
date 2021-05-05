@@ -6,21 +6,21 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
-public class IO {
+public class INV_IO {
 
-    private static IO instance;
+    private static INV_IO instance;
     private IO_Controller ioCtrl;
     private Scanner scanner;
 
     //singletone class
-    public static IO getInstance() {
+    public static INV_IO getInstance() {
         if (instance == null) {
-            instance = new IO();
+            instance = new INV_IO();
         }
         return instance;
     }
 
-    private IO() {
+    private INV_IO() {
         ioCtrl = new IO_Controller();
         scanner = new Scanner(System.in);
     }

@@ -3,19 +3,18 @@ package PresentationLayer;
 import BusinessLayer.InvController;
 
 import java.time.LocalDate;
-import java.util.InputMismatchException;
 import java.util.List;
 
 public class IO_Controller {
     private InvController invCtrl;
-    private IO io;
+    private INV_IO io;
 
     public IO_Controller() {
         invCtrl = new InvController();
     }
 
     public void mainMenu(int action) {
-        io = IO.getInstance();
+        io = INV_IO.getInstance();
         //add sale
         if (action == 1){ addSale(); }
         //add faulty
