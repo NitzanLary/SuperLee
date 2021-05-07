@@ -31,6 +31,10 @@ public class ShiftDTO {
         this.dao = dao;
     }
 
+    public Response persist() {
+        return dao.insertShift(this);
+    }
+
     public LocalDate getDate() {
         return shiftDate.getDate();
     }

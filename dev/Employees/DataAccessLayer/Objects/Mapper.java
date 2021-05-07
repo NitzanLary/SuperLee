@@ -8,6 +8,7 @@ import Employees.DataAccessLayer.DTOs.ShiftDTO;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 public class Mapper {
     /**
@@ -27,8 +28,8 @@ public class Mapper {
     private Mapper() {
         employeeDAO = new EmployeeDAO();
         shiftDAO = new ShiftDAO();
-        shifts = new HashMap<>();
-        employees = new HashMap<>();
+        shifts = new WeakHashMap<>();
+        employees = new WeakHashMap<>();
     }
 
     public static Mapper getInstance(){

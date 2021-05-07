@@ -21,7 +21,7 @@ public class EmployeeDTO {
 
 
     public EmployeeDTO(String name, String id, String bankAccount, int salary, int sickDays, int advancedStudyFund,
-                       int daysOff, String date, List<RoleDTO> roles, EmployeeDAO dao){
+                       int daysOff, LocalDate date, List<RoleDTO> roles, EmployeeDAO dao){
         this.name = name;
         this.ID = id;
         this.bankAccount = bankAccount;
@@ -29,7 +29,7 @@ public class EmployeeDTO {
         this.sickDays = sickDays;
         this.advancedStudyFund = advancedStudyFund;
         this.daysOff = daysOff;
-        dateOfHire = LocalDate.parse(date);
+        dateOfHire = date;
         this.roles = roles;
         this.dao = dao;
     }
@@ -104,6 +104,10 @@ public class EmployeeDTO {
     private Response set(UpdateFunction updateFunction){
         updateFunction.update();
         return dao.update(this);
+    }
+
+    public Response persist() {
+        return dao.insert(this);
     }
 
     @Override

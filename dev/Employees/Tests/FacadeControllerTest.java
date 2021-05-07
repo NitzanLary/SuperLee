@@ -4,6 +4,7 @@ import Employees.BuisnessLayer.*;
 import Employees.DataAccessLayer.DAOs.EmployeeDAO;
 import Employees.DataAccessLayer.DAOs.ShiftDAO;
 import Employees.DataAccessLayer.DTOs.EmployeeDTO;
+import Employees.DataAccessLayer.DTOs.RoleDTO;
 import Employees.DataAccessLayer.DTOs.ShiftDTO;
 import Employees.DataAccessLayer.Objects.Mapper;
 import Employees.DataAccessLayer.Objects.ShiftDate;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -158,25 +160,47 @@ class FacadeControllerTest {
 
     @Test
     void DAL_Emp_insert() {
-        Response r = new EmployeeDAO().insert("313150013", "eyal", "12345", 1000, 30,
-                30, 30, LocalDate.now(),"someRole", null);
-        if (r.isErrorOccured()){
+        // init EmployeeDTO:
+        List<RoleDTO> roles = new ArrayList<>();
+        roles.add(new RoleDTO("HR Manager"));
+        roles.add(new RoleDTO("Driver", "123456"));
+        EmployeeDAO dao = new EmployeeDAO();
+        EmployeeDTO e = new EmployeeDTO("Nitzan", "205952971", "12345", 1000, 30,
+                500, 30, LocalDate.now(), roles, dao);
+        // insert the DTO to the database:
+        Response r = dao.insert(e);
+        if (r.isErrorOccured()) {
             System.out.println(r.getErrorMessage());
             fail();
         }
+
     }
     @Test
     void DAL_Emp_update() {
-        ResponseT<EmployeeDTO> emp = Mapper.getInstance().getEmployee("313150013");
-        if (emp.isErrorOccured()) {
+
+        ResponseT<EmployeeDTO> emp = Mapper.getInstance().getEmployee("111111111");
+        assertTrue(emp.isErrorOccured());
+
+        emp = Mapper.getInstance().getEmployee("205952971");
+        if (emp.isErrorOccured()){
             System.out.println(emp.getErrorMessage());
             fail();
         }
-        Response r = emp.getValue().setName("yanay");
+        ResponseT<EmployeeDTO> emp2 = Mapper.getInstance().getEmployee("205952971");
+        assertEquals(emp2.getValue(), emp.getValue());
+
+        Response r = emp.getValue().setSalary(2000);
         if (r.isErrorOccured()){
             System.out.println(r.getErrorMessage());
             fail();
         }
+
+        r = emp.getValue().addRole(new RoleDTO("testOhterRole", "4321"));
+        if (r.isErrorOccured()){
+            System.out.println(r.getErrorMessage());
+            fail();
+        }
+
     }
 
     @Test
