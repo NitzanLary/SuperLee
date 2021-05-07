@@ -209,7 +209,7 @@ public class CLI {
                 4) Open Shift
                 5) Get Shift's Status
                 6) Get Assigned Employees
-                7) Get Asiigned Drivers
+                7) Get Assigned Drivers
                 8) Remove Employee From Shift
                 To Return to the previous menu press 0
                 

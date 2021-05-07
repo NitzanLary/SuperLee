@@ -12,14 +12,14 @@ public abstract class Shift {
     private boolean closed;
     private HashMap<Employee, Integer> constrains;
     private HashMap<String, Employee> assignedEmployees;
-    private HashMap<String, Employee> assignedRolesEmp; //Yanay's Plaster for getting the specific roles that emps assigned to..
+    private HashMap<String, List<Employee>> assignedRolesEmp; //Yanay's Plaster for getting the specific roles that emps assigned to..
 
     Shift(LocalDate _date) {
         closed = false; // **added default to be false by Yanay.
         date = _date;
         constrains = new HashMap<Employee, Integer>();
         assignedEmployees = new HashMap<String, Employee>();
-        assignedRolesEmp = new HashMap<String, Employee>();
+        assignedRolesEmp = new HashMap<>();
     }
 
     public abstract Shift clone();
@@ -104,7 +104,8 @@ public abstract class Shift {
         if (isClosed())
             return new Response("Shift already closed");
         assignedEmployees.put(e.getID().getValue(), e);
-        assignedRolesEmp.put(role, e);
+        List<Employee> employees = assignedRolesEmp.computeIfAbsent(role, k -> new ArrayList<>());
+        employees.add(e);
         return new Response();
     }
 
@@ -163,14 +164,11 @@ public abstract class Shift {
 
 
     public ResponseT<List<Employee>> getAllAssignedDrivers(){
-        List<Employee> employees = new ArrayList<>();
-        for(Map.Entry<String, Employee> entry: assignedRolesEmp.entrySet()){
-//            for(Role role : entry.getValue().getRoles().getValue()){
-                if (entry.getKey().equals("Driver"))
-                    employees.add(new Employee(entry.getValue()));
-            }
-
-        return new ResponseT<>(employees);
+        for(Map.Entry<String, List<Employee>> entry: assignedRolesEmp.entrySet()){
+            if (entry.getKey().equals("Driver"))
+                return new ResponseT<>(entry.getValue());
+        }
+        return new ResponseT<>(null, "for some reason there is no drivers in this shift");
     }
 
     @Override

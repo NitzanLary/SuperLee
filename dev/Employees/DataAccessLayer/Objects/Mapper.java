@@ -8,13 +8,16 @@ import Employees.DataAccessLayer.DTOs.ShiftDTO;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 public class Mapper {
     /**
      * This class holds the identity maps of Employees and Shifts.
      * Any access to the data base goes through here.
      */
-
+    // employee1 = get("206");
+    // emp2 = get("206");
+    // emp1 == emp2
     private EmployeeDAO employeeDAO;
     private ShiftDAO shiftDAO;
     private Map<ShiftDate, ShiftDTO> shifts;
@@ -27,8 +30,8 @@ public class Mapper {
     private Mapper() {
         employeeDAO = new EmployeeDAO();
         shiftDAO = new ShiftDAO();
-        shifts = new HashMap<>();
-        employees = new HashMap<>();
+        shifts = new WeakHashMap<>();
+        employees = new WeakHashMap<>();
     }
 
     public static Mapper getInstance(){

@@ -1,6 +1,8 @@
 package Employees.DataAccessLayer.DTOs;
 
+import Employees.BuisnessLayer.Response;
 import Employees.DataAccessLayer.DAOs.EmployeeDAO;
+import Employees.DataAccessLayer.Objects.UpdateFunction;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,7 +21,7 @@ public class EmployeeDTO {
 
 
     public EmployeeDTO(String name, String id, String bankAccount, int salary, int sickDays, int advancedStudyFund,
-                       int daysOff, String date, List<RoleDTO> roles, EmployeeDAO dao){
+                       int daysOff, LocalDate date, List<RoleDTO> roles, EmployeeDAO dao){
         this.name = name;
         this.ID = id;
         this.bankAccount = bankAccount;
@@ -27,41 +29,61 @@ public class EmployeeDTO {
         this.sickDays = sickDays;
         this.advancedStudyFund = advancedStudyFund;
         this.daysOff = daysOff;
-        dateOfHire = LocalDate.parse(date);
+        dateOfHire = date;
         this.roles = roles;
         this.dao = dao;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name){
-        // TODO
     }
 
     public String getID() {
         return ID;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public Response setName(String name_){
+        return set(() -> this.name = name_);
+    }
+
     public String getBankAccount() {
         return bankAccount;
+    }
+
+    public Response setBankAccount(String bankAccount) {
+        return set(() -> this.bankAccount = bankAccount);
     }
 
     public int getSalary() {
         return salary;
     }
 
+    public Response setSalary(int salary){
+        return set(() -> this.salary = salary);
+    }
+
     public int getSickDays() {
         return sickDays;
+    }
+
+    public Response setSickDays(int sickDays) {
+        return set(() -> this.sickDays = sickDays);
     }
 
     public int getAdvancedStudyFund() {
         return advancedStudyFund;
     }
 
+    public Response setAdvancedStudyFund(int newVal){
+        return set(() -> advancedStudyFund = newVal);
+    }
+
     public int getDaysOff() {
         return daysOff;
+    }
+
+    public Response DaysOff(int newVal){
+        return set(() -> daysOff = newVal);
     }
 
     public LocalDate getDateOfHire() {
@@ -70,6 +92,22 @@ public class EmployeeDTO {
 
     public List<RoleDTO> getRoles() {
         return roles;
+    }
+
+    public Response addRole(RoleDTO role){
+        Response r = dao.addRole(ID, role);
+        if(!r.isErrorOccured())
+            roles.add(role);
+        return r;
+    }
+
+    private Response set(UpdateFunction updateFunction){
+        updateFunction.update();
+        return dao.update(this);
+    }
+
+    public Response persist() {
+        return dao.insert(this);
     }
 
     @Override

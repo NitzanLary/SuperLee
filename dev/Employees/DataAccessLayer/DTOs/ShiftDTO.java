@@ -7,6 +7,7 @@ import Employees.DataAccessLayer.Objects.ShiftDate;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -28,6 +29,10 @@ public class ShiftDTO {
         this.assignedEmployees = assignedEmployees;
         this.rolesMap = rolesMap;
         this.dao = dao;
+    }
+
+    public Response persist() {
+        return dao.insertShift(this);
     }
 
     public LocalDate getDate() {
@@ -55,12 +60,25 @@ public class ShiftDTO {
         return constrains;
     }
 
-    public Response addConstrain(String id, int pref){
-        return dao.addConstrain(shiftDate, id, pref);
+    public Response addConstrain(EmployeeDTO employee, int pref){
+        Response r = dao.addConstrain(shiftDate, employee.getID(), pref);
+        if(!r.isErrorOccured())
+            constrains.put(employee, pref);
+        return r;
     }
 
     public Map<String, EmployeeDTO> getAssignedEmployees() {
         return assignedEmployees;
+    }
+
+    public Response AssignEmployee(EmployeeDTO employee, String role){
+        Response r = dao.assignEmployee(shiftDate, employee.getID(), role);
+        if(!r.isErrorOccured()) {
+            assignedEmployees.put(employee.getID(), employee);
+            List<EmployeeDTO> employees = rolesMap.computeIfAbsent(role, k -> new ArrayList<>());
+            employees.add(employee);
+        }
+        return r;
     }
 
     public Map<String, List<EmployeeDTO>> getRolesMap() {
