@@ -12,59 +12,7 @@ import java.util.List;
 
 public class EmployeeDAO extends DAO{
 
-//    public Response insert(String ID, String name, String BankAccount, int salary, int sickDays, int studyFund,
-//                           int daysOff, LocalDate date, String role, String driverLicence){
-//
-//        String sql = """
-//                INSERT INTO Employees (EmpID, Name, BankAccount, Salary, SickDays, StudyFund ,DaysOff, DateOfHire)
-//                VALUES
-//                (?, ?, ?, ?, ?, ?, ?, ?)
-//                """;
-//
-////        String roleSql = """
-////                INSERT INTO RolesEmployees (EmpID, RoleName, DriverLicence)
-////                VALUES
-////                (?, ?, ?)
-////                """;
-//
-//
-//        try(Connection conn = getConn().getValue();
-//            PreparedStatement pstmt = conn.prepareStatement(sql)){
-//
-//            // inserting to employee table
-//            pstmt.setString(1, ID);
-//            pstmt.setString(2, name);
-//            pstmt.setString(3,BankAccount);
-//            pstmt.setInt(4,salary);
-//            pstmt.setInt(5,sickDays);
-//            pstmt.setInt(6,studyFund);
-//            pstmt.setInt(7,daysOff);
-//            pstmt.setString(8,date.toString());
-//
-//            //inserting to roleEmployee table
-//            pstmt2.setString(1, ID);
-//            pstmt2.setString(2, role);
-//            pstmt2.setString(3, driverLicence);
-//
-//            pstmt.executeUpdate();
-//            pstmt2.executeUpdate();
-//
-//        }catch(SQLException e){
-//            return new Response(e.getMessage());
-//        }
-//        return new Response();
-//    }
-
-//    public Response insert(String ID, String name, String BankAccount, int salary, int sickDays, int studyFund,
-//                           int daysOff, LocalDate date, String role){
-//        return insert(ID, name, BankAccount, salary, sickDays, studyFund, daysOff, date, role, null);
-//    }
-
     public Response insert(EmployeeDTO employee){
-//        RoleDTO role = employee.getRoles().get(0);
-//        return insert(employee.getID(), employee.getName(), employee.getBankAccount(), employee.getSalary(),
-//                employee.getSickDays(), employee.getAdvancedStudyFund(), employee.getDaysOff(),
-//                employee.getDateOfHire(), role.getName(), role.getLicense());
         String sql = """
                 INSERT INTO Employees (EmpID, Name, BankAccount, Salary, SickDays, StudyFund ,DaysOff, DateOfHire)
                 VALUES
@@ -94,7 +42,6 @@ public class EmployeeDAO extends DAO{
         }
         return new Response();
     }
-
 
     public Response update(EmployeeDTO employeeDTO){
         String sql = """
