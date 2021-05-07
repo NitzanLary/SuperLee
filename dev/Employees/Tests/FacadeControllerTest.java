@@ -4,12 +4,16 @@ import Employees.BuisnessLayer.*;
 import Employees.DataAccessLayer.DAOs.EmployeeDAO;
 import Employees.DataAccessLayer.DAOs.ShiftDAO;
 import Employees.DataAccessLayer.DTOs.EmployeeDTO;
+import Employees.DataAccessLayer.DTOs.RoleDTO;
 import Employees.DataAccessLayer.DTOs.ShiftDTO;
+import Employees.DataAccessLayer.Objects.Mapper;
 import Employees.DataAccessLayer.Objects.ShiftDate;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -157,72 +161,87 @@ class FacadeControllerTest {
 
     @Test
     void DAL_Emp_insert() {
-        Response r = new EmployeeDAO().insert("313150013", "eyal", "12345", 1000, 30,
-                30, 30, LocalDate.now(),"someRole", null);
-        if (r.isErrorOccured()){
-            System.out.println(r.getErrorMessage());
-            fail();
-        }
+        // init EmployeeDTO:
+        List<RoleDTO> roles = new ArrayList<>();
+        roles.add(new RoleDTO("HR Manager"));
+        roles.add(new RoleDTO("Driver", "123456"));
+        EmployeeDAO dao = new EmployeeDAO();
+        EmployeeDTO e = new EmployeeDTO("Nitzan", "205952971", "12345", 1000, 30,
+                500, 30, LocalDate.now(), roles, dao);
+        // insert the DTO to the database:
+        Response r = dao.insert(e);
+        failureHelper(r);
     }
-
+    // we test here mapper.getEmployee() in addition
     @Test
     void DAL_Emp_update() {
-        Response r = new EmployeeDAO().update("Salary", "313150013", 20000);
-        if (r.isErrorOccured()){
-            System.out.println(r.getErrorMessage());
-            fail();
-        }
+
+        ResponseT<EmployeeDTO> emp = Mapper.getInstance().getEmployee("111111111");
+        assertTrue(emp.isErrorOccured());
+
+        emp = Mapper.getInstance().getEmployee("205952971");
+        failureHelper(emp);
+        ResponseT<EmployeeDTO> emp2 = Mapper.getInstance().getEmployee("205952971");
+        assertEquals(emp2.getValue(), emp.getValue());
+
+        Response r = emp.getValue().setSalary(2000);
+        failureHelper(r);
+
+        r = emp.getValue().addRole(new RoleDTO("testOhterRole", "4321"));
+        failureHelper(r);
+    }
+    @Test
+    void DAL_Emp_get(){
+        ResponseT<EmployeeDTO> emp = Mapper.getInstance().getEmployee("205952971");
+        failureHelper(emp);
+        Response r = emp.getValue().setBankAccount("123456");
+        failureHelper(r);
+    }
+
+    public ShiftDate getShiftDate(){
+        LocalDate date = LocalDate.now();
+        LocalTime start = LocalTime.of(6,0);
+        LocalTime end = LocalTime.of(14,0);
+        return new ShiftDate(date, start, end);
     }
 
     @Test
-    void DAL_Emp_addRole() {
-        Response r = new EmployeeDAO().addRole("313150013", "otherRole");
-        if (r.isErrorOccured()){
-            System.out.println(r.getErrorMessage());
-            fail();
-        }
-    }
-
-    @Test
-    void DAL_Emp_get() {
-        ResponseT<EmployeeDTO> r = new EmployeeDAO().get("313150013");
-        if (r.isErrorOccured()){
-            System.out.println(r.getErrorMessage());
-            fail();
-        }
-        System.out.println(r.getValue());
-    }
-
-    @Test
-    void DAL_Shift_insert() {
+    void DAL_Shift_insert(){
         LocalDate date = LocalDate.now();
         LocalTime start = LocalTime.of(6,0);
         LocalTime end = LocalTime.of(14,0);
         ShiftDAO s = new ShiftDAO();
-        Response r = s.insertShift(date, start, end, true);
-        if (r.isErrorOccured()){
-            System.out.println(r.getErrorMessage());
-            fail();
-        }
-        // check here addConstrain
-        r = s.addConstrain(date, start, end, "205952971", 2);
-        if (r.isErrorOccured()){
-            System.out.println(r.getErrorMessage());
-            fail();
-        }
-        // check here assignEmployee
-        r = s.assignEmployee(date, start, end, "205952971", "HA Manager");
-        if (r.isErrorOccured()){
-            System.out.println(r.getErrorMessage());
-            fail();
-        }
-        // check here get
-        ResponseT<ShiftDTO> shiftDTO = s.get(new ShiftDate(date, start, end));
-        if (shiftDTO.isErrorOccured()){
-            System.out.println(shiftDTO.getErrorMessage());
-            fail();
-        }
-
-        System.out.println(shiftDTO.getValue());
+        ShiftDTO shift = new ShiftDTO(date, start, end, true, new HashMap<>(),new HashMap<>(),new HashMap<>(),s);
+        Response r = shift.persist();
+        failureHelper(r);
+        assertEquals(shift, Mapper.getInstance().getShift(new ShiftDate(date, start, end)).getValue());
     }
+
+    @Test
+    void DAL_Shift_addConstrain(){
+        ShiftDate shiftDate = getShiftDate();
+        ResponseT<ShiftDTO> shift = Mapper.getInstance().getShift(shiftDate);
+        failureHelper(shift);
+        EmployeeDTO emp = Mapper.getInstance().getEmployee("205952971").getValue();
+        Response r = shift.getValue().addConstrain(emp, 2);
+        failureHelper(r);
+    }
+
+    @Test
+    void DAL_Shift_assignEmployee(){
+        ShiftDate shiftDate = getShiftDate();
+        ResponseT<ShiftDTO> shift = Mapper.getInstance().getShift(shiftDate);
+        failureHelper(shift);
+        EmployeeDTO emp = Mapper.getInstance().getEmployee("205952971").getValue();
+        Response r = shift.getValue().AssignEmployee(emp, "SomeRole");
+        failureHelper(r);
+    }
+
+    void failureHelper(Response r){
+        if (r.isErrorOccured()){
+            System.out.println(r.getErrorMessage());
+            fail();
+        }
+    }
+
 }
