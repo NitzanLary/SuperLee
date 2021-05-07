@@ -220,7 +220,7 @@ public class CLI {
                     break;
                 }
                 case ("4"): {
-                    DriverDTO driver = chooseDriver(in, fc.getTruckByDelivery(delDTO));
+                    DriverDTO driver = chooseDriver(in, fc.getTruckByDelivery(delDTO), delDTO.getDate(), delDTO.getTimeOfDeparture());
                     if (driver == null)
                         break;
                     delDTO.setDriverName(driver.getEmployeeName());
@@ -393,7 +393,7 @@ public class CLI {
             return;
         String truck = trdto.getId();
 
-        DriverDTO drdto = chooseDriver(in, trdto);
+        DriverDTO drdto = chooseDriver(in, trdto, date, timeOfDeparture);
         if (drdto == null)
             return;
         String driverName = drdto.getEmployeeName();
@@ -565,9 +565,9 @@ public class CLI {
         return response;
     }
 
-    private DriverDTO chooseDriver(Scanner in, TruckDTO ride) {
+    private DriverDTO chooseDriver(Scanner in, TruckDTO ride, String date, String timeOfDeparture) {
         String inp = "";
-        ArrayList<DriverDTO> driversLst = fc.getDriversToTruck(ride);
+        ArrayList<DriverDTO> driversLst = fc.getDriversToTruck(ride, date, timeOfDeparture);
         do {
             if (driversLst.size() == 0){
                 System.out.println("there are no available drivers in the system that are fit to the chosen truck\npress <Enter> to exit the delivery creator.");
