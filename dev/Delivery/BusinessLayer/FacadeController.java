@@ -1,10 +1,14 @@
 package Delivery.BusinessLayer;
 
 import Delivery.DTO.*;
+import Employees.BuisnessLayer.ResponseT;
+import Employees.BuisnessLayer.ShiftController;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class FacadeController {
     DeliveryController dec;
@@ -213,11 +217,22 @@ public class FacadeController {
         return this.dec.getTasksFromDeliveriesData();
     }
 
-    public ArrayList<DriverDTO> getDriversToTruck(TruckDTO ride) {
+    public LocalDate parseToLocalDate(String date){
+        return LocalDate.parse(date);
+    }
+
+    public LocalTime parseToLocalTime(String timeOfDeparture){
+        return LocalTime.parse(timeOfDeparture);
+    }
+
+    public ArrayList<DriverDTO> getDriversToTruck(TruckDTO ride, String date, String timeOfDeparture) {
         ArrayList<DriverDTO> ret = new ArrayList<>();
-        for (Driver d : drc.getDrivers()){
-            if (d.getLicenceType() >= ride.getTruckWeight())
-                ret.add(new DriverDTO(d.getLicenceType(),d.getName()));
+        LocalDate localDate = parseToLocalDate(date);
+        LocalTime localTime = parseToLocalTime(timeOfDeparture);
+        ResponseT<List <Employees.BuisnessLayer.Employee>> drivers = ShiftController.getInstance().getAllAssignedDrivers(localDate, localTime);
+        for (Employees.BuisnessLayer.Employee driver : drivers.getValue()){
+            if (driver.getLicenceType() >= ride.getTruckWeight())
+                ret.add(new DriverDTO(driver.getLicenceType(),driver.getName()));
         }
         return ret;
     }
