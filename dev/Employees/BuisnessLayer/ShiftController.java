@@ -187,10 +187,17 @@ public class ShiftController {
 
     public ResponseT<List<Employee>> getAllAssignedDrivers(LocalDate date, LocalTime departure) {
         char type;
-        if(departure.isAfter(LocalTime.of(6,0)) && departure.isBefore(LocalTime.of(14, 0)))
+        if(departure.isAfter(LocalTime.of(5,59)) && departure.isBefore(LocalTime.of(14, 0)))
             type = 'M';
         else type = 'E';
         ResponseT<Shift> rS = findShift(date, type);
+        if (rS.isErrorOccured())
+            return new ResponseT<>(null, rS.getErrorMessage());
+        return rS.getValue().getAllAssignedDrivers();
+    }
+
+    public ResponseT<List<Employee>> getAllAssignedDrivers(LocalDate date, LocalTime start, LocalTime end){
+        ResponseT<Shift> rS = findShift(date, start, end);
         if (rS.isErrorOccured())
             return new ResponseT<>(null, rS.getErrorMessage());
         return rS.getValue().getAllAssignedDrivers();
