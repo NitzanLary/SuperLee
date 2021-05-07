@@ -248,9 +248,9 @@ public class FacadeController {
      * @return A response
      */
 
-//    public ResponseT<List<Employee>> getAssignedDriversForShift(LocalDate date, LocalTime start, LocalTime end){
-//        return shiftController.getAllAssignedDrivers(date, start, end);
-//    }
+    public ResponseT<List<Employee>> getAssignedDriversForShift(LocalDate date, LocalTime start, LocalTime end){
+        return shiftController.getAllAssignedDrivers(date, start, end);
+    }
 
     /**
      * Changing the status of a given shift to close
