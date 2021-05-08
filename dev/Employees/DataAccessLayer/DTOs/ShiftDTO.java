@@ -81,6 +81,10 @@ public class ShiftDTO {
         return r;
     }
 
+    public Response removeEmployeeFromShift(ShiftDate shiftDate, String ID) {
+        return dao.deleteAssignee(shiftDate, ID);
+    }
+
     public Map<String, List<EmployeeDTO>> getRolesMap() {
         return rolesMap;
     }

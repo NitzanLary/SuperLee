@@ -2,6 +2,7 @@ package Employees.BuisnessLayer;
 import Employees.DataAccessLayer.DAOs.ShiftDAO;
 import Employees.DataAccessLayer.DTOs.EmployeeDTO;
 import Employees.DataAccessLayer.DTOs.ShiftDTO;
+import Employees.DataAccessLayer.Objects.ShiftDate;
 
 import java.time.LocalDate;
 
@@ -27,6 +28,7 @@ public abstract class Shift {
         assignedEmployees = new HashMap<String, Employee>();
         assignedRolesEmp = new HashMap<>();
         dto = new ShiftDTO(date, start, end, closed, getConstrainsDTO(), getAssigneesDTO(), getRolesMap(), _dao);
+        dto.persist();
     }
 
     private Map<EmployeeDTO, Integer> getConstrainsDTO() {
@@ -86,7 +88,7 @@ public abstract class Shift {
         if(!hasManager())
             return new Response("Can not close before a shift manager is assigned to the shift");
         closed = true;
-        return new Response();
+        return dto.setClosed(true);
     }
 
     protected boolean hasManager(){
@@ -99,9 +101,9 @@ public abstract class Shift {
 
     public Response open() {
         closed = false;
+        dto.setClosed(false);
         return new Response();
     }
-
 
     public Response AddConstrain(Employee employee, int con){
         if (isClosed())
@@ -109,7 +111,7 @@ public abstract class Shift {
         if (con > 2 || con < 0)
             return new Response("Invalid preference");
         constrains.put(employee, con);
-        return new Response();
+        return dto.addConstrain(employee.getDTO(), con);
     }
 
 //    public boolean compare(LocalDate date, int StartTime, int EndTime){
@@ -136,7 +138,7 @@ public abstract class Shift {
         assignedEmployees.put(e.getID().getValue(), e);
         List<Employee> employees = assignedRolesEmp.computeIfAbsent(role, k -> new ArrayList<>());
         employees.add(e);
-        return new Response();
+        return dto.AssignEmployee(e.getDTO(), role);
     }
 
     public ResponseT<List<Employee>> getAllAssignedEmployees(){
@@ -189,7 +191,7 @@ public abstract class Shift {
         if (!isAssigned(employee))
             return new Response("Employee is not assigned to this shift");
         assignedEmployees.remove(employee.getID().getValue());
-        return new Response();
+        return dto.removeEmployeeFromShift(new ShiftDate(date, start, end), employee.getID().getValue());
     }
 
 
