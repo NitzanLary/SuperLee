@@ -40,12 +40,12 @@ public class FacadeController {
      * @return A Response in case an error has occurred.
      */
     public Response addEmployee(String userID, String EmpID, String name, String bankAccount, int salary,
-                                int sickDays, int studyFund, int daysOff, String roleName, LocalDate _dateOfHire){
+                                int sickDays, int studyFund, int daysOff, String roleName,  String licence, LocalDate _dateOfHire){
         ResponseT<Employee> rE = checkAuthorization(userID);
         if (rE.isErrorOccured())
             return rE;
         return employeeController.AddEmployee(EmpID, name, bankAccount, salary, sickDays, studyFund,
-                daysOff, roleName, _dateOfHire);
+                daysOff, roleName, licence, _dateOfHire);
     }
 
     /**

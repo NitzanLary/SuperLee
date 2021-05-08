@@ -27,7 +27,7 @@ public class EmployeeController {
     }
 
     public Response AddEmployee(String ID, String name, String bankAccount, int salary,
-                            int sickDays, int studyFund, int daysOff, String roleName, LocalDate _dateOfHire){
+                            int sickDays, int studyFund, int daysOff, String roleName, String licence, LocalDate _dateOfHire){
         if (sickDays < 0 || studyFund < 0 || daysOff < 0)
             return new Response("All values of terms must be greater than 0");
         TermsOfEmployee terms = new TermsOfEmployee(sickDays, studyFund, daysOff);

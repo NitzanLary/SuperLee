@@ -6,8 +6,14 @@ import java.util.Comparator;
 
 public class Role{
     private String name;
+    private String licence;
 
     public Role(String _name) {name = _name;}
+
+    public Role(String _name, String _licence) {
+        name = _name;
+        licence= _licence;
+    }
 
     public String getName() {
         return name;
@@ -21,6 +27,7 @@ public class Role{
 
     public Role(RoleDTO other){
         name = other.getName();
+        licence = other.getLicense();
     }
 
     public boolean compare(String r2){
@@ -29,6 +36,10 @@ public class Role{
 
     public RoleDTO toDTO(){
         return new RoleDTO(name);
+    }
+
+    public String getLicence() {
+        return licence;
     }
 
     @Override
