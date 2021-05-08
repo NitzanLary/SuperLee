@@ -1,14 +1,20 @@
-package BussinessLayer.Inventory;
+package DataLayer.DTO;
 
+import BussinessLayer.Inventory.FaultyItem;
 
 import java.time.LocalDate;
-
-public class FaultyItem {
+public class FaultyItemDTO {
     private int itemId;
     private LocalDate expDate;
     private int amount;
 
-    public FaultyItem(int itemId, LocalDate expDate, int amount){
+    public FaultyItemDTO(FaultyItem fi) {
+        this.itemId = fi.getItemId();
+        this.expDate = fi.getExpDate();
+        this.amount = fi.getAmount();
+    }
+
+    public FaultyItemDTO(int itemId, LocalDate expDate, int amount) {
         this.itemId = itemId;
         this.expDate = expDate;
         this.amount = amount;
@@ -24,12 +30,5 @@ public class FaultyItem {
 
     public int getAmount() {
         return amount;
-    }
-
-    public String toString(){
-        String str = "id:\t\t\t\t" + itemId +"\n" +
-                "Expiration date: \t" + expDate + "\n" +
-                "Amount: \t\t\t" + amount+"\n";
-        return str;
     }
 }

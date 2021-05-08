@@ -26,7 +26,7 @@ public class InvController {
         } else
             stockCtrl.removeFromStorage(id, amountOfFaulty);
         Item item = stockCtrl.getItem(id);
-        return recCtrl.addFaulty(item.getName(), LocalDate.now() ,amountOfFaulty);
+        return recCtrl.addFaulty(id, LocalDate.now() ,amountOfFaulty);
     }
 
     //adds a new Item to the System
