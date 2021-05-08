@@ -68,6 +68,7 @@ public class CategoryDAO extends DAO{
                 ps.setString(1, toInsert.getCatName());
                 ps.setInt(2, toInsert.getItemID());
                 if (!ps.execute()) {
+                    System.out.println("asdasdsadsadsadsads");
                     return new Response("Could not add category-item to DB");
                 }
             }

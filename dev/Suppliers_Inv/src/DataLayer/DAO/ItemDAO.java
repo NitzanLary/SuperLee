@@ -29,7 +29,6 @@ public class ItemDAO extends DAO {
                 }
             }
         }catch (Exception e) {
-            System.out.println(e);
             return new ResponseT("failed to get items");
         }
         return new ResponseT<List<ItemDTO>>(result);
@@ -37,7 +36,7 @@ public class ItemDAO extends DAO {
 
     public ResponseT<ItemDTO> create(Item item) {
         ItemDTO toInsert = new ItemDTO(item);
-        String SQL = "INSERT INTO item (itemId, name, price, shelfNum, manufacturer, shelfQuantity, storageQuantity, minAlert, cost) VALUES (?,?,?,?,?,?,?,?)";
+        String SQL = "INSERT INTO Item (itemId, name, price, shelfNum, manufacturer, shelfQuantity, storageQuantity, minAlert, cost) VALUES (?,?,?,?,?,?,?,?,?)";
         try {
             ResponseT<Connection> r = getConn();
             if(!r.ErrorOccured()) {

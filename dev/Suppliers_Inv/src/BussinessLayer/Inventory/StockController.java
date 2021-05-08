@@ -68,7 +68,9 @@ public class StockController {
             throw new RuntimeException("Item id "+id+"+ already exists");
         Item i = new Item(id, name, price, cost, shelfNum, manufacturer, shelfQuantity, storageQuantity, minAlert);
         c.addItem(i);
-        mapper.addItem(i, c);
+        if(mapper.addItem(i, c).ErrorOccured()) {
+
+        }
     }
 
     public void removeItem(int id) {
