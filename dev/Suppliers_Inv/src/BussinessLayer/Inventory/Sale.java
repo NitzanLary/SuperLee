@@ -15,6 +15,13 @@ public class Sale {
         this.saleDate = LocalDateTime.now();
     }
 
+    public Sale(int itemId, double itemCost, double salePrice, LocalDateTime date) {
+        this.itemId = itemId;
+        this.itemCost = itemCost;
+        this.salePrice = salePrice;
+        this.saleDate = date;
+    }
+
     public LocalDateTime getSaleDate() {
         return saleDate;
     }
