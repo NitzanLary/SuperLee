@@ -51,14 +51,14 @@ public class Mapper {
             return bill;
         }
 
-    public ResponseT<OrderDTO> getOrder(Integer orderID) {
-        if (orders.containsKey(orderID))
-            return new ResponseT<>(orders.get(orderID));
-        ResponseT<OrderDTO> order = orderDAO.get(orderID);
-        if (!order.ErrorOccured())
-            orders.put(orderID, order.value);
-        return order;
-    }
+        public ResponseT<OrderDTO> getOrder(Integer orderID) {
+            if (orders.containsKey(orderID))
+                return new ResponseT<>(orders.get(orderID));
+            ResponseT<OrderDTO> order = orderDAO.get(orderID);
+            if (!order.ErrorOccured())
+                orders.put(orderID, order.value);
+            return order;
+        }
 
 
 }

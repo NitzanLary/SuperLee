@@ -11,10 +11,7 @@ public class ProductsInOrderDAO extends DAO {
 
     public Response insert(Integer orderID, Integer productID, String quantity, Integer supplierID) {
 
-        String order = """
-        INSERT INTO ProductsInOrder (orderID, productID, quantity, supplierID)
-                VALUES (?, ?, ?, ?)
-                """;
+        String order = "INSERT INTO ProductsInOrder (orderID, productID, quantity, supplierID) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = getConn().value;
              PreparedStatement pstmt = conn.prepareStatement(order);) {

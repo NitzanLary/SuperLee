@@ -29,4 +29,14 @@ public class ProductsInOrderDTO {
     public Integer getSupplierID() {
         return supplierID;
     }
+
+    @Override
+    public String toString() {
+        return "ProductsInOrderDTO{" +
+                "orderID: '" + this.orderID + '\'' +
+                ", productID: '" + this.productID + '\'' +
+                ", quantity: '" + this.quantity + '\'' +
+                ", supplierID: '" + this.supplierID + '\'' +
+                '}';
+    }
 }

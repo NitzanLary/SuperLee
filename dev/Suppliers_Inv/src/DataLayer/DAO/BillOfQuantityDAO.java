@@ -11,11 +11,7 @@ public class BillOfQuantityDAO extends DAO {
 
     public Response insert(Integer supplierID, Integer minQuantity, Integer percentDiscount) {
 
-        String billOfQuantity = """
-                INSERT INTO BillOfQuantity (supplierID, minQuantity, percentDiscount)
-                VALUES
-                (?, ?, ?)
-                """;
+        String billOfQuantity = "INSERT INTO BillOfQuantity (supplierID, minQuantity, percentDiscount) VALUES (?, ?, ?)";
 
         try (Connection conn = getConn().value;
              PreparedStatement pstmt = conn.prepareStatement(billOfQuantity);) {
@@ -40,10 +36,7 @@ public class BillOfQuantityDAO extends DAO {
 
     //SELECT
     public ResponseT<BillOfQuantityDTO> get(Integer supplierID){
-        String billSQL = String.format("""
-                SELECT* FROM BillOfQuantity
-                WHERE supplierID = %s
-                """, supplierID);
+        String billSQL = String.format("SELECT* FROM BillOfQuantity WHERE supplierID = %s", supplierID);
 
         try(Connection conn = getConn().value;
             Statement billStmt = conn.createStatement();

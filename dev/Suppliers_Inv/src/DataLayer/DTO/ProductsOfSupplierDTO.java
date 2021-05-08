@@ -35,4 +35,15 @@ public class ProductsOfSupplierDTO {
     public double getPrice() {
         return price;
     }
+
+    @Override
+    public String toString() {
+        return "ProductsOfSupplierDTO{" +
+                "productID: '" + this.productID + '\'' +
+                ", supplierID: '" + this.supplierID + '\'' +
+                ", name: '" + this.name + '\'' +
+                ", category: '" + this.category + '\'' +
+                ", price: '" + this.price +
+                '}';
+    }
 }

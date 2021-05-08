@@ -10,11 +10,7 @@ public class SupplierDAO extends DAO {
     public Response insert(Integer ID, String name, String address, String email, Integer bankAcc, String paymentMethod,
                            String infoSupDay, String contacts, boolean pickUp) {
 
-        String supplier = """
-                INSERT INTO Supplier (ID, name, address, email, bankAcc, paymentMethod ,infoSupDay, contacts, pickUp)
-                VALUES
-                (?, ?, ?, ?, ?, ?, ?, ?,?)
-                """;
+        String supplier = "INSERT INTO Supplier (ID, name, address, email, bankAcc, paymentMethod ,infoSupDay, contacts, pickUp) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)";
 
         try (Connection conn = getConn().value;
              PreparedStatement pstmt = conn.prepareStatement(supplier);) {
@@ -47,10 +43,7 @@ public class SupplierDAO extends DAO {
 
     //TODO
     public Response update(String col, String ID, String newVal){
-        String sql = String.format("""
-                UPDATE Employees SET %s = ?
-                WHERE EmpID = ?
-                """, col);
+        String sql = String.format("UPDATE Employees SET %s = ? WHERE EmpID = ?", col);
 
         try(Connection conn = getConn().value;
             PreparedStatement pstmt = conn.prepareStatement(sql)){
