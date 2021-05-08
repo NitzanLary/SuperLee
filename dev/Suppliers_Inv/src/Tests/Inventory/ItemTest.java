@@ -50,9 +50,4 @@ class ItemTest {
         assertEquals(item.getCost(), 8);
     }
 
-    @Test
-    void getItem() {
-        Mapper map = Mapper.getInstance();
-        map.getItems();
-    }
 }

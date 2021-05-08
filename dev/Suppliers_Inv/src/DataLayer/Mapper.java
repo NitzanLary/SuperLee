@@ -354,12 +354,6 @@ public class Mapper {
         return new ResponseT<>("Error");
     }
 
-    //for testing purpeses
-    public void getItems() {
-        ResponseT<List<ItemDTO>> result = itemDAO.read();
-        System.out.println(result.value.get(0).getName());
-    }
-
     public void addSupplier(SupplierCard supCard) {
         SupplierDTO supplier = new SupplierDTO(supCard.getSupplierID(), supCard.getSupplierName(),
                 supCard.getAddress(), supCard.getEmail(), supCard.getBankAcc(), supCard.getPaymentMethod(),
