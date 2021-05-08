@@ -1,6 +1,7 @@
 package DataLayer.DAO;
 import BussinessLayer.Response;
 import BussinessLayer.ResponseT;
+import BussinessLayer.Supplier.SupplierCard;
 import DataLayer.DTO.SupplierDTO;
 
 import java.sql.*;
@@ -29,7 +30,7 @@ public class SupplierDAO extends DAO {
             pstmt.setString(8, contacts);
             pstmt.setBoolean(9, pickUp);
 
-            pstmt.executeUpdate();
+            pstmt.execute();
 
         } catch (SQLException e) {
             return new Response(e.getMessage());
@@ -38,9 +39,9 @@ public class SupplierDAO extends DAO {
     }
 
 
-    public Response insert(SupplierDTO supplier){
-        return insert(supplier.getID(), supplier.getName(), supplier.getAddress(), supplier.getEmail(),
-                supplier.getBankAcc(), supplier.getPaymentMethod(), supplier.getInfoSupDay(),
+    public Response insert(SupplierCard supplier){
+        return insert(supplier.getSupplierID(), supplier.getSupplierName(), supplier.getAddress(), supplier.getEmail(),
+                supplier.getBankAcc(), supplier.getPaymentMethod(), supplier.getInfoSupplyDay(),
                 supplier.getContacts(), supplier.isPickUp());
     }
 

@@ -122,12 +122,12 @@ public class Mapper {
 //            suppliers.put(supplierID, sup.value);
 //        return sup;
 //    }
-    public ResponseT<List<SupplierCard>> loadSupplierCard() {
+    public ResponseT<HashMap<Integer, SupplierCard>> loadSupplierCard() {
         ResponseT<List<SupplierDTO>> supplierRes = supplierDAO.read();
-        List<SupplierCard> res = new LinkedList<>();
+        HashMap<Integer, SupplierCard> res = new HashMap<>();
         if (!supplierRes.ErrorOccured()) {
             for (SupplierDTO dbSupplier : supplierRes.value) {
-                res.add(new SupplierCard(dbSupplier.getName(), dbSupplier.getID(), dbSupplier.getAddress(),
+                res.put(dbSupplier.getID(), new SupplierCard(dbSupplier.getName(), dbSupplier.getID(), dbSupplier.getAddress(),
                         dbSupplier.getEmail(), dbSupplier.getBankAcc(), dbSupplier.getPaymentMethod(),
                         dbSupplier.getContacts(), dbSupplier.getInfoSupDay(), dbSupplier.isPickUp()));
             }
@@ -172,9 +172,9 @@ public class Mapper {
         return new ResponseT<>(res);
     }
 
-    public ResponseT<List<PeriodicOrder>> loadPeriodic() {
+    public ResponseT<LinkedList<PeriodicOrder>> loadPeriodic() {
         ResponseT<List<PeriodicOrderDTO>> perOrderRes = periodicOrderDAO.read();
-        List<PeriodicOrder> res = new LinkedList<>();
+        LinkedList<PeriodicOrder> res = new LinkedList<>();
         if (!perOrderRes.ErrorOccured()) {
             for (PeriodicOrderDTO dbPeriodic : perOrderRes.value) {
                 HashMap<Integer,Integer> productsInOrder = periodicOrderDAO.getProductsFromPeriod(dbPeriodic.getOrderID()).value; //all products from specific order
@@ -281,7 +281,7 @@ public class Mapper {
         List<Sale> res = new LinkedList<>();
         if (!saleRes.ErrorOccured()) {
             for (SaleDTO dbSale : saleRes.value) {
-                res.add(new Sale(dbSale.getItemID(), dbSale.getCost(), dbSale.getPrice(), dbSale.getDate()));
+                res.add(new Sale(dbSale.getItemID(), dbSale.getCost(), dbSale.getPrice(), dbSale.getDate(), dbSale.getAmount()));
             }
         } else {
             return new ResponseT<>("Could not load Sales");
@@ -355,10 +355,7 @@ public class Mapper {
     }
 
     public void addSupplier(SupplierCard supCard) {
-        SupplierDTO supplier = new SupplierDTO(supCard.getSupplierID(), supCard.getSupplierName(),
-                supCard.getAddress(), supCard.getEmail(), supCard.getBankAcc(), supCard.getPaymentMethod(),
-                supCard.getInfoSupplyDay(), supCard.getContacts(), supCard.isPickUp());
-        supplierDAO.insert(supplier);
+        supplierDAO.insert(supCard);
     }
 
     public void deleteSupCard(int supplierID) {
