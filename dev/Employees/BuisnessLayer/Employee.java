@@ -134,10 +134,11 @@ public class Employee {
 
     public Response setTerms(TermsOfEmployee terms) {
         this.terms = terms;
-        this.dto.setSickDays(terms.getSickDays());
-        this.dto.setAdvancedStudyFund(terms.getAdvancedStudyFund());
-        this.dto.setDaysOff(terms.daysOff);
-
+        Response r1 = this.dto.setSickDays(terms.getSickDays());
+        Response r2 = this.dto.setAdvancedStudyFund(terms.getAdvancedStudyFund());
+        Response r3 = this.dto.setDaysOff(terms.daysOff);
+        if(r1.isErrorOccured() || r2.isErrorOccured() || r3.isErrorOccured())
+            return new Response("Some error occurred, we can't tell exactly what");
         return new Response();
     }
 
