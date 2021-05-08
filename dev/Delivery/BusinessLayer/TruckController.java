@@ -1,7 +1,6 @@
 package Delivery.BusinessLayer;
 
 import Delivery.DTO.TruckDTO;
-import Delivery.DataAccessLayer.DataController;
 import Delivery.DataAccessLayer.TruckDAO;
 
 import java.util.ArrayList;

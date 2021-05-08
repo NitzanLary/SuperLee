@@ -1,19 +1,19 @@
 package Delivery.BusinessLayer;
 
-import Delivery.BusinessLayer.Delivery;
 import Delivery.DTO.AreaDTO;
 import Delivery.DTO.LocationDTO;
+import Delivery.DTO.Response;
 import Delivery.DataAccessLayer.AreaDAO;
-import Delivery.DataAccessLayer.DataController;
+import Delivery.DataAccessLayer.Mapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InputMismatchException;
-import java.util.Set;
 
 public class AreaController {
     private HashMap<String, Area> controller;
     private AreaDAO dc;
+    private Mapper mapper = Mapper.getInstance();
 
     public AreaController(){
         this.controller = new HashMap<>();
@@ -21,7 +21,14 @@ public class AreaController {
     }
 
     public boolean containsArea(String areaName){
-        return this.controller.containsKey(areaName);
+        if (this.controller.containsKey(areaName))
+            return true;
+        AreaDTO areaDTO = mapper.getArea(areaName);
+        if (areaDTO != null) {
+            this.controller.put(areaName, new Area(areaName));
+            return this.controller.containsKey(areaName);
+        }
+        return false;
     }
 
     public void addNewArea(AreaDTO areaDTO){
@@ -33,12 +40,13 @@ public class AreaController {
         controller.put(areaName, area);
     }
 
-    public void addLocation(AreaDTO areaDTO, LocationDTO locationDTO){
-        if (!this.controller.containsKey(areaDTO.getAreaName())){
-            throw new InputMismatchException("Area name dose not exist.");
+    public Response<Boolean> addLocation(AreaDTO areaDTO, LocationDTO locationDTO){
+        if (!containsArea(areaDTO.getAreaName())){
+            return new Response<>(false);
         }
         controller.get(areaDTO.getAreaName()).addLocation(new Location(locationDTO.getAddress(), locationDTO.getPhoneNumber(), locationDTO.getContactName()));
         dc.storeLocation(areaDTO, locationDTO);
+        return new Response<>(true);
     }
 
 
@@ -55,6 +63,7 @@ public class AreaController {
     }
 
     public HashMap<Area, ArrayList<Location>> getLocationsByArea() {
+        HashMap<String, ArrayList<LocationDTO>> hash = new HashMap<>();
         HashMap<Area, ArrayList<Location>> ret = new HashMap<>();
         for(Area a : controller.values()){
             ret.put(a, a.getLocations());

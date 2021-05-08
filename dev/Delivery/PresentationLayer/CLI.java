@@ -649,7 +649,8 @@ public class CLI {
         if (inp.equals("exit"))
             return;
         LocationDTO locationDTO = new LocationDTO(arr.get(0), arr.get(1), arr.get(2));
-        this.fc.addLocation(areas.get(Integer.parseInt(inp) - 1), locationDTO);
+        if (!this.fc.addLocation(areas.get(Integer.parseInt(inp) - 1), locationDTO).getData())
+            System.out.println("wrong input! try again");
     }
 
     public ArrayList<String> userTaskCreator() {

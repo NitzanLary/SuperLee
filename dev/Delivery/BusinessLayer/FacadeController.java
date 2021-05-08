@@ -53,7 +53,7 @@ public class FacadeController {
         return this.arc.containsArea(areaName);
     }
 
-    public void addLocation(AreaDTO areaDTO, LocationDTO locationDTO){
+    public Response<Boolean> addLocation(AreaDTO areaDTO, LocationDTO locationDTO){
         arc.addLocation(areaDTO, locationDTO);
     }
 

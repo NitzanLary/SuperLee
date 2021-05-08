@@ -18,7 +18,7 @@ public class TaskDAO extends DAO {
 
     }
 
-    public TaskDAO getInstance(){
+    public static TaskDAO getInstance(){
         if (instance == null)
             instance = new TaskDAO();
         return instance;

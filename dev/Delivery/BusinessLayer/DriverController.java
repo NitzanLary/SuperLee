@@ -1,15 +1,14 @@
 package Delivery.BusinessLayer;
 
-import Delivery.DTO.AreaDTO;
 import Delivery.DTO.DriverDTO;
-import Delivery.DataAccessLayer.DataController;
+import Delivery.DataAccessLayer.Mapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DriverController {
     private HashMap<String, Driver> controller;
-    private DataController dc = DataController.getInstance();
+    private Mapper dc = Mapper.getInstance();
 
     public DriverController(){
         this.controller = new HashMap<String, Driver>();
