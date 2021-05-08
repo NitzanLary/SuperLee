@@ -4,9 +4,11 @@ import BussinessLayer.Inventory.Category;
 import BussinessLayer.ResponseT;
 import DataLayer.DAO.*;
 import DataLayer.DTO.BillOfQuantityDTO;
+import DataLayer.DTO.ItemDTO;
 import DataLayer.DTO.OrderDTO;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Mapper {
@@ -22,6 +24,7 @@ public class Mapper {
         private SupplierDAO supplierDAO;
         private Map<Integer, BillOfQuantityDTO> billsOfQuantity;
         private Map<Integer, OrderDTO> orders;
+        private ItemDAO itemDAO;
 
         private static class MapperHolder {
             private static Mapper instance = new Mapper();
@@ -36,6 +39,7 @@ public class Mapper {
             supplierDAO = new SupplierDAO();
             billsOfQuantity = new HashMap<>();
             orders = new HashMap<>();
+            itemDAO = new ItemDAO();
         }
 
         public static Mapper getInstance(){
@@ -60,5 +64,11 @@ public class Mapper {
             return order;
         }
 
+
+        //for testing purpeses
+        public void getItems() {
+            ResponseT<List<ItemDTO>> result = itemDAO.read();
+            System.out.println(result.value.get(0).getName());
+        }
 
 }
