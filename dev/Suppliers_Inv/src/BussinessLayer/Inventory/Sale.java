@@ -47,7 +47,9 @@ public class Sale {
         String str = "Item ID:\t" + itemId + "\n" +
                 "Sale date:\t" + saleDate + "\n" +
                 "Item cost:\t" + itemCost + "\n" +
-                "Sale Price:\t" + salePrice;
+                "Sale Price:\t" + salePrice + "\n" +
+                "Amount:\t" + amount;
+
         return str;
     }
 

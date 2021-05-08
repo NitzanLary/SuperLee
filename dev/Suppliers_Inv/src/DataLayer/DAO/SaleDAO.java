@@ -18,7 +18,7 @@ public class SaleDAO extends DAO {
 
     public ResponseT<SaleDTO> create(Sale s) {
         SaleDTO toInsert = new SaleDTO(s);
-        String SQL = "INSERT INTO Sale (itemID, date, price, cost) VALUES (?, ?, ?, ?)";
+        String SQL = "INSERT INTO Sale (itemID, date, price, cost ,amount) VALUES (?, ?, ?, ?, ?)";
         try {
             ResponseT<Connection> r = getConn();
             if (!r.ErrorOccured()) {
@@ -27,6 +27,7 @@ public class SaleDAO extends DAO {
                 ps.setDate(2, Date.valueOf(toInsert.getDate().toLocalDate()));
                 ps.setDouble(3, toInsert.getPrice());
                 ps.setDouble(4, toInsert.getCost());
+                ps.setInt(5, toInsert.getAmount());
                 ps.execute();
             }
         } catch (SQLException e) {

@@ -126,6 +126,20 @@ public class Item {
     }
 
     public Double getPrice() {
+        return price;
+    }
+
+    public Double getCostWithDis() {
+        double currCost = cost;
+        for(Discount dis : costDiscounts) {
+            LocalDate now = LocalDate.now();
+            if (now.isAfter(dis.getStart()) && now.isBefore(dis.getEnd()))
+                currCost -= currCost*dis.getDiscountPr()/100;
+        }
+        return currCost;
+    }
+
+    public Double getPriceWithDis() {
         double currPrice = price;
         for(Discount dis : priceDiscounts) {
             LocalDate now = LocalDate.now();
@@ -136,13 +150,7 @@ public class Item {
     }
 
     public Double getCost() {
-        double currCost = cost;
-        for(Discount dis : costDiscounts) {
-            LocalDate now = LocalDate.now();
-            if (now.isAfter(dis.getStart()) && now.isBefore(dis.getEnd()))
-                currCost -= currCost*dis.getDiscountPr()/100;
-        }
-        return currCost;
+        return cost;
     }
 
     public String toString(String tabs) {
