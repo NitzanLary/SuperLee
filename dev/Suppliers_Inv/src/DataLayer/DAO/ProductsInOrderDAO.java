@@ -6,11 +6,14 @@ import DataLayer.DTO.ProductsInOrderDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ProductsInOrderDAO extends DAO {
 
-    public Response insert(Integer orderID, Integer productID, String quantity, Integer supplierID) {
+    public Response insert(Integer orderID, Integer productID, Integer quantity, Integer supplierID) {
 
         String order = "INSERT INTO ProductsInOrder (orderID, productID, quantity, supplierID) VALUES (?, ?, ?, ?)";
 
@@ -20,7 +23,7 @@ public class ProductsInOrderDAO extends DAO {
             // inserting to employee table
             pstmt.setInt(1, orderID);
             pstmt.setInt(2, productID);
-            pstmt.setString(3,quantity);
+            pstmt.setInt(3,quantity);
             pstmt.setInt(4, supplierID);
 
             pstmt.executeUpdate();
@@ -58,4 +61,22 @@ public class ProductsInOrderDAO extends DAO {
     }
     //TODO: update functions???
 
+    public ResponseT<List<ProductsInOrderDTO>> read() {
+        String SQL = "SELECT * FROM ProductsInOrder";
+        List<ProductsInOrderDTO> pioList = new LinkedList<>();
+        try {
+            ResponseT<Connection> r = getConn();
+            if(!r.ErrorOccured()) {
+                PreparedStatement ps = r.value.prepareStatement(SQL);
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()) {
+                    pioList.add(new ProductsInOrderDTO(rs.getInt("orderID"), rs.getInt("productID"),
+                            rs.getInt("quantity"), rs.getInt("supplierID")));
+                }
+            }
+        }catch (Exception e) {
+            return new ResponseT("cannot read sale");
+        }
+        return new ResponseT<>(pioList);
+    }
 }

@@ -6,6 +6,8 @@ import BussinessLayer.Supplier.BillOfQuantities;
 import DataLayer.DTO.BillOfQuantityDTO;
 
 import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class BillOfQuantityDAO extends DAO {
 
@@ -118,5 +120,24 @@ public class BillOfQuantityDAO extends DAO {
             return new Response(e.getMessage());
         }
         return new Response();
+    }
+
+    public ResponseT<List<BillOfQuantityDTO>> read() {
+        String SQL = "SELECT * FROM BillOfQuantity";
+        List<BillOfQuantityDTO> boqList = new LinkedList<>();
+        try {
+            ResponseT<Connection> r = getConn();
+            if(!r.ErrorOccured()) {
+                PreparedStatement ps = r.value.prepareStatement(SQL);
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()) {
+                    boqList.add(new BillOfQuantityDTO(rs.getInt("supplierID"), rs.getInt("productID"),
+                            rs.getInt("minQuantity"), rs.getInt("percentDiscount")));
+                }
+            }
+        }catch (Exception e) {
+            return new ResponseT("cannot read sale");
+        }
+        return new ResponseT<>(boqList);
     }
 }

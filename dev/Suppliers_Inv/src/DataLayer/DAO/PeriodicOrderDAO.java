@@ -5,11 +5,10 @@ import BussinessLayer.ResponseT;
 import BussinessLayer.Supplier.PeriodicOrder;
 import DataLayer.DTO.PeriodicOrderDTO;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
 
 public class PeriodicOrderDAO extends DAO{
 
@@ -116,6 +115,26 @@ public class PeriodicOrderDAO extends DAO{
             return new Response(e.getMessage());
         }
         return new Response();
+    }
+
+    public ResponseT<List<PeriodicOrderDTO>> read() {
+        String SQL = "SELECT * FROM PeriodicOrder";
+        List<PeriodicOrderDTO> poList = new LinkedList<>();
+        try {
+            ResponseT<Connection> r = getConn();
+            if(!r.ErrorOccured()) {
+                PreparedStatement ps = r.value.prepareStatement(SQL);
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()) {
+                    poList.add(new PeriodicOrderDTO(rs.getInt("orderId"), rs.getDate("supplyDate").toLocalDate(),
+                            rs.getInt("intervals"), rs.getInt("productID"),
+                            rs.getInt("quantity")));
+                }
+            }
+        }catch (Exception e) {
+            return new ResponseT("cannot read sale");
+        }
+        return new ResponseT<>(poList);
     }
 
     //add product TODO: maybe delete this function

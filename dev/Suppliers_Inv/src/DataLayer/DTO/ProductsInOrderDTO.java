@@ -4,10 +4,10 @@ public class ProductsInOrderDTO {
 
     private Integer orderID;
     private Integer productID;
-    private String quantity;
+    private Integer quantity;
     private Integer supplierID;
 
-    public ProductsInOrderDTO(Integer orderID, Integer productID, String quantity, Integer supplierID) {
+    public ProductsInOrderDTO(Integer orderID, Integer productID, Integer quantity, Integer supplierID) {
         this.orderID = orderID;
         this.productID = productID;
         this.quantity = quantity;
@@ -22,7 +22,7 @@ public class ProductsInOrderDTO {
         return productID;
     }
 
-    public String getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 

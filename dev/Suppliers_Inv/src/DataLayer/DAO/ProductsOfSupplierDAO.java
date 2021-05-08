@@ -6,7 +6,10 @@ import DataLayer.DTO.ProductsOfSupplierDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ProductsOfSupplierDAO extends DAO {
 
@@ -58,4 +61,23 @@ public class ProductsOfSupplierDAO extends DAO {
     }
     //TODO: update functions ????
 
+    public ResponseT<List<ProductsOfSupplierDTO>> read() {
+        String SQL = "SELECT * FROM ProductsOfSupplier";
+        List<ProductsOfSupplierDTO> posList = new LinkedList<>();
+        try {
+            ResponseT<Connection> r = getConn();
+            if(!r.ErrorOccured()) {
+                PreparedStatement ps = r.value.prepareStatement(SQL);
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()) {
+                    posList.add(new ProductsOfSupplierDTO(rs.getInt("productID"),
+                            rs.getInt("supplierID"), rs.getString("name"),
+                            rs.getString("category"), rs.getDouble("price")));
+                }
+            }
+        }catch (Exception e) {
+            return new ResponseT("cannot read sale");
+        }
+        return new ResponseT<>(posList);
+    }
 }
