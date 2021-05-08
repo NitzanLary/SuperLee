@@ -1,5 +1,6 @@
 package DataLayer.DAO;
 import BussinessLayer.Response;
+import BussinessLayer.ResponseT;
 import DataLayer.DTO.SupplierDTO;
 
 import java.sql.*;
@@ -58,6 +59,24 @@ public class SupplierDAO extends DAO {
         }
 
         return new Response();
+    }
+
+    public Response delete(Integer supplierID) {
+        String SQL = "DELETE FROM Supplier WHERE supplierID = ?";
+        try {
+            ResponseT<Connection> r = getConn();
+            if(!r.ErrorOccured()) {
+                PreparedStatement ps = r.value.prepareStatement(SQL);
+                ps.setInt(1, supplierID);
+
+                if(!ps.execute()) {
+                    return new Response("cannot delete supplier "+ supplierID+" from db");
+                }
+            }
+        }catch (SQLException e) {
+            return new Response(e.getMessage());
+        }
+        return new ResponseT(supplierID);
     }
 
 }

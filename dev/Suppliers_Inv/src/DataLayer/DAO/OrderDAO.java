@@ -61,6 +61,23 @@ public class OrderDAO extends DAO{
 
     }
 
-    //TODO: update delete functions
+    public Response delete(Integer orderID) {
+        String SQL = "DELETE FROM Orders WHERE orderID = ?";
+        try {
+            ResponseT<Connection> r = getConn();
+            if(!r.ErrorOccured()) {
+                PreparedStatement ps = r.value.prepareStatement(SQL);
+                ps.setInt(1, orderID);
+
+                if(!ps.execute()) {
+                    return new Response("cannot delete this order from db");
+                }
+            }
+        }catch (SQLException e) {
+            return new Response(e.getMessage());
+        }
+        return new ResponseT(orderID);
+    }
+    //TODO: update functions ???????
 
 }
