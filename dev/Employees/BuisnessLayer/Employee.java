@@ -1,10 +1,13 @@
 package Employees.BuisnessLayer;
 
+import Employees.DataAccessLayer.DAOs.EmployeeDAO;
 import Employees.DataAccessLayer.DTOs.EmployeeDTO;
+import Employees.DataAccessLayer.DTOs.RoleDTO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Employee {
     private String name;
@@ -14,6 +17,7 @@ public class Employee {
     private List<Role> roles;
     private TermsOfEmployee terms;
     private LocalDate dateOfHire;
+    private EmployeeDTO dto;
 
     public Employee(String _name, String _ID, LocalDate _dateOfHire) {
         if (!isNameValid(_name))
@@ -34,11 +38,25 @@ public class Employee {
         ID = other.ID;
         bankAccount = other.bankAccount;
         salary = other.salary;
-        roles = new ArrayList<>();
-        for (Role role : other.roles)
-            roles.add(new Role(role));
+//        roles = new ArrayList<>();
+        roles = other.roles.stream().map(Role::clone).collect(Collectors.toList());
+        for (Role role : other.roles){
+
+        }
         terms = new TermsOfEmployee(other.terms);
         dateOfHire = other.dateOfHire;
+    }
+
+    public void setDto(EmployeeDAO dao) {
+        List<RoleDTO> rolesDTO = new ArrayList<>();
+        for (Role role: roles){
+            if (role instanceof DriverRole)
+                rolesDTO.add(new RoleDTO("Driver", ((DriverRole) role).getLicence()));
+            else rolesDTO.add(new RoleDTO(role.getName()));
+        }
+        dto = new EmployeeDTO(name, ID, bankAccount, salary, getTerms().getSickDays(),
+                getTerms().getAdvancedStudyFund(), getTerms().getDaysOff(), dateOfHire, rolesDTO, dao);
+        dto.persist();
     }
 
     private boolean isNameValid(String name){

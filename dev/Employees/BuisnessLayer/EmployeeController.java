@@ -1,15 +1,22 @@
 package Employees.BuisnessLayer;
 
+import Employees.DataAccessLayer.DAOs.EmployeeDAO;
+import Employees.DataAccessLayer.Objects.Mapper;
+
 import java.time.LocalDate;
 import java.util.HashMap;
 
 public class EmployeeController {
     private static EmployeeController employeeController;
     HashMap<String, Employee> employees;
+    Mapper mapper;
+    EmployeeDAO dao;
 
     private EmployeeController()
     {
         employees = new HashMap<>();
+        mapper = Mapper.getInstance();
+        dao = new EmployeeDAO();
     }
 
     public static EmployeeController getInstance(){
@@ -35,6 +42,7 @@ public class EmployeeController {
         e.setSalary(salary);
         e.AddRole(role);
         employees.put(e.getID().getValue(), e);
+
         return new Response();
     }
 

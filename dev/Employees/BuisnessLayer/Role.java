@@ -11,11 +11,18 @@ public class Role{
         return name;
     }
 
-    public Role(Role other){
-        name = other.name;
+    public Role clone() {
+        return new Role(name);
     }
 
     public boolean compare(String r2){
         return name.equals(r2);
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "name='" + name + '\'' +
+                '}';
     }
 }

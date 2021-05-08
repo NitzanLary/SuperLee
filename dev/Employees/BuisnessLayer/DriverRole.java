@@ -11,4 +11,16 @@ public class DriverRole extends Role{
     public String getLicence() {
         return licence;
     }
+
+    @Override
+    public DriverRole clone() {
+        return new DriverRole(getName(), licence);
+    }
+
+    @Override
+    public String toString() {
+        return "DriverRole{" +
+                "licence='" + licence + '\'' +
+                '}';
+    }
 }
