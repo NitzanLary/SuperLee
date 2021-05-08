@@ -57,6 +57,7 @@ public class DeliveryDAO extends DAO{
             pstmt.setString(1, deliveryId);
 
             ResultSet rs = pstmt.executeQuery();
+//            return new DeliveryDTO(rs.getString(1))
             // TODO need to add here more details to send back a DeliveryDTO
 
         } catch (SQLException e) {
