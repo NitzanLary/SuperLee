@@ -137,7 +137,7 @@ public class CategoryDAO extends DAO{
         return new Response();
     }
 
-    public ResponseT read() {
+    public ResponseT<List<CategoryDTO>> read() {
         String SQL = "SELECT * FROM Category";
         List<CategoryDTO> catList = new LinkedList<>();
         try {
@@ -155,7 +155,7 @@ public class CategoryDAO extends DAO{
         return new ResponseT<>(catList);
     }
 
-    public ResponseT readSubCategory() {
+    public ResponseT<List<subCategoriesDTO>> readSubCategory() {
         String SQL = "SELECT * FROM subCategories";
         List<subCategoriesDTO> subCatList = new LinkedList<>();
         try {
@@ -173,7 +173,7 @@ public class CategoryDAO extends DAO{
         return new ResponseT<>(subCatList);
     }
 
-    public Response readCategoryItems() {
+    public ResponseT<List<CategoryItemsDTO>> readCategoryItems() {
         String SQL = "SELECT * FROM CategoryItems";
         List<CategoryItemsDTO> catItemsList = new LinkedList<>();
         try {
@@ -186,7 +186,7 @@ public class CategoryDAO extends DAO{
                 }
             }
         }catch (Exception e) {
-            return new Response("cannot read category-item");
+            return new ResponseT("cannot read category-item");
         }
         return new ResponseT<>(catItemsList);
     }

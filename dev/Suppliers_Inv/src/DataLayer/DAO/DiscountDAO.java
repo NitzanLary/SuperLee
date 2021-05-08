@@ -22,7 +22,7 @@ public class DiscountDAO extends DAO{
         this.table = table;
     }
 
-    public ResponseT<List<DiscountDTO>> read(int itemId, LocalDate start, LocalDate end) {
+    public ResponseT<List<DiscountDTO>> read() {
         String SQL = "SELECT * FROM " + table;
         List<DiscountDTO> result = new LinkedList<>();
         try {

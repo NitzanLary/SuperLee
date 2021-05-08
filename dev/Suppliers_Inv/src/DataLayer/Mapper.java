@@ -1,14 +1,11 @@
 package DataLayer;
 
-import BussinessLayer.Inventory.Category;
-import BussinessLayer.Inventory.Item;
-import BussinessLayer.Response;
+import BussinessLayer.Inventory.*;
 import BussinessLayer.ResponseT;
 import DataLayer.DAO.*;
-import DataLayer.DTO.BillOfQuantityDTO;
-import DataLayer.DTO.ItemDTO;
-import DataLayer.DTO.OrderDTO;
+import DataLayer.DTO.*;
 
+import javax.xml.ws.Response;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,6 +25,10 @@ public class Mapper {
         private Map<Integer, BillOfQuantityDTO> billsOfQuantity;
         private Map<Integer, OrderDTO> orders;
         private ItemDAO itemDAO;
+        private DiscountDAO priceDisDAO;
+        private DiscountDAO costDisDAO;
+        private SaleDAO saleDAO;
+        private FaultyItemDAO faultyItemDAO;
 
         private static class MapperHolder {
             private static Mapper instance = new Mapper();
@@ -43,6 +44,9 @@ public class Mapper {
             billsOfQuantity = new HashMap<>();
             orders = new HashMap<>();
             itemDAO = new ItemDAO();
+            priceDisDAO = new DiscountDAO("itemPriceDiscount");
+            costDisDAO= new DiscountDAO("itemCostDiscount");
+            faultyItemDAO = new FaultyItemDAO();
         }
 
         public static Mapper getInstance(){
@@ -67,18 +71,139 @@ public class Mapper {
             return order;
         }
 
-        public ResponseT<List<Item>> loadItems() {
+        public ResponseT<List<Category>> loadCategory() {
+            ResponseT<List<Item>> itemsRes = loadItems();
+            ResponseT<List<CategoryDTO>> catRes = categoryDAO.read();
+            ResponseT<List<CategoryItemsDTO>> catItemRes = categoryDAO.readCategoryItems();
+            ResponseT<List<subCategoriesDTO>> subCatRes = categoryDAO.readSubCategory();
+            List<Category> allCats= new LinkedList<>();
+            List<Category> firstCats = new LinkedList<>();
+            if (!itemsRes.ErrorOccured() && !catRes.ErrorOccured() && !catItemRes.ErrorOccured() && !subCatRes.ErrorOccured()) {
+                ResponseT<List<Discount>> disRes = loadDiscounts(itemsRes.value);
+                if (disRes.ErrorOccured()) {
+                    return new ResponseT<>("something went wrong with loading discounts");
+                }
+                //loading categories
+                for(CategoryDTO dbCat : catRes.value) {
+                    Category cat = new Category(dbCat.getName());
+                    allCats.add(cat);
+                    firstCats.add(cat);
+                }
+                //adding items to categories
+                for(CategoryItemsDTO catItem : catItemRes.value) {
+                    ResponseT<Item> iRes = getItem(catItem.getItemID(), itemsRes.value);
+                    ResponseT<Category> cRes = getCat(catItem.getCatName(), allCats);
+                    if (!iRes.ErrorOccured() && !cRes.ErrorOccured()) {
+                        cRes.value.addItem(iRes.value);
+                    }
+                }
+                //setting SubCategories
+                for(subCategoriesDTO subCat : subCatRes.value) {
+                    ResponseT<Category> father = getCat(subCat.getFatherCategory(), allCats);
+                    ResponseT<Category> child = getCat(subCat.getChildCategory(), allCats);
+                    if(!father.ErrorOccured() && !child.ErrorOccured()) {
+                        father.value.addSubCategory(child.value);
+                        firstCats.remove(getCat(subCat.getChildCategory(), allCats).value);
+                    } else {
+                        return new ResponseT<>("Could not load Categories");
+                    }
+                }
+            } else {
+                return new ResponseT<>("Could not load Categories");
+            }
+            return new ResponseT<>(firstCats);
+        }
+
+        public ResponseT<List<FaultyItem>> loadFaulty() {
+            ResponseT<List<FaultyItemDTO>> faultyRes = faultyItemDAO.read();
+            List<FaultyItem> res= new LinkedList<>();
+            if (!faultyRes.ErrorOccured()) {
+                for(FaultyItemDTO dbFaulty : faultyRes.value) {
+                    res.add(new FaultyItem(dbFaulty.getItemId(), dbFaulty.getExpDate(), dbFaulty.getAmount()));
+                }
+            } else {
+                return new ResponseT<>("Could not load Faulty items");
+            }
+            return new ResponseT<>(res);
+        }
+
+        public ResponseT<List<Sale>> loadSales() {
+            ResponseT<List<SaleDTO>> saleRes = saleDAO.read();
+            List<Sale> res= new LinkedList<>();
+            if (!saleRes.ErrorOccured()) {
+                for(SaleDTO dbSale : saleRes.value) {
+                    res.add(new Sale(dbSale.getItemID(),dbSale.getCost(), dbSale.getPrice(), dbSale.getDate()));
+                }
+            } else {
+                return new ResponseT<>("Could not load Sales");
+            }
+            return new ResponseT<>(res);
+        }
+
+        private ResponseT<List<Item>> loadItems() {
             ResponseT<List<ItemDTO>> itemsRes = itemDAO.read();
             List<Item> res= new LinkedList<>();
             if (!itemsRes.ErrorOccured()) {
                 for(ItemDTO dbItem : itemsRes.value) {
-                    res.add(new Item(dbItem));
+                    res.add(new Item(dbItem.getId(), dbItem.getName(),dbItem.getPrice(),dbItem.getCost(),dbItem.getShelfNum(),dbItem.getManufacturer(),dbItem.getShelfQuantity(), dbItem.getStorageQuantity() ,dbItem.getMinAlert()));
                 }
             } else {
                 return new ResponseT<>("Could not load items");
             }
             return new ResponseT<>(res);
         }
+
+        private ResponseT<List<Discount>> loadDiscounts(List<Item> items) {
+            ResponseT<List<DiscountDTO>> priceDisRes = priceDisDAO.read();
+            ResponseT<List<DiscountDTO>> costDisRes = costDisDAO.read();
+            List<Discount> result = new LinkedList<>();
+            if (!priceDisRes.ErrorOccured() && !costDisRes.ErrorOccured()) {
+                for(DiscountDTO priceDis : priceDisRes.value) {
+                    Discount toAdd = new Discount(priceDis.getStart(), priceDis.getEnd(), priceDis.getDiscountPr());
+                    result.add(toAdd);
+                    ResponseT<Item> iRes = getItem(priceDis.getItemId(), items);
+                    if (!iRes.ErrorOccured()) {
+                        iRes.value.addPriceDiscount(toAdd);
+                    } else {
+                        return  new ResponseT<>("Error loading Discounts");
+                    }
+                }
+                for(DiscountDTO costDis : costDisRes.value) {
+                    Discount toAdd = new Discount(costDis.getStart(), costDis.getEnd(), costDis.getDiscountPr());
+                    result.add(toAdd);
+                    ResponseT<Item> iRes = getItem(costDis.getItemId(), items);
+                    if (!iRes.ErrorOccured()) {
+                        iRes.value.addCostDiscount(toAdd);
+                    } else {
+                        return  new ResponseT<>("Error loading Discounts");
+                    }
+                }
+            } else {
+                return  new ResponseT<>("Error loading Discounts");
+            }
+            return new ResponseT<>(result);
+         }
+
+         private ResponseT<Item> getItem(int id, List<Item> items) {
+            for(Item i : items) {
+                if(i.getId() == id) {
+                    return new ResponseT<>(i);
+                }
+            }
+            return new ResponseT<>("Error");
+         }
+
+         private ResponseT<Category> getCat(String name, List<Category> cats) {
+            if (name == null) {
+                return null;
+            }
+             for(Category c : cats) {
+                 if(c.getName().equals(name)) {
+                     return new ResponseT<>(c);
+                 }
+             }
+             return new ResponseT<>("Error");
+         }
 
         //for testing purpeses
         public void getItems() {

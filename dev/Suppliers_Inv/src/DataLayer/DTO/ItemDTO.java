@@ -36,7 +36,7 @@ public class ItemDTO {
         this.shelfNum = shelfNum;
         this.manufacturer = manufacturer;
         this.shelfQuantity = shelfQuantity;
-        this.shelfQuantity = storageQuantity;
+        this.storageQuantity = storageQuantity;
         this.minAlert = minAlert;
     }
 

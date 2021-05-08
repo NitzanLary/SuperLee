@@ -23,6 +23,10 @@ public class Category {
         items.add(new Item(id, name, price, cost, shelfNum, manufacturer, shelfQuantity, storageQuantity, minAlert));
     }
 
+    public void addItem(Item i) {
+        items.add(i);
+    }
+
     public void addItemDiscount(LocalDate start, LocalDate end, int discountPr, int id) {
         Item i = getItem(id);
         i.addPriceDiscount(new Discount(start, end, discountPr));

@@ -6,6 +6,8 @@ import DataLayer.DTO.OrderDTO;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
 
 public class OrderDAO extends DAO{
 
@@ -80,4 +82,23 @@ public class OrderDAO extends DAO{
     }
     //TODO: update functions ???????
 
+    public ResponseT<List<OrderDTO>> read() {
+        String SQL = "SELECT * FROM Supplier";
+        List<OrderDTO> orderList = new LinkedList<>();
+        try {
+            ResponseT<Connection> r = getConn();
+            if(!r.ErrorOccured()) {
+                PreparedStatement ps = r.value.prepareStatement(SQL);
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()) {
+                    orderList.add(new OrderDTO(rs.getInt("orderID"), rs.getInt("supplierID"),
+                            rs.getBoolean("delivered"), rs.getDate("supplyDate").toLocalDate(),
+                            rs.getDouble("price")));
+                }
+            }
+        }catch (Exception e) {
+            return new ResponseT("cannot get faulty item");
+        }
+        return new ResponseT<>(orderList);
+    }
 }
