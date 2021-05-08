@@ -28,9 +28,9 @@ public abstract class Shift {
 //        dto = new ShiftDTO(date, start, end, closed)
     }
 
-//    public HashMap<EmployeeDTO, Integer> constrainsDTO() {
-//
-//    }
+    public Map<EmployeeDTO, Integer> constrainsDTO() {
+        for (Map.Entry<Employee, Integer> entry : constrains)
+    }
 
     public abstract Shift clone();
 
