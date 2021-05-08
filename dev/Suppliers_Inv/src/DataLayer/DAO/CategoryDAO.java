@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 
 public class CategoryDAO extends DAO{
 
@@ -135,71 +137,57 @@ public class CategoryDAO extends DAO{
         return new Response();
     }
 
-    public Response read(String catName) {
-        String SQL = "SELECT * FROM Category WHERE catName = ?";
-        CategoryDTO toGet = null;
+    public ResponseT read() {
+        String SQL = "SELECT * FROM Category";
+        List<CategoryDTO> catList = new LinkedList<>();
         try {
             ResponseT<Connection> r = getConn();
             if(!r.ErrorOccured()) {
                 PreparedStatement ps = r.value.prepareStatement(SQL);
-                ps.setString(1, catName);
                 ResultSet rs = ps.executeQuery();
-                if(!rs.isClosed()) {
-                    toGet =  new CategoryDTO(rs.getString("catName"));
-                }
-                if (toGet == null) {
-                    return new Response("cannot read category");
+                while (rs.next()) {
+                    catList.add((new CategoryDTO(rs.getString("name"))));
                 }
             }
         }catch (Exception e) {
-            return new Response("cannot read category");
+            return new ResponseT("cannot read category");
         }
-        return new ResponseT<>(toGet);
+        return new ResponseT<>(catList);
     }
 
-    public Response readSubCategory(Category c, String fatherName) {
-        String SQL = "SELECT * FROM subCategories WHERE childCategory = ? AND fatherCategory = ?";
-        subCategoriesDTO toGet = null;
+    public ResponseT readSubCategory() {
+        String SQL = "SELECT * FROM subCategories";
+        List<subCategoriesDTO> subCatList = new LinkedList<>();
         try {
             ResponseT<Connection> r = getConn();
             if(!r.ErrorOccured()) {
                 PreparedStatement ps = r.value.prepareStatement(SQL);
-                ps.setString(1, c.getName());
-                ps.setString(2, fatherName);
                 ResultSet rs = ps.executeQuery();
-                if(!rs.isClosed()) {
-                    toGet =  new subCategoriesDTO(rs.getString("fatherCategory"), rs.getString("childCategory"));
-                }
-                else {
-                    return new Response("cannot read sub-category");
+                while (rs.next()) {
+                    subCatList.add((new subCategoriesDTO(rs.getString("fatherCategory"), rs.getString("childCategory"))));
                 }
             }
         }catch (Exception e) {
-            return new Response("cannot read sub-category");
+            return new ResponseT("cannot read sub-category");
         }
-        return new ResponseT<>(toGet);
+        return new ResponseT<>(subCatList);
     }
 
-    public Response readCategoryItems(Category c, int itemID) {
-        String SQL = "SELECT * FROM CategoryItems WHERE catName = ? AND itemID = ?";
-        subCategoriesDTO toGet = null;
+    public Response readCategoryItems() {
+        String SQL = "SELECT * FROM CategoryItems";
+        List<CategoryItemsDTO> catItemsList = new LinkedList<>();
         try {
             ResponseT<Connection> r = getConn();
             if(!r.ErrorOccured()) {
                 PreparedStatement ps = r.value.prepareStatement(SQL);
-                ps.setString(1, c.getName());
-                ps.setInt(2, itemID);
                 ResultSet rs = ps.executeQuery();
-                if(!rs.isClosed()) {
-                    toGet =  new subCategoriesDTO(rs.getString("fatherCategory"), rs.getString("childCategory"));
-                }
-                else {
-                    return new Response("cannot read category-item");
+                while (rs.next()) {
+                    catItemsList.add(new CategoryItemsDTO(rs.getString("catName"), rs.getInt("itemID")));
                 }
             }
         }catch (Exception e) {
             return new Response("cannot read category-item");
         }
-        return new ResponseT<>(toGet);
+        return new ResponseT<>(catItemsList);
     }
 }

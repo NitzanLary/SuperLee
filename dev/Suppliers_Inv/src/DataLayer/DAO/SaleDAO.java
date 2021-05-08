@@ -4,8 +4,13 @@ import BussinessLayer.Inventory.Sale;
 import BussinessLayer.Response;
 import BussinessLayer.ResponseT;
 import DataLayer.DTO.SaleDTO;
+import sun.awt.image.ImageWatched;
 
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.LinkedList;
+import java.util.List;
 
 public class SaleDAO extends DAO {
 
@@ -55,26 +60,24 @@ public class SaleDAO extends DAO {
         return new Response();
     }
 
-    public Response read(int itemID, Date date) {
-        String SQL = "SELECT * FROM Sale WHERE itemID = ? AND date = ?";
-        SaleDTO toGet = null;
+    public ResponseT read() {
+        String SQL = "SELECT * FROM Sale";
+        List<SaleDTO> saleList = new LinkedList<>();
         try {
             ResponseT<Connection> r = getConn();
             if(!r.ErrorOccured()) {
                 PreparedStatement ps = r.value.prepareStatement(SQL);
-                ps.setInt(1, itemID);
-                ps.setDate(2, date);
                 ResultSet rs = ps.executeQuery();
-                if(!rs.isClosed()) {
-                    toGet =  new SaleDTO(rs.getInt("itemID"), rs.getDate("date").toLocalDate().atStartOfDay(), rs.getDouble("price"), rs.getDouble("cost"));
-                }
-                if (toGet == null) {
-                    return new Response("cannot read sale");
+                while(rs.next()) {
+                    saleList.add(new SaleDTO(rs.getInt("itemID"),
+                            LocalDateTime.of(rs.getDate("date").toLocalDate(),
+                                    LocalTime.NOON), rs.getDouble("price"),
+                            rs.getDouble("cost")));
                 }
             }
         }catch (Exception e) {
-            return new Response("cannot read sale");
+            return new ResponseT("cannot read sale");
         }
-        return new ResponseT<>(toGet);
+        return new ResponseT<>(saleList);
     }
 }
