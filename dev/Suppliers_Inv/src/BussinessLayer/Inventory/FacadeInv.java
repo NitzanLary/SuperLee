@@ -1,15 +1,30 @@
 package BussinessLayer.Inventory;
 
+import BussinessLayer.FacadeController;
+
 import java.time.LocalDate;
 import java.util.List;
 
-public class InvController {
+/**
+ * This class is singleton
+ */
+
+public class FacadeInv {
     private RecordController recCtrl;
     private StockController stockCtrl;
 
-    public InvController() {
+    private static FacadeInv facadeInv = null;
+
+    private FacadeInv() {
         recCtrl = new RecordController();
         stockCtrl = new StockController();
+    }
+
+    public static FacadeInv getInstance() {
+        if (facadeInv == null)
+            facadeInv = new FacadeInv();
+
+        return facadeInv;
     }
 
     //adds a sale to the records, removes one item from shelf
@@ -84,6 +99,10 @@ public class InvController {
         return stockCtrl.stkReport();
     }
 
+    public String showAllItemsInSuper() {
+        return stockCtrl.showAllItemsInSuper();
+    }
+
     public String catReport(List<String> catNames) {
         return stockCtrl.catReport(catNames);
     }
@@ -91,5 +110,9 @@ public class InvController {
     //removes an item from the system
     public void removeItem(int itemId) {
         stockCtrl.removeItem(itemId);
+    }
+
+    public int QuantityBiggerThenInvMin(int quantity, int productID) {
+        return stockCtrl.QuantityBiggerThenInvMin(quantity,productID);
     }
 }

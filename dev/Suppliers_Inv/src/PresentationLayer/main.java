@@ -11,20 +11,22 @@ public class main {
     public static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        System.out.println('\n' + "----------------------------------------------------------");
-        System.out.println('\n' +
-                "0000  0  0  0000  0000  0000              0    0000  0000" + '\n' +
-                "0     0  0  0  0  0     0  0              0    0     0   "+ '\n' +
-                "0000  0  0  0000  0000  000     000000    0    0000  0000"+ '\n' +
-                "   0  0  0  0     0     0 0               0    0     0   "+ '\n' +
-                "0000  0000  0     0000  0  0              0000 0000  0000" + '\n');
-        System.out.println("----------------------------------------------------------" + '\n');
-
-        System.out.println('\n' + "Welcome To Super-Lee System!" + '\n' +
-                "Choose Which System Do You Want To Use: "+ '\n');
-        System.out.println( "1. Supplier System " + '\n' + "2. Inventory System " + '\n' + "3. Exit From System ");
-
         try{
+            System.out.println('\n' + "----------------------------------------------------------");
+            System.out.println('\n' +
+                    "0000  0  0  0000  0000  0000              0    0000  0000" + '\n' +
+                    "0     0  0  0  0  0     0  0              0    0     0   "+ '\n' +
+                    "0000  0  0  0000  0000  000     000000    0    0000  0000"+ '\n' +
+                    "   0  0  0  0     0     0 0               0    0     0   "+ '\n' +
+                    "0000  0000  0     0000  0  0              0000 0000  0000" + '\n');
+            System.out.println("----------------------------------------------------------" + '\n');
+            System.out.println('\n' + "Welcome To Super-Lee System!" + '\n');
+
+            /** This Function Check If There Are Any Periodic Order To Send **/
+            IO_Supplier.getInstance().checkForApproachingPOrders();
+
+            System.out.println("Choose Which System Do You Want To Use: "+ '\n');
+            System.out.println( "1. Supplier System " + '\n' + "2. Inventory System " + '\n' + "3. Exit From System ");
             int caseNumber = Integer.parseInt(scanner.nextLine());
             switch (caseNumber) {
                 // Supplier System

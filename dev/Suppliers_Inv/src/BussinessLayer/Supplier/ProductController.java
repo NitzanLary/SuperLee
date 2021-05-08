@@ -19,7 +19,6 @@ public class ProductController {
     {
         if (productController == null)
             productController = new ProductController();
-
         return productController;
     }
 

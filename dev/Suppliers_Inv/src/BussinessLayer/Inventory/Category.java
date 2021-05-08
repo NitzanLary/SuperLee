@@ -112,6 +112,17 @@ public class Category {
         return output.toString()+"\n";
     }
 
+    public String toStringNameID() {
+        StringBuilder output = new StringBuilder("\n" + "Category: " + name + "\n");
+        for (Item i : items) {
+            output.append(i.toString( "\t")+"\n");
+        }
+        for (Category c : subCategories) {
+            output.append(c.toString("\t"));
+        }
+        return output.toString()+"\n";
+    }
+
     @Override
     public String toString() {
         return toString("");

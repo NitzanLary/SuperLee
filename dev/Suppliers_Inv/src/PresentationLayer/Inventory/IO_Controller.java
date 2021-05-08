@@ -1,16 +1,16 @@
 package PresentationLayer.Inventory;
 
-import BussinessLayer.Inventory.InvController;
+import BussinessLayer.Inventory.FacadeInv;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public class IO_Controller {
-    private InvController invCtrl;
+    private FacadeInv invCtrl;
     private INV_IO io;
 
     public IO_Controller() {
-        invCtrl = new InvController();
+        invCtrl = FacadeInv.getInstance();
     }
 
     public void mainMenu(int action) {

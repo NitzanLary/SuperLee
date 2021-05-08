@@ -1,5 +1,7 @@
 package BussinessLayer.Supplier;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 
 public class OrderController {
@@ -7,8 +9,10 @@ public class OrderController {
     private static OrderController orderController = null;
 
     public HashMap<Integer, Order> orders; // <OrderID: Integer, Order>
+    public HashMap<Integer, PeriodicOrder> periodicOrder; // <PeriodicOrderID: Integer, PeriodicOrder>
     public ProductController prodController;
     public int nextOrderID;
+    public int nextPeriodOrderID;
 
     private OrderController()
     {
@@ -36,8 +40,21 @@ public class OrderController {
         return orderID;
     }
 
+    public int createPeriodicOrder(int interval,LocalDate date){
+        int orderID = nextPeriodOrderID;
+        nextPeriodOrderID++;
+        PeriodicOrder pOrder = new PeriodicOrder(orderID,date,interval);
+        periodicOrder.put(orderID,pOrder);
+        return orderID;
+    }
+
+
     public void addProductToOrder(int orderID, int productID , int quantity) {
         orders.get(orderID).getProducts().put(productID, quantity);
+    }
+
+    public void addProductToPeriodicOrder(int orderID, int productID , int quantity) {
+        periodicOrder.get(orderID).getProducts().put(productID, quantity);
     }
 
     public void removeFromOrder(int productID, int orderID) {
@@ -49,6 +66,20 @@ public class OrderController {
 
     public void removeOrder(int orderID) {
         Order order = orders.remove(orderID);
+        if (order == null){
+            throw new IllegalArgumentException("Order Does Not Exist");
+        }
+    }
+
+    public void removePOrder(int orderID) {
+        PeriodicOrder order = periodicOrder.remove(orderID);
+        if (order == null){
+            throw new IllegalArgumentException("Order Does Not Exist");
+        }
+    }
+
+    public void removePeriodicOrder(int orderID) {
+        PeriodicOrder order = periodicOrder.remove(orderID);
         if (order == null){
             throw new IllegalArgumentException("Order Does Not Exist");
         }
@@ -67,7 +98,15 @@ public class OrderController {
         }
         allOrders += '\n' + "Total Orders: " + orders.size();
         return  allOrders;
+    }
 
+    public String showAllPOrders(){
+        String allOrders = '\n'+ "All Super-Lee Periodic Orders Are: " ;
+        for(PeriodicOrder order : periodicOrder.values()){
+            allOrders += '\n' + order.toString();
+        }
+        allOrders += '\n' + "Total Orders: " + orders.size();
+        return  allOrders;
     }
 
     public Double finalPriceForOrder(int OrderID, int suppID){
@@ -89,6 +128,10 @@ public class OrderController {
 
     public boolean isEmptyOrder(int orderID){
         return orders.get(orderID).getProducts().isEmpty();
+    }
+
+    public boolean isEmptyPOrder(int orderID){
+        return periodicOrder.get(orderID).getProducts().isEmpty();
     }
 
     public void editMinQuantity(int supplierID, int pid, int newQ) {
@@ -120,5 +163,40 @@ public class OrderController {
 
     public ProductController getProdController() {
         return prodController;
+    }
+
+    public HashMap<Integer, Integer> getProductOfporder(int orderID) {
+        return periodicOrder.get(orderID).getProducts();
+    }
+
+    public boolean checkOrderPExist(int orderID) {
+        return periodicOrder.containsKey(orderID);
+    }
+
+    public HashMap<Integer, PeriodicOrder> checkForApproachingPOrders() {
+        HashMap<Integer, PeriodicOrder> orders = new HashMap<>();
+        for(PeriodicOrder po : periodicOrder.values()){
+            LocalDate checkDate = po.getDateOfSupply().plusDays(po.getInterval()+1); // +1 represent check if the order is 24 hours before arriving time
+            if(checkDate.equals(LocalDate.now()))
+                orders.put(po.getpOrderID(),po);
+        }
+
+        //for each order that is 24 hours before delivering we create the order.
+        //TODO finish
+    }
+
+    public void removeProdFromPOrder(int productID, int orderID) {
+        Integer remove = periodicOrder.get(orderID).getProducts().remove(productID);
+        if(remove == null){
+            throw new IllegalArgumentException("The Product Does Not Exist In This Order");
+        }
+    }
+
+    public void changeInterval(int interval, int orderID) {
+        PeriodicOrder po = periodicOrder.get(orderID);
+        if(po == null){
+            throw new IllegalArgumentException("The Item Does Not Exist In This Order");
+        }
+        po.setInterval(interval);
     }
 }
