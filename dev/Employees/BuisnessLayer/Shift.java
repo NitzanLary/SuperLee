@@ -1,5 +1,6 @@
 package Employees.BuisnessLayer;
 import Employees.DataAccessLayer.DAOs.ShiftDAO;
+import Employees.DataAccessLayer.DTOs.EmployeeDTO;
 import Employees.DataAccessLayer.DTOs.ShiftDTO;
 
 import java.time.LocalDate;
@@ -24,8 +25,12 @@ public abstract class Shift {
         constrains = new HashMap<Employee, Integer>();
         assignedEmployees = new HashMap<String, Employee>();
         assignedRolesEmp = new HashMap<>();
-
+//        dto = new ShiftDTO(date, start, end, closed)
     }
+
+//    public HashMap<EmployeeDTO, Integer> constrainsDTO() {
+//
+//    }
 
     public abstract Shift clone();
 
