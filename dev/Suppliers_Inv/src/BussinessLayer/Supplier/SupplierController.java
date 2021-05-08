@@ -14,9 +14,11 @@ public class SupplierController {
     private Mapper mapper;
 
     private SupplierController() {
-        prodController = prodController.getInstance();
         mapper = Mapper.getInstance();
         suppliers = mapper.loadSupplierCard().value;
+        prodController = prodController.getInstance();
+        prodController.addSuppliers(suppliers.keySet());
+
     }
 
     public static SupplierController getInstance() {
@@ -70,6 +72,9 @@ public class SupplierController {
     }
 
     public void addProductToSupplier(int supplierID, int productID, String name, String category, double price) {
+        if (!suppliers.containsKey(supplierID)){
+            throw new IllegalArgumentException("This Supplier Does Not Exists In The System");
+        }
         prodController.addProductToSupplier(supplierID, productID, name, category, price);
     }
 

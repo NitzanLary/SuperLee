@@ -27,7 +27,7 @@ public class ProductsOfSupplierDAO extends DAO {
             pstmt.setString(4, category);
             pstmt.setFloat(5, (float) price);
 
-            pstmt.executeUpdate();
+            pstmt.execute();
 
         } catch (SQLException e) {
             return new Response(e.getMessage());
@@ -50,9 +50,8 @@ public class ProductsOfSupplierDAO extends DAO {
                 ps.setInt(1, productID);
                 ps.setInt(2, supplierID);
 
-                if(!ps.execute()) {
-                    return new Response("cannot delete "+productID+" from supplier "+supplierID+ " in db");
-                }
+                ps.execute();
+
             }
         }catch (SQLException e) {
             return new Response(e.getMessage());

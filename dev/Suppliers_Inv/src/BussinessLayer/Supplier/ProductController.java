@@ -3,6 +3,7 @@ package BussinessLayer.Supplier;
 import DataLayer.Mapper;
 
 import java.util.HashMap;
+import java.util.Set;
 
 public class ProductController {
 
@@ -14,10 +15,9 @@ public class ProductController {
 
     private ProductController()
     {
-        supplierProd = new HashMap<>();
         discounts = new HashMap<>();
         mapper = Mapper.getInstance();
-        mapper.loadProducts();
+        supplierProd = mapper.loadProducts().value;
         mapper.loadBillsOfQuantity();
     }
 
@@ -53,9 +53,9 @@ public class ProductController {
     }
 
     public void addProductToSupplier(int supplierID, int productID, String name, String category, double price) {
-        if (!supplierProd.containsKey(supplierID)){
-            throw new IllegalArgumentException("This Supplier Does Not Exists In The System");
-        }
+//        if (!supplierProd.containsKey(supplierID)){
+//            throw new IllegalArgumentException("This Supplier Does Not Exists In The System");
+//        }
         if (supplierProd.get(supplierID).containsKey(productID)){
             throw new IllegalArgumentException("This Item Already Exists In The Supplier Products List");
         }
@@ -161,5 +161,10 @@ public class ProductController {
 
     public HashMap<Integer, BillOfQuantities> getDiscounts(){
         return this.discounts;
+    }
+
+    public void addSuppliers(Set<Integer> keySet) {
+        for(Integer supID : keySet)
+            supplierProd.put(supID, new HashMap<>());
     }
 }
