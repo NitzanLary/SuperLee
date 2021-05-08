@@ -17,6 +17,8 @@ public class ProductController {
         supplierProd = new HashMap<>();
         discounts = new HashMap<>();
         mapper = Mapper.getInstance();
+        mapper.loadProducts();
+        mapper.loadBillsOfQuantity();
     }
 
     public static ProductController getInstance()

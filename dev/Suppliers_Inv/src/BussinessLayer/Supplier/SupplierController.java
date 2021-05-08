@@ -17,6 +17,7 @@ public class SupplierController {
         suppliers = new HashMap<>();
         prodController = prodController.getInstance();
         mapper = Mapper.getInstance();
+        mapper.loadSupplierCard();
     }
 
     public static SupplierController getInstance() {

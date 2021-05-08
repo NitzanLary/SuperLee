@@ -23,6 +23,8 @@ public class OrderController {
         orders = new HashMap<>();
         prodController = prodController.getInstance();
         mapper = Mapper.getInstance();
+        mapper.loadOrders();
+        mapper.loadPeriodic();
     }
 
     public static OrderController getInstance()
