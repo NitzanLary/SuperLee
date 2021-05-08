@@ -78,6 +78,30 @@ public class SupplierCard {
         this.supplierName = supplierName;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public int getBankAcc() {
+        return bankAcc;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public String getContacts() {
+        return contacts;
+    }
+
+    public String getInfoSupplyDay() {
+        return infoSupplyDay;
+    }
+
     public boolean isPickUp() {
         return pickUp;
     }
