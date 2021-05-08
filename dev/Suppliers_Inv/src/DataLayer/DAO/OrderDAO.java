@@ -12,11 +12,7 @@ public class OrderDAO extends DAO{
 
     public Response insert(Integer orderID, Integer supplierID, boolean delivered, LocalDate supplyDate, double price) {
 
-        String order = """
-                INSERT INTO Orders (orderID, supplierID, delivered, supplyDate, price)
-                VALUES
-                (?, ?, ?, ?, ?)
-                """;
+        String order = "INSERT INTO Orders (orderID, supplierID, delivered, supplyDate, price) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = getConn().value;
              PreparedStatement pstmt = conn.prepareStatement(order);) {
@@ -44,10 +40,7 @@ public class OrderDAO extends DAO{
 
     //SELECT
     public ResponseT<OrderDTO> get(Integer orderID){
-        String orderSQL = String.format("""
-                SELECT * FROM Orders
-                WHERE orderID = %s
-                """, orderID);
+        String orderSQL = String.format("SELECT * FROM Orders WHERE orderID = %s", orderID);
 
         try(Connection conn = getConn().value;
             Statement ordStmt = conn.createStatement();
@@ -57,7 +50,7 @@ public class OrderDAO extends DAO{
                 return new ResponseT<>(null, String.format("orderID %s not found", orderID));
             OrderDTO order = new OrderDTO(ordRs.getInt("orderID"),
                     ordRs.getInt("supplierID"), ordRs.getBoolean("delivered"),
-                    ordRs.getDate("supplyDate"), ordRs.getFloat("price"));
+                    ordRs.getDate("supplyDate").toLocalDate(), ordRs.getFloat("price"));
 
             return new ResponseT<>(order);
 
@@ -68,6 +61,23 @@ public class OrderDAO extends DAO{
 
     }
 
-    //TODO: update delete functions
+    public Response delete(Integer orderID) {
+        String SQL = "DELETE FROM Orders WHERE orderID = ?";
+        try {
+            ResponseT<Connection> r = getConn();
+            if(!r.ErrorOccured()) {
+                PreparedStatement ps = r.value.prepareStatement(SQL);
+                ps.setInt(1, orderID);
+
+                if(!ps.execute()) {
+                    return new Response("cannot delete this order from db");
+                }
+            }
+        }catch (SQLException e) {
+            return new Response(e.getMessage());
+        }
+        return new ResponseT(orderID);
+    }
+    //TODO: update functions ???????
 
 }

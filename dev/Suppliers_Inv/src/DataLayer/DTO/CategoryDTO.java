@@ -8,4 +8,12 @@ public class CategoryDTO {
     public CategoryDTO(Category c) {
         name = c.getName();
     }
+
+    public CategoryDTO(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

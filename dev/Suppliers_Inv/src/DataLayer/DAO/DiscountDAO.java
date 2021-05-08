@@ -10,6 +10,10 @@ import DataLayer.DTO.ItemDTO;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
 
 public class DiscountDAO extends DAO{
     private String table;
@@ -18,9 +22,29 @@ public class DiscountDAO extends DAO{
         this.table = table;
     }
 
+    public ResponseT<List<DiscountDTO>> read(int itemId, LocalDate start, LocalDate end) {
+        String SQL = "SELECT * FROM " + table;
+        List<DiscountDTO> result = new LinkedList<>();
+        try {
+            ResponseT<Connection> r = getConn();
+            if(!r.ErrorOccured()) {
+                PreparedStatement ps = r.value.prepareStatement(SQL);
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()) {
+                    result.add(new DiscountDTO(rs.getDate("start").toLocalDate(), rs.getDate("end").toLocalDate(), rs.getInt("discountPr"),rs.getInt("itemId")));
+                }
+            } else {
+                return new ResponseT("failed to get discount");
+            }
+        }catch (Exception e) {
+            return new ResponseT("failed to get discount");
+        }
+        return new ResponseT<>(result);
+    }
+
     public Response create(Discount dis, int itemId) {
         DiscountDTO toInsert = new DiscountDTO(dis, itemId);
-        String SQL = "INSERT INTO " + table + " (itemId, start, end, discountPr) VALUE (?,?,?,?)";
+        String SQL = "INSERT INTO " + table + " (itemId, start, end, discountPr) VALUES (?,?,?,?)";
         try {
             ResponseT<Connection> r = getConn();
             if(!r.ErrorOccured()) {

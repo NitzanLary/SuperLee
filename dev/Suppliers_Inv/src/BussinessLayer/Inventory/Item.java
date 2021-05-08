@@ -1,5 +1,7 @@
 package BussinessLayer.Inventory;
 
+import DataLayer.DTO.ItemDTO;
+
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,6 +20,19 @@ public class Item {
     private List<Discount> costDiscounts;
     private int minAlert;
 
+    public Item(ItemDTO dbItem) {
+        id = dbItem.getId();
+        name = dbItem.getName();
+        price = dbItem.getPrice();
+        cost = dbItem.getCost();
+        shelfNum = dbItem.getShelfNum();
+        manufacturer = dbItem.getManufacturer();
+        shelfQuantity = dbItem.getShelfQuantity();
+        storageQuantity = dbItem.getStorageQuantity();
+        minAlert = dbItem.getMinAlert();
+        priceDiscounts = new LinkedList<>();
+        costDiscounts = new LinkedList<>();
+    }
 
     public Item(int id, String name, double price, double cost, int shelfNum, String manufacturer, int shelfQuantity, int storageQuantity, int minAlert) {
         this.id = id;

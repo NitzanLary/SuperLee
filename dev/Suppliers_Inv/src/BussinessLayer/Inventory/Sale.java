@@ -19,6 +19,18 @@ public class Sale {
         return saleDate;
     }
 
+    public Double getItemCost() {
+        return itemCost;
+    }
+
+    public Double getSalePrice() {
+        return salePrice;
+    }
+
+    public int getItemId() {
+        return itemId;
+    }
+
     public String toString() {
         String str = "Item ID:\t" + itemId + "\n" +
                 "Sale date:\t" + saleDate + "\n" +

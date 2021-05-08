@@ -14,6 +14,12 @@ public class FaultyItemDTO {
         this.amount = fi.getAmount();
     }
 
+    public FaultyItemDTO(int itemId, LocalDate expDate, int amount) {
+        this.itemId = itemId;
+        this.expDate = expDate;
+        this.amount = amount;
+    }
+
     public int getItemId() {
         return itemId;
     }

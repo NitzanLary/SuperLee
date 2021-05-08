@@ -1,18 +1,43 @@
 package DataLayer.DAO;
-
 import BussinessLayer.Inventory.Item;
 import BussinessLayer.Response;
 import BussinessLayer.ResponseT;
+import DataLayer.DTO.DiscountDTO;
 import DataLayer.DTO.ItemDTO;
-
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ItemDAO extends DAO {
 
+    public ResponseT<List<ItemDTO>> read() {
+        String SQL = "SELECT * FROM Item";
+        List<ItemDTO> result = new LinkedList<>();
+        try {
+            ResponseT<Connection> r = getConn();
+            if(!r.ErrorOccured()) {
+                PreparedStatement ps = r.value.prepareStatement(SQL);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    ItemDTO toAdd = new ItemDTO(rs.getInt("itemId"), rs.getString("name"),
+                            rs.getDouble("price"), rs.getDouble("cost"), rs.getInt("shelfNum"), rs.getString("manufacturer"),
+                            rs.getInt("shelfQuantity"), rs.getInt("storageQuantity"), rs.getInt("minAlert"));
+                    result.add(toAdd);
+                }
+            }
+        }catch (Exception e) {
+            System.out.println(e);
+            return new ResponseT("failed to get items");
+        }
+        return new ResponseT<List<ItemDTO>>(result);
+    }
+
     public Response create(Item item) {
         ItemDTO toInsert = new ItemDTO(item);
-        String SQL = "INSERT INTO item (itemId, name, price, shelfNum, manufacturer, shelfQuantity, storageQuantity, minAlert, cost) VALUE (?,?,?,?,?,?,?,?)";
+        String SQL = "INSERT INTO item (itemId, name, price, shelfNum, manufacturer, shelfQuantity, storageQuantity, minAlert, cost) VALUES (?,?,?,?,?,?,?,?)";
         try {
             ResponseT<Connection> r = getConn();
             if(!r.ErrorOccured()) {

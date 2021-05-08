@@ -11,7 +11,7 @@ public class OrderDTO {
     private LocalDate supplyDate;
     private double price;
 
-    public OrderDTO(Integer orderID, Integer supplierID, boolean delivered, Date supplyDate, double price) {
+    public OrderDTO(Integer orderID, Integer supplierID, boolean delivered, LocalDate supplyDate, double price) {
         this.orderID = orderID;
         this.supplierID = supplierID;
         this.delivered = delivered;
@@ -37,5 +37,16 @@ public class OrderDTO {
 
     public double getPrice() {
         return price;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderDTO{" +
+                "orderID: '" + this.orderID + '\'' +
+                ", supplierID: '" + this.supplierID + '\'' +
+                ", delivered: '" + this.delivered + '\'' +
+                ", supplyDate: '" + this.supplierID + '\'' +
+                ", price: '" + this.price +
+                '}';
     }
 }

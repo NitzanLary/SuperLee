@@ -14,6 +14,13 @@ public class DiscountDTO {
         this.itemId = itemId;
     }
 
+    public DiscountDTO(LocalDate start, LocalDate end, int discountPr, int itemId) {
+        this.start = start;
+        this.end = end;
+        this.discountPr = discountPr;
+        this.itemId = itemId;
+    }
+
     public LocalDate getStart() {
         return start;
     }
