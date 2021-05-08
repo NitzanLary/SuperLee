@@ -46,6 +46,8 @@ public class CLIController {
     }
 
 
+
+
     public void Mmainmanue(int action) {
         if (action == 1){
             cli.MempMenu();
@@ -380,6 +382,10 @@ public class CLIController {
         if(r.isErrorOccured())
             cli.print(r.getErrorMessage());
         cli.print(r.getValue());
+    }
+
+    private ResponseT<Boolean> isStorekeeperAssigned(Shift shift){
+        return facade.isStorekeeperAssigned(shift.getDate(), shift.getStart());
     }
 
     private void assignEmployee(Shift shift) {

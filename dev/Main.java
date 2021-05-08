@@ -17,6 +17,8 @@ public class Main {
         LocalTime t = cli.getFacade().parseToLocalTime("12:12");
         System.out.println(date);
         System.out.println(t);
+        System.out.println(date.toString());
+
     }
 
 }
