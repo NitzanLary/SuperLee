@@ -1,4 +1,7 @@
 package Employees.BuisnessLayer;
+import Employees.DataAccessLayer.DAOs.ShiftDAO;
+import Employees.DataAccessLayer.DTOs.ShiftDTO;
+
 import java.time.LocalDate;
 
 import java.time.LocalTime;
@@ -13,13 +16,15 @@ public abstract class Shift {
     private HashMap<Employee, Integer> constrains;
     private HashMap<String, Employee> assignedEmployees;
     private HashMap<String, List<Employee>> assignedRolesEmp; //Yanay's Plaster for getting the specific roles that emps assigned to..
+    protected ShiftDTO dto;
 
-    Shift(LocalDate _date) {
+    Shift(LocalDate _date, ShiftDAO _dao) {
         closed = false; // **added default to be false by Yanay.
         date = _date;
         constrains = new HashMap<Employee, Integer>();
         assignedEmployees = new HashMap<String, Employee>();
         assignedRolesEmp = new HashMap<>();
+
     }
 
     public abstract Shift clone();

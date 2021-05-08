@@ -32,10 +32,7 @@ public class EmployeeController {
             return new Response("All values of terms must be greater than 0");
         TermsOfEmployee terms = new TermsOfEmployee(sickDays, studyFund, daysOff);
         // checking type of role (in case it is a driver)
-        Role role;
-        if (roleName.equals("Driver"))
-            role = new Role(roleName);
-//        else role = new DriverRole(roleName, )
+        Role role = new Role(roleName, licence);
         Employee e;
         try{
              e = new Employee(name, ID, _dateOfHire);
@@ -119,16 +116,16 @@ public class EmployeeController {
     }
 
     public void initData() {
-        AddEmployee("312174295", "Yanay", "12345", 1000, 30, 500, 30,
-                "General Manager", LocalDate.now());
-        AddEmployee("205952971", "Nitzan", "12345", 1000, 30, 500, 30,
-                "HR Manager", LocalDate.now());
-        AddEmployee("123456789", "Dana", "12345", 1000, 30, 500, 30,
-                "Cashier", LocalDate.now());
-        addRoleToEmp("123456789", "Cleaner");
-        AddEmployee("987654321", "Dafna", "54321", 10000, 30, 500, 30,
-                "Storage", LocalDate.now());
-        addRoleToEmp("987654321", "Driver");
+//        AddEmployee("312174295", "Yanay", "12345", 1000, 30, 500, 30,
+//                "General Manager", LocalDate.now());
+//        AddEmployee("205952971", "Nitzan", "12345", 1000, 30, 500, 30,
+//                "HR Manager", LocalDate.now());
+//        AddEmployee("123456789", "Dana", "12345", 1000, 30, 500, 30,
+//                "Cashier", LocalDate.now());
+//        addRoleToEmp("123456789", "Cleaner");
+//        AddEmployee("987654321", "Dafna", "54321", 10000, 30, 500, 30,
+//                "Storage", LocalDate.now());
+//        addRoleToEmp("987654321", "Driver");
 
     }
 

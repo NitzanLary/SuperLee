@@ -2,11 +2,9 @@ package Employees.BuisnessLayer;
 
 import Employees.DataAccessLayer.DTOs.RoleDTO;
 
-import java.util.Comparator;
-
 public class Role{
     private String name;
-    private String licence;
+    private String licence = null;
 
     public Role(String _name) {name = _name;}
 
