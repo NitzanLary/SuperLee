@@ -7,6 +7,7 @@ import DataLayer.DTO.PeriodicOrderDTO;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -137,6 +138,25 @@ public class PeriodicOrderDAO extends DAO{
         return new ResponseT<>(poList);
     }
 
+
+    public ResponseT<HashMap<Integer, Integer>> getProductsFromPeriod(int periodID) {
+        String SQL = "SELECT productID, quantity FROM PeriodicOrder WHERE orderID = ?";
+        HashMap<Integer,Integer> prodQua = new HashMap<>();
+        try {
+            ResponseT<Connection> r = getConn();
+            if(!r.ErrorOccured()) {
+                PreparedStatement ps = r.value.prepareStatement(SQL);
+                ps.setInt(1, periodID);
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()) {
+                    prodQua.put(rs.getInt("productID"), rs.getInt("quantity"));
+                }
+            }
+        }catch (Exception e) {
+            return new ResponseT("cannot read products from order");
+        }
+        return new ResponseT<>(prodQua);
+    }
     //add product TODO: maybe delete this function
 //    public Response addProduct(PeriodicOrder period, Integer productID, Integer quantity) {
 //        String supplier = "INSERT INTO PeriodicOrder (orderID, supplyDate, intervals, productID, quantity) VALUES (?, ?, ?, ?, ?)";

@@ -15,6 +15,12 @@ public class PeriodicOrder {
         this.interval = interval;
         products = new HashMap<Integer,Integer>();
     }
+    public PeriodicOrder(int pOrderID, int interval, LocalDate dateOfSupply, HashMap<Integer,Integer> prods){
+        this.pOrderID = pOrderID;
+        this.interval = interval;
+        this.dateOfSupply = dateOfSupply;
+        products = prods;
+    }
 
     public HashMap<Integer, Integer> getProducts() {
         return products;
