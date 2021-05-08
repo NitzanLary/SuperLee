@@ -19,7 +19,7 @@ public class CategoryDAO extends DAO{
     public CategoryDAO() {
     }
 
-    public Response create(Category c) {
+    public ResponseT<CategoryDTO> create(Category c) {
         CategoryDTO toInsert = new CategoryDTO(c);
         String SQL = "INSERT INTO Category (name) VALUE (?)";
         try {
@@ -28,12 +28,12 @@ public class CategoryDAO extends DAO{
                 PreparedStatement ps = r.value.prepareStatement(SQL);
                 ps.setString(1, toInsert.getName());
                 if (!ps.execute()) {
-                    return new Response("Could not add category to DB");
+                    return new ResponseT("Could not add category to DB");
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return new Response("Could not add category to DB");
+            return new ResponseT("Could not add category to DB");
         }
         return new ResponseT<>(toInsert);
     }
@@ -68,6 +68,7 @@ public class CategoryDAO extends DAO{
                 ps.setString(1, toInsert.getCatName());
                 ps.setInt(2, toInsert.getItemID());
                 if (!ps.execute()) {
+                    System.out.println("asdasdsadsadsadsads");
                     return new Response("Could not add category-item to DB");
                 }
             }

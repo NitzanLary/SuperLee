@@ -2,6 +2,7 @@ package BussinessLayer.Inventory;
 
 import BussinessLayer.Response;
 import BussinessLayer.ResponseT;
+import DataLayer.DAO.DiscountDAO;
 import DataLayer.Mapper;
 
 import java.time.LocalDate;
@@ -37,13 +38,17 @@ public class StockController {
             throw new RuntimeException("Cannot find Category: "+superName);
         if( getCategory(name) != null)
             throw new RuntimeException("Category "+name+" already exists");
-        superCategory.addSubCategory(new Category(name));
+        Category cat = new Category(name);
+        superCategory.addSubCategory(cat);
+        mapper.addSubCategory(cat, superName);
     }
 
     public void addCategory(String name) {
         if (categories.contains(name))
             throw new RuntimeException("Category "+name+" already exists");
-        categories.add(new Category(name));
+        Category cat = new Category(name);
+        categories.add(cat);
+        mapper.addCategory(cat);
     }
 
     public Item getItem(int id) {
@@ -61,7 +66,11 @@ public class StockController {
             throw new RuntimeException("Cannot find Category: "+catName);
         if (getItem(id) != null)
             throw new RuntimeException("Item id "+id+"+ already exists");
-        c.addItem(id, name, price, cost, shelfNum, manufacturer, shelfQuantity, storageQuantity, minAlert);
+        Item i = new Item(id, name, price, cost, shelfNum, manufacturer, shelfQuantity, storageQuantity, minAlert);
+        c.addItem(i);
+        if(mapper.addItem(i, c).ErrorOccured()) {
+
+        }
     }
 
     public void removeItem(int id) {
@@ -69,6 +78,7 @@ public class StockController {
         if (c == null)
             throw new RuntimeException("Cannot find Item id: "+id);
         c.removeItem(id);
+        mapper.deleteItem(getItem(id));
     }
 
     public void removeFromShelf(int id, int amount) {
@@ -77,6 +87,7 @@ public class StockController {
             throw new RuntimeException("Cannot find Item id: "+id);
         if(!c.removeFromShelf(id, amount))
             throw new RuntimeException("Amount is too large");
+        mapper.updateItem(getItem(id));
     }
 
     public void removeFromStorage(int id, int amount) {
@@ -84,6 +95,7 @@ public class StockController {
         if (c == null)
             throw new RuntimeException("Cannot find Item id: "+id);
         c.removeFromStorage(id, amount);
+        mapper.updateItem(getItem(id));
     }
 
     public Category getCategory(int id) {
@@ -100,6 +112,7 @@ public class StockController {
         if (c == null)
             throw new RuntimeException("Cannot find Item id: "+id);
         c.addToStorage(id, amount);
+        mapper.updateItem(getItem(id));
     }
 
     public void moveToShelf(int id, int amount) {
@@ -108,6 +121,7 @@ public class StockController {
             throw new RuntimeException("Cannot find Item id: "+id);
         if (!c.moveToShelf(id, amount))
             throw new RuntimeException("Amount is too large");
+        mapper.updateItem(getItem(id));
     }
 
     public void changeShelf(int id, int shelf) {
@@ -115,28 +129,36 @@ public class StockController {
         if (c == null)
             throw new RuntimeException("Cannot find Item id: "+id);
         c.changeShelf(id, shelf);
+        mapper.updateItem(getItem(id));
     }
-
 
     public void addItemDiscount(LocalDate start, LocalDate end, int discountPr, int id) {
         Category c = getCategory(id);
         if (c == null)
             throw new RuntimeException("Cannot find Item id: "+id);
-        c.addItemDiscount(start, end, discountPr, id);
+        Discount d = new Discount(start, end, discountPr);
+        c.addItemDiscount(d, id);
+        mapper.addPriceDiscount(d, id);
     }
 
     public void addCategoryDiscount(LocalDate start, LocalDate end, int discountPr, String catName) {
         Category c = getCategory(catName);
         if (c == null)
             throw new RuntimeException("Cannot find Category: "+catName);
-        c.addCategoryDiscount(start, end, discountPr);
+        Discount d = new Discount(start, end, discountPr);
+        ResponseT<List<Item>> resItem = c.addCategoryDiscount(d);
+        for(Item i : resItem.value) {
+            mapper.addPriceDiscount(d, i.getId());
+        }
     }
 
     public void addManuDiscount(LocalDate start, LocalDate end, int discountPr, int id) {
         Category c = getCategory(id);
         if (c == null)
             throw new RuntimeException("Cannot find Item id: "+id);
-        c.addManuDiscount(start, end, discountPr, id);
+        Discount d = new Discount(start, end, discountPr);
+        c.addManuDiscount(d, id);
+        mapper.addCostDiscount(d, id);
     }
 
     public String stkReport() {

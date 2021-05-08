@@ -1,5 +1,8 @@
 package BussinessLayer.Inventory;
 
+import BussinessLayer.Response;
+import BussinessLayer.ResponseT;
+
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,6 +35,11 @@ public class Category {
         i.addPriceDiscount(new Discount(start, end, discountPr));
     }
 
+    public void addItemDiscount(Discount d, int id) {
+        Item i = getItem(id);
+        i.addPriceDiscount(d);
+    }
+
     public boolean addToStorage(int id, int amount) {
         Item i = getItem(id);
         if (i == null)
@@ -53,11 +61,19 @@ public class Category {
         return i.changeShelf(shelf);
     }
 
-    public void addCategoryDiscount(LocalDate start, LocalDate end, int discountPr) {
+    public ResponseT<List<Item>> addCategoryDiscount(LocalDate start, LocalDate end, int discountPr) {
         Discount d = new Discount(start, end, discountPr);
         for(Item i : items) {
             i.addPriceDiscount(d);
         }
+        return new ResponseT<>(items);
+    }
+
+    public ResponseT<List<Item>> addCategoryDiscount(Discount d) {
+        for(Item i : items) {
+            i.addPriceDiscount(d);
+        }
+        return new ResponseT<>(items);
     }
 
     public void addManuDiscount(LocalDate start, LocalDate end, int discountPr, int id) {
@@ -65,6 +81,13 @@ public class Category {
         if (i == null)
             return;
         i.addCostDiscount(new Discount(start, end, discountPr));
+    }
+
+    public void addManuDiscount(Discount d, int id) {
+        Item i = getItem(id);
+        if (i == null)
+            return;
+        i.addCostDiscount(d);
     }
 
     public void addSubCategory(Category sub) {
