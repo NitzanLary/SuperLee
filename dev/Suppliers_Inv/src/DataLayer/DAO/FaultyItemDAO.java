@@ -22,7 +22,7 @@ public class FaultyItemDAO extends DAO{
 
     }
 
-    public ResponseT read() {
+    public ResponseT<List<FaultyItemDTO>> read() {
         String SQL = "SELECT * FROM faultyItem";
         List<FaultyItemDTO> faultyList = new LinkedList<>();
         try {

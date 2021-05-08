@@ -59,7 +59,7 @@ public class SaleDAO extends DAO {
         return new Response();
     }
 
-    public ResponseT read() {
+    public ResponseT<List<SaleDTO>> read() {
         String SQL = "SELECT * FROM Sale";
         List<SaleDTO> saleList = new LinkedList<>();
         try {

@@ -76,15 +76,42 @@ public class Mapper {
             ResponseT<List<CategoryDTO>> catRes = categoryDAO.read();
             ResponseT<List<CategoryItemsDTO>> catItemRes = categoryDAO.readCategoryItems();
             ResponseT<List<subCategoriesDTO>> subCatRes = categoryDAO.readSubCategory();
-            List<Category> res= new LinkedList<>();
+            List<Category> allCats= new LinkedList<>();
+            List<Category> firstCats = new LinkedList<>();
             if (!itemsRes.ErrorOccured() && !catRes.ErrorOccured() && !catItemRes.ErrorOccured() && !subCatRes.ErrorOccured()) {
+                ResponseT<List<Discount>> disRes = loadDiscounts(itemsRes.value);
+                if (disRes.ErrorOccured()) {
+                    return new ResponseT<>("something went wrong with loading discounts");
+                }
+                //loading categories
                 for(CategoryDTO dbCat : catRes.value) {
-                    res.add(new Category(dbCat.getName()));
+                    Category cat = new Category(dbCat.getName());
+                    allCats.add(cat);
+                    firstCats.add(cat);
+                }
+                //adding items to categories
+                for(CategoryItemsDTO catItem : catItemRes.value) {
+                    ResponseT<Item> iRes = getItem(catItem.getItemID(), itemsRes.value);
+                    ResponseT<Category> cRes = getCat(catItem.getCatName(), allCats);
+                    if (!iRes.ErrorOccured() && !cRes.ErrorOccured()) {
+                        cRes.value.addItem(iRes.value);
+                    }
+                }
+                //setting SubCategories
+                for(subCategoriesDTO subCat : subCatRes.value) {
+                    ResponseT<Category> father = getCat(subCat.getFatherCategory(), allCats);
+                    ResponseT<Category> child = getCat(subCat.getChildCategory(), allCats);
+                    if(!father.ErrorOccured() && !child.ErrorOccured()) {
+                        father.value.addSubCategory(child.value);
+                        firstCats.remove(getCat(subCat.getChildCategory(), allCats).value);
+                    } else {
+                        return new ResponseT<>("Could not load Categories");
+                    }
                 }
             } else {
                 return new ResponseT<>("Could not load Categories");
             }
-            return new ResponseT<>(res);
+            return new ResponseT<>(firstCats);
         }
 
         public ResponseT<List<FaultyItem>> loadFaulty() {
@@ -164,6 +191,18 @@ public class Mapper {
                 }
             }
             return new ResponseT<>("Error");
+         }
+
+         private ResponseT<Category> getCat(String name, List<Category> cats) {
+            if (name == null) {
+                return null;
+            }
+             for(Category c : cats) {
+                 if(c.getName().equals(name)) {
+                     return new ResponseT<>(c);
+                 }
+             }
+             return new ResponseT<>("Error");
          }
 
         //for testing purpeses
