@@ -17,6 +17,12 @@ public class Role{
         return new Role(name);
     }
 
+    //RoleDto to Role
+
+    public Role(RoleDTO other){
+        name = other.getName();
+    }
+
     public boolean compare(String r2){
         return name.equals(r2);
     }

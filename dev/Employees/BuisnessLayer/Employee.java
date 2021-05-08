@@ -43,6 +43,19 @@ public class Employee {
         dateOfHire = other.dateOfHire;
     }
 
+    //dto to employee
+    public Employee(EmployeeDTO other){
+        name = other.getName();
+        ID = other.getID();
+        bankAccount = other.getBankAccount();
+        salary = other.getSalary();
+        roles = new ArrayList<>();
+        for (RoleDTO role : other.getRoles())
+            roles.add(new Role(role));
+        terms = new TermsOfEmployee(other.getSickDays(), other.getAdvancedStudyFund(), other.getDaysOff());
+        dateOfHire = other.getDateOfHire();
+    }
+
 
     public void setDTO(EmployeeDAO dao) {
         // mapping each role into its equivalent RoleDTO

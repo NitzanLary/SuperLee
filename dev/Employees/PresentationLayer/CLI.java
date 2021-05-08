@@ -346,4 +346,10 @@ public class CLI {
                     """.formatted(e.getID().getValue(), e.getName().getValue(), e.getRolesTostring()));
         }
     }
+
+    public void runWithConsole() {
+    }
+
+//    public Delivery.BusinessLayer.FacadeController getFacade() {
+//    }
 }
