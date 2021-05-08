@@ -21,15 +21,13 @@ public class CategoryDAO extends DAO{
 
     public ResponseT<CategoryDTO> create(Category c) {
         CategoryDTO toInsert = new CategoryDTO(c);
-        String SQL = "INSERT INTO Category (name) VALUE (?)";
+        String SQL = "INSERT INTO Category (name) VALUES (?)";
         try {
             ResponseT<Connection> r = getConn();
             if (!r.ErrorOccured()) {
                 PreparedStatement ps = r.value.prepareStatement(SQL);
                 ps.setString(1, toInsert.getName());
-                if (!ps.execute()) {
-                    return new ResponseT("Could not add category to DB");
-                }
+                ps.execute();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -40,16 +38,14 @@ public class CategoryDAO extends DAO{
 
     public Response createSubCategory(Category c, String fatherName) {
         subCategoriesDTO toInsert = new subCategoriesDTO(fatherName, c.getName());
-        String SQL = "INSERT INTO subCategories (fatherCategory, childCategory) VALUE (?, ?)";
+        String SQL = "INSERT INTO subCategories (fatherCategory, childCategory) VALUES (?, ?)";
         try {
             ResponseT<Connection> r = getConn();
             if (!r.ErrorOccured()) {
                 PreparedStatement ps = r.value.prepareStatement(SQL);
                 ps.setString(1, toInsert.getFatherCategory());
                 ps.setString(2, toInsert.getChildCategory());
-                if (!ps.execute()) {
-                    return new Response("Could not add sub category to DB");
-                }
+                ps.execute();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -60,17 +56,14 @@ public class CategoryDAO extends DAO{
 
     public Response createCategoryItems(Category c, int itemID) {
         CategoryItemsDTO toInsert = new CategoryItemsDTO(c.getName(), itemID);
-        String SQL = "INSERT INTO CategoryItems (catName, itemID) VALUE (?, ?)";
+        String SQL = "INSERT INTO CategoryItems (catName, itemID) VALUES (?, ?)";
         try {
             ResponseT<Connection> r = getConn();
             if (!r.ErrorOccured()) {
                 PreparedStatement ps = r.value.prepareStatement(SQL);
                 ps.setString(1, toInsert.getCatName());
                 ps.setInt(2, toInsert.getItemID());
-                if (!ps.execute()) {
-                    System.out.println("asdasdsadsadsadsads");
-                    return new Response("Could not add category-item to DB");
-                }
+                ps.execute();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -87,7 +80,6 @@ public class CategoryDAO extends DAO{
             if(!r.ErrorOccured()) {
                 PreparedStatement ps = r.value.prepareStatement(SQL);
                 ps.setString(1, toDelete.getName());
-
                 if(!ps.execute()) {
                     return new Response("cannot delete category from db");
                 }

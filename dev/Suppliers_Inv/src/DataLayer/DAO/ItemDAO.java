@@ -50,9 +50,7 @@ public class ItemDAO extends DAO {
                 ps.setInt(7, toInsert.getStorageQuantity());
                 ps.setInt(8, toInsert.getMinAlert());
                 ps.setDouble(9, toInsert.getCost());
-                if(!ps.execute()) {
-                    return new ResponseT("cannot add item to db");
-                }
+                ps.execute();
             }
         }catch (Exception e) {
             return new ResponseT("cannot add item to db");
@@ -76,9 +74,7 @@ public class ItemDAO extends DAO {
                 ps.setDouble(7 , toUpdate.getCost());
                 ps.setInt(8, toUpdate.getMinAlert());
                 ps.setInt(9, toUpdate.getId());
-                if(!ps.execute()) {
-                    return new ResponseT("cannot update item to db");
-                }
+                ps.execute();
             }
         }catch (Exception e) {
             return new ResponseT("cannot update item to db");

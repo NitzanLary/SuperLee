@@ -31,6 +31,7 @@ public class DiscountDAO extends DAO{
                 PreparedStatement ps = r.value.prepareStatement(SQL);
                 ResultSet rs = ps.executeQuery();
                 while(rs.next()) {
+                    System.out.println(rs.getDate("start"));
                     result.add(new DiscountDTO(rs.getDate("start").toLocalDate(), rs.getDate("end").toLocalDate(), rs.getInt("discountPr"),rs.getInt("itemId")));
                 }
             } else {

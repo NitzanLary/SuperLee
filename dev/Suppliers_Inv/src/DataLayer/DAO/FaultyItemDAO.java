@@ -50,9 +50,7 @@ public class FaultyItemDAO extends DAO{
                 ps.setInt(1, toInsert.getItemId());
                 ps.setDate(2 , Date.valueOf(toInsert.getExpDate()));
                 ps.setInt(3 , toInsert.getAmount());
-                if(!ps.execute()) {
-                    return new ResponseT("cannot add faulty item to db");
-                }
+                ps.execute();
             }
         }catch (Exception e) {
             return new ResponseT("cannot add faulty item to db");
@@ -70,9 +68,7 @@ public class FaultyItemDAO extends DAO{
                 ps.setInt(1, toUpdate.getAmount());
                 ps.setInt(2, toUpdate.getItemId());
                 ps.setDate(3, Date.valueOf(toUpdate.getExpDate()));
-                if(!ps.execute()) {
-                    return new Response("cannot update faulty item to db");
-                }
+                ps.execute();
             }
         }catch (Exception e) {
             return new Response("cannot update faulty item to db");

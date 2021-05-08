@@ -27,10 +27,7 @@ public class SaleDAO extends DAO {
                 ps.setDate(2, Date.valueOf(toInsert.getDate().toLocalDate()));
                 ps.setDouble(3, toInsert.getPrice());
                 ps.setDouble(4, toInsert.getCost());
-
-                if (!ps.execute()) {
-                    return new ResponseT("Could not add sale to DB");
-                }
+                ps.execute();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -48,7 +45,6 @@ public class SaleDAO extends DAO {
                 PreparedStatement ps = r.value.prepareStatement(SQL);
                 ps.setInt(1, toDelete.getItemID());
                 ps.setDate(2, Date.valueOf(toDelete.getDate().toLocalDate()));
-
                 if(!ps.execute()) {
                     return new Response("cannot delete sale from db");
                 }
