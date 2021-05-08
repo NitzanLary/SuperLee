@@ -7,6 +7,7 @@ import java.time.LocalDate;
 
 import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public abstract class Shift {
 
@@ -25,11 +26,30 @@ public abstract class Shift {
         constrains = new HashMap<Employee, Integer>();
         assignedEmployees = new HashMap<String, Employee>();
         assignedRolesEmp = new HashMap<>();
-//        dto = new ShiftDTO(date, start, end, closed)
+        dto = new ShiftDTO(date, start, end, closed, getConstrainsDTO(), getAssigneesDTO(), getRolesMap(), _dao);
     }
 
-    public Map<EmployeeDTO, Integer> constrainsDTO() {
-        for (Map.Entry<Employee, Integer> entry : constrains)
+    private Map<EmployeeDTO, Integer> getConstrainsDTO() {
+        Map<EmployeeDTO, Integer> constraintsDTO = new HashMap<>();
+        for (Map.Entry<Employee, Integer> entry : constrains.entrySet())
+            constraintsDTO.put(entry.getKey().getDTO(), entry.getValue());
+        return constraintsDTO;
+    }
+
+    private Map<String, EmployeeDTO> getAssigneesDTO() {
+        Map<String, EmployeeDTO> assigneesDTO = new HashMap<>();
+        for (Map.Entry<String, Employee> entry : assignedEmployees.entrySet())
+            assigneesDTO.put(entry.getKey(), entry.getValue().getDTO());
+        return assigneesDTO;
+    }
+
+    private Map<String, List<EmployeeDTO>> getRolesMap() {
+        Map<String, List<EmployeeDTO>> rolesMap = new HashMap<>();
+        for (Map.Entry<String, List<Employee>> entry : assignedRolesEmp.entrySet()){
+            List<EmployeeDTO> dtos = entry.getValue().stream().map(Employee::getDTO).collect(Collectors.toList());
+            rolesMap.put(entry.getKey(), dtos);
+        }
+        return rolesMap;
     }
 
     public abstract Shift clone();

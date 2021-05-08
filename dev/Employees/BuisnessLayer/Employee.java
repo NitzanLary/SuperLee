@@ -170,5 +170,7 @@ public class Employee {
     }
 
 
-
+    public EmployeeDTO getDTO() {
+        return dto;
+    }
 }
