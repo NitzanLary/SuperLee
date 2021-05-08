@@ -5,6 +5,7 @@ import DataLayer.Mapper;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class OrderController {
 
@@ -24,7 +25,6 @@ public class OrderController {
         prodController = prodController.getInstance();
         mapper = Mapper.getInstance();
         mapper.loadOrders();
-        mapper.loadPeriodic();
     }
 
     public static OrderController getInstance()
@@ -182,8 +182,9 @@ public class OrderController {
     }
 
     public HashMap<Integer, PeriodicOrder> checkForApproachingPOrders() {
+        LinkedList<PeriodicOrder> perOrds = mapper.loadPeriodic().value;
         HashMap<Integer, PeriodicOrder> orders = new HashMap<>();
-        for(PeriodicOrder po : periodicOrder.values()){
+        for(PeriodicOrder po : perOrds){
             LocalDate checkDate = po.getDateOfSupply().plusDays(po.getInterval()+1); // +1 represent check if the order is 24 hours before arriving time
             if(checkDate.equals(LocalDate.now()))
                 orders.put(po.getpOrderID(),po);

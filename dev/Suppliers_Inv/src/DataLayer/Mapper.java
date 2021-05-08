@@ -172,9 +172,9 @@ public class Mapper {
         return new ResponseT<>(res);
     }
 
-    public ResponseT<List<PeriodicOrder>> loadPeriodic() {
+    public ResponseT<LinkedList<PeriodicOrder>> loadPeriodic() {
         ResponseT<List<PeriodicOrderDTO>> perOrderRes = periodicOrderDAO.read();
-        List<PeriodicOrder> res = new LinkedList<>();
+        LinkedList<PeriodicOrder> res = new LinkedList<>();
         if (!perOrderRes.ErrorOccured()) {
             for (PeriodicOrderDTO dbPeriodic : perOrderRes.value) {
                 HashMap<Integer,Integer> productsInOrder = periodicOrderDAO.getProductsFromPeriod(dbPeriodic.getOrderID()).value; //all products from specific order
