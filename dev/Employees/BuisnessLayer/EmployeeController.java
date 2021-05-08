@@ -31,7 +31,11 @@ public class EmployeeController {
         if (sickDays < 0 || studyFund < 0 || daysOff < 0)
             return new Response("All values of terms must be greater than 0");
         TermsOfEmployee terms = new TermsOfEmployee(sickDays, studyFund, daysOff);
-        Role role = new Role(roleName);
+        // checking type of role (in case it is a driver)
+        Role role;
+        if (roleName.equals("Driver"))
+            role = new Role(roleName);
+//        else role = new DriverRole(roleName, )
         Employee e;
         try{
              e = new Employee(name, ID, _dateOfHire);
