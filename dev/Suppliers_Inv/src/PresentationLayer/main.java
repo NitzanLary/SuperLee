@@ -36,10 +36,6 @@ public class main {
                 // Inventory System
                 case 2:
                     INV_IO io = INV_IO.getInstance();
-                    String init = io.getString("do you want to load initial data (y = yes)");
-                    if (init.equals("y")) {
-                        io.initData();
-                    }
                     io.start();
                     break;
 

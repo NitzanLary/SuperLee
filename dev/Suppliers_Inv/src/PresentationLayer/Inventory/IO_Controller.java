@@ -50,20 +50,6 @@ public class IO_Controller {
         if(action == 7) { removeItem(); }
     }
 
-    public void initData() {
-        invCtrl.addCategory("Dairy");
-        invCtrl.addItem(1,"Milk", 5, 3,11, "Tnova", 10, 15,  25, "Dairy");
-        invCtrl.addItem(2,"Cheese", 10, 5,10, "Tnova", 10, 15, 7, "Dairy");
-        invCtrl.addCategory("Drinks");
-        invCtrl.addSubCategory("Soda", "Drinks");
-        invCtrl.addItem(3,"Water", 4, 1,12, "Ein Gedi", 10, 20, 30, "Drinks");
-        invCtrl.addItem(4,"Cola", 6, 2,13, "Coka Cola", 20, 1, 20, "Soda");
-        invCtrl.addItem(5,"Fanta", 6, 2,13, "Coka Cola", 20, 1, 20, "Soda");
-        invCtrl.addSubCategory("Diet", "Soda");
-        invCtrl.addItem(6,"Cola", 6, 2,14, "Coka Cola", 20, 1, 21, "Diet");
-        invCtrl.addItem(7,"Fanta", 6, 2,14, "Coka Cola", 20, 1, 10, "Diet");
-    }
-
     private void badInput(String msg){
         io.badInput("The input you have entered is invalid\n" + msg);
     }

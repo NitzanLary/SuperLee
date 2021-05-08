@@ -26,11 +26,6 @@ public class INV_IO {
         scanner = new Scanner(System.in);
     }
 
-    //adds a default data to the system for testing
-    public void initData() {
-        ioCtrl.initData();
-    }
-
     //starts the main menu of the program
     public void start() {
         int action;

@@ -1,5 +1,9 @@
 package BussinessLayer.Inventory;
 
+import BussinessLayer.ResponseT;
+import DataLayer.Mapper;
+
+import javax.xml.ws.Response;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
@@ -8,10 +12,19 @@ import java.util.List;
 public class RecordController {
     private List<FaultyItem> faultyItems;
     private List<Sale> sales;
+    private Mapper mapper;
 
     public RecordController(){
-        faultyItems = new LinkedList<FaultyItem>(); //need to change?
-        sales = new LinkedList<Sale>(); //need to change?
+        mapper = Mapper.getInstance();
+        ResponseT<List<FaultyItem>> resFault = mapper.loadFaulty();
+        ResponseT<List<Sale>> resSale = mapper.loadSales();
+        if (!resFault.ErrorOccured() && !resSale.ErrorOccured() && resSale.value != null && resFault.value != null) {
+            faultyItems = resFault.value;
+            sales = resSale.value;
+        } else {
+            faultyItems = new LinkedList<FaultyItem>();
+            sales = new LinkedList<Sale>();
+        }
     }
 
     //adds a sale to list of sales and return Sale object

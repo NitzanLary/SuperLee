@@ -1,15 +1,25 @@
 package BussinessLayer.Inventory;
 
+import BussinessLayer.Response;
+import BussinessLayer.ResponseT;
+import DataLayer.Mapper;
+
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
 public class StockController {
     private List<Category> categories;
-
+    private Mapper mapper;
 
     public StockController() {
-        categories = new LinkedList<>();
+        mapper = Mapper.getInstance();
+        ResponseT<List<Category>> catRes = mapper.loadCategory();
+        if (catRes.ErrorOccured() || catRes.value == null) {
+            categories = new LinkedList<>();
+        } else {
+            categories = catRes.value;
+        }
     }
 
     private Category getCategory(String name) {
