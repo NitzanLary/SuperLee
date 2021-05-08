@@ -1,5 +1,7 @@
 package BussinessLayer.Supplier;
 
+import DataLayer.Mapper;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -13,12 +15,14 @@ public class OrderController {
     public ProductController prodController;
     public int nextOrderID;
     public int nextPeriodOrderID;
+    private Mapper mapper;
 
     private OrderController()
     {
         nextOrderID = 1;
         orders = new HashMap<>();
         prodController = prodController.getInstance();
+        mapper = Mapper.getInstance();
     }
 
     public static OrderController getInstance()
@@ -116,6 +120,7 @@ public class OrderController {
             int quantity = products.get(productId);
             finalPrice += prodController.calculateDiscount(productId, quantity, suppID);
         }
+        mapper.addOrder(orders.get(OrderID), finalPrice);
         orders.get(OrderID).setPrice(finalPrice);
         return finalPrice;
     }
@@ -143,6 +148,7 @@ public class OrderController {
     }
 
     public void addProdToBill(int supplierID, int pid, int minQ, int discount) {
+        mapper.addBillOfQuantity(supplierID,pid,minQ,discount);
         prodController.addProdToBill(supplierID,pid,minQ,discount);
     }
 

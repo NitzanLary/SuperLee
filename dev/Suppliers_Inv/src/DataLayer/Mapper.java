@@ -6,7 +6,6 @@ import BussinessLayer.Supplier.*;
 import DataLayer.DAO.*;
 import DataLayer.DTO.*;
 
-import javax.xml.ws.Response;
 import java.util.*;
 
 public class Mapper {
@@ -26,6 +25,7 @@ public class Mapper {
     private DiscountDAO costDisDAO;
     private SaleDAO saleDAO;
     private FaultyItemDAO faultyItemDAO;
+
 
     private static class MapperHolder {
         private static Mapper instance = new Mapper();
@@ -293,6 +293,50 @@ public class Mapper {
     public void getItems() {
         ResponseT<List<ItemDTO>> result = itemDAO.read();
         System.out.println(result.value.get(0).getName());
+    }
+
+    public void addSupplier(SupplierCard supCard) {
+        SupplierDTO supplier = new SupplierDTO(supCard.getSupplierID(), supCard.getSupplierName(),
+                supCard.getAddress(), supCard.getEmail(), supCard.getBankAcc(), supCard.getPaymentMethod(),
+                supCard.getInfoSupplyDay(), supCard.getContacts(), supCard.isPickUp());
+        supplierDAO.insert(supplier);
+    }
+
+    public void deleteSupCard(int supplierID) {
+        supplierDAO.delete(supplierID);
+    }
+
+    public void updateSupplierStringColumn(String colName, int supplierID, String newVal) {
+        supplierDAO.update(colName, supplierID, newVal);
+    }
+
+    public void updateSupplierIntColumn(String colName, int supplierID, int newVal) {
+        supplierDAO.update(colName, supplierID, newVal);
+    }
+
+    public void updateSupplierBoolColumn(String colName, int supplierID, boolean newVal) {
+        supplierDAO.update(colName, supplierID, newVal);
+    }
+
+    public void addOrder(Order order, double finalPrice) {
+        OrderDTO orderDTO = new OrderDTO(order.getOrderID(), order.getSupplierID(), order.isDelivered(),
+                order.getDate(), finalPrice);
+    }
+
+    public void addBillOfQuantity(int supplierID, int pid, int minQ, int discount) {
+        billOfQuantityDAO.insert(supplierID, pid, minQ, discount);
+    }
+
+    public void deleteBillOfQ(int supplierID) {
+        billOfQuantityDAO.delete(supplierID);
+    }
+
+    public void addProductToSupplier(int productID, int supplierID, String name, String category, double price) {
+        productsOfSupplierDAO.insert(productID,supplierID,name,category,price);
+    }
+
+    public void deleteProductFromSupplier(int supplierID, int productID) {
+        productsOfSupplierDAO.delete(supplierID,productID);
     }
 
 }

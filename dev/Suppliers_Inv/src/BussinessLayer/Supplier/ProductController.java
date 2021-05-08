@@ -1,5 +1,7 @@
 package BussinessLayer.Supplier;
 
+import DataLayer.Mapper;
+
 import java.util.HashMap;
 
 public class ProductController {
@@ -8,11 +10,13 @@ public class ProductController {
 
     private HashMap<Integer, HashMap<Integer, BussinessLayer.Supplier.Product>> supplierProd; // <supID: Integer, HashMap<Integer:productID,Product>>
     private HashMap<Integer, BussinessLayer.Supplier.BillOfQuantities> discounts; // <supID: Integer, List<Product>>
+    private Mapper mapper;
 
     private ProductController()
     {
         supplierProd = new HashMap<>();
         discounts = new HashMap<>();
+        mapper = Mapper.getInstance();
     }
 
     public static ProductController getInstance()
@@ -39,6 +43,7 @@ public class ProductController {
     }
 
     public void deleteBillOfQuantity(int supplierID) {
+        mapper.deleteBillOfQ(supplierID);
         BussinessLayer.Supplier.BillOfQuantities tmp = discounts.remove(supplierID);
         if (tmp == null){
             throw new IllegalArgumentException("This Supplier Does Not Have Bill Of Quantity To Delete");
@@ -53,6 +58,7 @@ public class ProductController {
             throw new IllegalArgumentException("This Item Already Exists In The Supplier Products List");
         }
         else{
+            mapper.addProductToSupplier(productID, supplierID, name, category, price);
             BussinessLayer.Supplier.Product prod = new BussinessLayer.Supplier.Product(productID,supplierID, name,category, price);
             supplierProd.get(supplierID).put(productID,prod);
         }
@@ -66,6 +72,7 @@ public class ProductController {
             throw new IllegalArgumentException("This Item Does Not Exists In The Supplier Products List");
         }
         else{
+            mapper.deleteProductFromSupplier(supplierID, productID);
             supplierProd.get(supplierID).remove(productID);
         }
     }

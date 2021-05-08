@@ -44,15 +44,53 @@ public class SupplierDAO extends DAO {
                 supplier.getContacts(), supplier.isPickUp());
     }
 
-    //TODO
-    public Response update(String col, String ID, String newVal){
+    //update string column
+    public Response update(String col, int ID, String newVal){
         String sql = String.format("UPDATE Employees SET %s = ? WHERE EmpID = ?", col);
 
         try(Connection conn = getConn().value;
             PreparedStatement pstmt = conn.prepareStatement(sql)){
 
             pstmt.setString(1, newVal);
-            pstmt.setString(2, ID);
+            pstmt.setInt(2, ID);
+
+            pstmt.executeUpdate();
+
+        }catch(SQLException e){
+            return new Response(e.getMessage());
+        }
+
+        return new Response();
+    }
+
+    //update int column
+    public Response update(String col, int ID, int newVal){
+        String sql = String.format("UPDATE Employees SET %s = ? WHERE EmpID = ?", col);
+
+        try(Connection conn = getConn().value;
+            PreparedStatement pstmt = conn.prepareStatement(sql)){
+
+            pstmt.setInt(1, newVal);
+            pstmt.setInt(2, ID);
+
+            pstmt.executeUpdate();
+
+        }catch(SQLException e){
+            return new Response(e.getMessage());
+        }
+
+        return new Response();
+    }
+
+    //update bool column
+    public Response update(String col, int ID, boolean newVal){
+        String sql = String.format("UPDATE Employees SET %s = ? WHERE EmpID = ?", col);
+
+        try(Connection conn = getConn().value;
+            PreparedStatement pstmt = conn.prepareStatement(sql)){
+
+            pstmt.setBoolean(1, newVal);
+            pstmt.setInt(2, ID);
 
             pstmt.executeUpdate();
 

@@ -28,6 +28,18 @@ public class Order {
         return orderID;
     }
 
+    public int getSupplierID() {
+        return supplierID;
+    }
+
+    public boolean isDelivered() {
+        return delivered;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
     public LocalDate getDate() {
         return date;
     }
