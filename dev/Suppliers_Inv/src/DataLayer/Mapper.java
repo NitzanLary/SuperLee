@@ -188,7 +188,7 @@ public class Mapper {
         return new ResponseT<>(res);
     }
 
-    public ResponseT<HashMap<Integer,Product>> loadProducts() {
+    public ResponseT<HashMap<Integer,HashMap<Integer,Product>>> loadProducts() {
         ResponseT<List<ProductsOfSupplierDTO>> productRes = productsOfSupplierDAO.read();
         HashMap<Integer,Product> res = new HashMap<>();
         HashMap<Integer,HashMap<Integer, Product>> res1 = new HashMap<>();
