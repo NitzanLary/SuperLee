@@ -5,8 +5,7 @@ import BussinessLayer.ResponseT;
 import BussinessLayer.Supplier.*;
 import DataLayer.DAO.*;
 import DataLayer.DTO.*;
-
-import javax.xml.ws.Response;
+import BussinessLayer.Response;
 import java.util.*;
 
 public class Mapper {
@@ -49,6 +48,71 @@ public class Mapper {
     public static Mapper getInstance() {
         return MapperHolder.instance;
     }
+
+
+    public ResponseT<CategoryDTO> addSubCategory(Category cat, String superName) {
+        ResponseT<CategoryDTO> catDto = categoryDAO.create(cat);
+        if(catDto.ErrorOccured() || categoryDAO.createSubCategory(cat, superName).ErrorOccured()) {
+            return new ResponseT<>("could not add sub category");
+        }
+        return new ResponseT<>(catDto.value);
+    }
+
+    public ResponseT<CategoryDTO> addCategory(Category cat) {
+        ResponseT<CategoryDTO> catDto = categoryDAO.create(cat);
+        if(catDto.ErrorOccured()) {
+            return new ResponseT<>("could not add sub category");
+        }
+        return new ResponseT<>(catDto.value);
+    }
+
+    public ResponseT<ItemDTO> addItem(Item i, Category c) {
+        ResponseT<ItemDTO> itemRes = itemDAO.create(i);
+        if(itemRes.ErrorOccured() || categoryDAO.createCategoryItems(c, i.getId()).ErrorOccured()) {
+            return new ResponseT<>("Could not add Item");
+        }
+        return new ResponseT<>(itemRes.value);
+    }
+
+    public Response deleteItem(Item item) {
+        if(itemDAO.delete(item).ErrorOccured()){
+            return new Response("error deleting item");
+        }
+        return new Response();
+    }
+
+    public ResponseT<ItemDTO> updateItem(Item item) {
+        ResponseT<ItemDTO> resItem = itemDAO.update(item);
+        if(resItem.ErrorOccured()) {
+            return new ResponseT<>("cannot update item");
+        }
+        return new ResponseT<>(resItem.value);
+    }
+
+    public ResponseT<DiscountDTO> addPriceDiscount(Discount d, int id) {
+        ResponseT<DiscountDTO> resDis = priceDisDAO.create(d,id);
+        if (resDis.ErrorOccured()) {
+            return new ResponseT<>("cannot add discount");
+        }
+        return new ResponseT<>(resDis.value);
+    }
+
+    public ResponseT<DiscountDTO> addCostDiscount(Discount d, int id) {
+        ResponseT<DiscountDTO> resDis = costDisDAO.create(d,id);
+        if (resDis.ErrorOccured()) {
+            return new ResponseT<>("cannot add discount");
+        }
+        return new ResponseT<>(resDis.value);
+    }
+
+    public ResponseT<SaleDTO> addSale(Sale newSale) {
+        return saleDAO.create(newSale);
+    }
+
+    public ResponseT<FaultyItemDTO> addFaulty(FaultyItem newFI) {
+        return faultyItemDAO.create(newFI);
+    }
+
 
     //    public ResponseT<SupplierDTO> getSupplier(Integer supplierID) {
 //        if (suppliers.containsKey(supplierID))
