@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -60,6 +61,26 @@ public class ProductsInOrderDAO extends DAO {
         return new Response();
     }
     //TODO: update functions???
+
+    public ResponseT<HashMap<Integer, Integer>> getProductsFromOrder(int orderID) {
+        String SQL = "SELECT productID, quantity FROM ProductsInOrder WHERE orderID = ?";
+        HashMap<Integer,Integer> prodQua = new HashMap<>();
+        try {
+            ResponseT<Connection> r = getConn();
+            if(!r.ErrorOccured()) {
+                PreparedStatement ps = r.value.prepareStatement(SQL);
+                ps.setInt(1, orderID);
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()) {
+                    prodQua.put(rs.getInt("productID"), rs.getInt("quantity"));
+                }
+            }
+        }catch (Exception e) {
+            return new ResponseT("cannot read products from order");
+        }
+        return new ResponseT<>(prodQua);
+    }
+
 
     public ResponseT<List<ProductsInOrderDTO>> read() {
         String SQL = "SELECT * FROM ProductsInOrder";
