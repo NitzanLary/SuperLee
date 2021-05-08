@@ -1,5 +1,7 @@
 package Employees.BuisnessLayer;
 
+import Employees.DataAccessLayer.DTOs.RoleDTO;
+
 import java.util.Comparator;
 
 public class Role{
@@ -13,6 +15,12 @@ public class Role{
 
     public Role(Role other){
         name = other.name;
+    }
+
+    //RoleDto to Role
+
+    public Role(RoleDTO other){
+        name = other.getName();
     }
 
     public boolean compare(String r2){
