@@ -341,8 +341,6 @@ public class IO_Supplier {
         }
     }
 
-    // TODO: add to edit: edit quantity of product
-    // TODO: add to edit: show all id of p-orders
     public void editPeriodicOrder(){
         try{
             System.out.println('\n' + "Enter Periodic Order ID You Would Like To Edit: ");
@@ -355,7 +353,8 @@ public class IO_Supplier {
             System.out.println("2. Remove Product From Exists Period Order");
             System.out.println("3. Change Interval Of Supply");
             System.out.println("4. Show All Super-Lee Items");
-            System.out.println("5. Return Back");
+            System.out.println("5. Edit Quantity Of Product"); //TODO
+            System.out.println("6. Return Back");
 
             int caseNumber = Integer.parseInt(scanner.nextLine());
             Response res;
@@ -417,6 +416,19 @@ public class IO_Supplier {
                     break;
 
                 case 5:
+                    System.out.println('\n' + "Enter Product ID You Want To Edit His Quantity:");
+                    productID = Integer.parseInt(scanner.nextLine());
+                    System.out.println('\n' + "Enter New Quantity:");
+                    int quant = Integer.parseInt(scanner.nextLine());
+                    res = facadeC.editQuantityForPOrder(productID, orderID,quant);
+                    if (res.ErrorMessage != null) {
+                        System.out.println(res.ErrorMessage);
+                        return;
+                    }
+                    System.out.println("Edit Successfully");
+                    break;
+
+                case 6:
                     return;
 
                 default:
@@ -517,17 +529,42 @@ public class IO_Supplier {
 
     /** This function create from periodic order 1 to n orders from the suppliers in the system **/
     /** If The Create Of The Order Failed The Function Return The OrderID Otherwise Return -1 **/
-    public int createOrdersFromPOrders(int orderID){
-        ResponseT<HashMap<Integer, Integer>> response = facadeC.getProductOfporder(orderID);
+    public int createOrdersFromPOrders(int pOrderID){
+        ResponseT<HashMap<Integer, Integer>> response = facadeC.getProductOfporder(pOrderID);
         if (response.ErrorMessage != null) {
             System.out.println(response.ErrorMessage);
-            return orderID;
+            return pOrderID;
         }
         HashMap<Integer, Integer> prods = response.value;
-        HashMap<Integer,HashMap<Integer, Integer>> ordersToMake = facadeC.findCheapestSupplier(prods); //TODO: finish
+        //ordersToMake --> First Integer represent the supplierID, HashMap represent the products & quantity
+        // that we need to order from this supplier
+        HashMap<Integer,HashMap<Integer, Integer>> ordersToMake = facadeC.findCheapestSupplier(prods);
+        // create order with supplier = supID, and supplier.values() = products
         for(Integer supplier : ordersToMake.keySet()){
-            // create order with supplier = supID, and supplier.values() = products
+            //create new order
+            ResponseT<Integer> res = facadeC.createOrder(supplier);
+            if (res.ErrorMessage != null) {
+                System.out.println(res.ErrorMessage);
+                return pOrderID;
+            }
+            int orderID = res.value;
+            // add each product to the order
+            HashMap<Integer, Integer> supProds = ordersToMake.get(supplier);
+            for(Integer itemID : supProds.keySet()){
+                Response r = facadeC.addProductToOrder(orderID,itemID,supProds.get(itemID));
+                if (r.ErrorMessage != null) {
+                    System.out.println(r.ErrorMessage);
+                    return pOrderID;
+                }
+            }
+            // calculate final price for order
+            Response resp = facadeC.finalPriceForOrder(orderID, supplier);
+            if (resp.ErrorMessage != null) {
+                System.out.println(resp.ErrorMessage);
+                return pOrderID;
+            }
         }
+        return -1;
     }
 
     public void createSupplierCard() {

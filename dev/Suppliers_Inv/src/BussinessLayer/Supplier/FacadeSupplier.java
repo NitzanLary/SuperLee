@@ -457,8 +457,14 @@ public class FacadeSupplier {
         }
     }
 
+    // this function iterate over all suppliers and find for each product in the param:prods the cheapest suppleir
     public HashMap<Integer, HashMap<Integer, Integer>> findCheapestSupplier(HashMap<Integer, Integer> prods) {
-        //TODO
+        //TODO finish@@@@@@@@@@@@@@@@@@@@@@
+        HashMap<Integer, HashMap<Integer, Integer>> supplierAndProds = new HashMap<>();
+        for(Integer item : prods.keySet()){
+            //todo use product controller
+        }
+        return null;
     }
 
 
@@ -482,6 +488,15 @@ public class FacadeSupplier {
     public Response changeInterval(int interval, int orderID) {
         try {
             orderController.changeInterval(interval ,orderID);
+            return new Response();
+        } catch (Exception e) {
+            return new Response(e.getMessage());
+        }
+    }
+
+    public Response editQuantityForPOrder(int productID, int orderID, int quant) {
+        try {
+            orderController.editQuantityForPOrder(orderID, productID,quant);
             return new Response();
         } catch (Exception e) {
             return new Response(e.getMessage());

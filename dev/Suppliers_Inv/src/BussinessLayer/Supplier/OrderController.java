@@ -180,9 +180,8 @@ public class OrderController {
             if(checkDate.equals(LocalDate.now()))
                 orders.put(po.getpOrderID(),po);
         }
-
         //for each order that is 24 hours before delivering we create the order.
-        //TODO finish
+        return orders;
     }
 
     public void removeProdFromPOrder(int productID, int orderID) {
@@ -198,5 +197,17 @@ public class OrderController {
             throw new IllegalArgumentException("The Item Does Not Exist In This Order");
         }
         po.setInterval(interval);
+    }
+
+    public void editQuantityForPOrder(int orderID, int productID, int quant) {
+        PeriodicOrder order = periodicOrder.get(orderID);
+        if(order == null){
+            throw new IllegalArgumentException("The Order Does Not Exist In This Order");
+        }
+        Integer check = order.getProducts().remove(productID);
+        if(check == null){
+            throw new IllegalArgumentException("The Product Does Not Exist In This Order");
+        }
+        order.getProducts().put(productID,quant);
     }
 }
