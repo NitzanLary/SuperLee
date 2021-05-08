@@ -7,7 +7,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public abstract class DAO {
-    private final String url = "jdbc:sqlite:dev/DataBase/SuperLeeDB.db";
+    private final String url = "jdbc:sqlite:dev/Suppliers_Inv/src/DataLayer/InventoryDB.db";
 
     protected ResponseT<Connection> getConn() {
         Connection conn = null;
