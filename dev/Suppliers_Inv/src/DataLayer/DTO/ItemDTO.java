@@ -28,7 +28,7 @@ public class ItemDTO {
         this.minAlert = blItem.getMinAlert();
     }
 
-    public ItemDTO(int id, String name, double price, double cost, int shelfNum, String manufacturer, int shelfQuantity, int storageQuantity) {
+    public ItemDTO(int id, String name, double price, double cost, int shelfNum, String manufacturer, int shelfQuantity, int storageQuantity, int minAlert) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -37,6 +37,7 @@ public class ItemDTO {
         this.manufacturer = manufacturer;
         this.shelfQuantity = shelfQuantity;
         this.shelfQuantity = storageQuantity;
+        this.minAlert = minAlert;
     }
 
     public int getId() {

@@ -3,6 +3,8 @@ import BussinessLayer.Inventory.Category;
 import BussinessLayer.Inventory.Item;
 import BussinessLayer.Inventory.Discount;
 
+import DataLayer.DTO.ItemDTO;
+import DataLayer.Mapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -46,5 +48,11 @@ class ItemTest {
         assertEquals(item.getCost(), 10);
         item.addCostDiscount(d);
         assertEquals(item.getCost(), 8);
+    }
+
+    @Test
+    void getItem() {
+        Mapper map = Mapper.getInstance();
+        map.getItems();
     }
 }

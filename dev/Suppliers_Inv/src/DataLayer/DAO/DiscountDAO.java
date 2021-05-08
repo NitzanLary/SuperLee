@@ -12,6 +12,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
 
 public class DiscountDAO extends DAO{
     private String table;
@@ -20,29 +22,24 @@ public class DiscountDAO extends DAO{
         this.table = table;
     }
 
-    public Response read(int itemId, LocalDate start, LocalDate end) {
-        String SQL = "SELECT * FROM " + table + " WHERE itemId = ? AND start = ? AND end = ?";
-        DiscountDTO toGet = null;
+    public ResponseT<List<DiscountDTO>> read(int itemId, LocalDate start, LocalDate end) {
+        String SQL = "SELECT * FROM " + table;
+        List<DiscountDTO> result = new LinkedList<>();
         try {
             ResponseT<Connection> r = getConn();
             if(!r.ErrorOccured()) {
                 PreparedStatement ps = r.value.prepareStatement(SQL);
-                ps.setInt(1, itemId);
-                ps.setDate(2 , Date.valueOf(start));
-                ps.setDate(3 , Date.valueOf(end));
                 ResultSet rs = ps.executeQuery();
-                if(!rs.isClosed()) {
-                    toGet =  new DiscountDTO(rs.getDate("start").toLocalDate(), rs.getDate("end").toLocalDate(),
-                    rs.getInt("discountPr"), rs.getInt("itemId"));
+                while(rs.next()) {
+                    result.add(new DiscountDTO(rs.getDate("start").toLocalDate(), rs.getDate("end").toLocalDate(), rs.getInt("discountPr"),rs.getInt("itemId")));
                 }
-                if (toGet == null) {
-                    return new Response("failed to get discount");
-                }
+            } else {
+                return new ResponseT("failed to get discount");
             }
         }catch (Exception e) {
-            return new Response("failed to get discount");
+            return new ResponseT("failed to get discount");
         }
-        return new ResponseT<DiscountDTO>(toGet);
+        return new ResponseT<>(result);
     }
 
     public Response create(Discount dis, int itemId) {

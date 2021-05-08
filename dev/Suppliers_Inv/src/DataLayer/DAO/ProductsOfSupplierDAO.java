@@ -1,6 +1,7 @@
 package DataLayer.DAO;
 
 import BussinessLayer.Response;
+import BussinessLayer.ResponseT;
 import DataLayer.DTO.ProductsOfSupplierDTO;
 
 import java.sql.Connection;
@@ -37,6 +38,24 @@ public class ProductsOfSupplierDAO extends DAO {
                 productOfSup.getCategory(), productOfSup.getPrice());
     }
 
-    //TODO: update delete functions
+    public Response delete(Integer productID, Integer supplierID) {
+        String SQL = "DELETE FROM ProductsOfSupplier WHERE productID = ? AND supplierID = ? ";
+        try {
+            ResponseT<Connection> r = getConn();
+            if(!r.ErrorOccured()) {
+                PreparedStatement ps = r.value.prepareStatement(SQL);
+                ps.setInt(1, productID);
+                ps.setInt(2, supplierID);
+
+                if(!ps.execute()) {
+                    return new Response("cannot delete "+productID+" from supplier "+supplierID+ " in db");
+                }
+            }
+        }catch (SQLException e) {
+            return new Response(e.getMessage());
+        }
+        return new Response();
+    }
+    //TODO: update functions ????
 
 }
