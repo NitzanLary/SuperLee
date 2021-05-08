@@ -1,6 +1,7 @@
 package Employees.BuisnessLayer;
 
 import Employees.DataAccessLayer.DTOs.EmployeeDTO;
+import Employees.DataAccessLayer.DTOs.RoleDTO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -39,6 +40,19 @@ public class Employee {
             roles.add(new Role(role));
         terms = new TermsOfEmployee(other.terms);
         dateOfHire = other.dateOfHire;
+    }
+
+    //dto to employee
+    public Employee(EmployeeDTO other){
+        name = other.getName();
+        ID = other.getID();
+        bankAccount = other.getBankAccount();
+        salary = other.getSalary();
+        roles = new ArrayList<>();
+        for (RoleDTO role : other.getRoles())
+            roles.add(new Role(role));
+        terms = new TermsOfEmployee(other.getSickDays(), other.getAdvancedStudyFund(), other.getDaysOff());
+        dateOfHire = other.getDateOfHire();
     }
 
     private boolean isNameValid(String name){
