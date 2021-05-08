@@ -1,10 +1,13 @@
 package Employees.BuisnessLayer;
 
+import Employees.DataAccessLayer.DAOs.EmployeeDAO;
 import Employees.DataAccessLayer.DTOs.EmployeeDTO;
+import Employees.DataAccessLayer.DTOs.RoleDTO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Employee {
     private String name;
@@ -14,6 +17,7 @@ public class Employee {
     private List<Role> roles;
     private TermsOfEmployee terms;
     private LocalDate dateOfHire;
+    private EmployeeDTO dto;
 
     public Employee(String _name, String _ID, LocalDate _dateOfHire) {
         if (!isNameValid(_name))
@@ -34,11 +38,34 @@ public class Employee {
         ID = other.ID;
         bankAccount = other.bankAccount;
         salary = other.salary;
-        roles = new ArrayList<>();
-        for (Role role : other.roles)
-            roles.add(new Role(role));
+        roles = other.roles.stream().map(Role::clone).collect(Collectors.toList());
         terms = new TermsOfEmployee(other.terms);
         dateOfHire = other.dateOfHire;
+    }
+
+    //dto to employee
+    public Employee(EmployeeDTO other){
+        name = other.getName();
+        ID = other.getID();
+        bankAccount = other.getBankAccount();
+        salary = other.getSalary();
+        roles = new ArrayList<>();
+        for (RoleDTO role : other.getRoles())
+            roles.add(new Role(role));
+        terms = new TermsOfEmployee(other.getSickDays(), other.getAdvancedStudyFund(), other.getDaysOff());
+        dateOfHire = other.getDateOfHire();
+    }
+
+
+    public void setDTO(EmployeeDAO dao) {
+        // mapping each role into its equivalent RoleDTO
+        List<RoleDTO> rolesDTO = roles.stream().map(Role::toDTO).collect(Collectors.toList());
+        dto = new EmployeeDTO(name, ID, bankAccount, salary, getTerms().getSickDays(),
+                getTerms().getAdvancedStudyFund(), getTerms().getDaysOff(), dateOfHire, rolesDTO, dao);
+    }
+
+    public Response persist(){
+        return dto.persist();
     }
 
     private boolean isNameValid(String name){
@@ -50,8 +77,7 @@ public class Employee {
     }
 
     private boolean isDateValid(LocalDate date){
-        LocalDate now = LocalDate.now();
-        return true;
+        return date.isAfter(LocalDate.now());
     }
 
     public ResponseT<String> getName() {

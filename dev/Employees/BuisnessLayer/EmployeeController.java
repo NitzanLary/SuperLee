@@ -1,15 +1,23 @@
 package Employees.BuisnessLayer;
 
+import Employees.DataAccessLayer.DAOs.EmployeeDAO;
+import Employees.DataAccessLayer.DTOs.EmployeeDTO;
+import Employees.DataAccessLayer.Objects.Mapper;
+
 import java.time.LocalDate;
 import java.util.HashMap;
 
 public class EmployeeController {
     private static EmployeeController employeeController;
     HashMap<String, Employee> employees;
+    Mapper mapper;
+    EmployeeDAO dao;
 
     private EmployeeController()
     {
         employees = new HashMap<>();
+        mapper = Mapper.getInstance();
+        dao = new EmployeeDAO();
     }
 
     public static EmployeeController getInstance(){
@@ -19,11 +27,12 @@ public class EmployeeController {
     }
 
     public Response AddEmployee(String ID, String name, String bankAccount, int salary,
-                            int sickDays, int studyFund, int daysOff, String roleName, LocalDate _dateOfHire){
+                            int sickDays, int studyFund, int daysOff, String roleName, String licence, LocalDate _dateOfHire){
         if (sickDays < 0 || studyFund < 0 || daysOff < 0)
             return new Response("All values of terms must be greater than 0");
         TermsOfEmployee terms = new TermsOfEmployee(sickDays, studyFund, daysOff);
-        Role role = new Role(roleName);
+        // checking type of role (in case it is a driver)
+        Role role = new Role(roleName, licence);
         Employee e;
         try{
              e = new Employee(name, ID, _dateOfHire);
@@ -34,13 +43,23 @@ public class EmployeeController {
         e.setBankAccount(bankAccount);
         e.setSalary(salary);
         e.AddRole(role);
-        employees.put(e.getID().getValue(), e);
-        return new Response();
+        e.setDTO(dao);
+        Response r = e.persist();
+        if (!r.isErrorOccured())
+            employees.put(e.getID().getValue(), e);
+        return r;
     }
 
     public ResponseT<Employee> getEmployee(String id){
-        if (!employees.containsKey(id)) return new ResponseT(null, "No employee with this ID");
-        return new ResponseT<>(employees.get(id));
+        if (employees.containsKey(id))
+            return new ResponseT<>(employees.get(id));
+        ResponseT<EmployeeDTO> empDto = mapper.getEmployee(id);
+        if(!empDto.isErrorOccured()){
+            Employee e = new Employee(empDto.getValue());
+            employees.put(e.getID().getValue(), e);
+            return new ResponseT<>(e);
+        }
+        return new ResponseT<>(null, empDto.getErrorMessage());
     }
 
     public Response setEmpName(String ID, String newEmpName) {
@@ -97,16 +116,16 @@ public class EmployeeController {
     }
 
     public void initData() {
-        AddEmployee("312174295", "Yanay", "12345", 1000, 30, 500, 30,
-                "General Manager", LocalDate.now());
-        AddEmployee("205952971", "Nitzan", "12345", 1000, 30, 500, 30,
-                "HR Manager", LocalDate.now());
-        AddEmployee("123456789", "Dana", "12345", 1000, 30, 500, 30,
-                "Cashier", LocalDate.now());
-        addRoleToEmp("123456789", "Cleaner");
-        AddEmployee("987654321", "Dafna", "54321", 10000, 30, 500, 30,
-                "Storage", LocalDate.now());
-        addRoleToEmp("987654321", "Driver");
+//        AddEmployee("312174295", "Yanay", "12345", 1000, 30, 500, 30,
+//                "General Manager", LocalDate.now());
+//        AddEmployee("205952971", "Nitzan", "12345", 1000, 30, 500, 30,
+//                "HR Manager", LocalDate.now());
+//        AddEmployee("123456789", "Dana", "12345", 1000, 30, 500, 30,
+//                "Cashier", LocalDate.now());
+//        addRoleToEmp("123456789", "Cleaner");
+//        AddEmployee("987654321", "Dafna", "54321", 10000, 30, 500, 30,
+//                "Storage", LocalDate.now());
+//        addRoleToEmp("987654321", "Driver");
 
     }
 

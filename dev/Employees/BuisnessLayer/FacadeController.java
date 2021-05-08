@@ -40,12 +40,12 @@ public class FacadeController {
      * @return A Response in case an error has occurred.
      */
     public Response addEmployee(String userID, String EmpID, String name, String bankAccount, int salary,
-                                int sickDays, int studyFund, int daysOff, String roleName, LocalDate _dateOfHire){
+                                int sickDays, int studyFund, int daysOff, String roleName,  String licence, LocalDate _dateOfHire){
         ResponseT<Employee> rE = checkAuthorization(userID);
         if (rE.isErrorOccured())
             return rE;
         return employeeController.AddEmployee(EmpID, name, bankAccount, salary, sickDays, studyFund,
-                daysOff, roleName, _dateOfHire);
+                daysOff, roleName, licence, _dateOfHire);
     }
 
     /**
@@ -393,13 +393,13 @@ public class FacadeController {
     }
 
     // init with 2 managers and 1 week forward
-    public void initData(){
-        employeeController.initData();
-        shiftController.add1WeeksSlot();
-        assignEmpToShift("312174295", "123456789", LocalDate.now().plusDays(1), LocalTime.of(14,0), LocalTime.of(22,0), "Cashier");
-        assignEmpToShift("312174295", "987654321", LocalDate.now().plusDays(1), LocalTime.of(14,0), LocalTime.of(22,0), "Driver");
-
-    }
+//    public void initData(){
+//        employeeController.initData();
+//        shiftController.add1WeeksSlot();
+//        assignEmpToShift("312174295", "123456789", LocalDate.now().plusDays(1), LocalTime.of(14,0), LocalTime.of(22,0), "Cashier");
+//        assignEmpToShift("312174295", "987654321", LocalDate.now().plusDays(1), LocalTime.of(14,0), LocalTime.of(22,0), "Driver");
+//
+//    }
 
 //    public ResponseT<List<Shift>> getShiftsHistory(String userID){}
 
