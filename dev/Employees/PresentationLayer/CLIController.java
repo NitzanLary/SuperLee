@@ -37,9 +37,9 @@ public class CLIController {
     }
 
 
-    public void initData() {
-        facade.initData();
-    }
+//    public void initData() {
+//        facade.initData();
+//    }
 
     public ResponseT<Boolean> checkAuthorizedHrOrGenral(String id){
         return facade.checkAuthorizationBool(id);
@@ -144,12 +144,31 @@ public class CLIController {
             daysOff = cli.getInt("Invalid value Enter employee's days off:");
 
         String roleName = cli.getString("Enter employee's Role:");
+
+        String licence = cli.getString("Enter employee's licence, if none, enter -1 :");
+
         LocalDate dateOfHire = cli.getDate("Enter employee's Date of Hire");
+
+
+
+        if (licence.equals("-1")){
+            Response r = facade.addEmployee(clientController.userID, EmpID, name, bankAccount, salary, sickDays, studyFund,
+                    daysOff, roleName, null, dateOfHire);
+            if(r.isErrorOccured())
+                cli.print(r.getErrorMessage());
+            else cli.print("Employee added");
+        }
+
+        else{
         Response r = facade.addEmployee(clientController.userID, EmpID, name, bankAccount, salary, sickDays, studyFund,
-                            daysOff, roleName, dateOfHire);
-        if(r.isErrorOccured())
-            cli.print(r.getErrorMessage());
-        else cli.print("Employee added");
+                            daysOff, roleName, licence, dateOfHire);
+            if(r.isErrorOccured())
+                cli.print(r.getErrorMessage());
+            else cli.print("Employee added");
+        }
+
+
+
     }
 
     private boolean isValidDaysOff(int daysOff) {

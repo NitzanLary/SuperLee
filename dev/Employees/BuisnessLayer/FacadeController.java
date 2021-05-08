@@ -393,13 +393,13 @@ public class FacadeController {
     }
 
     // init with 2 managers and 1 week forward
-    public void initData(){
-        employeeController.initData();
-        shiftController.add1WeeksSlot();
-        assignEmpToShift("312174295", "123456789", LocalDate.now().plusDays(1), LocalTime.of(14,0), LocalTime.of(22,0), "Cashier");
-        assignEmpToShift("312174295", "987654321", LocalDate.now().plusDays(1), LocalTime.of(14,0), LocalTime.of(22,0), "Driver");
-
-    }
+//    public void initData(){
+//        employeeController.initData();
+//        shiftController.add1WeeksSlot();
+//        assignEmpToShift("312174295", "123456789", LocalDate.now().plusDays(1), LocalTime.of(14,0), LocalTime.of(22,0), "Cashier");
+//        assignEmpToShift("312174295", "987654321", LocalDate.now().plusDays(1), LocalTime.of(14,0), LocalTime.of(22,0), "Driver");
+//
+//    }
 
 //    public ResponseT<List<Shift>> getShiftsHistory(String userID){}
 

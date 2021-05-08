@@ -118,19 +118,19 @@ public class EmployeeController {
         return employee.getEmpDataTostring();
     }
 
-    public void initData() {
-        AddEmployee("312174295", "Yanay", "12345", 1000, 30, 500, 30,
-                "General Manager", LocalDate.now());
-        AddEmployee("205952971", "Nitzan", "12345", 1000, 30, 500, 30,
-                "HR Manager", LocalDate.now());
-        AddEmployee("123456789", "Dana", "12345", 1000, 30, 500, 30,
-                "Cashier", LocalDate.now());
-        addRoleToEmp("123456789", "Cleaner");
-        AddEmployee("987654321", "Dafna", "54321", 10000, 30, 500, 30,
-                "Storage", LocalDate.now());
-        addRoleToEmp("987654321", "Driver");
-
-    }
+//    public void initData() {
+//        AddEmployee("312174295", "Yanay", "12345", 1000, 30, 500, 30,
+//                "General Manager", LocalDate.now());
+//        AddEmployee("205952971", "Nitzan", "12345", 1000, 30, 500, 30,
+//                "HR Manager", LocalDate.now());
+//        AddEmployee("123456789", "Dana", "12345", 1000, 30, 500, 30,
+//                "Cashier", LocalDate.now());
+//        addRoleToEmp("123456789", "Cleaner");
+//        AddEmployee("987654321", "Dafna", "54321", 10000, 30, 500, 30,
+//                "Storage", LocalDate.now());
+//        addRoleToEmp("987654321", "Driver");
+//
+//    }
 
 }
 
