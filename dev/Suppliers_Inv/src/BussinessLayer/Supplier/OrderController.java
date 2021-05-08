@@ -21,7 +21,9 @@ public class OrderController {
     private OrderController()
     {
         nextOrderID = 1;
+        nextPeriodOrderID = 1;
         orders = new HashMap<>();
+        periodicOrder = new HashMap<>();
         prodController = prodController.getInstance();
         mapper = Mapper.getInstance();
         mapper.loadOrders();

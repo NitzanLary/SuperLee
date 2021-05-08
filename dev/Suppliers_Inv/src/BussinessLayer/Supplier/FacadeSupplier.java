@@ -476,11 +476,12 @@ public class FacadeSupplier {
                         // if only one supplier supply this product
                         if(cheapestSupplier == -1){
                             cheapestSupplier = supplierID;
-                            cheapestPrice = product.getPrice();
+                            cheapestPrice = orderController.prodController.calculateDiscount(product.getProductID(), prods.get(item), supplierID);
                         }
                         else{
                             // if we found cheaper supplier that supply this product
-                            if(product.getPrice() < cheapestPrice){
+                            double price = orderController.prodController.calculateDiscount(product.getProductID(), prods.get(item), supplierID);
+                            if(price < cheapestPrice){
                                 cheapestSupplier = supplierID;
                                 cheapestPrice = product.getPrice();
                             }

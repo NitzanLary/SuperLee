@@ -13,13 +13,13 @@ public class PeriodicOrder {
         this.pOrderID = pOrderID;
         this.dateOfSupply = dateOfSupply;
         this.interval = interval;
-        products = new HashMap<Integer,Integer>();
+        this.products = new HashMap<>();
     }
     public PeriodicOrder(int pOrderID, int interval, LocalDate dateOfSupply, HashMap<Integer,Integer> prods){
         this.pOrderID = pOrderID;
         this.interval = interval;
         this.dateOfSupply = dateOfSupply;
-        products = prods;
+        this.products = prods;
     }
 
     public HashMap<Integer, Integer> getProducts() {
@@ -39,11 +39,11 @@ public class PeriodicOrder {
     }
 
     public String toString(){
-        String prods = "";
+        String prods = ""+'\n';
         for(Integer i :products.keySet()){
             prods += '\n' + "Product ID: " + i + " , Quantity: " + products.get(i);
         }
-        return '\n' +"Order ID: " + pOrderID + "interval : " + interval + "Start Date: " + dateOfSupply + "Products:" + prods +'\n';
+        return '\n' +"Order ID: " + pOrderID + ",   interval : " + interval + ",   Start Date: " + dateOfSupply + ",   Products:" + prods +'\n';
     }
 
     public int getInterval() {

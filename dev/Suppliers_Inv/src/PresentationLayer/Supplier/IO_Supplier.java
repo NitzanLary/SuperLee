@@ -450,16 +450,21 @@ public class IO_Supplier {
             int month = Integer.parseInt(scanner.nextLine());
             System.out.println('\n' + "Enter Number Of Day:");
             int day = Integer.parseInt(scanner.nextLine());
+            if((year < 2021)| (12<month | month<0)| (day>31 | day<0)){
+                System.out.println("Date Is Not Vaild");
+                return;
+            }
             LocalDate date = LocalDate.of(year,month,day);
+
             System.out.println('\n' + "Enter The Number Of Days Between Each Periodic Order: ");
 
             int interval = Integer.parseInt(scanner.nextLine());
+
             ResponseT<Integer> res = facadeC.createPeriodicOrder(interval,date);
             if (res.ErrorMessage != null) {
                 System.out.println(res.ErrorMessage);
                 return;
             }
-
             int orderID = res.value;
             boolean finishOrder = false;
 
