@@ -42,7 +42,7 @@ public class DiscountDAO extends DAO{
         return new ResponseT<>(result);
     }
 
-    public Response create(Discount dis, int itemId) {
+    public ResponseT<DiscountDTO> create(Discount dis, int itemId) {
         DiscountDTO toInsert = new DiscountDTO(dis, itemId);
         String SQL = "INSERT INTO " + table + " (itemId, start, end, discountPr) VALUES (?,?,?,?)";
         try {
@@ -54,13 +54,13 @@ public class DiscountDAO extends DAO{
                 ps.setDate(3 , Date.valueOf(toInsert.getEnd()));
                 ps.setInt(4, toInsert.getDiscountPr());
                 if(!ps.execute()) {
-                    return new Response("cannot add discount to db");
+                    return new ResponseT("cannot add discount to db");
                 }
             }
         }catch (Exception e) {
-            return new Response("cannot add discount to db");
+            return new ResponseT("cannot add discount to db");
         }
-        return new Response();
+        return new ResponseT(toInsert);
     }
 
     public Response update(Discount dis, int itemId) {

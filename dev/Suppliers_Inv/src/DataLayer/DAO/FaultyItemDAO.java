@@ -40,7 +40,7 @@ public class FaultyItemDAO extends DAO{
         return new ResponseT<>(faultyList);
     }
 
-    public Response create(FaultyItem fi) {
+    public ResponseT<FaultyItemDTO> create(FaultyItem fi) {
         FaultyItemDTO toInsert = new FaultyItemDTO(fi);
         String SQL = "INSERT INTO faultyItem (itemId, exp, amount) VALUES (?,?,?)";
         try {
@@ -51,13 +51,13 @@ public class FaultyItemDAO extends DAO{
                 ps.setDate(2 , Date.valueOf(toInsert.getExpDate()));
                 ps.setInt(3 , toInsert.getAmount());
                 if(!ps.execute()) {
-                    return new Response("cannot add faulty item to db");
+                    return new ResponseT("cannot add faulty item to db");
                 }
             }
         }catch (Exception e) {
-            return new Response("cannot add faulty item to db");
+            return new ResponseT("cannot add faulty item to db");
         }
-        return new Response();
+        return new ResponseT(toInsert);
     }
 
     public Response update(FaultyItem fi) {

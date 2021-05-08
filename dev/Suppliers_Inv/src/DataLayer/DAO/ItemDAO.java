@@ -35,7 +35,7 @@ public class ItemDAO extends DAO {
         return new ResponseT<List<ItemDTO>>(result);
     }
 
-    public Response create(Item item) {
+    public ResponseT<ItemDTO> create(Item item) {
         ItemDTO toInsert = new ItemDTO(item);
         String SQL = "INSERT INTO item (itemId, name, price, shelfNum, manufacturer, shelfQuantity, storageQuantity, minAlert, cost) VALUES (?,?,?,?,?,?,?,?)";
         try {
@@ -52,16 +52,16 @@ public class ItemDAO extends DAO {
                 ps.setInt(8, toInsert.getMinAlert());
                 ps.setDouble(9, toInsert.getCost());
                 if(!ps.execute()) {
-                    return new Response("cannot add item to db");
+                    return new ResponseT("cannot add item to db");
                 }
             }
         }catch (Exception e) {
-            return new Response("cannot add item to db");
+            return new ResponseT("cannot add item to db");
         }
-        return new Response();
+        return new ResponseT(toInsert);
     }
 
-    public Response update(Item item) {
+    public ResponseT<ItemDTO> update(Item item) {
         ItemDTO toUpdate = new ItemDTO(item);
         String SQL = "UPDATE item SET name = ?, price = ?, shelfNum = ?, manufacturer = ?, shelfQuantity = ?, storageQuantity = ?, cost = ?, minAlert = ? WHERE itemId = ? ";
         try {
@@ -78,13 +78,13 @@ public class ItemDAO extends DAO {
                 ps.setInt(8, toUpdate.getMinAlert());
                 ps.setInt(9, toUpdate.getId());
                 if(!ps.execute()) {
-                    return new Response("cannot update item to db");
+                    return new ResponseT("cannot update item to db");
                 }
             }
         }catch (Exception e) {
-            return new Response("cannot update item to db");
+            return new ResponseT("cannot update item to db");
         }
-        return new Response();
+        return new ResponseT(item);
     }
 
     public Response delete(Item item) {

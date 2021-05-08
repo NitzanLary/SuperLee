@@ -30,12 +30,14 @@ public class RecordController {
     //adds a sale to list of sales and return Sale object
     public boolean addSale(int itemId, double itemCost, double salePrice) {
         Sale newSale = new Sale(itemId, itemCost, salePrice);
+        mapper.addSale(newSale);
         return sales.add(newSale);
     }
 
     //adds a faulty item to list of faulty items returns faulty item object
     public boolean addFaulty(int itemId, LocalDate expDate, int amountOfFaulyt) {
         FaultyItem newFI = new FaultyItem(itemId, expDate, amountOfFaulyt);
+        mapper.addFaulty(newFI);
         return faultyItems.add(newFI);
     }
 

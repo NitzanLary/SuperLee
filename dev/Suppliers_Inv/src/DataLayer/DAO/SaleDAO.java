@@ -16,7 +16,7 @@ public class SaleDAO extends DAO {
     public SaleDAO() {
     }
 
-    public Response create(Sale s) {
+    public ResponseT<SaleDTO> create(Sale s) {
         SaleDTO toInsert = new SaleDTO(s);
         String SQL = "INSERT INTO Sale (itemID, date, price, cost) VALUE (?, ?, ?, ?)";
         try {
@@ -29,12 +29,12 @@ public class SaleDAO extends DAO {
                 ps.setDouble(4, toInsert.getCost());
 
                 if (!ps.execute()) {
-                    return new Response("Could not add sale to DB");
+                    return new ResponseT("Could not add sale to DB");
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return new Response("Could not add sale to DB");
+            return new ResponseT("Could not add sale to DB");
         }
         return new ResponseT<>(toInsert);
     }
