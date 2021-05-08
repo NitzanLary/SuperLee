@@ -6,6 +6,8 @@ import BussinessLayer.Supplier.*;
 import DataLayer.DAO.*;
 import DataLayer.DTO.*;
 import BussinessLayer.Response;
+import sun.dc.pr.PRError;
+
 import java.util.*;
 
 public class Mapper {
@@ -186,18 +188,20 @@ public class Mapper {
         return new ResponseT<>(res);
     }
 
-    public ResponseT<List<Product>> loadProducts() {
+    public ResponseT<HashMap<Integer,HashMap<Integer,Product>>> loadProducts() {
         ResponseT<List<ProductsOfSupplierDTO>> productRes = productsOfSupplierDAO.read();
-        List<Product> res = new LinkedList<>();
+        HashMap<Integer,Product> res = new HashMap<>();
+        HashMap<Integer,HashMap<Integer, Product>> res1 = new HashMap<>();
         if (!productRes.ErrorOccured()) {
             for (ProductsOfSupplierDTO dbProdOfSupp : productRes.value) {
-                res.add(new Product(dbProdOfSupp.getProductID(), dbProdOfSupp.getSupplierID(), dbProdOfSupp.getName(),
+                res.put(dbProdOfSupp.getProductID(), new Product(dbProdOfSupp.getProductID(), dbProdOfSupp.getSupplierID(), dbProdOfSupp.getName(),
                         dbProdOfSupp.getCategory(),dbProdOfSupp.getPrice()));
+                res1.put(dbProdOfSupp.getSupplierID(), res);
             }
         } else {
             return new ResponseT<>("Could not load orders");
         }
-        return new ResponseT<>(res);
+        return new ResponseT(res1);
     }
 
 
