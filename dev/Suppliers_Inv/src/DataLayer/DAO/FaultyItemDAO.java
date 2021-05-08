@@ -42,7 +42,7 @@ public class FaultyItemDAO extends DAO{
 
     public ResponseT<FaultyItemDTO> create(FaultyItem fi) {
         FaultyItemDTO toInsert = new FaultyItemDTO(fi);
-        String SQL = "INSERT INTO faultyItem (itemId, exp, amount) VALUES (?,?,?)";
+        String SQL = "INSERT INTO faultyItem (itemId, expDate, amount) VALUES (?,?,?)";
         try {
             ResponseT<Connection> r = getConn();
             if(!r.ErrorOccured()) {

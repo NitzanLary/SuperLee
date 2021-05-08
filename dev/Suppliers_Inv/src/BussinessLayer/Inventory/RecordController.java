@@ -28,8 +28,8 @@ public class RecordController {
     }
 
     //adds a sale to list of sales and return Sale object
-    public boolean addSale(int itemId, double itemCost, double salePrice) {
-        Sale newSale = new Sale(itemId, itemCost, salePrice);
+    public boolean addSale(int itemId, double itemCost, double salePrice, int amount) {
+        Sale newSale = new Sale(itemId, itemCost, salePrice, amount);
         mapper.addSale(newSale);
         return sales.add(newSale);
     }

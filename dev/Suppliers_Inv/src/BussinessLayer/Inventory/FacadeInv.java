@@ -31,7 +31,7 @@ public class FacadeInv {
     public boolean addSale(int id, int amount) {
         stockCtrl.removeFromShelf(id, amount);
         Item item = stockCtrl.getItem(id);
-        return recCtrl.addSale(item.getId(), item.getCost(), item.getPrice());
+        return recCtrl.addSale(item.getId(), item.getCost(), item.getPrice(), amount);
     }
 
     //adds a sale to the records, removes one item from shelf if opt is 1 or from storage if opt is 2

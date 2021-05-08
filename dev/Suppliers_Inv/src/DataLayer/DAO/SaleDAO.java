@@ -18,7 +18,7 @@ public class SaleDAO extends DAO {
 
     public ResponseT<SaleDTO> create(Sale s) {
         SaleDTO toInsert = new SaleDTO(s);
-        String SQL = "INSERT INTO Sale (itemID, date, price, cost) VALUE (?, ?, ?, ?)";
+        String SQL = "INSERT INTO Sale (itemID, date, price, cost) VALUES (?, ?, ?, ?)";
         try {
             ResponseT<Connection> r = getConn();
             if (!r.ErrorOccured()) {
@@ -67,7 +67,7 @@ public class SaleDAO extends DAO {
                     saleList.add(new SaleDTO(rs.getInt("itemID"),
                             LocalDateTime.of(rs.getDate("date").toLocalDate(),
                                     LocalTime.NOON), rs.getDouble("price"),
-                            rs.getDouble("cost")));
+                            rs.getDouble("cost"), rs.getInt("amount")));
                 }
             }
         }catch (Exception e) {

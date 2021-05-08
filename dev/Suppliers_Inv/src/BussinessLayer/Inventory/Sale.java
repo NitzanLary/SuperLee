@@ -7,20 +7,25 @@ public class Sale {
     private Double itemCost;
     private Double salePrice;
     private int itemId;
+    private int amount;
 
-    public Sale(int itemId, double itemCost, double salePrice) {
+    public Sale(int itemId, double itemCost, double salePrice, int amount) {
         this.itemId = itemId;
         this.itemCost = itemCost;
         this.salePrice = salePrice;
         this.saleDate = LocalDateTime.now();
+        this.amount = amount;
     }
 
-    public Sale(int itemId, double itemCost, double salePrice, LocalDateTime date) {
+    public Sale(int itemId, double itemCost, double salePrice, LocalDateTime date,int amount) {
         this.itemId = itemId;
         this.itemCost = itemCost;
         this.salePrice = salePrice;
         this.saleDate = date;
+        this.amount = amount;
     }
+
+    public int getAmount() { return amount; }
 
     public LocalDateTime getSaleDate() {
         return saleDate;
