@@ -4,6 +4,8 @@ import BussinessLayer.ResponseT;
 import DataLayer.DTO.SupplierDTO;
 
 import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
 
 
 public class SupplierDAO extends DAO {
@@ -77,6 +79,27 @@ public class SupplierDAO extends DAO {
             return new Response(e.getMessage());
         }
         return new ResponseT(supplierID);
+    }
+
+    public ResponseT<List<SupplierDTO>> read() {
+        String SQL = "SELECT * FROM Supplier";
+        List<SupplierDTO> supplierList = new LinkedList<>();
+        try {
+            ResponseT<Connection> r = getConn();
+            if(!r.ErrorOccured()) {
+                PreparedStatement ps = r.value.prepareStatement(SQL);
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()) {
+                    supplierList.add(new SupplierDTO(rs.getInt("ID"), rs.getString("name"),
+                            rs.getString("address"), rs.getString("email"),
+                            rs.getInt("bankAcc"), rs.getString("paymentMethod"),
+                            rs.getString("infoSupDay"), rs.getString("contacts"), rs.getBoolean("pickUp")));
+                }
+            }
+        }catch (Exception e) {
+            return new ResponseT("cannot get faulty item");
+        }
+        return new ResponseT<>(supplierList);
     }
 
 }
