@@ -99,7 +99,7 @@ public class BillOfQuantityDAO extends DAO {
         return new Response();
     }
 
-    public Response updatePercentDiscout(Integer supplierID, Integer productID, Integer newPercent) {
+    public Response updatePercentDiscount(Integer supplierID, Integer productID, Integer newPercent) {
         String SQL = "UPDATE BillOfQuantity SET precentDiscount = ? WHERE supplierID = ? AND productID = ?";
         try {
             ResponseT<Connection> r = getConn();
