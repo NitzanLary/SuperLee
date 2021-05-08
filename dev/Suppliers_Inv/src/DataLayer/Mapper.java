@@ -1,6 +1,8 @@
 package DataLayer;
 
 import BussinessLayer.Inventory.Category;
+import BussinessLayer.Inventory.Item;
+import BussinessLayer.Response;
 import BussinessLayer.ResponseT;
 import DataLayer.DAO.*;
 import DataLayer.DTO.BillOfQuantityDTO;
@@ -8,6 +10,7 @@ import DataLayer.DTO.ItemDTO;
 import DataLayer.DTO.OrderDTO;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -64,6 +67,18 @@ public class Mapper {
             return order;
         }
 
+        public ResponseT<List<Item>> loadItems() {
+            ResponseT<List<ItemDTO>> itemsRes = itemDAO.read();
+            List<Item> res= new LinkedList<>();
+            if (!itemsRes.ErrorOccured()) {
+                for(ItemDTO dbItem : itemsRes.value) {
+                    res.add(new Item(dbItem));
+                }
+            } else {
+                return new ResponseT<>("Could not load items");
+            }
+            return new ResponseT<>(res);
+        }
 
         //for testing purpeses
         public void getItems() {

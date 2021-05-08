@@ -14,16 +14,13 @@ import java.util.List;
 public class ItemDAO extends DAO {
 
     public ResponseT<List<ItemDTO>> read() {
-        String SQL = "SELECT * FROM items";
+        String SQL = "SELECT * FROM Item";
         List<ItemDTO> result = new LinkedList<>();
         try {
             ResponseT<Connection> r = getConn();
             if(!r.ErrorOccured()) {
                 PreparedStatement ps = r.value.prepareStatement(SQL);
                 ResultSet rs = ps.executeQuery();
-                if(!rs.isClosed()) {
-                    return new ResponseT("failed to get discount");
-                }
                 while (rs.next()) {
                     ItemDTO toAdd = new ItemDTO(rs.getInt("itemId"), rs.getString("name"),
                             rs.getDouble("price"), rs.getDouble("cost"), rs.getInt("shelfNum"), rs.getString("manufacturer"),
@@ -32,6 +29,7 @@ public class ItemDAO extends DAO {
                 }
             }
         }catch (Exception e) {
+            System.out.println(e);
             return new ResponseT("failed to get items");
         }
         return new ResponseT<List<ItemDTO>>(result);
