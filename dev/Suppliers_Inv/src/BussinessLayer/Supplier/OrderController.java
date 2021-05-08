@@ -113,7 +113,7 @@ public class OrderController {
         for(PeriodicOrder order : periodicOrder.values()){
             allOrders += '\n' + order.toString();
         }
-        allOrders += '\n' + "Total Orders: " + orders.size();
+        allOrders += '\n' + "Total Orders: " + periodicOrder.size();
         return  allOrders;
     }
 
