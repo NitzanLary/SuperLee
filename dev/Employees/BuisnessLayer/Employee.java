@@ -38,25 +38,21 @@ public class Employee {
         ID = other.ID;
         bankAccount = other.bankAccount;
         salary = other.salary;
-//        roles = new ArrayList<>();
         roles = other.roles.stream().map(Role::clone).collect(Collectors.toList());
-        for (Role role : other.roles){
-
-        }
         terms = new TermsOfEmployee(other.terms);
         dateOfHire = other.dateOfHire;
     }
 
-    public void setDto(EmployeeDAO dao) {
-        List<RoleDTO> rolesDTO = new ArrayList<>();
-        for (Role role: roles){
-            if (role instanceof DriverRole)
-                rolesDTO.add(new RoleDTO("Driver", ((DriverRole) role).getLicence()));
-            else rolesDTO.add(new RoleDTO(role.getName()));
-        }
+
+    public void setDTO(EmployeeDAO dao) {
+        // mapping each role into its equivalent RoleDTO
+        List<RoleDTO> rolesDTO = roles.stream().map(Role::toDTO).collect(Collectors.toList());
         dto = new EmployeeDTO(name, ID, bankAccount, salary, getTerms().getSickDays(),
                 getTerms().getAdvancedStudyFund(), getTerms().getDaysOff(), dateOfHire, rolesDTO, dao);
-        dto.persist();
+    }
+
+    public Response persist(){
+        return dto.persist();
     }
 
     private boolean isNameValid(String name){
@@ -68,8 +64,7 @@ public class Employee {
     }
 
     private boolean isDateValid(LocalDate date){
-        LocalDate now = LocalDate.now();
-        return true;
+        return date.isAfter(LocalDate.now());
     }
 
     public ResponseT<String> getName() {

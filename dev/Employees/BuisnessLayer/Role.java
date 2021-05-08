@@ -1,5 +1,7 @@
 package Employees.BuisnessLayer;
 
+import Employees.DataAccessLayer.DTOs.RoleDTO;
+
 import java.util.Comparator;
 
 public class Role{
@@ -17,6 +19,10 @@ public class Role{
 
     public boolean compare(String r2){
         return name.equals(r2);
+    }
+
+    public RoleDTO toDTO(){
+        return new RoleDTO(name);
     }
 
     @Override

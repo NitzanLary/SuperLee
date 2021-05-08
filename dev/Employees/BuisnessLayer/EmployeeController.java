@@ -1,6 +1,7 @@
 package Employees.BuisnessLayer;
 
 import Employees.DataAccessLayer.DAOs.EmployeeDAO;
+import Employees.DataAccessLayer.DTOs.EmployeeDTO;
 import Employees.DataAccessLayer.Objects.Mapper;
 
 import java.time.LocalDate;
@@ -41,14 +42,23 @@ public class EmployeeController {
         e.setBankAccount(bankAccount);
         e.setSalary(salary);
         e.AddRole(role);
-        employees.put(e.getID().getValue(), e);
-
-        return new Response();
+        e.setDTO(dao);
+        Response r = e.persist();
+        if (!r.isErrorOccured())
+            employees.put(e.getID().getValue(), e);
+        return r;
     }
 
     public ResponseT<Employee> getEmployee(String id){
-        if (!employees.containsKey(id)) return new ResponseT(null, "No employee with this ID");
-        return new ResponseT<>(employees.get(id));
+        if (employees.containsKey(id))
+            return new ResponseT<>(employees.get(id));
+        ResponseT<EmployeeDTO> empDto = mapper.getEmployee(id);
+        if(!empDto.isErrorOccured()){
+            Employee e = new Employee(empDto.getValue());
+            employees.put(e.getID().getValue(), e);
+            return new ResponseT<>(e);
+        }
+        return new ResponseT<>(null, empDto.getErrorMessage());
     }
 
     public Response setEmpName(String ID, String newEmpName) {
