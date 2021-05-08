@@ -89,6 +89,7 @@ public class Employee {
         if (!isNameValid(name))
             return new ResponseT("Invalid name");
         this.name = name;
+        this.dto.setName(name);
         return new Response();
     }
 
@@ -115,21 +116,28 @@ public class Employee {
 
     public Response setSalary(int salary) {
         this.salary = salary;
+        this.dto.setSalary(salary);
         return new Response();
     }
 
     public Response setBankAccount(String bankAccount) {
         this.bankAccount = bankAccount;
+        this.dto.setBankAccount(bankAccount);
         return new Response();
     }
 
     public Response AddRole(Role role){
         roles.add(role);
+        this.dto.addRole(role.toDTO());
         return new Response();
     }
 
     public Response setTerms(TermsOfEmployee terms) {
         this.terms = terms;
+        this.dto.setSickDays(terms.getSickDays());
+        this.dto.setAdvancedStudyFund(terms.getAdvancedStudyFund());
+        this.dto.setDaysOff(terms.daysOff);
+
         return new Response();
     }
 

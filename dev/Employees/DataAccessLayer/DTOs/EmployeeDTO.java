@@ -82,7 +82,7 @@ public class EmployeeDTO {
         return daysOff;
     }
 
-    public Response DaysOff(int newVal){
+    public Response setDaysOff(int newVal){
         return set(() -> daysOff = newVal);
     }
 
