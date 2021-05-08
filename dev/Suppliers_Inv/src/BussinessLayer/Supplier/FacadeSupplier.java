@@ -457,14 +457,50 @@ public class FacadeSupplier {
         }
     }
 
-    // this function iterate over all suppliers and find for each product in the param:prods the cheapest suppleir
+    // this function iterate over all suppliers and find for each product in the param:prods the cheapest supplier
     public HashMap<Integer, HashMap<Integer, Integer>> findCheapestSupplier(HashMap<Integer, Integer> prods) {
-        //TODO finish@@@@@@@@@@@@@@@@@@@@@@
-        HashMap<Integer, HashMap<Integer, Integer>> supplierAndProds = new HashMap<>();
+        HashMap<Integer, HashMap<Integer, Integer>> supplierAndProds = new HashMap<>(); //Integer:supplier, HashMap: his products
+        // iterate over all items that we need to find them cheapest supplier
         for(Integer item : prods.keySet()){
-            //todo use product controller
+            int cheapestSupplier = -1;
+            double cheapestPrice = -1;
+            HashMap<Integer, HashMap<Integer, Product>> SAP = orderController.prodController.getSupplierProd();
+            // iterate over all suppliers
+            for(Integer supplierID : SAP.keySet()){
+                HashMap<Integer, Product> products = SAP.get(supplierID);
+                // iterate over all supplierID products
+                for(Product product : products.values()){
+                    if(product.getProductID() == item){
+                        // if only one supplier supply this product
+                        if(cheapestSupplier == -1){
+                            cheapestSupplier = supplierID;
+                            cheapestPrice = product.getPrice();
+                        }
+                        else{
+                            // if we found cheaper supplier that supply this product
+                            if(product.getPrice() < cheapestPrice){
+                                cheapestSupplier = supplierID;
+                                cheapestPrice = product.getPrice();
+                            }
+                        }
+                    }
+                    if (cheapestSupplier == -1){
+                        throw new IllegalArgumentException("The System Did Not Found Any Supplier That Supply Item Number: "+ product.getProductID());
+                    }
+                }
+            }
+            // add to the supplier the item
+            HashMap<Integer, Integer> products;//itemID + quantity
+            if(supplierAndProds.containsKey(cheapestSupplier)){
+                products = supplierAndProds.get(cheapestSupplier);
+            }
+            else{
+                products = new HashMap<>();
+            }
+            products.put(item,prods.get(item)); //itemID + quantity
+            supplierAndProds.put(cheapestSupplier,products);
         }
-        return null;
+        return supplierAndProds;
     }
 
 
