@@ -158,5 +158,11 @@ public class Item {
         return s;
     }
 
+    public String toStringNameID() {
+        String s =  "Id: " + id +
+                "\n"  + "Name: " + name;
+        return s;
+    }
+
 
 }

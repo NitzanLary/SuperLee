@@ -1,7 +1,11 @@
 package PresentationLayer.Supplier;
-import BussinessLayer.Supplier.FacadeController;
+import BussinessLayer.FacadeController;
+import BussinessLayer.Supplier.FacadeSupplier;
 import BussinessLayer.Response;
 import BussinessLayer.ResponseT;
+import BussinessLayer.Supplier.PeriodicOrder;
+
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Scanner;
 import static java.lang.System.exit;
@@ -14,8 +18,9 @@ import static java.lang.System.exit;
 public class IO_Supplier {
 
     private static IO_Supplier ioSupplier = null;
-    public static FacadeController facadeC = FacadeController.getInstance();
+    public static FacadeSupplier facadeC = FacadeSupplier.getInstance();
     public static Scanner scanner = new Scanner(System.in);
+    public static FacadeController facadeController = FacadeController.getInstance();
 
     private IO_Supplier() {
 
@@ -233,7 +238,8 @@ public class IO_Supplier {
         System.out.println("2. Delete Exist Order");
         System.out.println("3. Show All Orders From Suppliers");
         System.out.println("4. Show Order By Supplier");
-        System.out.println("5. Back To Main Menu ");
+        System.out.println("5. Periodic Orders ");
+        System.out.println("6. Back To Main Menu ");
         try{
             int caseNumber = Integer.parseInt(scanner.nextLine());
             switch (caseNumber) {
@@ -269,16 +275,259 @@ public class IO_Supplier {
                     break;
 
                 case 5:
+                    PeriodicOrders();
+                    break;
+
+                case 6:
                     return;
 
                 default:
-                    System.out.println("You Need To Choose Only 1-5");
+                    System.out.println("You Need To Choose Only 1-6");
             }
         }catch (Exception e){
-            System.out.println("Invalid Input - Please Enter 1-5 " + '\n');
+            System.out.println("Invalid Input - Please Enter 1-6 " + '\n');
             orders();
         }
 
+    }
+
+    public void PeriodicOrders(){
+        System.out.println('\n' + "Please Choose One Of The Following Options : ");
+        System.out.println("1. Create New Periodic Order ");
+        System.out.println("2. Edit Periodic Order ");
+        System.out.println("3. Delete Periodic Order ");
+        System.out.println("4. Show All Periodic Orders ");
+        System.out.println("5. Return Back ");
+        try {
+            int caseNumber = Integer.parseInt(scanner.nextLine());
+            switch (caseNumber) {
+                case 1:
+                    createNewPeriodicOrder();
+                    break;
+
+                case 2:
+                   editPeriodicOrder();
+                   break;
+
+                case 3:
+                    System.out.println('\n' + "Enter Periodic Order ID You Would Like To Delete: ");
+                    int orderID = Integer.parseInt(scanner.nextLine());
+                    Response res = facadeC.removePOrder(orderID);
+                    if (res.ErrorMessage != null) {
+                        System.out.println(res.ErrorMessage);
+                        return;
+                    }
+                    System.out.println("Deleted Order Successfully");
+                    break;
+
+                case 4:
+                    ResponseT<String> resp = facadeC.showAllPOrders();
+                    if (resp.ErrorMessage != null) {
+                        System.out.println(resp.ErrorMessage);
+                        return;
+                    }
+                    System.out.println(resp.value);
+                    break;
+
+                case 5:
+                    return;
+
+                default:
+                    System.out.println("Invalid Input - Please Enter 1-4 " + '\n');
+            }
+        }catch (Exception e){
+            System.out.println("Invalid Input - Please Enter 1-4 " + '\n');
+            orders();
+        }
+    }
+
+    // TODO: add to edit: edit quantity of product
+    // TODO: add to edit: show all id of p-orders
+    public void editPeriodicOrder(){
+        try{
+            System.out.println('\n' + "Enter Periodic Order ID You Would Like To Edit: ");
+            int orderID = Integer.parseInt(scanner.nextLine());
+            if(!facadeC.checkOrderPExist(orderID)){
+                System.out.println("Order Does Not Exists");
+                return;
+            }
+            System.out.println("1. Add Product To Exists Period Order");
+            System.out.println("2. Remove Product From Exists Period Order");
+            System.out.println("3. Change Interval Of Supply");
+            System.out.println("4. Show All Super-Lee Items");
+            System.out.println("5. Return Back");
+
+            int caseNumber = Integer.parseInt(scanner.nextLine());
+            Response res;
+
+            switch (caseNumber) {
+                case 1:
+                    System.out.println('\n' + "Enter Product ID:");
+                    int productID = Integer.parseInt(scanner.nextLine());
+                    System.out.println('\n' + "Enter Product Quantity:");
+                    int quantity = Integer.parseInt(scanner.nextLine());
+
+                    int check = facadeController.facadeInv.QuantityBiggerThenInvMin(quantity,productID);
+                    if(check == -1){
+                        System.out.println("Item Does Not Exists");
+                        return;
+                    }
+                    if(check != quantity){
+                        System.out.println('\n' + "The Quantity Of The Product Must Be Bigger Then: " + check);
+                        return;
+                    }
+                    res = facadeC.addProductToPeriodicOrder(orderID,productID,quantity);
+                    if (res.ErrorMessage != null) {
+                        System.out.println(res.ErrorMessage);
+                        return;
+                    }
+                    break;
+
+                case 2:
+                    System.out.println('\n' + "Enter Product ID You Want To Remove:");
+                    productID = Integer.parseInt(scanner.nextLine());
+                    res = facadeC.removeProdFromPOrder(productID, orderID);
+                    if (res.ErrorMessage != null) {
+                        System.out.println(res.ErrorMessage);
+                        return;
+                    }
+                    System.out.println("Deleted Product Successfully");
+                    break;
+
+                case 3:
+                    System.out.println('\n' + "Enter New Interval For The Order:");
+                    int interval = Integer.parseInt(scanner.nextLine());
+                    res = facadeC.changeInterval(interval, orderID);
+                    if (res.ErrorMessage != null) {
+                        System.out.println(res.ErrorMessage);
+                        return;
+                    }
+                    System.out.println("Deleted Product Successfully");
+                    break;
+
+                case 4:
+                    String s = facadeController.facadeInv.showAllItemsInSuper();
+                    if (s == null) {
+                        System.out.println("No Items Found");
+                        return;
+                    }
+                    else{
+                        System.out.println(s);
+                    }
+                    break;
+
+                case 5:
+                    return;
+
+                default:
+                    System.out.println("You Need To Choose Only 1-8");
+            }
+        }catch (Exception e){
+            System.out.println("Invalid Input, Please Enter 1-8 Only");
+            updateSupplier();
+        }
+
+    }
+
+    public void createNewPeriodicOrder(){
+        try{
+            System.out.println('\n' + "Enter The First Date Of Which The Periodic Order Will Be: ");
+            System.out.println('\n' + "Enter Number Of Year:");
+            int year = Integer.parseInt(scanner.nextLine());
+            System.out.println('\n' + "Enter Number Of Month:");
+            int month = Integer.parseInt(scanner.nextLine());
+            System.out.println('\n' + "Enter Number Of Day:");
+            int day = Integer.parseInt(scanner.nextLine());
+            LocalDate date = LocalDate.of(year,month,day);
+            System.out.println('\n' + "Enter The Number Of Days Between Each Periodic Order: ");
+
+            int interval = Integer.parseInt(scanner.nextLine());
+            ResponseT<Integer> res = facadeC.createPeriodicOrder(interval,date);
+            if (res.ErrorMessage != null) {
+                System.out.println(res.ErrorMessage);
+                return;
+            }
+
+            int orderID = res.value;
+            boolean finishOrder = false;
+
+            while (!finishOrder) {
+                System.out.println("1. Add Product To Periodic Order");
+                System.out.println("2. Show All Super-Lee Products");
+                System.out.println("3. Finish Order");
+
+                int caseNumber = Integer.parseInt(scanner.nextLine());
+
+                switch (caseNumber) {
+                    case 1:
+                        System.out.println('\n' + "Enter Product ID:");
+                        int productID = Integer.parseInt(scanner.nextLine());
+                        System.out.println('\n' + "Enter Product Quantity:");
+                        int quantity = Integer.parseInt(scanner.nextLine());
+
+                        int check = facadeController.facadeInv.QuantityBiggerThenInvMin(quantity,productID);
+                        if(check == -1){
+                            System.out.println("Item Does Not Exists");
+                            return;
+                        }
+                        if(check != quantity){
+                            System.out.println('\n' + "The Quantity Of The Product Must Be Bigger Then: " + check);
+                            return;
+                        }
+                        Response response = facadeC.addProductToPeriodicOrder(orderID,productID,quantity);
+                        if (response.ErrorMessage != null) {
+                            System.out.println(response.ErrorMessage);
+                            return;
+                        }
+                        break;
+
+                    case 2:
+                        String s = facadeController.facadeInv.showAllItemsInSuper();
+                        if (s == null) {
+                            System.out.println("No Items Found");
+                            return;
+                        }
+                        else{
+                            System.out.println(s);
+                        }
+                        break;
+
+                    case 3:
+                        finishOrder = true;
+                        if(facadeC.isEmptyPOrder(orderID)){
+                            System.out.println('\n' + "No Products In This Order, This Order Will Be Deleted");
+                            response = facadeC.removePeriodicOrder(orderID);
+                            if (response.ErrorMessage != null) {
+                                System.out.println(response.ErrorMessage);
+                                return;
+                            }
+                        }
+                        System.out.println("Order Finished Successfully");
+                        return;
+                    default:
+                        System.out.println("You Need To Choose Only 1-3");
+
+                }
+            }
+        }catch (Exception e){
+            System.out.println("Invalid Input, Please Try Again");
+            creatNewOrder();
+        }
+    }
+
+    /** This function create from periodic order 1 to n orders from the suppliers in the system **/
+    /** If The Create Of The Order Failed The Function Return The OrderID Otherwise Return -1 **/
+    public int createOrdersFromPOrders(int orderID){
+        ResponseT<HashMap<Integer, Integer>> response = facadeC.getProductOfporder(orderID);
+        if (response.ErrorMessage != null) {
+            System.out.println(response.ErrorMessage);
+            return orderID;
+        }
+        HashMap<Integer, Integer> prods = response.value;
+        HashMap<Integer,HashMap<Integer, Integer>> ordersToMake = facadeC.findCheapestSupplier(prods); //TODO: finish
+        for(Integer supplier : ordersToMake.keySet()){
+            // create order with supplier = supID, and supplier.values() = products
+        }
     }
 
     public void createSupplierCard() {
@@ -822,7 +1071,30 @@ public class IO_Supplier {
         return true;
     }
 
+    public void checkForApproachingPOrders() {
+        try{
+            String stringForFail = "The System Tried To Sent Periodic Order, Due To Failure " + '\n' +
+                    "The Next Orders Didn't Sent, Please Handle Those Order Later: "+ '\n';
+            int faildOrders = 0;
+            HashMap<Integer, PeriodicOrder> periodicOrders  = facadeC.checkForApproachingPOrders();
+            for(PeriodicOrder po : periodicOrders.values()){
+                int orderID = po.getpOrderID();
+                int failure = createOrdersFromPOrders(orderID);
+                if(failure != -1){
+                    faildOrders++;
+                    stringForFail += "OrderID: " + failure + '\n';
+                }
+            }
+            stringForFail += '\n' + "Total " + faildOrders + "Orders Failed";
+            if(faildOrders != 0){
+                System.out.println(stringForFail);
+            }
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
 
+
+    }
 }
 
 

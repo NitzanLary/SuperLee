@@ -137,6 +137,14 @@ public class StockController {
         return sb.toString();
     }
 
+    public String showAllItemsInSuper() {
+        StringBuilder sb = new StringBuilder("\n");
+        for (Category c : categories) {
+            sb.append(c.toStringNameID());
+        }
+        return sb.toString();
+    }
+
     public String catReport(List<String> catNames) {
         StringBuilder sb = new StringBuilder("\nReport of categories: "+catNames.toString()+"\n");
         for (String cat : catNames) {
@@ -147,5 +155,15 @@ public class StockController {
                 sb.append(c.toString()+"\n");
         }
         return sb.toString();
+    }
+
+    public int QuantityBiggerThenInvMin(int quantity, int productID) {
+        Item item = getItem(productID);
+        if(item != null){
+            if((item.getShelfQuantity() + item.getStorageQuantity() + quantity) >= item.getMinAlert()*2)
+                return quantity;
+            return (item.getMinAlert()*2)-(item.getShelfQuantity() + item.getStorageQuantity());
+        }
+        return -1;
     }
 }

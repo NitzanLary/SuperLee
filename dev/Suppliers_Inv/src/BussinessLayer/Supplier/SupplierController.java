@@ -172,4 +172,6 @@ public class SupplierController {
     public HashMap<Integer, SupplierCard> getSuppliers() {
         return this.suppliers;
     }
+
+
 }

@@ -14,33 +14,30 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
 
 public class FaultyItemDAO extends DAO{
     public FaultyItemDAO() {
 
     }
 
-    public Response read(int itemID, LocalDate expDate) {
-        String SQL = "SELECT * FROM faultyItem WHERE itemId = ? AND expDate = ?";
-        FaultyItemDTO toGet = null;
+    public ResponseT read() {
+        String SQL = "SELECT * FROM faultyItem";
+        List<FaultyItemDTO> faultyList = new LinkedList<>();
         try {
             ResponseT<Connection> r = getConn();
             if(!r.ErrorOccured()) {
                 PreparedStatement ps = r.value.prepareStatement(SQL);
-                ps.setInt(1, itemID);
-                ps.setDate(2 , Date.valueOf(expDate));
                 ResultSet rs = ps.executeQuery();
-                if(!rs.isClosed()) {
-                    toGet =  new FaultyItemDTO(rs.getInt("itemID"), rs.getDate("expDate").toLocalDate(), rs.getInt("amount"));
-                }
-                if (toGet == null) {
-                    return new Response("cannot get faulty item");
+                while(rs.next()) {
+                    faultyList.add(new FaultyItemDTO(rs.getInt("itemID"), rs.getDate("expDate").toLocalDate(), rs.getInt("amount")));
                 }
             }
         }catch (Exception e) {
-            return new Response("cannot get faulty item");
+            return new ResponseT("cannot get faulty item");
         }
-        return new ResponseT<FaultyItemDTO>(toGet);
+        return new ResponseT<>(faultyList);
     }
 
     public Response create(FaultyItem fi) {

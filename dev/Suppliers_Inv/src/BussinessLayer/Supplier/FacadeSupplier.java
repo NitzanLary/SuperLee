@@ -2,31 +2,32 @@ package BussinessLayer.Supplier;
 import BussinessLayer.Response;
 import BussinessLayer.ResponseT;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 
 // Singleton
-public class FacadeController {
+public class FacadeSupplier {
 
-    private static FacadeController facadeController = null;
+    private static FacadeSupplier facadeSupplier = null;
 
     private SupplierController supController;
     private OrderController orderController;
     private HashMap<Integer, LinkedList<Integer>> supplierOrder;
 
 
-    private FacadeController() {
+    private FacadeSupplier() {
         supController = SupplierController.getInstance();
         orderController = OrderController.getInstance();
         supplierOrder = new HashMap<>();
     }
 
-    public static FacadeController getInstance() {
-        if (facadeController == null)
-            facadeController = new FacadeController();
+    public static FacadeSupplier getInstance() {
+        if (facadeSupplier == null)
+            facadeSupplier = new FacadeSupplier();
 
-        return facadeController;
+        return facadeSupplier;
     }
 
 
@@ -305,9 +306,27 @@ public class FacadeController {
         }
     }
 
+    public ResponseT<Integer> createPeriodicOrder(int interval, LocalDate date){
+        try{
+            int orderID = orderController.createPeriodicOrder(interval,date);
+            return new ResponseT<>(orderID);
+        }catch(Exception e) {
+            return new ResponseT<>(e.getMessage());
+        }
+    }
+
     public Response addProductToOrder(int orderID, int productID , int quantity) {
         try {
             orderController.addProductToOrder(orderID, productID, quantity);
+            return new Response();
+        } catch (Exception e) {
+            return new Response(e.getMessage());
+        }
+    }
+
+    public Response addProductToPeriodicOrder(int orderID, int productID , int quantity) {
+        try {
+            orderController.addProductToPeriodicOrder(orderID, productID, quantity);
             return new Response();
         } catch (Exception e) {
             return new Response(e.getMessage());
@@ -332,6 +351,24 @@ public class FacadeController {
         }
     }
 
+    public Response removePOrder(int orderID) {
+        try {
+            orderController.removePOrder(orderID);
+            return new Response();
+        } catch (Exception e) {
+            return new Response(e.getMessage());
+        }
+    }
+
+    public Response removePeriodicOrder(int orderID) {
+        try {
+            orderController.removePeriodicOrder(orderID);
+            return new Response();
+        } catch (Exception e) {
+            return new Response(e.getMessage());
+        }
+    }
+
     public Response updateProdQuantity(int orderID, int productID, int quantity) {
         try {
             orderController.updateProdQuantity(orderID, productID,quantity);
@@ -344,6 +381,15 @@ public class FacadeController {
     public ResponseT<String> showAllOrders(){
         try {
             String s = orderController.showAllOrders();
+            return new ResponseT<>(s);
+        } catch (Exception e) {
+            return new ResponseT<>(e.getMessage());
+        }
+    }
+
+    public ResponseT<String> showAllPOrders(){
+        try {
+            String s = orderController.showAllPOrders();
             return new ResponseT<>(s);
         } catch (Exception e) {
             return new ResponseT<>(e.getMessage());
@@ -389,6 +435,10 @@ public class FacadeController {
         return orderController.isEmptyOrder(orderID);
     }
 
+    public boolean isEmptyPOrder(int orderID){
+        return orderController.isEmptyPOrder(orderID);
+    }
+
     public Response productInOrder(int orderID, int prodID){
         try {
             orderController.productInOrder(orderID, prodID);
@@ -398,5 +448,43 @@ public class FacadeController {
         }
     }
 
+    public ResponseT<HashMap<Integer, Integer>> getProductOfporder(int orderID) {
+        try {
+            HashMap<Integer, Integer> prods = orderController.getProductOfporder(orderID);
+            return new ResponseT<>(prods);
+        } catch (Exception e) {
+            return new ResponseT<>(e.getMessage());
+        }
+    }
 
+    public HashMap<Integer, HashMap<Integer, Integer>> findCheapestSupplier(HashMap<Integer, Integer> prods) {
+        //TODO
+    }
+
+
+    public boolean checkOrderPExist(int orderID) {
+        return orderController.checkOrderPExist(orderID);
+    }
+
+    public HashMap<Integer, PeriodicOrder> checkForApproachingPOrders() {
+        return orderController.checkForApproachingPOrders();
+    }
+
+    public Response removeProdFromPOrder(int productID, int orderID) {
+        try {
+            orderController.removeProdFromPOrder(productID ,orderID);
+            return new Response();
+        } catch (Exception e) {
+            return new Response(e.getMessage());
+        }
+    }
+
+    public Response changeInterval(int interval, int orderID) {
+        try {
+            orderController.changeInterval(interval ,orderID);
+            return new Response();
+        } catch (Exception e) {
+            return new Response(e.getMessage());
+        }
+    }
 }
