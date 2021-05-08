@@ -4,7 +4,6 @@ import BussinessLayer.Inventory.Sale;
 import BussinessLayer.Response;
 import BussinessLayer.ResponseT;
 import DataLayer.DTO.SaleDTO;
-import sun.awt.image.ImageWatched;
 
 import java.sql.*;
 import java.time.LocalDateTime;
