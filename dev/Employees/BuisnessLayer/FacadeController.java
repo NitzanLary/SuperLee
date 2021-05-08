@@ -240,6 +240,7 @@ public class FacadeController {
         return shiftController.getAssignedEmps(date, start, end);
     }
 
+
     /**
      * Changing the status of a given shift to close
      * @param date
@@ -390,6 +391,10 @@ public class FacadeController {
             return new ResponseT<>(null, r.getErrorMessage());
         Employee employee = r.getValue();
         return employee.checkAuthorizedHrOrGenral();
+    }
+
+    public ResponseT<Boolean> isStorekeeperAssigned(LocalDate date, LocalTime departure){
+        return shiftController.isStorekeeperAssigned(date, departure);
     }
 
     // init with 2 managers and 1 week forward
