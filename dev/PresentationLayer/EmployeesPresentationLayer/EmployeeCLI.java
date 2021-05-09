@@ -29,19 +29,19 @@ public class EmployeeCLI {
         return name != null && !name.equals("") && !name.equals(" ");
     }
 
-    private boolean isIdValid(String id){
-        return id.length() == 9;
-    }
+//    private boolean isIdValid(String id){
+//        return id.length() == 9;
+//    }
 
     //starts the login menu of the program
-    public void start() {
+    public void start(String ID) {
 
-        String ID;
+//        String ID;
         int action;
 
         do {
-            DisloginMenu();
-            ID = scanner.next();
+//            DisloginMenu();
+//            ID = scanner.next();
             if(ID.equals("0"))
                 break;
             cliController.setUserID(ID);

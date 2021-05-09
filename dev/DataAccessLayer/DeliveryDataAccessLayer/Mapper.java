@@ -1,7 +1,7 @@
 package DataAccessLayer.DeliveryDataAccessLayer;
 
 import DataAccessLayer.DeliveryDataAccessLayer.DTO.*;
-import Delivery.DataAccessLayer.DTO.*;
+import DataAccessLayer.DeliveryDataAccessLayer.DTO.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
