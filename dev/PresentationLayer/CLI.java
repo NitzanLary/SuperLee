@@ -10,9 +10,9 @@ import PresentationLayer.EmployeesPresentationLayer.EmployeeCLI;
 import java.util.Scanner;
 
 public class CLI {
-    EmployeeCLI employeeCLI = null;
-    DeliveryCLI deliveryCLI = null;
-    private String userID;
+    EmployeeCLI employeeCLI;
+    DeliveryCLI deliveryCLI;
+//    private String userID;
     Scanner scanner;
 
 
@@ -55,8 +55,7 @@ public class CLI {
 //                    cliController.Mmainmanue(action);
                 } while (true);
             } else {
-                do { //TODO
-                    //The User is Regular Employee (not Hr or General manager)
+                do {
                     employeeCLI.start(ID);
                     action = scanner.nextInt();
                     if (action == 0)
