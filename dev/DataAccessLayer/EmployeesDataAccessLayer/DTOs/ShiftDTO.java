@@ -46,6 +46,10 @@ public class ShiftDTO {
         return shiftDate.getEnd();
     }
 
+    public ShiftDAO getDao() {
+        return dao;
+    }
+
     public boolean isClosed() {
         return closed;
     }
