@@ -39,11 +39,12 @@ public class EmployeeController {
         }catch (IllegalArgumentException exception){
             return new Response(exception.getMessage());
         }
+        e.setDTO(dao);
         e.setTerms(terms);
         e.setBankAccount(bankAccount);
         e.setSalary(salary);
         e.AddRole(role);
-        e.setDTO(dao);
+
         Response r = e.persist();
         if (!r.isErrorOccured())
             employees.put(e.getID().getValue(), e);

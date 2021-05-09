@@ -77,7 +77,7 @@ public class Employee {
     }
 
     private boolean isDateValid(LocalDate date){
-        return date.isAfter(LocalDate.now());
+        return date.isBefore(LocalDate.now()) || date.isEqual(LocalDate.now());
     }
 
     public ResponseT<String> getName() {
@@ -184,7 +184,7 @@ public class Employee {
     }
 
     public ResponseT<Boolean> isDeliveryManager() {
-        boolean success = roles.stream().anyMatch((role) -> role.compare("Driver Manager"));
+        boolean success = roles.stream().anyMatch((role) -> role.compare("Delivery Manager"));
         return new ResponseT<>(success);
     }
 }
