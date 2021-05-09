@@ -23,9 +23,7 @@ public class CLI {
         return cli;
     }
 
-//    public void initData(){
-//        cliController.initData();
-//    }
+
 
     private boolean isNameValid(String name){
         return name != null && !name.equals("") && !name.equals(" ");
