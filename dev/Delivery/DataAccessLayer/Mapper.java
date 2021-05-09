@@ -351,6 +351,14 @@ public class Mapper {
         return ret;
     }
 
+    public TruckDTO getTruckByID(Response<String> truckNumber){
+        for (TruckDTO truck : trucks.values()){
+            if (truck.getId().equals(truckNumber.getData()))
+                return truck;
+        }
+        return null;
+    }
+
 //    public void storeLocation(AreaDTO areaDTO, LocationDTO locationDTO){
 //        areas.get(areaDTO.getAreaName()).addLocation(locationDTO);
 //    }

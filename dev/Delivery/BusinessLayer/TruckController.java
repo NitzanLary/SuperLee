@@ -40,12 +40,8 @@ public class TruckController {
         return controller.values().toString();
     }
 
-    public Truck getTruckByID(String truckNumber) {
-        for (Truck truck : controller.values()){
-            if (truck.getId() == truckNumber)
-                return truck;
-        }
-        return null;
+    public TruckDTO getTruckByID(String truckNumber) {
+        return mapper.getTruckByID(new Response<>(truckNumber));
     }
 
     public String toString(String tabs) {
