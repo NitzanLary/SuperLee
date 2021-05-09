@@ -31,9 +31,9 @@ public class EmployeeCLI {
         return name != null && !name.equals("") && !name.equals(" ");
     }
 
-    private boolean isIdValid(String id){
-        return id.length() == 9;
-    }
+//    private boolean isIdValid(String id){
+//        return id.length() == 9;
+//    }
 
     //starts the login menu of the program
     public void start() {
