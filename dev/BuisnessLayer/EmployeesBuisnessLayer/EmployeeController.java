@@ -44,6 +44,7 @@ public class EmployeeController {
         e.setSalary(salary);
         e.AddRole(role);
         e.setDTO(dao);
+
         Response r = e.persist();
         if (!r.isErrorOccured())
             employees.put(e.getID().getValue(), e);

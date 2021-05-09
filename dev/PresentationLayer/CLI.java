@@ -10,9 +10,11 @@ import PresentationLayer.EmployeesPresentationLayer.EmployeeCLI;
 import java.util.Scanner;
 
 public class CLI {
-    EmployeeCLI employeeCLI = null;
-    DeliveryCLI deliveryCLI = null;
-    private String userID;
+    EmployeeCLI employeeCLI;
+    DeliveryCLI deliveryCLI;
+//    private String userID;
+//
+
     Scanner scanner;
 
 
@@ -35,7 +37,8 @@ public class CLI {
 
         do {
             employeeCLI.DisloginMenu();
-            ID = scanner.next();
+//            ID = scanner.next();
+            ID = "205952971";
             if(ID.equals("0"))
                 break;
             ResponseT<Boolean> r = FacadeController.getInstance().isDeliveryManager(ID);
@@ -55,8 +58,7 @@ public class CLI {
 //                    cliController.Mmainmanue(action);
                 } while (true);
             } else {
-                do { //TODO
-                    //The User is Regular Employee (not Hr or General manager)
+                do {
                     employeeCLI.start(ID);
                     action = scanner.nextInt();
                     if (action == 0)

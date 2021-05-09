@@ -73,8 +73,14 @@ public class ShiftController {
         }
         ResponseT<ShiftDTO> shiftDTO = mapper.getShift(new ShiftDate(date,StartTime,EndTime));
         if (!shiftDTO.isErrorOccured())
-            return null;
+            return new ResponseT<>(fromDTO(shiftDTO.getValue()));
         return new ResponseT<>(null, "Shift not found");
+    }
+
+    private Shift fromDTO(ShiftDTO dto) {
+        if(dto.getStart().equals(LocalTime.of(6,0)))
+            return new MorningShift(dto);
+        return new EvningShift(dto);
     }
 
     public ResponseT<Shift> findShift(LocalDate date, char type) {

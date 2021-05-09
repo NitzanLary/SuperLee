@@ -18,6 +18,7 @@ public class Employee {
     private TermsOfEmployee terms;
     private LocalDate dateOfHire;
     private EmployeeDTO dto;
+    private boolean isPersisted;
 
     public Employee(String _name, String _ID, LocalDate _dateOfHire) {
         if (!isNameValid(_name))
@@ -65,7 +66,10 @@ public class Employee {
     }
 
     public Response persist(){
-        return dto.persist();
+        Response r = dto.persist();
+        if(!r.isErrorOccured())
+            isPersisted = true;
+        return r;
     }
 
     private boolean isNameValid(String name){
@@ -77,7 +81,7 @@ public class Employee {
     }
 
     private boolean isDateValid(LocalDate date){
-        return date.isAfter(LocalDate.now());
+        return date.isBefore(LocalDate.now()) || date.isEqual(LocalDate.now());
     }
 
     public ResponseT<String> getName() {
@@ -89,7 +93,8 @@ public class Employee {
         if (!isNameValid(name))
             return new ResponseT("Invalid name");
         this.name = name;
-        this.dto.setName(name);
+        if (isPersisted)
+            this.dto.setName(name);
         return new Response();
     }
 
@@ -116,24 +121,29 @@ public class Employee {
 
     public Response setSalary(int salary) {
         this.salary = salary;
-        this.dto.setSalary(salary);
+        if (isPersisted)
+            this.dto.setSalary(salary);
         return new Response();
     }
 
     public Response setBankAccount(String bankAccount) {
         this.bankAccount = bankAccount;
-        this.dto.setBankAccount(bankAccount);
+        if (isPersisted)
+            this.dto.setBankAccount(bankAccount);
         return new Response();
     }
 
     public Response AddRole(Role role){
         roles.add(role);
-        this.dto.addRole(role.toDTO());
+        if (isPersisted)
+            this.dto.addRole(role.toDTO());
         return new Response();
     }
 
     public Response setTerms(TermsOfEmployee terms) {
         this.terms = terms;
+        if(!isPersisted)
+            return new Response();
         Response r1 = this.dto.setSickDays(terms.getSickDays());
         Response r2 = this.dto.setAdvancedStudyFund(terms.getAdvancedStudyFund());
         Response r3 = this.dto.setDaysOff(terms.daysOff);
@@ -184,7 +194,7 @@ public class Employee {
     }
 
     public ResponseT<Boolean> isDeliveryManager() {
-        boolean success = roles.stream().anyMatch((role) -> role.compare("Driver Manager"));
+        boolean success = roles.stream().anyMatch((role) -> role.compare("Delivery Manager"));
         return new ResponseT<>(success);
     }
 }

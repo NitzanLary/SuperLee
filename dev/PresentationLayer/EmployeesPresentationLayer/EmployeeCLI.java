@@ -57,7 +57,7 @@ public class EmployeeCLI {
                     DisMmainMenu();
                     action = scanner.nextInt();
                     if (action == 0)
-                        break;
+                        System.exit(0);
                     scanner.nextLine();
                     cliController.Mmainmanue(action);
                 } while (true);
@@ -93,7 +93,7 @@ public class EmployeeCLI {
         System.out.println("""
                 1) Employees Menu
                 2) Shifts Menu
-                To return to the previous menu press 0
+                To exit press 0
                 
                 """);
     }
@@ -117,7 +117,7 @@ public class EmployeeCLI {
         System.out.println("""
                 1) Add new employee to the system
                 2) update or edit existing employee
-                To return to the previous menu press 0
+                To exit press 0
                 
                 """);
     }
