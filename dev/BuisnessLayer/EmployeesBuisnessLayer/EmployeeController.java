@@ -129,5 +129,11 @@ public class EmployeeController {
 
     }
 
+    public ResponseT<Boolean> isDeliveryManager(String userID) {
+        ResponseT<Employee> employee = getEmployee(userID);
+        if (!employee.isErrorOccured())
+            return employee.getValue().isDeliveryManager();
+        return new ResponseT<>(null, employee.getErrorMessage());
+    }
 }
 

@@ -381,7 +381,7 @@ public class FacadeController {
     }
 
     /**
-     *
+     * Returns true if the user is a manager and false otherwise.
      * @param userID
      * @return
      */
@@ -391,6 +391,10 @@ public class FacadeController {
             return new ResponseT<>(null, r.getErrorMessage());
         Employee employee = r.getValue();
         return employee.checkAuthorizedHrOrGenral();
+    }
+
+    public ResponseT<Boolean> isDeliveryManager(String userID){
+        return employeeController.isDeliveryManager(userID);
     }
 
     public ResponseT<Boolean> isStorekeeperAssigned(LocalDate date, LocalTime departure){

@@ -182,4 +182,9 @@ public class Employee {
     public EmployeeDTO getDTO() {
         return dto;
     }
+
+    public ResponseT<Boolean> isDeliveryManager() {
+        boolean success = roles.stream().anyMatch((role) -> role.compare("Driver Manager"));
+        return new ResponseT<>(success);
+    }
 }
