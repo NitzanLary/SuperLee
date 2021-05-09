@@ -9,7 +9,10 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args){
+        System.out.println(System.getProperty("user.dir"));
+    }
+    public static void main1(String[] args) {
 //        System.out.println("!Hello world");
 //        DeliveryController dc = new DeliveryController();
 //        for(int i = 0; i< 260000; i++)

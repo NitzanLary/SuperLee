@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Mapper {
     private static Mapper instance = null;
@@ -290,6 +291,10 @@ public class Mapper {
 
     public HashMap<String, DriverDTO> getDrivers() {
         return drivers;
+    }
+
+    public Map<String, TaskDTO> getTasks() {
+        return tasks;
     }
 
 //    public void storeLocation(AreaDTO areaDTO, LocationDTO locationDTO){
