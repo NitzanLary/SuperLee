@@ -6,6 +6,9 @@ import BuisnessLayer.EmployeesBuisnessLayer.ShiftController;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,9 +62,6 @@ public class FacadeController {
     }
 
     public ArrayList<AreaDTO> getAreas() {
-//        ArrayList<AreaDTO> ret = new ArrayList<>();
-//        for (Area a: arc.getAreas())
-//            ret.add(new AreaDTO(a));
         return arc.getAreas();
     }
 
@@ -95,9 +95,6 @@ public class FacadeController {
     }
 
     public ArrayList<TruckDTO> getTrucks(){
-//        ArrayList<TruckDTO> ret = new ArrayList<>();
-//        for (Truck t : trc.getTrucks())
-//            ret.add(new TruckDTO(t));
         return trc.getTrucks();
     }
 
@@ -136,15 +133,7 @@ public class FacadeController {
 
 
     public HashMap<String, ArrayList<LocationDTO>> getLocationsByAreas() {
-//        HashMap<String, ArrayList<LocationDTO>> ret = new HashMap<>();
         HashMap<String, ArrayList<LocationDTO>> ret = arc.getLocationsByArea();
-//        for (Area a : al.keySet()){
-//            ArrayList<LocationDTO> locations = new ArrayList<>();
-//            for (Location l: a.getLocations()){
-//                locations.add(new LocationDTO(l));
-//            }
-//            ret.put(a.getAreaName(), locations);
-//        }
         return ret;
     }
 
@@ -174,7 +163,6 @@ public class FacadeController {
 
     public DeliveryDTO updateDelivery(DeliveryDTO newDel, String oldDelId) {
         ArrayList<Task> tasks = new ArrayList<>();
-//        System.out.println("test - \n"+newDel.getDestinations()+"\n");
         for(TaskDTO td: newDel.getDestinations()){
             Task t = dec.getTasksFromDelivery(td.getId(), oldDelId);
             if (t==null)
@@ -246,5 +234,21 @@ public class FacadeController {
 
     public ArrayList<DeliveryDTO> getDeliveriesData() {
         return dec.getDeliveriesData();
+    }
+
+    public ResponseT<Boolean> isLegalDepartureTime(String timeOfDeparture, String date) {
+        BuisnessLayer.EmployeesBuisnessLayer.FacadeController efc = BuisnessLayer.EmployeesBuisnessLayer.FacadeController.getInstance();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-M-uu");
+        LocalDate ld = LocalDate.parse(date, formatter);
+        LocalTime lt = LocalTime.parse(timeOfDeparture);
+        return efc.isStorekeeperAssigned(ld,lt);
+    }
+
+    public Response<Boolean> checkIfStoreKeeperNeeded(ArrayList<TaskDTO> tasks) {
+        for (TaskDTO t : tasks){
+            if (t.getLoadingOrUnloading().equals("loading"))
+                    return new Response<>(true);
+        }
+        return new Response<>(false);
     }
 }
