@@ -1,6 +1,7 @@
 package Delivery.DataAccessLayer;
 
 import Delivery.BusinessLayer.Location;
+import Delivery.BusinessLayer.Truck;
 import Delivery.DTO.*;
 
 import java.sql.Connection;
@@ -245,8 +246,8 @@ public class Mapper {
             ResultSet rs = pstmt.executeQuery();
 
             // if there is no row
-            if (rs.next())
-                return null;
+//            if (rs.next())
+//                return null;
 
             // add products
             pstmtProduct.setString(1, id);
@@ -259,14 +260,50 @@ public class Mapper {
             pstmtLoc.setString(1, rs.getString("destination"));
             ResultSet rsLoc = pstmtLoc.executeQuery();
 
-            tkDTO = new TaskDTO(id, products, rs.getString(3), new LocationDTO(rs.getString(1),
-                    rs.getString(2), rs.getString(3)));
+            tkDTO = new TaskDTO(id, products, rs.getString(3), new LocationDTO(rsLoc.getString(1),
+                    rsLoc.getString(2), rsLoc.getString(3)));
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
         tasks.put(id, tkDTO);
         return tkDTO;
+    }
+
+    // TODO: here we can use this method only once and then take always from the data structure
+    public ArrayList<TruckDTO> getTrucks(){
+        String sql = "SELECT * FROM Trucks";
+        ArrayList<TruckDTO> truckDTOS = new ArrayList<>();
+
+        try (Connection conn = truckDAO.connect();
+             PreparedStatement pstmt  = conn.prepareStatement(sql)){
+
+            ResultSet rs = pstmt.executeQuery();
+
+//            // if there is no row
+//            if (rs.next())
+//                return null;
+            while (rs.next()){
+                TruckDTO truckDTO = new TruckDTO(rs.getString(1), rs.getString(2),
+                        rs.getInt(3), rs.getInt(4));
+                truckDTOS.add(truckDTO);
+                trucks.put(truckDTO.getId(), truckDTO);
+            }
+
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return truckDTOS;
+
+    }
+    //TODO we consider here that we called already to the get trucks
+    public Response<Boolean> containsTruck(Response<String> truckNumber){
+        if (trucks.containsKey(truckNumber))
+            return new Response<>(true);
+        return new Response<>(false);
     }
 
 //    public HashMap<AreaDTO, ArrayList<LocationDTO>> getLocations(){
@@ -284,9 +321,9 @@ public class Mapper {
 //        return areas;
 //    }
 
-    public HashMap<String, TruckDTO> getTrucks() {
-        return trucks;
-    }
+//    public HashMap<String, TruckDTO> getTrucks() {
+//        return trucks;
+//    }
 
     public HashMap<String, DriverDTO> getDrivers() {
         return drivers;

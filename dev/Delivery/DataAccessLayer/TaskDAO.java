@@ -1,6 +1,7 @@
 package Delivery.DataAccessLayer;
 
 import Delivery.DTO.DeliveryDTO;
+import Delivery.DTO.Response;
 import Delivery.DTO.TaskDTO;
 
 import java.sql.Connection;
@@ -29,7 +30,7 @@ public class TaskDAO extends DAO {
     we will send null and put in the DB -1
     and if there is delivery connected to the this task - we will use the update func to change to the current delID
     */
-    public void storeTask(TaskDTO taskDTO, String deliveryID){
+    public void storeTask(TaskDTO taskDTO, Response<String> deliveryID){
         String sql = "INSERT INTO Tasks(taskID, DeliveryID, loadingOrUnloading) VALUES(?,?,?)";
 
         try (Connection conn = this.connect();
@@ -37,7 +38,8 @@ public class TaskDAO extends DAO {
             pstmt.setString(1, taskDTO.getId());
             if (deliveryID == null)
                 pstmt.setInt(2, -1);
-            pstmt.setString(2, deliveryID);
+            assert deliveryID != null;
+            pstmt.setString(2, deliveryID.getData());
             pstmt.setString(3, taskDTO.getLoadingOrUnloading());
             pstmt.executeUpdate();
         } catch (SQLException e) {

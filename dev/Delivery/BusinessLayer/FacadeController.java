@@ -93,12 +93,11 @@ public class FacadeController {
         return trc.containsTruck(id);
     }
 
-    // here instead of returning a list of trucks (which the CLI shouldn't know) i returning a list of the truck numbers.
     public ArrayList<TruckDTO> getTrucks(){
-        ArrayList<TruckDTO> ret = new ArrayList<>();
-        for (Truck t : trc.getTrucks())
-            ret.add(new TruckDTO(t));
-        return ret;
+//        ArrayList<TruckDTO> ret = new ArrayList<>();
+//        for (Truck t : trc.getTrucks())
+//            ret.add(new TruckDTO(t));
+        return trc.getTrucks();
     }
 
     // - Driver -
@@ -153,7 +152,7 @@ public class FacadeController {
     public DeliveryDTO createFullDelivery(DeliveryDTO del){
         ArrayList<Task> tasks = new ArrayList<>();
         for (TaskDTO t: del.getDestinations())
-            tasks.add(tac.getAndRemoveTaskById(t.getId()));
+            tasks.add(tac.getAndRemoveTaskById(t.getId(), del.getId()));
         del.setId(dec.createFullDelivery(del.getDate(),del.getTimeOfDeparture(),del.getTruckNumber(),del.getDriverName(),del.getDepartureWeight(),del.getModification(), arc.getLocation(del.getOrigin().getAddress()),tasks));
         return del;
     }
@@ -180,7 +179,7 @@ public class FacadeController {
         for(TaskDTO td: newDel.getDestinations()){
             Task t = dec.getTasksFromDelivery(td.getId(), oldDelId);
             if (t==null)
-                t = tac.getAndRemoveTaskById(td.getId());
+                t = tac.getAndRemoveTaskById(td.getId(), newDel.getId());
             tasks.add(t);
         }
         Location orig = arc.getLocation(newDel.getOrigin().getAddress());
@@ -207,9 +206,9 @@ public class FacadeController {
 //        return this.trc.getTruckData();
 //    }
 
-    public ArrayList<TaskDTO> getTasksData() {
-        return tac.getTasksData();
-    }
+//    public ArrayList<TaskDTO> getTasksData() {
+//        return tac.getTasksData();
+//    }
 
 //    public ArrayList<DeliveryDTO> getDeliveryData() {
 //        return this.dec.getTasksFromDeliveriesData();

@@ -1,6 +1,8 @@
 package Delivery.BusinessLayer;
 
+import Delivery.DTO.Response;
 import Delivery.DTO.TruckDTO;
+import Delivery.DataAccessLayer.Mapper;
 import Delivery.DataAccessLayer.TruckDAO;
 
 import java.util.ArrayList;
@@ -9,6 +11,7 @@ import java.util.HashMap;
 public class TruckController {
     HashMap<String, Truck> controller;
     private TruckDAO dataController;
+    private Mapper mapper = Mapper.getInstance();
 
     public TruckController(){
         controller = new HashMap<String, Truck>();
@@ -20,16 +23,16 @@ public class TruckController {
         dataController.storeTruck(truckDTO);
     }
 
-    public ArrayList<Truck> getTrucks(){
-        ArrayList<Truck> arr = new ArrayList();
-        for (String id : controller.keySet()){
-            arr.add(controller.get(id));
-        }
-        return arr;
+    public ArrayList<TruckDTO> getTrucks(){
+//        ArrayList<Truck> arr = new ArrayList();
+//        for (String id : controller.keySet()){
+//            arr.add(controller.get(id));
+//        }
+        return mapper.getTrucks();
     }
 
     public boolean containsTruck(String id){
-        return controller.containsKey(id);
+        return mapper.containsTruck(new Response<String>(id)).getData();
     }
 
     @Override
