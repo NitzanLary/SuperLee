@@ -23,9 +23,9 @@ public class CLI {
         return cli;
     }
 
-    public void initData(){
-        cliController.initData();
-    }
+//    public void initData(){
+//        cliController.initData();
+//    }
 
     private boolean isNameValid(String name){
         return name != null && !name.equals("") && !name.equals(" ");
@@ -41,15 +41,6 @@ public class CLI {
         String ID;
         int action;
 
-        System.out.println("""
-                ****** If you want to initialize example data press '1' ******
-                ******           Else press any other Digit             ******
-                """);
-        action = scanner.nextInt();
-        if(action == 1) {
-            initData();
-            System.out.println("Data loaded successfully\n");
-        }
         do {
             DisloginMenu();
             ID = scanner.next();
