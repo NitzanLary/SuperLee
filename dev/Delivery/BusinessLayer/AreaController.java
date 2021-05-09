@@ -90,13 +90,13 @@ public class AreaController {
         return mapper.getAreas();
     }
 
-    public ArrayList<AreaDTO> getAreasData() {
-//        ArrayList<AreaDTO> arr = new ArrayList<>();
-//        for (AreaDTO area : this.dc.getAreas().values()){
-//            arr.add(area);
-//        }
-//        return arr;
-//        return new ArrayList<>(dc.getAreas().values());
-        return null;
-    }
+//    public ArrayList<AreaDTO> getAreasData() {
+////        ArrayList<AreaDTO> arr = new ArrayList<>();
+////        for (AreaDTO area : this.dc.getAreas().values()){
+////            arr.add(area);
+////        }
+////        return arr;
+////        return new ArrayList<>(dc.getAreas().values());
+//        return null;
+//    }
 }

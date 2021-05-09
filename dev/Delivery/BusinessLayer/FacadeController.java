@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 
 
-// TODO : everything related to "get data" (lines 206, 214) are in comment now for testing SQL
 public class FacadeController {
     DeliveryController dec;
     DriverController drc;
@@ -134,7 +133,6 @@ public class FacadeController {
     }
 
 
-    // todo - transfer it to area controller!
     public HashMap<String, ArrayList<LocationDTO>> getLocationsByAreas() {
 //        HashMap<String, ArrayList<LocationDTO>> ret = new HashMap<>();
         HashMap<String, ArrayList<LocationDTO>> ret = arc.getLocationsByArea();
@@ -157,7 +155,6 @@ public class FacadeController {
         return del;
     }
 
-    // todo - transfer it to task controller!
     public ArrayList<TaskDTO> getTasks() {
         ArrayList<TaskDTO> ret = new ArrayList<>();
         for (Task t : tac.getTasks()) {
@@ -195,24 +192,12 @@ public class FacadeController {
     }
 
     public ArrayList<AreaDTO> getAreasData() {
-        return this.arc.getAreasData();
+        return this.arc.getAreas();
     }
 
     public ArrayList<DriverDTO> getDriversData() {
-        return this.drc.getDriversData();
+        return this.drc.getDriversData(); // todo - integration!
     }
-
-//    public ArrayList<TruckDTO> getTrucksData() {
-//        return this.trc.getTruckData();
-//    }
-
-//    public ArrayList<TaskDTO> getTasksData() {
-//        return tac.getTasksData();
-//    }
-
-//    public ArrayList<DeliveryDTO> getDeliveryData() {
-//        return this.dec.getTasksFromDeliveriesData();
-//    }
 
     public ArrayList<DriverDTO> getDriversToTruck(TruckDTO ride) {
         ArrayList<DriverDTO> ret = new ArrayList<>();
@@ -242,5 +227,9 @@ public class FacadeController {
             arr.add(new DriverDTO(driver));
         }
         return arr;
+    }
+
+    public ArrayList<DeliveryDTO> getDeliveriesData() {
+        return dec.getDeliveriesData();
     }
 }

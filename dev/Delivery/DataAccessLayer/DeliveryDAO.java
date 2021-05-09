@@ -6,6 +6,7 @@ import Delivery.DTO.LocationDTO;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class DeliveryDAO extends DAO{
     private static DeliveryDAO instance = null;
@@ -45,7 +46,7 @@ public class DeliveryDAO extends DAO{
                 System.out.println(ex.getMessage());
             }
         }
-
+        // todo - update tasks delivery ids
     }
 
     public DeliveryDTO getDeliveryByID(String deliveryId){
@@ -68,6 +69,5 @@ public class DeliveryDAO extends DAO{
         return null;
 
     }
-
 
 }

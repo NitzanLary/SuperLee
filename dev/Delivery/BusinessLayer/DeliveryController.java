@@ -2,6 +2,7 @@ package Delivery.BusinessLayer;
 
 import Delivery.DTO.DeliveryDTO;
 import Delivery.DataAccessLayer.DeliveryDAO;
+import Delivery.DataAccessLayer.Mapper;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -11,10 +12,12 @@ public class DeliveryController {
     private HashMap<String, Delivery> deliveries; // changes it to deliveries
     private String nextID = "A000";
     private DeliveryDAO dataController;
+    private Mapper mapper;
 
     public DeliveryController(){
         deliveries = new HashMap<>();
         dataController = DeliveryDAO.getInstance();
+        mapper = Mapper.getInstance();
     }
 
     public HashMap<String, Delivery> getDeliveries() {
@@ -25,7 +28,7 @@ public class DeliveryController {
         String id = getNewDeliveryID();
         Delivery del = new Delivery(id, date, timeOfDeparture, truckNumber, driverName, departureWeight, modification, origin, destinations);
         deliveries.put(id ,del);
-//        storeDelivery(del);
+        storeDelivery(del);
         return id;
     }
 
@@ -42,7 +45,7 @@ public class DeliveryController {
         Delivery toStore = deliveries.remove(OldDelID);
         toStore.addModification("- newer "+newDel.getID()+" -");
         newDel.addModification("- older "+OldDelID+" -");
-        storeDelivery(toStore);
+//        storeDelivery(toStore);
 //        Delivery newDel = cloneDelivery(toStore);
 //        return null;
         return newDel;
@@ -175,6 +178,10 @@ public class DeliveryController {
             this.deliveries.remove(deliveryDTO.getId());
             storeDelivery(delivery);
         }
+    }
+
+    public ArrayList<DeliveryDTO> getDeliveriesData() {
+        return mapper.getDeliveries();
     }
 
 //    public ArrayList<DeliveryDTO> getTasksFromDeliveriesData() {

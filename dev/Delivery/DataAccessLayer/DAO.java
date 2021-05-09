@@ -1,9 +1,13 @@
 package Delivery.DataAccessLayer;
 //package net.sqlitetutorial;
 
+import Delivery.DTO.DeliveryDTO;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
 public abstract class DAO {
     protected Connection conn = null;
     public DAO(){

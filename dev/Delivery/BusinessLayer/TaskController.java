@@ -23,6 +23,7 @@ public class TaskController {
     public String addTask(HashMap<String, Integer> listOfProduct, String loadingOrUnloading, Location destination){
         String id = getNewTaskID();
         Task newTask = new Task(id, listOfProduct, loadingOrUnloading, destination);
+        storeTask(newTask, null);
         controller.put(id, newTask);
         return id;
 //        return new TaskDTO(newTask);
@@ -75,7 +76,7 @@ public class TaskController {
     public Task getAndRemoveTaskById(String taskId, String delId) {
         Task ret = getTaskById(taskId);
         controller.remove(taskId);
-        storeTask(ret, delId);
+        dc.updateTask(new TaskDTO(ret), new Response<>(delId));
         return ret;
     }
     // TODO: getTasks is from the DAL or from the controller ???

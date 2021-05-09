@@ -300,7 +300,7 @@ public class Mapper {
         return truckDTOS;
 
     }
-    //TODO we consider here that we called already to the get trucks
+    //TODO we considered here that we already called to the get trucks
     public Response<Boolean> containsTruck(Response<String> truckNumber){
         if (trucks.containsKey(truckNumber))
             return new Response<>(true);
@@ -332,6 +332,23 @@ public class Mapper {
 
     public Map<String, TaskDTO> getTasks() {
         return tasks;
+    }
+
+    public ArrayList<DeliveryDTO> getDeliveries() {
+        ArrayList<DeliveryDTO> ret = new ArrayList<>();
+        String query = "SELECT deliveryID FROM deliveries";
+        ResultSet rs = null;
+        try (Connection conn = deliveryDAO.connect();
+            PreparedStatement pstmt = conn.prepareStatement(query)) {
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                ret.add(getDeliveryByID(rs.getString(1)));
+            }
+        }
+        catch(SQLException e) {
+            System.out.println(e.getStackTrace());
+        }
+        return ret;
     }
 
 //    public void storeLocation(AreaDTO areaDTO, LocationDTO locationDTO){

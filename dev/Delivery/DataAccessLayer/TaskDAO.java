@@ -36,9 +36,6 @@ public class TaskDAO extends DAO {
         try (Connection conn = this.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, taskDTO.getId());
-            if (deliveryID == null)
-                pstmt.setNull(2, );
-            assert deliveryID != null;
             pstmt.setString(2, deliveryID.getData());
             pstmt.setString(3, taskDTO.getLoadingOrUnloading());
             pstmt.executeUpdate();
@@ -85,7 +82,15 @@ public class TaskDAO extends DAO {
     }
 
 
-    public void updateTask(TaskDTO oldTaskDTO, TaskDTO newTaskDTO){
-
+    public void updateTask(TaskDTO oldTaskDTO, Response<String> delID){
+        String quary = "UPDATE Tasks SET deliveryID = ? WHERE taskID = ?";
+        try (Connection conn = this.connect();
+             PreparedStatement pstmt = conn.prepareStatement(quary)) {
+            pstmt.setString(1, delID.getData());
+            pstmt.setString(2, oldTaskDTO.getId());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
