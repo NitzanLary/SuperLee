@@ -13,11 +13,11 @@ import java.util.Map;
 
 public class Mapper {
     private static Mapper instance = null;
-    private HashMap<String, DeliveryDTO> deliveries;
-    private HashMap<String, TaskDTO> tasks;
-    private HashMap<String, AreaDTO> areas;
-    private HashMap<String, TruckDTO> trucks;
-    private HashMap<String, DriverDTO> drivers;
+    private HashMap<String,DeliveryDTO> deliveries;
+    private HashMap<String,TaskDTO> tasks;
+    private HashMap<String,AreaDTO> areas;
+    private HashMap<String,TruckDTO> trucks;
+    private HashMap<String,DriverDTO> drivers;
     private HashMap<String, ArrayList<LocationDTO>> locationsbyArea;
     private HashMap<String, LocationDTO> locations;
     private DeliveryDAO deliveryDAO = DeliveryDAO.getInstance();
@@ -176,7 +176,7 @@ public class Mapper {
         if (locations.containsKey(address))
             return locations.get(address);
 
-        String sql = "SELECT * FROM Locations WHERE Location.address = (?)";
+        String sql = "SELECT * FROM Locations WHERE Locations.address = (?)";
         LocationDTO locationDTO = null;
 
         try (Connection conn = areaDAO.connect();
@@ -187,8 +187,8 @@ public class Mapper {
             ResultSet rs = pstmt.executeQuery();
 
             // if there is no row
-            if (rs.next())
-                return null;
+//            if (rs.next())
+//                return null;
             locationDTO = new LocationDTO(address, rs.getString(2), rs.getString(3));
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -335,10 +335,10 @@ public class Mapper {
 
     public ArrayList<DeliveryDTO> getDeliveries() {
         ArrayList<DeliveryDTO> ret = new ArrayList<>();
-        String query = "SELECT deliveryID FROM deliveries";
+        String query = "SELECT ID FROM deliveries";
         ResultSet rs = null;
         try (Connection conn = deliveryDAO.connect();
-            PreparedStatement pstmt = conn.prepareStatement(query)) {
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 ret.add(getDeliveryByID(rs.getString(1)));
@@ -363,3 +363,9 @@ public class Mapper {
 //    }
 
 }
+
+//    public void storeLocation(AreaDTO areaDTO, LocationDTO locationDTO){
+//        areas.get(areaDTO.getAreaName()).addLocation(locationDTO);
+//    }
+
+

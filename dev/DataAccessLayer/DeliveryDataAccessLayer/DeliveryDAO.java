@@ -18,13 +18,13 @@ public class DeliveryDAO extends DAO{
     }
 
     public void storeDelivery(DeliveryDTO deliveryDTO){
-        String sql = "INSERT INTO Delivery(id, date, timeOfDeparture, truckNumber, driverName, departureWeightInt, modification, origin) VALUES(?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO Deliveries(id, date, timeOfDeparture, truckNumber, driverName, departureWeight, modification, origin) VALUES(?,?,?,?,?,?,?,?)";
 
         try (Connection conn = this.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, deliveryDTO.getId());
-            pstmt.setDate(2, Date.valueOf(deliveryDTO.getDate())); // TODO: need to check if this OK !
-            pstmt.setTime(3, Time.valueOf(deliveryDTO.getTimeOfDeparture())); // TODO: need to check if this OK !
+            pstmt.setString(2, deliveryDTO.getDate()); // TODO: need to check if this OK !
+            pstmt.setString(3, deliveryDTO.getTimeOfDeparture()); // TODO: need to check if this OK !
             pstmt.setString(4, deliveryDTO.getTruckNumber());
             pstmt.setString(5, deliveryDTO.getDriverName());
             pstmt.setInt(6, deliveryDTO.getDepartureWeight());
