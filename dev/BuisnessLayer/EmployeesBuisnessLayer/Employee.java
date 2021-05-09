@@ -203,5 +203,6 @@ public class Employee {
             if (r.compare("Driver"))
                 return new ResponseT<>(r.getLicence());
         }
+        return new ResponseT<>(null); //That should never happened.
     }
 }
