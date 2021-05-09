@@ -27,7 +27,7 @@ public class OrderDAO extends DAO{
             pstmt.setFloat(5, (float) price);
 
 
-            pstmt.executeUpdate();
+            pstmt.execute();
 
         } catch (SQLException e) {
             return new Response(e.getMessage());
@@ -71,9 +71,7 @@ public class OrderDAO extends DAO{
                 PreparedStatement ps = r.value.prepareStatement(SQL);
                 ps.setInt(1, orderID);
 
-                if(!ps.execute()) {
-                    return new Response("cannot delete this order from db");
-                }
+                ps.execute();
             }
         }catch (SQLException e) {
             return new Response(e.getMessage());

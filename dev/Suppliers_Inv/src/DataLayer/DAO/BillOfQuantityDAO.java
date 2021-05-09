@@ -25,7 +25,7 @@ public class BillOfQuantityDAO extends DAO {
             pstmt.setInt(3, minQuantity);
             pstmt.setInt(4,percentDiscount);
 
-            pstmt.executeUpdate();
+            pstmt.execute();
 
         } catch (SQLException e) {
             return new Response(e.getMessage());
@@ -69,9 +69,7 @@ public class BillOfQuantityDAO extends DAO {
                 PreparedStatement ps = r.value.prepareStatement(SQL);
                 ps.setInt(1, supplierID);
 
-                if(!ps.execute()) {
-                    return new Response("cannot delete bill of quantity from db");
-                }
+                ps.execute();
             }
         }catch (SQLException e) {
             return new Response(e.getMessage());
@@ -90,10 +88,7 @@ public class BillOfQuantityDAO extends DAO {
                 ps.setInt(2, supplierID);
                 ps.setInt(3, productID);
 
-                if(!ps.execute()) {
-                    return new Response("cannot update minimum quantity of "+productID+
-                            " in bill of quantity of "+supplierID+" " +" to db");
-                }
+                ps.execute();
             }
         }catch (SQLException e) {
             return new Response(e.getMessage());
@@ -111,10 +106,7 @@ public class BillOfQuantityDAO extends DAO {
                 ps.setInt(2, supplierID);
                 ps.setInt(3, productID);
 
-                if(!ps.execute()) {
-                    return new Response("cannot update discount of "+productID+
-                            " in bill of quantity of "+supplierID+" " +" to db");
-                }
+                ps.execute();
             }
         }catch (SQLException e) {
             return new Response(e.getMessage());

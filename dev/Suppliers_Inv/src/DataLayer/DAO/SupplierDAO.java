@@ -103,16 +103,13 @@ public class SupplierDAO extends DAO {
     }
 
     public Response delete(Integer supplierID) {
-        String SQL = "DELETE FROM Supplier WHERE supplierID = ?";
+        String SQL = "DELETE FROM Supplier WHERE ID = ?";
         try {
             ResponseT<Connection> r = getConn();
             if(!r.ErrorOccured()) {
                 PreparedStatement ps = r.value.prepareStatement(SQL);
                 ps.setInt(1, supplierID);
-
-                if(!ps.execute()) {
-                    return new Response("cannot delete supplier "+ supplierID+" from db");
-                }
+                ps.execute();
             }
         }catch (SQLException e) {
             return new Response(e.getMessage());

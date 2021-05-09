@@ -27,7 +27,7 @@ public class ProductsInOrderDAO extends DAO {
             pstmt.setInt(3,quantity);
             pstmt.setInt(4, supplierID);
 
-            pstmt.executeUpdate();
+            pstmt.execute();
 
         } catch (SQLException e) {
             return new Response(e.getMessage());
@@ -51,9 +51,7 @@ public class ProductsInOrderDAO extends DAO {
                 ps.setInt(2, productID);
                 ps.setInt(3, supplierID);
 
-                if(!ps.execute()) {
-                    return new Response("cannot delete "+productID+" from order "+orderID+ " in db");
-                }
+                ps.execute();
             }
         }catch (SQLException e) {
             return new Response(e.getMessage());

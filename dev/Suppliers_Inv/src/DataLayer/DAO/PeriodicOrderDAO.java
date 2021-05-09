@@ -27,7 +27,7 @@ public class PeriodicOrderDAO extends DAO{
             pstmt.setInt(4, productID);
             pstmt.setInt(5, quantity);
 
-            pstmt.executeUpdate();
+            pstmt.execute();
 
         } catch (SQLException e) {
             return new Response(e.getMessage());
@@ -49,9 +49,7 @@ public class PeriodicOrderDAO extends DAO{
                 PreparedStatement ps = r.value.prepareStatement(SQL);
                 ps.setInt(1, periodicID);
 
-                if(!ps.execute()) {
-                    return new Response("cannot delete periodic order num: "+periodicID+" in db");
-                }
+                ps.execute();
             }
         }catch (SQLException e) {
             return new Response(e.getMessage());
@@ -68,9 +66,7 @@ public class PeriodicOrderDAO extends DAO{
                 ps.setInt(1, interval);
                 ps.setInt(2, periodicID);
 
-                if(!ps.execute()) {
-                    return new Response("cannot update interval of periodic order num "+periodicID+ " in db");
-                }
+                ps.execute();
             }
         }catch (SQLException e) {
             return new Response(e.getMessage());
@@ -88,10 +84,7 @@ public class PeriodicOrderDAO extends DAO{
                 ps.setInt(2, periodicID);
                 ps.setInt(3, productID);
 
-                if(!ps.execute()) {
-                    return new Response("cannot update quantity of productID: "+productID+
-                            " in periodic order num "+periodicID+ " in db");
-                }
+                ps.execute();
             }
         }catch (SQLException e) {
             return new Response(e.getMessage());
@@ -108,9 +101,7 @@ public class PeriodicOrderDAO extends DAO{
                 ps.setInt(1, periodicID);
                 ps.setInt(2, productID);
 
-                if(!ps.execute()) {
-                    return new Response("cannot add product: "+productID+ "to periodic order num: "+periodicID+" in db");
-                }
+                ps.execute();
             }
         }catch (SQLException e) {
             return new Response(e.getMessage());
