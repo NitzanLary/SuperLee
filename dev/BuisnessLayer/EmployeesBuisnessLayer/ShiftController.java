@@ -1,5 +1,9 @@
 package BuisnessLayer.EmployeesBuisnessLayer;
 
+import DataAccessLayer.EmployeesDataAccessLayer.DTOs.ShiftDTO;
+import DataAccessLayer.EmployeesDataAccessLayer.Objects.Mapper;
+import DataAccessLayer.EmployeesDataAccessLayer.Objects.ShiftDate;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -12,9 +16,11 @@ public class ShiftController {
 
     private static ShiftController shiftController = null;
     private ArrayList<WeeklyShifts> weeklyShifts;
+    private Mapper mapper; 
 
     private ShiftController(){
         weeklyShifts = new ArrayList<>();  //creating with 4 weeks slots
+        mapper = Mapper.getInstance();
 //        ShiftController.add4WeeksSlots();
     }
 
@@ -65,6 +71,9 @@ public class ShiftController {
                     return new ResponseT<>(s);
             }
         }
+        ResponseT<ShiftDTO> shiftDTO = mapper.getShift(new ShiftDate(date,StartTime,EndTime));
+        if (!shiftDTO.isErrorOccured())
+            return null;
         return new ResponseT<>(null, "Shift not found");
     }
 

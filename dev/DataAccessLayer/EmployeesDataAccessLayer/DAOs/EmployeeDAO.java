@@ -19,7 +19,7 @@ public class EmployeeDAO extends DAO{
                 (?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
-        try(Connection conn = getConn().getValue();
+        try(Connection conn = getConn();
             PreparedStatement pstmt = conn.prepareStatement(sql)){
 
             // inserting to employee table
@@ -55,7 +55,7 @@ public class EmployeeDAO extends DAO{
                 WHERE EmpID = ?
                 """;
         
-        try(Connection conn = getConn().getValue();
+        try(Connection conn = getConn();
             PreparedStatement pstmt = conn.prepareStatement(sql)){
 
             pstmt.setString(1, employeeDTO.getName());
@@ -90,7 +90,7 @@ public class EmployeeDAO extends DAO{
     }
 
     public Response addRole(String ID, String role, String driverLicence){
-        try(Connection conn = getConn().getValue()){
+        try(Connection conn = getConn()){
             addRole(ID, role, driverLicence, conn);
 
         }catch(SQLException e){
@@ -119,7 +119,7 @@ public class EmployeeDAO extends DAO{
                 WHERE EmpID = %s
                 """, id);
 
-        try(Connection conn = getConn().getValue();
+        try(Connection conn = getConn();
             Statement empStmt = conn.createStatement();
             Statement rolesStmt = conn.createStatement();
             ResultSet empRs = empStmt.executeQuery(empSql);
