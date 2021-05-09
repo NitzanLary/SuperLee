@@ -2,16 +2,24 @@ package PresentationLayer.DeliveryPresentationLayer;
 
 import BuisnessLayer.DeliveryBusinessLayer.FacadeController;
 import DataAccessLayer.DeliveryDataAccessLayer.DTO.*;
+import PresentationLayer.EmployeesPresentationLayer.EmployeeCLI;
 
 import java.time.LocalDate;
 import java.util.*;
 import java.time.format.*;
 
 public class DeliveryCLI {
+    private static DeliveryCLI deliveryCLI = null;
     FacadeController fc;
 
     public DeliveryCLI() {
         fc = new FacadeController();
+    }
+
+    public static DeliveryCLI getInstance(){
+        if (deliveryCLI == null)
+            deliveryCLI = new DeliveryCLI();
+        return deliveryCLI;
     }
 
     public void runWithConsole() {
