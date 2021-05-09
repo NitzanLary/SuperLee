@@ -8,7 +8,7 @@ import java.util.List;
 
 public class CLIController {
     private static CLIController clientController = null;
-    private CLI cli;
+    private EmployeeCLI employeeCli;
     private FacadeController facade;
 
 
@@ -28,7 +28,7 @@ public class CLIController {
     }
 
     public void setUserID(String userID) {
-        cli = CLI.getInstance();
+        employeeCli = EmployeeCLI.getInstance();
         this.userID = userID;
     }
 
@@ -50,16 +50,16 @@ public class CLIController {
 
     public void Mmainmanue(int action) {
         if (action == 1){
-            cli.MempMenu();
+            employeeCli.MempMenu();
         }
         if (action == 2){
-            cli.MshiftsMenu();
+            employeeCli.MshiftsMenu();
         }
     }
 
     public void MempMenu(int action) {
         if (action == 1){ addNewEmployee(); }
-        if (action == 2){ cli.MempUpdateMenu(); }
+        if (action == 2){ employeeCli.MempUpdateMenu(); }
 
     }
 
@@ -78,7 +78,7 @@ public class CLIController {
         if (action == 1)
             handleSingleShiftMenu();
         if (action == 2)
-            cli.weeksMenu();
+            employeeCli.weeksMenu();
         if (action == 3)
             generate1weeklyShift();
     }
@@ -86,70 +86,70 @@ public class CLIController {
     private void generate1weeklyShift() {
         Response r = facade.generate1weeklyShifts(userID);
         if(r.isErrorOccured())
-            cli.print(r.getErrorMessage());
+            employeeCli.print(r.getErrorMessage());
         else
-            cli.print("The generation has done");
+            employeeCli.print("The generation has done");
     }
 
     private char getShiftType(){
-        char type = cli.getChar("Enter 'M' for Morning shift or 'E' for Evening shift");
+        char type = employeeCli.getChar("Enter 'M' for Morning shift or 'E' for Evening shift");
         while(type != 'E' && type != 'M'){
-            type = cli.getChar("Enter 'M' for Morning shift or 'E' for Evening shift");
+            type = employeeCli.getChar("Enter 'M' for Morning shift or 'E' for Evening shift");
         }
         return type;
     }
 
     private void handleSingleShiftMenu() {
-        LocalDate date = cli.getDate("Please enter date");
+        LocalDate date = employeeCli.getDate("Please enter date");
         char type = getShiftType();
         ResponseT<Shift> shift = facade.getShift(date, type);
         if (shift.isErrorOccured()) {
-            cli.print(shift.getErrorMessage());
+            employeeCli.print(shift.getErrorMessage());
             return;
         }
-        cli.MSingleShiftMenu(shift.getValue());
+        employeeCli.MSingleShiftMenu(shift.getValue());
     }
 
 
     public void EmainMenu(int action) {
         //Show employee information
-        if (action == 1){ cli.print(showAllMyInformation()); }
+        if (action == 1){ employeeCli.print(showAllMyInformation()); }
         //Show employee preferences for a shift
-        if (action == 2){ cli.print(showMyPreferences()); }
+        if (action == 2){ employeeCli.print(showMyPreferences()); }
         //Assign employee preferences for a specific shift
         if (action == 3){ assignPreferenceForShift(); }
         // Show colleagues whom the employee work with in a shift
-        if (action == 4) { cli.print(showColleaguesWorkWithMe()); }
+        if (action == 4) { employeeCli.print(showColleaguesWorkWithMe()); }
 
 
     }
 
     public void addNewEmployee(){
-        String EmpID = cli.getString("Enter employee ID:");
-        String name = cli.getString("Enter employee name:");
-        String bankAccount = cli.getString("Enter employee's bank account:");
+        String EmpID = employeeCli.getString("Enter employee ID:");
+        String name = employeeCli.getString("Enter employee name:");
+        String bankAccount = employeeCli.getString("Enter employee's bank account:");
 
-        int salary = cli.getInt("Enter employee salary:");
+        int salary = employeeCli.getInt("Enter employee salary:");
         while (!isSalaryValid(salary))
-            salary = cli.getInt("Invalid value Enter employee salary:");
+            salary = employeeCli.getInt("Invalid value Enter employee salary:");
 
-        int sickDays = cli.getInt("Enter employee's sick days:");
+        int sickDays = employeeCli.getInt("Enter employee's sick days:");
         while(!isValidSickDays(sickDays))
-            sickDays = cli.getInt("Invalid value Enter employee's sick days:");
+            sickDays = employeeCli.getInt("Invalid value Enter employee's sick days:");
 
-        int studyFund = cli.getInt("Enter employee's study fund:");
+        int studyFund = employeeCli.getInt("Enter employee's study fund:");
         while(!isValidFund(studyFund))
-            studyFund = cli.getInt("Invalid value Enter employee's study fund:");
+            studyFund = employeeCli.getInt("Invalid value Enter employee's study fund:");
 
-        int daysOff = cli.getInt("Enter employee's days off:");
+        int daysOff = employeeCli.getInt("Enter employee's days off:");
         while(!isValidDaysOff(daysOff))
-            daysOff = cli.getInt("Invalid value Enter employee's days off:");
+            daysOff = employeeCli.getInt("Invalid value Enter employee's days off:");
 
-        String roleName = cli.getString("Enter employee's Role:");
+        String roleName = employeeCli.getString("Enter employee's Role:");
 
-        String licence = cli.getString("Enter employee's licence, if none, enter -1 :");
+        String licence = employeeCli.getString("Enter employee's licence, if none, enter -1 :");
 
-        LocalDate dateOfHire = cli.getDate("Enter employee's Date of Hire");
+        LocalDate dateOfHire = employeeCli.getDate("Enter employee's Date of Hire");
 
 
 
@@ -157,16 +157,16 @@ public class CLIController {
             Response r = facade.addEmployee(clientController.userID, EmpID, name, bankAccount, salary, sickDays, studyFund,
                     daysOff, roleName, null, dateOfHire);
             if(r.isErrorOccured())
-                cli.print(r.getErrorMessage());
-            else cli.print("Employee added");
+                employeeCli.print(r.getErrorMessage());
+            else employeeCli.print("Employee added");
         }
 
         else{
         Response r = facade.addEmployee(clientController.userID, EmpID, name, bankAccount, salary, sickDays, studyFund,
                             daysOff, roleName, licence, dateOfHire);
             if(r.isErrorOccured())
-                cli.print(r.getErrorMessage());
-            else cli.print("Employee added");
+                employeeCli.print(r.getErrorMessage());
+            else employeeCli.print("Employee added");
         }
 
 
@@ -191,67 +191,67 @@ public class CLIController {
 
 
     public void updateEmployeeName(){
-        String EmpID = cli.getString("Enter employee's ID:");
-        String newEmpID = cli.getString("Enter new employee's name:");
+        String EmpID = employeeCli.getString("Enter employee's ID:");
+        String newEmpID = employeeCli.getString("Enter new employee's name:");
         Response r = facade.updateEmpName(clientController.userID, EmpID, newEmpID);
         if(r.isErrorOccured())
-            cli.print(r.getErrorMessage());
-        else cli.print("Employee updated");
+            employeeCli.print(r.getErrorMessage());
+        else employeeCli.print("Employee updated");
     }
 
     public void updateEmployeeBankAc(){
-        String EmpID = cli.getString("Enter employee's ID:");
-        String newBankAc = cli.getString("Enter new employee's bank account:");
+        String EmpID = employeeCli.getString("Enter employee's ID:");
+        String newBankAc = employeeCli.getString("Enter new employee's bank account:");
         Response r = facade.updateEmpBankAccount(clientController.userID, EmpID, newBankAc);
         if(r.isErrorOccured())
-            cli.print(r.getErrorMessage());
-        else cli.print("Employee updated");
+            employeeCli.print(r.getErrorMessage());
+        else employeeCli.print("Employee updated");
     }
 
     public void updateEmployeeSalary(){
-        String EmpID = cli.getString("Enter employee's ID:");
-        int newSalary = cli.getInt("Enter new employee's salary:");
+        String EmpID = employeeCli.getString("Enter employee's ID:");
+        int newSalary = employeeCli.getInt("Enter new employee's salary:");
         Response r =facade.updateEmpSalary(clientController.userID, EmpID, newSalary);
         if(r.isErrorOccured())
-            cli.print(r.getErrorMessage());
-        else cli.print("Employee updated");
+            employeeCli.print(r.getErrorMessage());
+        else employeeCli.print("Employee updated");
     }
 
     public void updateEmployeeSickDays(){
-        String EmpID = cli.getString("Enter employee's ID:");
-        int newSickDays = cli.getInt("Enter new employee's sick Days:");
+        String EmpID = employeeCli.getString("Enter employee's ID:");
+        int newSickDays = employeeCli.getInt("Enter new employee's sick Days:");
         Response r =facade.updateEmpSickDays(clientController.userID, EmpID, newSickDays);
         if(r.isErrorOccured())
-            cli.print(r.getErrorMessage());
-        else cli.print("Employee updated");
+            employeeCli.print(r.getErrorMessage());
+        else employeeCli.print("Employee updated");
     }
 
     public void updateEmployeeStudyFound(){
-        String EmpID = cli.getString("Enter employee's ID:");
-        int newStudyFound = cli.getInt("Enter new employee's study Found:");
+        String EmpID = employeeCli.getString("Enter employee's ID:");
+        int newStudyFound = employeeCli.getInt("Enter new employee's study Found:");
         Response r = facade.updateEmpStudyFund(clientController.userID, EmpID, newStudyFound);
         if(r.isErrorOccured())
-            cli.print(r.getErrorMessage());
-        else cli.print("Employee updated");
+            employeeCli.print(r.getErrorMessage());
+        else employeeCli.print("Employee updated");
     }
 
     public void updateEmployeeDaysOff(){
-        String EmpID = cli.getString("Enter employee's ID:");
-        int newDaysOff = cli.getInt("Enter new employee's days off:");
+        String EmpID = employeeCli.getString("Enter employee's ID:");
+        int newDaysOff = employeeCli.getInt("Enter new employee's days off:");
         Response r = facade.updateEmpDaysOff(clientController.userID, EmpID, newDaysOff);
         if(r.isErrorOccured())
-            cli.print(r.getErrorMessage());
-        else cli.print("Employee updated");
+            employeeCli.print(r.getErrorMessage());
+        else employeeCli.print("Employee updated");
     }
 
 
     public void updateEmployeeRole(){
-        String EmpID = cli.getString("Enter employee's ID:");
-        String newRole = cli.getString("Enter new employee's Role:");
+        String EmpID = employeeCli.getString("Enter employee's ID:");
+        String newRole = employeeCli.getString("Enter new employee's Role:");
         Response r = facade.addRoleToEmp(clientController.userID, EmpID, newRole);
         if(r.isErrorOccured())
-            cli.print(r.getErrorMessage());
-        else cli.print("Employee updated");
+            employeeCli.print(r.getErrorMessage());
+        else employeeCli.print("Employee updated");
     }
 
 
@@ -264,7 +264,7 @@ public class CLIController {
     }
 
     public String showMyPreferences(){
-        LocalDate shiftDate = cli.getDate("Enter Shift Date ID");
+        LocalDate shiftDate = employeeCli.getDate("Enter Shift Date ID");
 //        String MorningEvning = cli.getChar("Enter M for morning shift or Enter E for evening shift"); // todo: check if works after changed to char
         char MorningEvning = getShiftType();
         if (MorningEvning == ('M')){
@@ -279,10 +279,10 @@ public class CLIController {
 
 
     public void assignPreferenceForShift(){
-        LocalDate shiftDate = cli.getDate("Enter Shift Date ID");
+        LocalDate shiftDate = employeeCli.getDate("Enter Shift Date ID");
 //        String MorningEvning = cli.getString("Enter M for morning shift || Enter E for evning shift"); // todo: check if works after changed to char
         char MorningEvning = getShiftType();
-        int preference = cli.getInt("""
+        int preference = employeeCli.getInt("""
                 Enter 0 if you CANT work on this shift
                 Enter 1 if you CAN work on this shift
                 Enter 2 if you WANT work on this shift
@@ -297,7 +297,7 @@ public class CLIController {
     }
 
     public String showColleaguesWorkWithMe(){
-        LocalDate shiftDate = cli.getDate("Enter Shift Date ID");
+        LocalDate shiftDate = employeeCli.getDate("Enter Shift Date ID");
 //        String MorningEvning = cli.getString("Enter M for morning shift or Enter E for evening shift"); // todo: check if works after changed to char
         char MorningEvning = getShiftType();
         if (MorningEvning == ('M')){
@@ -329,59 +329,59 @@ public class CLIController {
     }
 
     private void removeEmpFromShift(Shift shift) {
-        String empID = cli.getString("Enter the employee's ID");
+        String empID = employeeCli.getString("Enter the employee's ID");
         while(!isValidID(empID))
-            empID = cli.getString("Invalid ID, please try again");
+            empID = employeeCli.getString("Invalid ID, please try again");
         Response r = facade.removeEmpFromShift(userID, empID, shift.getDate(), shift.getStart(), shift.getEnd());
         if(r.isErrorOccured())
-            cli.print(r.getErrorMessage());
-        else cli.print("Remove accomplished");
+            employeeCli.print(r.getErrorMessage());
+        else employeeCli.print("Remove accomplished");
     }
 
     private void getAssignedEmployees(Shift shift) {
         ResponseT<List<Employee>> employees = facade.getAssignedEmpForShift(shift.getDate(), shift.getStart(), shift.getEnd());
         if(employees.isErrorOccured()){
-            cli.print(employees.getErrorMessage());
+            employeeCli.print(employees.getErrorMessage());
             return;
         }
-        cli.displayEmployees(employees.getValue());
+        employeeCli.displayEmployees(employees.getValue());
     }
 
     private void getAssignedDrivers(Shift shift) {
         ResponseT<List<Employee>> employees = facade.getAssignedDriversForShift(shift.getDate(), shift.getStart(), shift.getEnd());
         if(employees.isErrorOccured()){
-            cli.print(employees.getErrorMessage());
+            employeeCli.print(employees.getErrorMessage());
             return;
         }
-        cli.displayEmployees(employees.getValue());
+        employeeCli.displayEmployees(employees.getValue());
     }
 
     private void showStatus(Shift shift) {
         if(shift.isClosed())
-            cli.print("Shift is close");
+            employeeCli.print("Shift is close");
         else
-            cli.print("Shift is open");
+            employeeCli.print("Shift is open");
     }
 
     private void openShift(Shift shift) {
         Response r = facade.openShift(userID, shift.getDate(), shift.getStart(), shift.getEnd());
         if(r.isErrorOccured())
-            cli.print(r.getErrorMessage());
-        cli.print("Shift Opened");
+            employeeCli.print(r.getErrorMessage());
+        employeeCli.print("Shift Opened");
     }
 
     private void closeShift(Shift shift) {
         Response r = facade.closeShift(userID, shift.getDate(), shift.getStart(), shift.getEnd());
         if(r.isErrorOccured())
-            cli.print(r.getErrorMessage());
-        cli.print("Shift Closed");
+            employeeCli.print(r.getErrorMessage());
+        employeeCli.print("Shift Closed");
     }
 
     private void getEmployeesPreferences(Shift shift) {
         ResponseT<String> r = facade.getEmployeesConstrainsForShift(userID, shift.getDate(), shift.getStart(), shift.getEnd());
         if(r.isErrorOccured())
-            cli.print(r.getErrorMessage());
-        cli.print(r.getValue());
+            employeeCli.print(r.getErrorMessage());
+        employeeCli.print(r.getValue());
     }
 
     private ResponseT<Boolean> isStorekeeperAssigned(Shift shift){
@@ -389,14 +389,14 @@ public class CLIController {
     }
 
     private void assignEmployee(Shift shift) {
-        String empID = cli.getString("Enter the employee's ID");
+        String empID = employeeCli.getString("Enter the employee's ID");
         while(!isValidID(empID))
-            empID = cli.getString("Invalid ID, please try again");
-        String role = cli.getString("Enter employee's role you want to assign to");
+            empID = employeeCli.getString("Invalid ID, please try again");
+        String role = employeeCli.getString("Enter employee's role you want to assign to");
         Response r = facade.assignEmpToShift(userID, empID, shift.getDate(), shift.getStart(), shift.getEnd(), role);
         if(r.isErrorOccured())
-            cli.print(r.getErrorMessage());
-        else cli.print("Assigning accomplished");
+            employeeCli.print(r.getErrorMessage());
+        else employeeCli.print("Assigning accomplished");
     }
 
     private boolean isValidID(String empID) {
@@ -406,13 +406,13 @@ public class CLIController {
     public void MWeeksMenu(int action) {
         ResponseT<List<WeeklyShifts>> weeklyShifts = facade.getFutureWeeklyShifts();
         if(weeklyShifts.isErrorOccured()) {
-            cli.print(weeklyShifts.getErrorMessage());
+            employeeCli.print(weeklyShifts.getErrorMessage());
             return;
         }
         if(action == 1)
-            cli.displayWeekly(weeklyShifts.getValue().subList(0,1));
+            employeeCli.displayWeekly(weeklyShifts.getValue().subList(0,1));
         if(action == 2)
-            cli.displayWeekly(weeklyShifts.getValue().subList(0,2));
+            employeeCli.displayWeekly(weeklyShifts.getValue().subList(0,2));
         handleSingleShiftMenu();
     }
 

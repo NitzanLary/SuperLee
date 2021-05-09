@@ -13,7 +13,6 @@ public class DeliveryCLI {
     public DeliveryCLI() {
         fc = new FacadeController();
     }
-// TODO : everything related to "choose data" (lines 104, 120) are in comment now for testing SQL
 
     public void runWithConsole() {
         Scanner in = new Scanner(System.in);

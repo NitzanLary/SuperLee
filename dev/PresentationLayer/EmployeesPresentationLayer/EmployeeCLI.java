@@ -6,21 +6,21 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
-public class CLI {
-    private static CLI cli = null;
+public class EmployeeCLI {
+    private static EmployeeCLI employeeCli = null;
     private CLIController cliController;
     private String userID;
     Scanner scanner;
 
-    private CLI(){
+    private EmployeeCLI(){
         cliController = CLIController.getInstance();
         scanner = new Scanner(System.in);
     }
 
-    public static CLI getInstance(){
-        if (cli == null)
-            cli = new CLI();
-        return cli;
+    public static EmployeeCLI getInstance(){
+        if (employeeCli == null)
+            employeeCli = new EmployeeCLI();
+        return employeeCli;
     }
 
 //    public void initData(){
