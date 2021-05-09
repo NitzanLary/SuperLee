@@ -4,11 +4,11 @@ import DataAccessLayer.EmployeesDataAccessLayer.DTOs.RoleDTO;
 
 public class Role{
     private String name;
-    private String licence = null;
+    private Integer licence = null;
 
     public Role(String _name) {name = _name;}
 
-    public Role(String _name, String _licence) {
+    public Role(String _name, Integer _licence) {
         name = _name;
         licence= _licence;
     }
@@ -36,7 +36,7 @@ public class Role{
         return new RoleDTO(name);
     }
 
-    public String getLicence() {
+    public Integer getLicence() {
         return licence;
     }
 

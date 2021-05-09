@@ -2,9 +2,9 @@ package DataAccessLayer.EmployeesDataAccessLayer.DTOs;
 
 public class RoleDTO {
     private String name;
-    private String license = null;
+    private Integer license = null;
 
-    public RoleDTO(String name, String license){
+    public RoleDTO(String name, Integer license){
         this.name = name;
         this.license= license;
     }
@@ -17,7 +17,7 @@ public class RoleDTO {
         return name;
     }
 
-    public String getLicense() {
+    public Integer getLicense() {
         return license;
     }
 

@@ -147,7 +147,7 @@ public class CLIController {
 
         String roleName = employeeCli.getString("Enter employee's Role:");
 
-        String licence = employeeCli.getString("Enter employee's licence, if none, enter -1 :");
+        Integer licence = employeeCli.getInt("Enter employee's licence, if none, enter -1 :");
 
         LocalDate dateOfHire = employeeCli.getDate("Enter employee's Date of Hire");
 

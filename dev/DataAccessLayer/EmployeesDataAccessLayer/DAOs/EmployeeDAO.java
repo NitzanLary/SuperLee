@@ -75,7 +75,7 @@ public class EmployeeDAO extends DAO{
         return new Response();
     }
 
-    private void addRole(String ID, String role, String driverLicence, Connection conn) throws SQLException {
+    private void addRole(String ID, String role, Integer driverLicence, Connection conn) throws SQLException {
         String sql = """
                 INSERT INTO RolesEmployees (EmpID, RoleName, DriverLicence)
                 VALUES
@@ -85,11 +85,11 @@ public class EmployeeDAO extends DAO{
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, ID);
         pstmt.setString(2, role);
-        pstmt.setString(3, driverLicence);
+        pstmt.setInt(3, driverLicence);
         pstmt.executeUpdate();
     }
 
-    public Response addRole(String ID, String role, String driverLicence){
+    public Response addRole(String ID, String role, Integer driverLicence){
         try(Connection conn = getConn()){
             addRole(ID, role, driverLicence, conn);
 
@@ -127,7 +127,7 @@ public class EmployeeDAO extends DAO{
 
             List<RoleDTO> roles = new ArrayList<>();
             while(rolesRs.next())
-                roles.add(new RoleDTO(rolesRs.getString(1), rolesRs.getString(2)));
+                roles.add(new RoleDTO(rolesRs.getString(1), rolesRs.getInt(2)));
 
             empRs.next();
             if(empRs.isClosed())
