@@ -197,4 +197,11 @@ public class Employee {
         boolean success = roles.stream().anyMatch((role) -> role.compare("Delivery Manager"));
         return new ResponseT<>(success);
     }
+
+    public ResponseT<Integer> getLicenceType() {
+        for (Role r: getRoles().getValue()){
+            if (r.compare("Driver"))
+                return new ResponseT<>(r.getLicence());
+        }
+    }
 }

@@ -596,10 +596,11 @@ public class DeliveryCLI {
 
     private DriverDTO chooseDriver(Scanner in, TruckDTO ride, String date, String timeOfDeparture) {
         String inp = "";
-        ArrayList<DriverDTO> driversLst = fc.getDriversToTruck(ride, date, timeOfDeparture);
+        ArrayList<DriverDTO> driversLst = fc.getDriversToTruckAndTime(ride, date, timeOfDeparture);
         do {
             if (driversLst.size() == 0){
-                System.out.println("there are no available drivers in the system that are fit to the chosen truck\npress <Enter> to exit the delivery creator.");
+                System.out.println("there are no available drivers assigned to shift on the given \ntime and date" +
+                        " that can drive the chosen truck\npress <Enter> to exit the delivery creator.");
                 inp = "exit";
                 continue;
             }

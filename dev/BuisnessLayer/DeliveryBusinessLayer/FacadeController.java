@@ -199,14 +199,14 @@ public class FacadeController {
         return LocalTime.of(Integer.parseInt(t[0]), Integer.parseInt(t[1]), 0);
     }
 
-    public ArrayList<DriverDTO> getDriversToTruck(TruckDTO ride, String date, String timeOfDeparture) {
+    public ArrayList<DriverDTO> getDriversToTruckAndTime(TruckDTO ride, String date, String timeOfDeparture) {
         ArrayList<DriverDTO> ret = new ArrayList<>();
         LocalDate localDate = parseToLocalDate(date);
         LocalTime localTime = parseToLocalTime(timeOfDeparture);
         ResponseT<List <BuisnessLayer.EmployeesBuisnessLayer.Employee>> drivers = ShiftController.getInstance().getAllAssignedDrivers(localDate, localTime);
         for (BuisnessLayer.EmployeesBuisnessLayer.Employee driver : drivers.getValue()){
-            if (driver.getLicenceType() >= ride.getTruckWeight())
-                ret.add(new DriverDTO(driver.getLicenceType(),driver.getName()));
+            if (driver.getLicenceType().getValue() >= ride.getTruckWeight())
+                ret.add(new DriverDTO(driver.getLicenceType().getValue(),driver.getName().getValue()));
         }
         return ret;
     }
