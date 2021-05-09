@@ -1,5 +1,7 @@
 package Delivery.BusinessLayer;
 
+import Delivery.DTO.LocationDTO;
+
 public class Location {
     private String address;
     private String phoneNumber;
@@ -9,6 +11,12 @@ public class Location {
         this.address = address;
         this.contactName = contactName;
         this.phoneNumber = phoneNumber;
+    }
+
+    public Location(LocationDTO locationDTO){
+        this.address = locationDTO.getAddress();
+        this.contactName = locationDTO.getContactName();
+        this.phoneNumber = locationDTO.getPhoneNumber();
     }
 
     public void setAddress(String address) {

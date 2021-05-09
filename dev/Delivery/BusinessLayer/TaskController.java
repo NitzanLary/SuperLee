@@ -1,8 +1,9 @@
 package Delivery.BusinessLayer;
 
-import Delivery.DTO.DriverDTO;
+import Delivery.DTO.Response;
 import Delivery.DTO.TaskDTO;
-import Delivery.DataAccessLayer.DataController;
+import Delivery.DataAccessLayer.Mapper;
+import Delivery.DataAccessLayer.TaskDAO;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +12,8 @@ import java.util.InputMismatchException;
 public class TaskController {
     HashMap<String, Task> controller;
     private String nextID = "A0000";
-    private DataController dc = DataController.getInstance();
+    private TaskDAO dc = TaskDAO.getInstance();
+    private Mapper mapper = Mapper.getInstance();
 
 
     public TaskController(){
@@ -21,16 +23,19 @@ public class TaskController {
     public String addTask(HashMap<String, Integer> listOfProduct, String loadingOrUnloading, Location destination){
         String id = getNewTaskID();
         Task newTask = new Task(id, listOfProduct, loadingOrUnloading, destination);
+        storeTask(newTask, null);
         controller.put(id, newTask);
         return id;
 //        return new TaskDTO(newTask);
     }
 
     public Task getTaskById(String id){
-        if (!this.controller.containsKey(id)){
-            throw new InputMismatchException("Task dose not exist.");
+        if (this.controller.containsKey(id)){
+            return this.controller.get(id);
+
         }
-        return this.controller.get(id);
+        throw new InputMismatchException("Task dose not exist.");
+//        return new Task(mapper.getTaskByID(id));
     }
 
     public String getNewTaskID(){
@@ -60,30 +65,30 @@ public class TaskController {
         for (Task t: controller.values()){
             destin.add("\n"+t.toString("\t")+"\n");
         }
-        String destinSTR = destin.toString().substring(1,destin.toString().length()-1);
-        return destinSTR;
+        String destinStr = destin.toString().substring(1,destin.toString().length()-1);
+        return destinStr;
     }
 
-    public void storeTask(Task tsk){
-        //todo
+    public void storeTask(Task tsk,String delId){
+        dc.storeTask(new TaskDTO(tsk), new Response<>(delId));
     }
 
-    public Task getAndRemoveTaskById(String id) {
-        Task ret = getTaskById(id);
-        controller.remove(id);
-        storeTask(ret);
+    public Task getAndRemoveTaskById(String taskId, String delId) {
+        Task ret = getTaskById(taskId);
+        controller.remove(taskId);
+        dc.updateTask(new TaskDTO(ret), new Response<>(delId));
         return ret;
     }
-
+    // TODO: getTasks is from the DAL or from the controller ???
     public ArrayList<Task> getTasks() {
         ArrayList<Task> ret = new ArrayList<>();
         for (Task t: controller.values())
             ret.add(t);
         return ret;
     }
-
-    public ArrayList<TaskDTO> getTasksData() {
-        //        this.dc.getAreas().values();
-        return new ArrayList<>(this.dc.getTasks().values());
-    }
+//
+//    public ArrayList<TaskDTO> getTasksData() {
+//        //        this.dc.getAreas().values();
+//        return new ArrayList<>(this.dc.getTasks().values());
+//    }
 }

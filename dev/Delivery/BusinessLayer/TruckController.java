@@ -1,18 +1,21 @@
 package Delivery.BusinessLayer;
 
+import Delivery.DTO.Response;
 import Delivery.DTO.TruckDTO;
-import Delivery.DataAccessLayer.DataController;
+import Delivery.DataAccessLayer.Mapper;
+import Delivery.DataAccessLayer.TruckDAO;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TruckController {
     HashMap<String, Truck> controller;
-    private DataController dataController;
+    private TruckDAO dataController;
+    private Mapper mapper = Mapper.getInstance();
 
     public TruckController(){
         controller = new HashMap<String, Truck>();
-        dataController = DataController.getInstance();
+        dataController = TruckDAO.getInstance();
     }
 
     public void addTruck(TruckDTO truckDTO){
@@ -20,16 +23,16 @@ public class TruckController {
         dataController.storeTruck(truckDTO);
     }
 
-    public ArrayList<Truck> getTrucks(){
-        ArrayList<Truck> arr = new ArrayList();
-        for (String id : controller.keySet()){
-            arr.add(controller.get(id));
-        }
-        return arr;
+    public ArrayList<TruckDTO> getTrucks(){
+//        ArrayList<Truck> arr = new ArrayList();
+//        for (String id : controller.keySet()){
+//            arr.add(controller.get(id));
+//        }
+        return mapper.getTrucks();
     }
 
     public boolean containsTruck(String id){
-        return controller.containsKey(id);
+        return mapper.containsTruck(new Response<String>(id)).getData();
     }
 
     @Override
@@ -37,12 +40,8 @@ public class TruckController {
         return controller.values().toString();
     }
 
-    public Truck getTruckByID(String truckNumber) {
-        for (Truck truck : controller.values()){
-            if (truck.getId() == truckNumber)
-                return truck;
-        }
-        return null;
+    public TruckDTO getTruckByID(String truckNumber) {
+        return mapper.getTruckByID(new Response<>(truckNumber));
     }
 
     public String toString(String tabs) {
@@ -53,7 +52,7 @@ public class TruckController {
         return ret;
     }
 
-    public ArrayList<TruckDTO> getTruckData() {
-        return new ArrayList<>(this.dataController.getTrucks().values());
-    }
+//    public ArrayList<TruckDTO> getTruckData() { // Todo add get trucks to the new database
+//        return new ArrayList<>(this.dataController.getTrucks().values());
+//    }
 }

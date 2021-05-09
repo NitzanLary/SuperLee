@@ -149,7 +149,7 @@ public class DeliveryDTO {
         for (TaskDTO t: destinations){
             destin.add("\n"+t.toString("\t\t\t")+"\n\t\t");
         }
-        String destinSTR = destin.toString().substring(0,destin.toString().length()-3);
+        String destinSTR = destin.toString().substring(0,destin.toString().length()-2);
         return  "\t\tid ='" + id + '\'' +
                 "\n\t\tdate = '" + date + '\'' +
                 "\n\t\ttimeOfDeparture = '" + timeOfDeparture + '\'' +

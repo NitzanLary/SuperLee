@@ -1,26 +1,34 @@
 package Delivery.BusinessLayer;
 
-import Delivery.BusinessLayer.Delivery;
 import Delivery.DTO.AreaDTO;
 import Delivery.DTO.LocationDTO;
-import Delivery.DataAccessLayer.DataController;
+import Delivery.DTO.Response;
+import Delivery.DataAccessLayer.AreaDAO;
+import Delivery.DataAccessLayer.Mapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InputMismatchException;
-import java.util.Set;
 
 public class AreaController {
     private HashMap<String, Area> controller;
-    private DataController dc = DataController.getInstance();
+    private AreaDAO dc;
+    private Mapper mapper = Mapper.getInstance();
 
     public AreaController(){
         this.controller = new HashMap<>();
-
+        dc = AreaDAO.getInstance();
     }
 
     public boolean containsArea(String areaName){
-        return this.controller.containsKey(areaName);
+        if (this.controller.containsKey(areaName))
+            return true;
+        AreaDTO areaDTO = mapper.getArea(areaName);
+        if (areaDTO != null) {
+            this.controller.put(areaName, new Area(areaName));
+            return this.controller.containsKey(areaName);
+        }
+        return false;
     }
 
     public void addNewArea(AreaDTO areaDTO){
@@ -32,12 +40,13 @@ public class AreaController {
         controller.put(areaName, area);
     }
 
-    public void addLocation(AreaDTO areaDTO, LocationDTO locationDTO){
-        if (!this.controller.containsKey(areaDTO.getAreaName())){
-            throw new InputMismatchException("Area name dose not exist.");
+    public Response<Boolean> addLocation(AreaDTO areaDTO, LocationDTO locationDTO){
+        if (!containsArea(areaDTO.getAreaName())){
+            return new Response<>(false);
         }
         controller.get(areaDTO.getAreaName()).addLocation(new Location(locationDTO.getAddress(), locationDTO.getPhoneNumber(), locationDTO.getContactName()));
         dc.storeLocation(areaDTO, locationDTO);
+        return new Response<>(true);
     }
 
 
@@ -53,39 +62,41 @@ public class AreaController {
         return str;
     }
 
-    public HashMap<Area, ArrayList<Location>> getLocationsByArea() {
-        HashMap<Area, ArrayList<Location>> ret = new HashMap<>();
-        for(Area a : controller.values()){
-            ret.put(a, a.getLocations());
-        }
-        return ret;
+    public HashMap<String, ArrayList<LocationDTO>> getLocationsByArea() {
+        HashMap<String, ArrayList<LocationDTO>> hash = mapper.getLocationsByArea();
+//        HashMap<Area, ArrayList<Location>> ret = new HashMap<>();
+//        for(Area a : controller.values()){
+//            ret.put(a, a.getLocations());
+//        }
+        return hash;
     }
 
     public Location getLocation(String destination) {
-        for (Area a : controller.values()){
-            for (Location l: a.getLocations()){
-                if (l.getAddress().equals(destination)){
-                    return l;
-                }
-            }
-        }
-        return null;
-    }
-
-    public ArrayList<Area> getAreas() {
-        ArrayList<Area> arr = new ArrayList<>();
-        for (Area areaName : controller.values()){
-            arr.add(areaName);
-        }
-        return arr;
-    }
-
-    public ArrayList<AreaDTO> getAreasData() {
-//        ArrayList<AreaDTO> arr = new ArrayList<>();
-//        for (AreaDTO area : this.dc.getAreas().values()){
-//            arr.add(area);
+//        for (Area a : controller.values()){
+//            for (Location l: a.getLocations()){
+//                if (l.getAddress().equals(destination)){
+//                    return l;
+//                }
+//            }
 //        }
-//        return arr;
-        return new ArrayList<>(dc.getAreas().values());
+        return new Location(mapper.getLocation(destination));
     }
+
+    public ArrayList<AreaDTO> getAreas() {
+//        ArrayList<Area> arr = new ArrayList<>();
+//        for (Area areaName : controller.values()){
+//            arr.add(areaName);
+//        }
+        return mapper.getAreas();
+    }
+
+//    public ArrayList<AreaDTO> getAreasData() {
+////        ArrayList<AreaDTO> arr = new ArrayList<>();
+////        for (AreaDTO area : this.dc.getAreas().values()){
+////            arr.add(area);
+////        }
+////        return arr;
+////        return new ArrayList<>(dc.getAreas().values());
+//        return null;
+//    }
 }

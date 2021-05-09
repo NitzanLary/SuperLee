@@ -16,7 +16,7 @@ public class CLI {
     public CLI() {
         fc = new FacadeController();
     }
-
+// TODO : everything related to "choose data" (lines 104, 120) are in comment now for testing SQL
 
     public void runWithConsole() {
         Scanner in = new Scanner(System.in);
@@ -128,15 +128,15 @@ public class CLI {
                 break;
             }
             case ("3"): {
-                System.out.println(this.fc.getTrucksData());
+                System.out.println(this.fc.getTrucks());
                 break;
             }
             case ("4"): {
-                System.out.println(this.fc.getTasksData());
+                System.out.println(this.fc.getTasks());
                 break;
             }
             case ("5"): {
-                System.out.println(this.fc.getDeliveryData());
+                System.out.println(this.fc.getDeliveriesData());
                 break;
             }
         }
@@ -144,7 +144,7 @@ public class CLI {
 
     private void sendDelivery() {
         Scanner in = new Scanner(System.in);
-        DeliveryDTO deliveryDTO = this.chooseDelivery(in);
+        DeliveryDTO deliveryDTO = this.chooseDelivery(in, true);
         if (deliveryDTO == null)
             return;
         System.out.println(deliveryDTO + "\n");
@@ -173,7 +173,7 @@ public class CLI {
     private void updateDelivery() {
 //        System.out.println("Choose delivery to update");
         Scanner in = new Scanner(System.in);
-        DeliveryDTO chosen = chooseDelivery(in);
+        DeliveryDTO chosen = chooseDelivery(in, true);
         if (chosen == null)
             return;
         String delID = chosen.getId();
@@ -296,9 +296,13 @@ public class CLI {
         return allTasks;
     }
 
-    private DeliveryDTO chooseDelivery(Scanner in) {
+    private DeliveryDTO chooseDelivery(Scanner in, boolean allDeliveries) {
         String inp = "";
-        ArrayList<DeliveryDTO> deliveries = fc.getUpdatableDeliveries();
+        ArrayList<DeliveryDTO> deliveries;
+        if (!allDeliveries)
+            deliveries = fc.getUpdatableDeliveries();
+        else
+            deliveries = fc.getAllAppendingDeliveries();
         if (deliveries.size() == 0){
             System.out.println("there are no appending deliveries in the system\npress <Enter> to continue");
             in.nextLine();
@@ -316,8 +320,9 @@ public class CLI {
         return deliveries.get(Integer.parseInt(inp)-1);
     }
 
-    private void addNewDriver() { // REMOVE - NOT NEED THIS FUCKSHIT
-        System.out.println("helooo i'm here !!");
+    private void addNewDriver() {
+        System.out.println("this pitcher isn't available in the current non-integrated module's version\npress <Enter> to continue");
+        new Scanner(System.in).nextLine();
     }
 
     public boolean isLegalDate(String date) {
@@ -644,7 +649,8 @@ public class CLI {
         if (inp.equals("exit"))
             return;
         LocationDTO locationDTO = new LocationDTO(arr.get(0), arr.get(1), arr.get(2));
-        this.fc.addLocation(areas.get(Integer.parseInt(inp) - 1), locationDTO);
+        if (!this.fc.addLocation(areas.get(Integer.parseInt(inp) - 1), locationDTO).getData())
+            System.out.println("wrong input! try again");
     }
 
     public ArrayList<String> userTaskCreator() {

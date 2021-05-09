@@ -1,7 +1,8 @@
 package Delivery.BusinessLayer;
 
 import Delivery.DTO.DeliveryDTO;
-import Delivery.DataAccessLayer.DataController;
+import Delivery.DataAccessLayer.DeliveryDAO;
+import Delivery.DataAccessLayer.Mapper;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,11 +11,13 @@ import java.util.*;
 public class DeliveryController {
     private HashMap<String, Delivery> deliveries; // changes it to deliveries
     private String nextID = "A000";
-    private DataController dataController;
+    private DeliveryDAO dataController;
+    private Mapper mapper;
 
     public DeliveryController(){
         deliveries = new HashMap<>();
-        dataController = DataController.getInstance();
+        dataController = DeliveryDAO.getInstance();
+        mapper = Mapper.getInstance();
     }
 
     public HashMap<String, Delivery> getDeliveries() {
@@ -23,7 +26,9 @@ public class DeliveryController {
 
     public String createFullDelivery(String date, String timeOfDeparture, String truckNumber, String driverName, int departureWeight, String modification, Location origin, ArrayList<Task> destinations){
         String id = getNewDeliveryID();
-        deliveries.put(id ,new Delivery(id, date, timeOfDeparture, truckNumber, driverName, departureWeight, modification, origin, destinations));
+        Delivery del = new Delivery(id, date, timeOfDeparture, truckNumber, driverName, departureWeight, modification, origin, destinations);
+        deliveries.put(id ,del);
+        storeDelivery(del);
         return id;
     }
 
@@ -40,7 +45,7 @@ public class DeliveryController {
         Delivery toStore = deliveries.remove(OldDelID);
         toStore.addModification("- newer "+newDel.getID()+" -");
         newDel.addModification("- older "+OldDelID+" -");
-        storeDelivery(toStore);
+//        storeDelivery(toStore);
 //        Delivery newDel = cloneDelivery(toStore);
 //        return null;
         return newDel;
@@ -107,7 +112,7 @@ public class DeliveryController {
         if (newDel.getId() == null)
             newDel.setId(getNewDeliveryID());
         Delivery ret = new Delivery(newDel.getId(),newDel.getDate(),newDel.getTimeOfDeparture(),newDel.getTruckNumber(),newDel.getDriverName(),newDel.getDepartureWeight(),newDel.getModification(),origin,destinations);
-        deliveries.put(newDel.getId(), ret);
+//        deliveries.put(newDel.getId(), ret); TODO: we need this here? because we say that only in sendDelivery we save
         return ret;
     }
 
@@ -115,6 +120,7 @@ public class DeliveryController {
         deliveries.get(delID);
     }
 
+    // TODO: same as the upper todo.. dont think its relevant
     public Delivery getDeliveryById(String id){
         if (!this.deliveries.containsKey(id)){
             throw new InputMismatchException("Delivery dose not exist.");
@@ -174,7 +180,11 @@ public class DeliveryController {
         }
     }
 
-    public ArrayList<DeliveryDTO> getTasksFromDeliveriesData() {
-        return new ArrayList<DeliveryDTO>(this.dataController.getDeliveries().values());
+    public ArrayList<DeliveryDTO> getDeliveriesData() {
+        return mapper.getDeliveries();
     }
+
+//    public ArrayList<DeliveryDTO> getTasksFromDeliveriesData() {
+//        return new ArrayList<DeliveryDTO>(this.dataController.getDeliveries().values());
+//    }
 }

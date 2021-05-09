@@ -54,15 +54,15 @@ public class FacadeController {
         return this.arc.containsArea(areaName);
     }
 
-    public void addLocation(AreaDTO areaDTO, LocationDTO locationDTO){
-        arc.addLocation(areaDTO, locationDTO);
+    public Response<Boolean> addLocation(AreaDTO areaDTO, LocationDTO locationDTO){
+        return arc.addLocation(areaDTO, locationDTO);
     }
 
     public ArrayList<AreaDTO> getAreas() {
-        ArrayList<AreaDTO> ret = new ArrayList<>();
-        for (Area a: arc.getAreas())
-            ret.add(new AreaDTO(a));
-        return ret;
+//        ArrayList<AreaDTO> ret = new ArrayList<>();
+//        for (Area a: arc.getAreas())
+//            ret.add(new AreaDTO(a));
+        return arc.getAreas();
     }
 
     public LocationDTO getLocationByAddress(Response<String> address){
@@ -94,12 +94,11 @@ public class FacadeController {
         return trc.containsTruck(id);
     }
 
-    // here instead of returning a list of trucks (which the CLI shouldn't know) i returning a list of the truck numbers.
     public ArrayList<TruckDTO> getTrucks(){
-        ArrayList<TruckDTO> ret = new ArrayList<>();
-        for (Truck t : trc.getTrucks())
-            ret.add(new TruckDTO(t));
-        return ret;
+//        ArrayList<TruckDTO> ret = new ArrayList<>();
+//        for (Truck t : trc.getTrucks())
+//            ret.add(new TruckDTO(t));
+        return trc.getTrucks();
     }
 
     // - Driver -
@@ -136,17 +135,16 @@ public class FacadeController {
     }
 
 
-    // todo - transfer it to area controller!
     public HashMap<String, ArrayList<LocationDTO>> getLocationsByAreas() {
-        HashMap<String, ArrayList<LocationDTO>> ret = new HashMap<>();
-        HashMap<Area, ArrayList<Location>> al = arc.getLocationsByArea();
-        for (Area a : al.keySet()){
-            ArrayList<LocationDTO> locations = new ArrayList<>();
-            for (Location l: a.getLocations()){
-                locations.add(new LocationDTO(l));
-            }
-            ret.put(a.getAreaName(), locations);
-        }
+//        HashMap<String, ArrayList<LocationDTO>> ret = new HashMap<>();
+        HashMap<String, ArrayList<LocationDTO>> ret = arc.getLocationsByArea();
+//        for (Area a : al.keySet()){
+//            ArrayList<LocationDTO> locations = new ArrayList<>();
+//            for (Location l: a.getLocations()){
+//                locations.add(new LocationDTO(l));
+//            }
+//            ret.put(a.getAreaName(), locations);
+//        }
         return ret;
     }
 
@@ -154,12 +152,11 @@ public class FacadeController {
     public DeliveryDTO createFullDelivery(DeliveryDTO del){
         ArrayList<Task> tasks = new ArrayList<>();
         for (TaskDTO t: del.getDestinations())
-            tasks.add(tac.getAndRemoveTaskById(t.getId()));
+            tasks.add(tac.getAndRemoveTaskById(t.getId(), del.getId()));
         del.setId(dec.createFullDelivery(del.getDate(),del.getTimeOfDeparture(),del.getTruckNumber(),del.getDriverName(),del.getDepartureWeight(),del.getModification(), arc.getLocation(del.getOrigin().getAddress()),tasks));
         return del;
     }
 
-    // todo - transfer it to task controller!
     public ArrayList<TaskDTO> getTasks() {
         ArrayList<TaskDTO> ret = new ArrayList<>();
         for (Task t : tac.getTasks()) {
@@ -167,7 +164,6 @@ public class FacadeController {
         }
         return ret;
     }
-
 
     public ArrayList<DeliveryDTO> getUpdatableDeliveries() {
         ArrayList<DeliveryDTO> ret = new ArrayList<>();
@@ -182,7 +178,7 @@ public class FacadeController {
         for(TaskDTO td: newDel.getDestinations()){
             Task t = dec.getTasksFromDelivery(td.getId(), oldDelId);
             if (t==null)
-                t = tac.getAndRemoveTaskById(td.getId());
+                t = tac.getAndRemoveTaskById(td.getId(), newDel.getId());
             tasks.add(t);
         }
         Location orig = arc.getLocation(newDel.getOrigin().getAddress());
@@ -198,23 +194,11 @@ public class FacadeController {
     }
 
     public ArrayList<AreaDTO> getAreasData() {
-        return this.arc.getAreasData();
+        return this.arc.getAreas();
     }
 
     public ArrayList<DriverDTO> getDriversData() {
-        return this.drc.getDriversData();
-    }
-
-    public ArrayList<TruckDTO> getTrucksData() {
-        return this.trc.getTruckData();
-    }
-
-    public ArrayList<TaskDTO> getTasksData() {
-        return tac.getTasksData();
-    }
-
-    public ArrayList<DeliveryDTO> getDeliveryData() {
-        return this.dec.getTasksFromDeliveriesData();
+        return this.drc.getDriversData(); // todo - integration!
     }
 
     public LocalDate parseToLocalDate(String date){
@@ -240,7 +224,27 @@ public class FacadeController {
     }
 
 
+
     public TruckDTO getTruckByDelivery(DeliveryDTO ddto) {
-        return new TruckDTO(trc.getTruckByID(ddto.getTruckNumber()));
+        return trc. getTruckByID(ddto.getTruckNumber());
+    }
+
+    public ArrayList<DeliveryDTO> getAllAppendingDeliveries() {
+        ArrayList<DeliveryDTO> ret = new ArrayList<>();
+        for (Delivery d:dec.getDeliveries().values())
+            ret.add(new DeliveryDTO(d));
+        return ret;
+    }
+
+    public ArrayList<DriverDTO> getAllDrivers() {
+        ArrayList<DriverDTO> arr = new ArrayList<>();
+        for (Driver driver : drc.getDrivers()){
+            arr.add(new DriverDTO(driver));
+        }
+        return arr;
+    }
+
+    public ArrayList<DeliveryDTO> getDeliveriesData() {
+        return dec.getDeliveriesData();
     }
 }
