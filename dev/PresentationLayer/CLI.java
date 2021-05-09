@@ -37,8 +37,8 @@ public class CLI {
 
         do {
             employeeCLI.DisloginMenu();
-//            ID = scanner.next();
-            ID = "205952971";
+            ID = scanner.next();
+//            ID = "205952971";
             if(ID.equals("0"))
                 break;
             ResponseT<Boolean> r = FacadeController.getInstance().isDeliveryManager(ID);

@@ -74,23 +74,23 @@ public class DeliveryCLI {
                 this.addNewTrack();
                 break;
             }
+//            case ("5"): {
+//                this.addNewDriver();
+//                break;
+//            }
             case ("5"): {
-                this.addNewDriver();
-                break;
-            }
-            case ("6"): {
                 this.addNewArea();
                 break;
             }
-            case ("7"): {
+            case ("6"): {
                 this.addNewLocation();
                 break;
             }
-            case ("8"): {
+            case ("7"): {
                 this.sendDelivery();
                 break;
             }
-            case ("9"): {
+            case ("8"): {
                 this.displayDoc();
                 break;
             }
