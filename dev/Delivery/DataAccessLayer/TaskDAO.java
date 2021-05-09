@@ -37,7 +37,7 @@ public class TaskDAO extends DAO {
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, taskDTO.getId());
             if (deliveryID == null)
-                pstmt.setInt(2, -1);
+                pstmt.setNull(2, );
             assert deliveryID != null;
             pstmt.setString(2, deliveryID.getData());
             pstmt.setString(3, taskDTO.getLoadingOrUnloading());
