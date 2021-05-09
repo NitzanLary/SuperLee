@@ -14,7 +14,7 @@ public class BillOfQuantityDAO extends DAO {
 
     public Response insert(Integer supplierID, Integer productID, Integer minQuantity, Integer percentDiscount) {
 
-        String billOfQuantity = "INSERT INTO BillOfQuantity (supplierID, productID, minQuantity, percentDiscount) VALUES (?, ?, ?, ?)";
+        String billOfQuantity = "INSERT INTO BillOfQuantity (supplierID, productID, minQuantity, precentDiscount) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = getConn().value;
              PreparedStatement pstmt = conn.prepareStatement(billOfQuantity);) {
@@ -50,7 +50,7 @@ public class BillOfQuantityDAO extends DAO {
                 return new ResponseT<>(null, String.format("supplierID %s not found", supplierID));
             BillOfQuantityDTO bill = new BillOfQuantityDTO(billRs.getInt("supplierID"),
                     billRs.getInt("productID"), billRs.getInt("minQuantity"),
-                    billRs.getInt("percentDiscount"));
+                    billRs.getInt("precentDiscount"));
 
             return new ResponseT<>(bill);
 
@@ -124,7 +124,7 @@ public class BillOfQuantityDAO extends DAO {
                 ResultSet rs = ps.executeQuery();
                 while(rs.next()) {
                     boqList.add(new BillOfQuantityDTO(rs.getInt("supplierID"), rs.getInt("productID"),
-                            rs.getInt("minQuantity"), rs.getInt("percentDiscount")));
+                            rs.getInt("minQuantity"), rs.getInt("precentDiscount")));
                 }
             }
         }catch (Exception e) {

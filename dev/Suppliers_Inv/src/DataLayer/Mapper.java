@@ -377,13 +377,27 @@ public class Mapper {
         supplierDAO.update(colName, supplierID, newVal);
     }
 
-    public void addOrder(Order order, double finalPrice) {
-        OrderDTO orderDTO = new OrderDTO(order.getOrderID(), order.getSupplierID(), order.isDelivered(),
-                order.getDate(), finalPrice);
+    public ResponseT<OrderDTO> addOrder(Order order, double finalPrice) {
+        ResponseT<OrderDTO> orderRes = orderDAO.create(order, finalPrice);
+        if (orderRes.ErrorOccured()) {
+            return new ResponseT<>("Could not add Item");
+        }
+        orderDAO.insert(order);
+        return orderRes;
     }
+
+
 
     public void addBillOfQuantity(int supplierID, int pid, int minQ, int discount) {
         billOfQuantityDAO.insert(supplierID, pid, minQ, discount);
+    }
+
+    public void updateMinQuantity(int supplierID, int pid, int newMinQ) {
+        billOfQuantityDAO.updateMinQuantity(supplierID, pid, newMinQ);
+    }
+
+    public void updateDiscount(int supplierID, int pid, int newDis) {
+        billOfQuantityDAO.updatePercentDiscount(supplierID, pid, newDis);
     }
 
     public void deleteBillOfQ(int supplierID) {

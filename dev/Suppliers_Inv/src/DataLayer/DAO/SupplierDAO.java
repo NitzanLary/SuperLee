@@ -19,7 +19,7 @@ public class SupplierDAO extends DAO {
         try (Connection conn = getConn().value;
              PreparedStatement pstmt = conn.prepareStatement(supplier);) {
 
-            // inserting to employee table
+            // inserting to Suppliers table
             pstmt.setInt(1, ID);
             pstmt.setString(2, name);
             pstmt.setString(3,address);
@@ -47,7 +47,7 @@ public class SupplierDAO extends DAO {
 
     //update string column
     public Response update(String col, int ID, String newVal){
-        String sql = String.format("UPDATE Employees SET %s = ? WHERE EmpID = ?", col);
+        String sql = String.format("UPDATE Supplier SET %s = ? WHERE ID = ?", col);
 
         try(Connection conn = getConn().value;
             PreparedStatement pstmt = conn.prepareStatement(sql)){
@@ -55,7 +55,7 @@ public class SupplierDAO extends DAO {
             pstmt.setString(1, newVal);
             pstmt.setInt(2, ID);
 
-            pstmt.executeUpdate();
+            pstmt.execute();
 
         }catch(SQLException e){
             return new Response(e.getMessage());
@@ -66,7 +66,7 @@ public class SupplierDAO extends DAO {
 
     //update int column
     public Response update(String col, int ID, int newVal){
-        String sql = String.format("UPDATE Employees SET %s = ? WHERE EmpID = ?", col);
+        String sql = String.format("UPDATE Supplier SET %s = ? WHERE ID = ?", col);
 
         try(Connection conn = getConn().value;
             PreparedStatement pstmt = conn.prepareStatement(sql)){
@@ -74,7 +74,7 @@ public class SupplierDAO extends DAO {
             pstmt.setInt(1, newVal);
             pstmt.setInt(2, ID);
 
-            pstmt.executeUpdate();
+            pstmt.execute();
 
         }catch(SQLException e){
             return new Response(e.getMessage());
@@ -85,7 +85,7 @@ public class SupplierDAO extends DAO {
 
     //update bool column
     public Response update(String col, int ID, boolean newVal){
-        String sql = String.format("UPDATE Employees SET %s = ? WHERE EmpID = ?", col);
+        String sql = String.format("UPDATE Supplier SET %s = ? WHERE ID = ?", col);
 
         try(Connection conn = getConn().value;
             PreparedStatement pstmt = conn.prepareStatement(sql)){
@@ -93,7 +93,7 @@ public class SupplierDAO extends DAO {
             pstmt.setBoolean(1, newVal);
             pstmt.setInt(2, ID);
 
-            pstmt.executeUpdate();
+            pstmt.execute();
 
         }catch(SQLException e){
             return new Response(e.getMessage());

@@ -39,6 +39,15 @@ public class ProductController {
         }
     }
 
+    public void addBilltoDB(int supplierID, int prodID, int minDis, int percentage) {
+        if (discounts.containsKey(supplierID)){
+            throw new IllegalArgumentException("This Supplier Already Have Bill Of Quantities");
+        }
+        else{
+            mapper.addBillOfQuantity(supplierID, prodID, minDis, percentage);
+        }
+    }
+
     public void deleteSupCard(int supplierID){
         supplierProd.remove(supplierID);
         discounts.remove(supplierID);
@@ -138,10 +147,12 @@ public class ProductController {
     }
 
     public void editMinQuantity(int supplierID, int pid, int newQ) {
+        mapper.updateMinQuantity(supplierID, pid, newQ);
         discounts.get(supplierID).getMinQuantityForDis().replace(pid,newQ);
     }
 
     public void editDiscount(int supplierID, int pid, int discount) {
+        mapper.updateDiscount(supplierID, pid, discount);
         discounts.get(supplierID).getDiscountList().replace(pid,discount);
     }
 
@@ -167,4 +178,6 @@ public class ProductController {
         for(Integer supID : keySet)
             supplierProd.put(supID, new HashMap<>());
     }
+
+
 }

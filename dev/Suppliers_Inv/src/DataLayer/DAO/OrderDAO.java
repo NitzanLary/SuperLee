@@ -2,6 +2,7 @@ package DataLayer.DAO;
 
 import BussinessLayer.Response;
 import BussinessLayer.ResponseT;
+import BussinessLayer.Supplier.Order;
 import DataLayer.DTO.OrderDTO;
 
 import java.sql.*;
@@ -36,8 +37,8 @@ public class OrderDAO extends DAO{
     }
 
 
-    public Response insert(OrderDTO order){
-        return insert(order.getOrderID(), order.getSupplierID(), order.isDelivered(), order.getSupplyDate(), order.getPrice());
+    public Response insert(Order order){
+        return insert(order.getOrderID(), order.getSupplierID(), order.isDelivered(), order.getDate(), order.getPrice());
     }
 
     //SELECT
@@ -98,5 +99,9 @@ public class OrderDAO extends DAO{
             return new ResponseT("cannot get faulty item");
         }
         return new ResponseT<>(orderList);
+    }
+    public ResponseT<OrderDTO> create(Order order, double price){
+        return new ResponseT<>(new OrderDTO(order.getOrderID(), order.getSupplierID(), order.isDelivered(),
+                order.getDate(), price));
     }
 }

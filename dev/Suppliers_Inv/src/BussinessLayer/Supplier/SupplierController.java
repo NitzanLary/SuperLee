@@ -15,9 +15,9 @@ public class SupplierController {
 
     private SupplierController() {
         mapper = Mapper.getInstance();
-        suppliers = mapper.loadSupplierCard().value;
         prodController = prodController.getInstance();
-        prodController.addSuppliers(suppliers.keySet());
+        suppliers = mapper.loadSupplierCard().value;
+      //  prodController.addSuppliers(suppliers.keySet());
 
     }
 
@@ -47,6 +47,10 @@ public class SupplierController {
 
     public void addBillOfQuantity(int supplierID, HashMap<Integer, Integer> minQuantityForDis, HashMap<Integer, Integer> discountList) {
         prodController.addBillOfQuantity(supplierID, minQuantityForDis, discountList);
+    }
+
+    public void addBilltoDB(int supplierID, int prodID, int minDis, int percentage) {
+        prodController.addBilltoDB(supplierID, prodID, minDis, percentage);
     }
 
     public void deleteSupCard(int supplierID) {
@@ -189,6 +193,7 @@ public class SupplierController {
     public HashMap<Integer, SupplierCard> getSuppliers() {
         return this.suppliers;
     }
+
 
 
 }

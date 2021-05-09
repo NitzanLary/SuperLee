@@ -64,6 +64,14 @@ public class FacadeSupplier {
         }
     }
 
+    public void addBilltoDB(int supplierID, int prodID, int minDis, int percentage) {
+        try{
+            supController.addBilltoDB(supplierID, prodID, minDis, percentage);
+        } catch (Exception e){
+            return;
+        }
+    }
+
     public Response deleteBillOfQuantity(int supplierID) {
         try {
             supController.deleteBillOfQuantity(supplierID);
@@ -541,4 +549,6 @@ public class FacadeSupplier {
             return new Response(e.getMessage());
         }
     }
+
+
 }

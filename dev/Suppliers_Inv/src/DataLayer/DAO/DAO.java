@@ -1,6 +1,8 @@
 package DataLayer.DAO;
 
 import BussinessLayer.ResponseT;
+import BussinessLayer.Supplier.Order;
+import DataLayer.DTO.OrderDTO;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
