@@ -1,12 +1,9 @@
-import Delivery.BusinessLayer.*;
-import Delivery.DTO.*;
-import Delivery.DataAccessLayer.TruckDAO;
-import Delivery.PresentationLayer.CLI;
+import DataAccessLayer.DeliveryDataAccessLayer.DTO.TruckDTO;
+import DataAccessLayer.DeliveryDataAccessLayer.TruckDAO;
+import PresentationLayer.DeliveryPresentationLayer.DeliveryCLI;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class Main {
     public static void main(String[] args){
@@ -18,7 +15,7 @@ public class Main {
 //        for(int i = 0; i< 260000; i++)
 //            System.out.println(dc.getNewDeliveryID());
 //        ///////////////////////////////////////
-        CLI cli = new CLI();
+        DeliveryCLI cli = new DeliveryCLI();
         LocalTime time = LocalTime.of(12,0);
         LocalTime start = LocalTime.of(12,0);
         LocalTime end = LocalTime.of(14,0);
