@@ -54,14 +54,14 @@ public class FacadeController {
     }
 
     public Response<Boolean> addLocation(AreaDTO areaDTO, LocationDTO locationDTO){
-        arc.addLocation(areaDTO, locationDTO);
+        return arc.addLocation(areaDTO, locationDTO);
     }
 
     public ArrayList<AreaDTO> getAreas() {
-        ArrayList<AreaDTO> ret = new ArrayList<>();
-        for (Area a: arc.getAreas())
-            ret.add(new AreaDTO(a));
-        return ret;
+//        ArrayList<AreaDTO> ret = new ArrayList<>();
+//        for (Area a: arc.getAreas())
+//            ret.add(new AreaDTO(a));
+        return arc.getAreas();
     }
 
     public LocationDTO getLocationByAddress(Response<String> address){
@@ -137,15 +137,15 @@ public class FacadeController {
 
     // todo - transfer it to area controller!
     public HashMap<String, ArrayList<LocationDTO>> getLocationsByAreas() {
-        HashMap<String, ArrayList<LocationDTO>> ret = new HashMap<>();
-        HashMap<Area, ArrayList<Location>> al = arc.getLocationsByArea();
-        for (Area a : al.keySet()){
-            ArrayList<LocationDTO> locations = new ArrayList<>();
-            for (Location l: a.getLocations()){
-                locations.add(new LocationDTO(l));
-            }
-            ret.put(a.getAreaName(), locations);
-        }
+//        HashMap<String, ArrayList<LocationDTO>> ret = new HashMap<>();
+        HashMap<String, ArrayList<LocationDTO>> ret = arc.getLocationsByArea();
+//        for (Area a : al.keySet()){
+//            ArrayList<LocationDTO> locations = new ArrayList<>();
+//            for (Location l: a.getLocations()){
+//                locations.add(new LocationDTO(l));
+//            }
+//            ret.put(a.getAreaName(), locations);
+//        }
         return ret;
     }
 

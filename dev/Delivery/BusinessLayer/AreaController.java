@@ -62,32 +62,32 @@ public class AreaController {
         return str;
     }
 
-    public HashMap<Area, ArrayList<Location>> getLocationsByArea() {
-        HashMap<String, ArrayList<LocationDTO>> hash = new HashMap<>();
-        HashMap<Area, ArrayList<Location>> ret = new HashMap<>();
-        for(Area a : controller.values()){
-            ret.put(a, a.getLocations());
-        }
-        return ret;
+    public HashMap<String, ArrayList<LocationDTO>> getLocationsByArea() {
+        HashMap<String, ArrayList<LocationDTO>> hash = mapper.getLocationsByArea();
+//        HashMap<Area, ArrayList<Location>> ret = new HashMap<>();
+//        for(Area a : controller.values()){
+//            ret.put(a, a.getLocations());
+//        }
+        return hash;
     }
 
     public Location getLocation(String destination) {
-        for (Area a : controller.values()){
-            for (Location l: a.getLocations()){
-                if (l.getAddress().equals(destination)){
-                    return l;
-                }
-            }
-        }
-        return null;
+//        for (Area a : controller.values()){
+//            for (Location l: a.getLocations()){
+//                if (l.getAddress().equals(destination)){
+//                    return l;
+//                }
+//            }
+//        }
+        return new Location(mapper.getLocation(destination));
     }
 
-    public ArrayList<Area> getAreas() {
-        ArrayList<Area> arr = new ArrayList<>();
-        for (Area areaName : controller.values()){
-            arr.add(areaName);
-        }
-        return arr;
+    public ArrayList<AreaDTO> getAreas() {
+//        ArrayList<Area> arr = new ArrayList<>();
+//        for (Area areaName : controller.values()){
+//            arr.add(areaName);
+//        }
+        return mapper.getAreas();
     }
 
     public ArrayList<AreaDTO> getAreasData() {

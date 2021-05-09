@@ -1,8 +1,6 @@
 package Delivery.DataAccessLayer;
 
-import Delivery.BusinessLayer.Area;
-import Delivery.BusinessLayer.Task;
-import Delivery.BusinessLayer.Truck;
+import Delivery.BusinessLayer.Location;
 import Delivery.DTO.*;
 
 import java.sql.Connection;
@@ -14,22 +12,26 @@ import java.util.HashMap;
 
 public class Mapper {
     private static Mapper instance = null;
-//    private HashMap<String,DeliveryDTO> deliveries;
-//    private HashMap<String,TaskDTO> tasks;
-//    private HashMap<String,AreaDTO> areas;
-//    private HashMap<String,TruckDTO> trucks;
-//    private HashMap<String,DriverDTO> drivers;
+    private HashMap<String,DeliveryDTO> deliveries;
+    private HashMap<String,TaskDTO> tasks;
+    private HashMap<String,AreaDTO> areas;
+    private HashMap<String,TruckDTO> trucks;
+    private HashMap<String,DriverDTO> drivers;
+    private HashMap<String, ArrayList<LocationDTO>> locationsbyArea;
+    private HashMap<String, LocationDTO> locations;
     private DeliveryDAO deliveryDAO = DeliveryDAO.getInstance();
     private AreaDAO areaDAO = AreaDAO.getInstance();
     private TaskDAO taskDAO = TaskDAO.getInstance();
     private TruckDAO truckDAO = TruckDAO.getInstance();
 
     private Mapper(){
-//        deliveries = new HashMap<>();
-//        tasks = new HashMap<>();
-//        areas = new HashMap<>();
-//        trucks = new HashMap<>();
-//        drivers = new HashMap<>();
+        deliveries = new HashMap<>();
+        tasks = new HashMap<>();
+        areas = new HashMap<>();
+        trucks = new HashMap<>();
+        drivers = new HashMap<>();
+        locationsbyArea = new HashMap<String, ArrayList<LocationDTO>>();
+        locations = new HashMap<>();
     }
 
     public static Mapper getInstance(){
@@ -85,7 +87,7 @@ public class Mapper {
                 // get products
                 String taskID = rsTask.getString(1);
                 pstmtProduct.setString(1, taskID);
-                ResultSet rsProduct = pstmtTask.executeQuery();
+                ResultSet rsProduct = pstmtProduct.executeQuery();
                 HashMap<String, Integer> products = new HashMap<>();
                 while (rsProduct.next()){
                     products.put(rsProduct.getString(1), rsProduct.getInt(2));
@@ -107,6 +109,7 @@ public class Mapper {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        deliveries.put(retDel.getId(), retDel); // put new item in the mapper data structure
         return retDel;
 
     }
@@ -131,9 +134,12 @@ public class Mapper {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return new AreaDTO(areaName);
+        AreaDTO areaDTO = new AreaDTO(areaName);
+        areas.put(areaName, areaDTO);
+        return areaDTO;
     }
 
+    // TODO: it is possible to add field that says if we use it, and than we can took only from data structure
     public HashMap<String, ArrayList<LocationDTO>> getLocationsByArea(){
         String sql = "SELECT * FROM Locations";
         HashMap<String, ArrayList<LocationDTO>> ret = new HashMap<>();
@@ -156,16 +162,111 @@ public class Mapper {
             if (rs.next())
                 return null;
 
-            return ret;
+
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return new AreaDTO(areaName);
+        locationsbyArea.putAll(ret);
+        return ret;
     }
 
-    public HashMap<String, TaskDTO> getTasks() {
-        return tasks;
+    public LocationDTO getLocation(String address){
+        if (locations.containsKey(address))
+            return locations.get(address);
+
+        String sql = "SELECT * FROM Locations WHERE Location.address = (?)";
+        LocationDTO locationDTO = null;
+
+        try (Connection conn = areaDAO.connect();
+             PreparedStatement pstmt  = conn.prepareStatement(sql)){
+
+            pstmt.setString(1, address);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            // if there is no row
+            if (rs.next())
+                return null;
+            locationDTO = new LocationDTO(address, rs.getString(2), rs.getString(3));
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        locations.put(address, locationDTO);
+        return locationDTO;
+
+    }
+
+    public ArrayList<AreaDTO> getAreas(){
+        String sql = "SELECT * FROM Areas";
+        ArrayList<AreaDTO> areaDTOS = new ArrayList<>();
+
+        try (Connection conn = areaDAO.connect();
+             PreparedStatement pstmt  = conn.prepareStatement(sql)){
+
+            ResultSet rs = pstmt.executeQuery();
+
+//            // if there is no row
+//            if (rs.next())
+//                return null;
+            while (rs.next()){
+                AreaDTO areaDTO = new AreaDTO(rs.getString(1));
+                areaDTOS.add(areaDTO);
+                areas.put(areaDTO.getAreaName(), areaDTO);
+            }
+
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return areaDTOS;
+
+    }
+
+    public TaskDTO getTaskByID(String id) {
+        if (tasks.containsKey(id))
+            return tasks.get(id);
+
+        String sql = "SELECT * FROM Tasks WHERE Tasks.id = (?)";
+        String sqlProduct = "SELECT * FROM Products WHERE Products.TaskID = (?)";
+        String sqlLoc = "SELECT * FROM Locations WHERE Locations.address = (?)";
+        TaskDTO tkDTO = null;
+
+        try (Connection conn = taskDAO.connect();
+             PreparedStatement pstmt  = conn.prepareStatement(sql);
+             PreparedStatement pstmtLoc  = conn.prepareStatement(sqlLoc);
+             PreparedStatement pstmtProduct  = conn.prepareStatement(sqlProduct)){
+
+            pstmt.setString(1, id);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            // if there is no row
+            if (rs.next())
+                return null;
+
+            // add products
+            pstmtProduct.setString(1, id);
+            HashMap<String, Integer> products = new HashMap<>();
+            ResultSet rsProduct = pstmtProduct.executeQuery();
+            while (rsProduct.next()){
+                products.put(rsProduct.getString(1), rsProduct.getInt(2));
+            }
+            // add Location
+            pstmtLoc.setString(1, rs.getString("destination"));
+            ResultSet rsLoc = pstmtLoc.executeQuery();
+
+            tkDTO = new TaskDTO(id, products, rs.getString(3), new LocationDTO(rs.getString(1),
+                    rs.getString(2), rs.getString(3)));
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        tasks.put(id, tkDTO);
+        return tkDTO;
     }
 
 //    public HashMap<AreaDTO, ArrayList<LocationDTO>> getLocations(){

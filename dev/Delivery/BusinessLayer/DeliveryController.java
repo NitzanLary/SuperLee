@@ -23,7 +23,9 @@ public class DeliveryController {
 
     public String createFullDelivery(String date, String timeOfDeparture, String truckNumber, String driverName, int departureWeight, String modification, Location origin, ArrayList<Task> destinations){
         String id = getNewDeliveryID();
-        deliveries.put(id ,new Delivery(id, date, timeOfDeparture, truckNumber, driverName, departureWeight, modification, origin, destinations));
+        Delivery del = new Delivery(id, date, timeOfDeparture, truckNumber, driverName, departureWeight, modification, origin, destinations);
+        deliveries.put(id ,del);
+//        storeDelivery(del);
         return id;
     }
 
@@ -107,7 +109,7 @@ public class DeliveryController {
         if (newDel.getId() == null)
             newDel.setId(getNewDeliveryID());
         Delivery ret = new Delivery(newDel.getId(),newDel.getDate(),newDel.getTimeOfDeparture(),newDel.getTruckNumber(),newDel.getDriverName(),newDel.getDepartureWeight(),newDel.getModification(),origin,destinations);
-        deliveries.put(newDel.getId(), ret);
+//        deliveries.put(newDel.getId(), ret); TODO: we need this here? because we say that only in sendDelivery we save
         return ret;
     }
 
@@ -115,6 +117,7 @@ public class DeliveryController {
         deliveries.get(delID);
     }
 
+    // TODO: same as the upper todo.. dont think its relevant
     public Delivery getDeliveryById(String id){
         if (!this.deliveries.containsKey(id)){
             throw new InputMismatchException("Delivery dose not exist.");
