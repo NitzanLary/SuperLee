@@ -60,6 +60,7 @@ public class AreaDAO extends DAO{
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
             }
+
         }
     }
 
