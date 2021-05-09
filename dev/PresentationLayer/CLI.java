@@ -16,7 +16,7 @@ public class CLI {
     Scanner scanner;
 
 
-    private CLI(){
+    public CLI(){
         employeeCLI = EmployeeCLI.getInstance();
         deliveryCLI = DeliveryCLI.getInstance();
         scanner = new Scanner(System.in);
@@ -42,44 +42,32 @@ public class CLI {
             while(r.isErrorOccured()) {
                 System.out.println("ID not found, please try again");
                 ID = scanner.next();
-                r = cliController.checkAuthorizedHrOrGenral(ID);
+                r = FacadeController.getInstance().isDeliveryManager(ID);
             }
             if (r.getValue()) {
                 do {
-                    //The User is Hr or General manager
-                    DisMmainMenu();
+                    //The User is Delivery manager
+                    deliveryCLI.runWithConsole();
                     action = scanner.nextInt();
                     if (action == 0)
                         break;
-                    scanner.nextLine();
-                    cliController.Mmainmanue(action);
+//                    scanner.nextLine();
+//                    cliController.Mmainmanue(action);
                 } while (true);
             } else {
                 do { //TODO
                     //The User is Regular Employee (not Hr or General manager)
-                    DisEmainMenu();
+                    employeeCLI.start(ID);
                     action = scanner.nextInt();
                     if (action == 0)
                         break;
                     scanner.nextLine();
-                    cliController.EmainMenu(action);
+                    employeeCLI.start(ID);
                 } while (true);
 
             }
         }while (true);
     }
-
-
-
-
-
-
-    }
-
-
-
-
-
 
 
 
