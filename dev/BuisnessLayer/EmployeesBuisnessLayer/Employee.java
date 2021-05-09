@@ -121,7 +121,8 @@ public class Employee {
 
     public Response setSalary(int salary) {
         this.salary = salary;
-        this.dto.setSalary(salary);
+        if (isPersisted)
+            this.dto.setSalary(salary);
         return new Response();
     }
 
