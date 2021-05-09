@@ -1,6 +1,7 @@
 package PresentationLayer.DeliveryPresentationLayer;
 
 import BuisnessLayer.DeliveryBusinessLayer.FacadeController;
+import BuisnessLayer.EmployeesBuisnessLayer.ResponseT;
 import DataAccessLayer.DeliveryDataAccessLayer.DTO.*;
 import PresentationLayer.EmployeesPresentationLayer.EmployeeCLI;
 
@@ -216,7 +217,7 @@ public class DeliveryCLI {
                     break;
                 }
                 case ("2"): {
-                    delDTO.setTimeOfDeparture(insertTimeOfDeparture(in).getData());
+                    delDTO.setTimeOfDeparture(insertTimeOfDeparture(in, delDTO.getDate(), delDTO.getDestinations()).getData());
                     break;
                 }
                 case ("3"): {
@@ -351,12 +352,27 @@ public class DeliveryCLI {
         return new Response<>(date);
     }
 
-    public Response<String> insertTimeOfDeparture(Scanner in) {
+    public Response<String> insertTimeOfDeparture(Scanner in, String date, ArrayList<TaskDTO> tasks) {
         String timeOfDeparture = "";
+        boolean f_legal = true;
         do {
             System.out.println("Insert time of departure: hh:mm");
             timeOfDeparture = in.nextLine();
-        } while (!isLegalTime(timeOfDeparture) && !timeOfDeparture.equals("exit"));
+            f_legal = isLegalTime(timeOfDeparture);
+            if (!f_legal)
+                continue;
+            if (fc.checkIfStoreKeeperNeeded(tasks).getData()) {
+                ResponseT<Boolean> res = fc.isLegalDepartureTime(timeOfDeparture, date);
+                if (res.isErrorOccured()) {
+                    System.out.println("error during check for storekeeper appearance:");
+                    System.out.println(res.getErrorMessage());
+                    f_legal = false;
+                }
+                f_legal = res.getValue();
+                if (!f_legal)
+                    System.out.println("there isn't any store keeper assigned on given date and time: " + date + " " + timeOfDeparture);
+            }
+        } while (!f_legal && !timeOfDeparture.equals("exit"));
         return new Response<>(timeOfDeparture);
     }
 
@@ -389,13 +405,23 @@ public class DeliveryCLI {
 
     public void createNewDelivery() {
         Scanner in = new Scanner(System.in);
+
+        LocationDTO originLocation = chooseLocation(in);
+        if (originLocation == null)
+            return;
+
+        ArrayList<TaskDTO> arrTask = insertTasksToDelivery(in, new ArrayList<>());
+        if (arrTask == null)
+            return;
+
         String date = insertDate(in).getData();
         if (date.equals("exit"))
             return;
 
-        String timeOfDeparture = insertTimeOfDeparture(in).getData();
+        String timeOfDeparture = insertTimeOfDeparture(in, date, arrTask).getData(); // also checking new logic - existance of storage manager:
         if (timeOfDeparture.equals("exit"))
             return;
+
 
         TruckDTO trdto = chooseTruck(in);
         if (trdto == null)
@@ -412,13 +438,7 @@ public class DeliveryCLI {
 //            return;
 //        int departureWeightInt = Integer.parseInt(departureWeight);
 
-        LocationDTO originLocation = chooseLocation(in);
-        if (originLocation == null)
-            return;
-
-        ArrayList<TaskDTO> arrTask = insertTasksToDelivery(in, new ArrayList<>());
-        if (arrTask == null)
-            return;
+//      moved choose tasks to above due to employee module integration logic
 
         // summery:
         DeliveryDTO creation = new DeliveryDTO(date, timeOfDeparture, truck.split(" ")[0], driverName, 0, "", originLocation, arrTask);
