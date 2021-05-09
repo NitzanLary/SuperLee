@@ -29,7 +29,7 @@ public class ShiftDAO extends DAO{
                 (?, ?, ?, ?)
                 """;
 
-        try(Connection conn = getConn().getValue();
+        try(Connection conn = getConn();
             PreparedStatement pstmt = conn.prepareStatement(sql)){
 
             pstmt.setString(1, date.toString());
@@ -56,7 +56,7 @@ public class ShiftDAO extends DAO{
                 (?, ?, ?, ?, ?)
                 """;
 
-        try(Connection conn = getConn().getValue();
+        try(Connection conn = getConn();
             PreparedStatement pstmt = conn.prepareStatement(sql)){
 
             pstmt.setString(1, date.toString());
@@ -85,7 +85,7 @@ public class ShiftDAO extends DAO{
                 (?, ?, ?, ?, ?)
                 """;
 
-        try(Connection conn = getConn().getValue();
+        try(Connection conn = getConn();
             PreparedStatement pstmt = conn.prepareStatement(sql)){
 
             pstmt.setString(1, date.toString());
@@ -122,7 +122,7 @@ public class ShiftDAO extends DAO{
                 WHERE Date = ? AND Start = ? AND End = ?
                 """;
 
-        try(Connection conn = getConn().getValue();
+        try(Connection conn = getConn();
             PreparedStatement shiftSqlStmt = conn.prepareStatement(shiftSql);
             PreparedStatement shiftConstrainsSqlStmt = conn.prepareStatement(shiftConstrainsSql);
             PreparedStatement shiftAssigneesSqlStmt = conn.prepareStatement(shiftAssigneesSql)){
@@ -198,7 +198,7 @@ public class ShiftDAO extends DAO{
                 WHERE Date = ? AND Start = ? AND End = ? AND EmpID = ?
                 """;
 
-        try(Connection conn = getConn().getValue();
+        try(Connection conn = getConn();
             PreparedStatement pstmt = conn.prepareStatement(sql)){
 
             pstmt.setString(1, shiftDate.getDate().toString());
@@ -220,7 +220,7 @@ public class ShiftDAO extends DAO{
                 WHERE WHERE Date = ? AND Start = ? AND End = ?
                 """;
 
-        try(Connection conn = getConn().getValue();
+        try(Connection conn = getConn();
             PreparedStatement pstmt = conn.prepareStatement(sql)){
 
             pstmt.setString(2, shiftDate.getDate().toString());
