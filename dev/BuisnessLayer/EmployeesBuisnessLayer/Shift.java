@@ -176,6 +176,7 @@ public abstract class Shift {
 
 
 
+
     public ResponseT<String> getWhoIWorkWith(Employee employee){
         if (!assignedEmployees.containsKey(employee.getID().getValue()))
             return new ResponseT<>(null, "This employee is not assigned to this shift");
