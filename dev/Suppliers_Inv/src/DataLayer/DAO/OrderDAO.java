@@ -78,7 +78,7 @@ public class OrderDAO extends DAO{
         }catch (SQLException e) {
             return new Response(e.getMessage());
         }
-        return new ResponseT(orderID);
+        return new ResponseT<>(orderID);
     }
     //TODO: update functions ???????
 
