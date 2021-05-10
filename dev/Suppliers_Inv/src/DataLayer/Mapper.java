@@ -396,7 +396,7 @@ public class Mapper {
     public ResponseT<OrderDTO> addOrder(Order order, double finalPrice) {
         ResponseT<OrderDTO> orderRes = orderDAO.create(order, finalPrice);
         if (orderRes.ErrorOccured()) {
-            return new ResponseT<>("Could not add Product");
+            return new ResponseT<>("Could not add Order");
         }
         orderDAO.insert(order);
         return orderRes;
