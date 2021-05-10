@@ -1,4 +1,4 @@
-package BuisnessLayer.EmployeesBuisnessLayer;
+package serviceObjects;
 
 public class Response {
     private String ErrorMessage;

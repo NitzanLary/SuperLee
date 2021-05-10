@@ -3,6 +3,8 @@ package BuisnessLayer.EmployeesBuisnessLayer;
 import DataAccessLayer.EmployeesDataAccessLayer.DAOs.EmployeeDAO;
 import DataAccessLayer.EmployeesDataAccessLayer.DTOs.EmployeeDTO;
 import DataAccessLayer.EmployeesDataAccessLayer.Objects.Mapper;
+import serviceObjects.Response;
+import serviceObjects.ResponseT;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -27,7 +29,7 @@ public class EmployeeController {
     }
 
     public Response AddEmployee(String ID, String name, String bankAccount, int salary,
-                            int sickDays, int studyFund, int daysOff, String roleName, Integer licence, LocalDate _dateOfHire){
+                                int sickDays, int studyFund, int daysOff, String roleName, Integer licence, LocalDate _dateOfHire){
         if (sickDays < 0 || studyFund < 0 || daysOff < 0)
             return new Response("All values of terms must be greater than 0");
         TermsOfEmployee terms = new TermsOfEmployee(sickDays, studyFund, daysOff);
@@ -88,21 +90,21 @@ public class EmployeeController {
         ResponseT<Employee> rE = getEmployee(ID);
         if(rE.isErrorOccured())
             return rE;
-        return rE.getValue().getTerms().setSickDays(updatedSickDays);
+        return rE.getValue().setSickDays(updatedSickDays);
     }
 
     public Response updateEmpStudyFund(String ID, int newStudyFund) {
         ResponseT<Employee> rE = getEmployee(ID);
         if(rE.isErrorOccured())
             return rE;
-        return rE.getValue().getTerms().setAdvancedStudyFund(newStudyFund);
+        return rE.getValue().setAdvancedStudyFund(newStudyFund);
     }
 
     public Response updateEmpDaysOff(String ID, int newDaysOff) {
         ResponseT<Employee> rE = getEmployee(ID);
         if(rE.isErrorOccured())
             return rE;
-        return rE.getValue().getTerms().setDaysOff(newDaysOff);
+        return rE.getValue().setDaysOff(newDaysOff);
     }
 
     public Response addRoleToEmp(String ID, String role) {

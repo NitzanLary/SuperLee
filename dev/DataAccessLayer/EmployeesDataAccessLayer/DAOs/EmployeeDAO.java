@@ -1,7 +1,7 @@
 package DataAccessLayer.EmployeesDataAccessLayer.DAOs;
 
-import BuisnessLayer.EmployeesBuisnessLayer.Response;
-import BuisnessLayer.EmployeesBuisnessLayer.ResponseT;
+import serviceObjects.Response;
+import serviceObjects.ResponseT;
 import DataAccessLayer.EmployeesDataAccessLayer.DTOs.EmployeeDTO;
 import DataAccessLayer.EmployeesDataAccessLayer.DTOs.RoleDTO;
 

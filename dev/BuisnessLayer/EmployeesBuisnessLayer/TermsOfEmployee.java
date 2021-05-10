@@ -1,5 +1,7 @@
 package BuisnessLayer.EmployeesBuisnessLayer;
 
+import serviceObjects.Response;
+
 public class TermsOfEmployee {
     int sickDays;
     int advancedStudyFund;
