@@ -346,7 +346,7 @@ public class CLIController {
             employeeCli.print(employees.getErrorMessage());
             return;
         }
-        employeeCli.displayEmployees(employees.getValue());
+        employeeCli.displayEmployees(employees.getValue(), shift);
     }
 
     private void getAssignedDrivers(Shift shift) {
@@ -355,7 +355,7 @@ public class CLIController {
             employeeCli.print(employees.getErrorMessage());
             return;
         }
-        employeeCli.displayEmployees(employees.getValue());
+        employeeCli.displayEmployees(employees.getValue(), shift);
     }
 
     private void showStatus(Shift shift) {

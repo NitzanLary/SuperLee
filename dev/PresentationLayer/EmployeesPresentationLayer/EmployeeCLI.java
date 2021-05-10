@@ -328,12 +328,12 @@ public class EmployeeCLI {
     }
 
 
-    public void displayEmployees(List<Employee> employees) {
+    public void displayEmployees(List<Employee> employees, Shift shift) {
         for (Employee e: employees){
             System.out.println("""
                     ID: %s\tName: %s\t\tRoles: %s
                     
-                    """.formatted(e.getID().getValue(), e.getName().getValue(), e.getRolesTostring()));
+                    """.formatted(e.getID().getValue(), e.getName().getValue(), shift.getAssignedRolesToString(e)));
         }
     }
 
