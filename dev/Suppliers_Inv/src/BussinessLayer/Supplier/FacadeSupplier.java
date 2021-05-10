@@ -300,7 +300,6 @@ public class FacadeSupplier {
             } else {
                 ordersOfSupplier = new LinkedList<>();
                 ordersOfSupplier.add(orderID);
-                orderController.createOrder(supplierID);
                 supplierOrder.put(supplierID, ordersOfSupplier);
             }
             return new ResponseT<>(orderID);

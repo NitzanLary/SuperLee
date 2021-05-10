@@ -17,8 +17,8 @@ public class ProductsOfSupplierDAO extends DAO {
 
         String product = "INSERT INTO ProductsOfSupplier (productID, supplierID, name, category, price) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection conn = getConn().value;
-             PreparedStatement pstmt = conn.prepareStatement(product);) {
+        try {Connection conn = getConn().value;
+             PreparedStatement pstmt = conn.prepareStatement(product);
 
             // inserting to employee table
             pstmt.setInt(1, productID);

@@ -16,8 +16,8 @@ public class SupplierDAO extends DAO {
 
         String supplier = "INSERT INTO Supplier (ID, name, address, email, bankAcc, paymentMethod ,infoSupDay, contacts, pickUp) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)";
 
-        try (Connection conn = getConn().value;
-             PreparedStatement pstmt = conn.prepareStatement(supplier);) {
+        try {Connection conn = getConn().value;
+             PreparedStatement pstmt = conn.prepareStatement(supplier);
 
             // inserting to Suppliers table
             pstmt.setInt(1, ID);

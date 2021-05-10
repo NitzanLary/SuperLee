@@ -18,8 +18,8 @@ public class ProductsInOrderDAO extends DAO {
 
         String order = "INSERT INTO ProductsInOrder (orderID, productID, quantity, supplierID) VALUES (?, ?, ?, ?)";
 
-        try (Connection conn = getConn().value;
-             PreparedStatement pstmt = conn.prepareStatement(order);) {
+        try {Connection conn = getConn().value;
+             PreparedStatement pstmt = conn.prepareStatement(order);
 
             // inserting to employee table
             pstmt.setInt(1, orderID);

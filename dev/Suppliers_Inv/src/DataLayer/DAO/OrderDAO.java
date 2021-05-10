@@ -18,21 +18,21 @@ public class OrderDAO extends DAO {
 
         String order = "INSERT INTO Orders (orderID, supplierID, delivered, supplyDate, price) VALUES (?, ?, ?, ?, ?)";
         OrderDTO orderDTO = new OrderDTO(orderID, supplierID, delivered, supplyDate, price);
-        try (Connection conn = getConn().value;
-             PreparedStatement pstmt = conn.prepareStatement(order);) {
+        try {Connection conn = getConn().value;
+             PreparedStatement pstmt = conn.prepareStatement(order);
 
             // inserting to employee table
             pstmt.setInt(1, orderID);
             pstmt.setInt(2, supplierID);
             pstmt.setBoolean(3, delivered);
             pstmt.setDate(4, Date.valueOf(supplyDate));
-            pstmt.setFloat(5, (float) price);
+            pstmt.setDouble(5,price);
 
 
             pstmt.execute();
 
         } catch (SQLException e) {
-            return new ResponseT(e.getMessage());
+            return new ResponseT<>(e.getMessage());
         }
         return new ResponseT<>(orderDTO);
     }
@@ -46,9 +46,9 @@ public class OrderDAO extends DAO {
     public ResponseT<OrderDTO> get(Integer orderID) {
         String orderSQL = String.format("SELECT * FROM Orders WHERE orderID = %s", orderID);
 
-        try (Connection conn = getConn().value;
+        try {Connection conn = getConn().value;
              Statement ordStmt = conn.createStatement();
-             ResultSet ordRs = ordStmt.executeQuery(orderSQL)) {
+             ResultSet ordRs = ordStmt.executeQuery(orderSQL);
 
             if (ordRs.isClosed())
                 return new ResponseT<>(null, String.format("orderID %s not found", orderID));
@@ -100,16 +100,6 @@ public class OrderDAO extends DAO {
             return new ResponseT("cannot get orders");
         }
         return new ResponseT<>(orderList);
-    }
-
-    public ResponseT<OrderDTO> create(Order order, double price) {
-        return new ResponseT<>(new OrderDTO(order.getOrderID(), order.getSupplierID(), order.isDelivered(),
-                order.getDate(), price));
-    }
-
-    public ResponseT<OrderDTO> create(Order order) {
-        return new ResponseT<>(new OrderDTO(order.getOrderID(), order.getSupplierID(), order.isDelivered(),
-                order.getDate(), 0));
     }
 
     public void updatePrice(int orderID, double price) {

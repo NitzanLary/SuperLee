@@ -392,21 +392,12 @@ public class Mapper {
         supplierDAO.update(colName, supplierID, newVal);
     }
 
-    public ResponseT<OrderDTO> addOrder(Order order, double finalPrice) {
-        ResponseT<OrderDTO> orderRes = orderDAO.create(order, finalPrice);
-        if (orderRes.ErrorOccured()) {
-            return new ResponseT<>("Could not add Order");
-        }
-        orderDAO.insert(order);
-        return orderRes;
-    }
 
     public ResponseT<OrderDTO> addOrder(Order order) {
         ResponseT<OrderDTO> orderRes = orderDAO.insert(order);
         if (orderRes.ErrorOccured()) {
             return new ResponseT<>("Could not add Product");
         }
-        orderDAO.create(order);
         return orderRes;
     }
 

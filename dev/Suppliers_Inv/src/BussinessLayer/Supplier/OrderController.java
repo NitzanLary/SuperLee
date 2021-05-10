@@ -51,7 +51,7 @@ public class OrderController {
         nextOrderID++;
         HashMap<Integer,Integer> products = new HashMap<>();
         Order order = new Order(orderID,supplierID,false,products);
-        mapper.addOrder(order);
+        //mapper.addOrder(order);
         orders.put(orderID,order);
         return orderID;
     }
@@ -135,8 +135,9 @@ public class OrderController {
             int quantity = products.get(productId);
             finalPrice += prodController.calculateDiscount(productId, quantity, suppID);
         }
-        mapper.setOrderPrice(OrderID, finalPrice);
+        //mapper.setOrderPrice(OrderID, finalPrice);
         orders.get(OrderID).setPrice(finalPrice);
+        mapper.addOrder(orders.get(OrderID));
         return finalPrice;
     }
 
