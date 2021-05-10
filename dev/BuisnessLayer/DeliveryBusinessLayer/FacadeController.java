@@ -205,6 +205,8 @@ public class FacadeController {
         LocalDate localDate = parseToLocalDate(date);
         LocalTime localTime = parseToLocalTime(timeOfDeparture);
         ResponseT<List <BuisnessLayer.EmployeesBuisnessLayer.Employee>> drivers = ShiftController.getInstance().getAllAssignedDrivers(localDate, localTime);
+        if (drivers.getValue() == null)
+            return ret;
         for (BuisnessLayer.EmployeesBuisnessLayer.Employee driver : drivers.getValue()){
             if (driver.getLicenceType().getValue() >= ride.getTruckWeight())
                 ret.add(new DriverDTO(driver.getLicenceType().getValue(),driver.getName().getValue()));
