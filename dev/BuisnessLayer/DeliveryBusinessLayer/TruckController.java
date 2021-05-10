@@ -21,6 +21,7 @@ public class TruckController {
     public void addTruck(TruckDTO truckDTO){
         this.controller.put(truckDTO.getId(), new Truck(truckDTO));
         dataController.storeTruck(truckDTO);
+        mapper.addTruck(truckDTO);
     }
 
     public ArrayList<TruckDTO> getTrucks(){

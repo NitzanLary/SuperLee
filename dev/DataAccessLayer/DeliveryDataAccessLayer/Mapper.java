@@ -60,8 +60,8 @@ public class Mapper {
     public DeliveryDTO getDeliveryByID(String deliveryId){
         String sqlDel = "SELECT * FROM DELIVERIES WHERE DELIVERIES.ID = (?)";
         String sqlLoc = "SELECT * FROM Locations WHERE Locations.address = (?)";
-        String sqlTask = "SELECT * FROM Tasks WHERE Tasks.DeliveryID = (?)";
-        String sqlProduct = "SELECT * FROM Products WHERE Products.TaskID = (?)";
+        String sqlTask = "SELECT * FROM Tasks WHERE Tasks.deliveryID = (?)";
+        String sqlProduct = "SELECT * FROM Products WHERE Products.taskID = (?)";
         DeliveryDTO retDel = null;
 
         try (Connection conn = deliveryDAO.connect();
@@ -77,7 +77,7 @@ public class Mapper {
             // get location
             pstmtLoc.setString(1, origin);
             ResultSet rsLoc =  pstmtLoc.executeQuery();
-            LocationDTO locDTO = new LocationDTO(origin, rsLoc.getString(2), rsLoc.getString(3));
+            LocationDTO locDTO = new LocationDTO(origin, rsLoc.getString(3), rsLoc.getString(2));
 
             // get tasks
             pstmtTask.setString(1, deliveryId);
@@ -91,19 +91,19 @@ public class Mapper {
                 ResultSet rsProduct = pstmtProduct.executeQuery();
                 HashMap<String, Integer> products = new HashMap<>();
                 while (rsProduct.next()){
-                    products.put(rsProduct.getString(1), rsProduct.getInt(2));
+                    products.put(rsProduct.getString(2), rsProduct.getInt(3));
                 }
                 pstmtLoc.setString(1, rsTask.getString("destination"));
                 ResultSet destination = pstmtLoc.executeQuery();
                 //add into tasks
                 arrTasks.add(new TaskDTO(taskID, products, rsTask.getString(3),
-                        new LocationDTO(destination.getString(1), destination.getString(2), destination.getString(3))));
+                        new LocationDTO(destination.getString(1), destination.getString(3), destination.getString(2))));
             }
 
 
 //            String date = rs.getDate(2).toString();
-            retDel =  new DeliveryDTO(rs.getString(1), rs.getDate(2).toString(),
-                    rs.getTime(3).toString(), rs.getString(4), rs.getString(5),
+            retDel =  new DeliveryDTO(rs.getString(1), rs.getString(2).toString(),
+                    rs.getString(3).toString(), rs.getString(4), rs.getString(5),
                     rs.getInt(6), rs.getString(7), locDTO, arrTasks);
             // TODO check if this is good
 
@@ -117,6 +117,8 @@ public class Mapper {
 
 
     public AreaDTO getArea(String areaName){
+        if (areas.containsKey(areaName))
+            return areas.get(areaName);
         String sql = "SELECT * FROM Areas WHERE Areas.name = (?)";
 
         try (Connection conn = areaDAO.connect();
@@ -150,13 +152,15 @@ public class Mapper {
 
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()){
-                if (ret.containsKey(rs.getString(1))){
-                    ret.get(rs.getString(1)).add(new LocationDTO(rs.getString(2),
-                            rs.getString(3), rs.getString(4)));
+                if (ret.containsKey(rs.getString(4))){
+                    ret.get(rs.getString(4)).add(new LocationDTO(rs.getString(1),
+                            rs.getString(2), rs.getString(3)));
                 }
-                ArrayList<LocationDTO> arr = new ArrayList<>();
-                arr.add(new LocationDTO(rs.getString(2), rs.getString(3), rs.getString(4)));
-                ret.put(rs.getString(1), arr);
+                else {
+                    ArrayList<LocationDTO> arr = new ArrayList<>();
+                    arr.add(new LocationDTO(rs.getString(1), rs.getString(3), rs.getString(2)));
+                    ret.put(rs.getString(4), arr);
+                }
             }
 
             // if there is no row
@@ -200,8 +204,12 @@ public class Mapper {
     }
 
     public ArrayList<AreaDTO> getAreas(){
+        if (!areas.isEmpty())
+            return new ArrayList<>(areas.values());
         String sql = "SELECT * FROM Areas";
         ArrayList<AreaDTO> areaDTOS = new ArrayList<>();
+        HashMap <String, ArrayList<LocationDTO>> hashMap = getLocationsByArea();
+
 
         try (Connection conn = areaDAO.connect();
              PreparedStatement pstmt  = conn.prepareStatement(sql)){
@@ -212,7 +220,7 @@ public class Mapper {
 //            if (rs.next())
 //                return null;
             while (rs.next()){
-                AreaDTO areaDTO = new AreaDTO(rs.getString(1));
+                AreaDTO areaDTO = new AreaDTO(rs.getString(1), hashMap.get(rs.getString(1)));
                 areaDTOS.add(areaDTO);
                 areas.put(areaDTO.getAreaName(), areaDTO);
             }
@@ -356,6 +364,10 @@ public class Mapper {
                 return truck;
         }
         return null;
+    }
+
+    public void addTruck(TruckDTO truckDTO) {
+
     }
 
 //    public void storeLocation(AreaDTO areaDTO, LocationDTO locationDTO){

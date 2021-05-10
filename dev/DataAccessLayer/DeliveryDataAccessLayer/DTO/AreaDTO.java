@@ -39,6 +39,11 @@ public class AreaDTO {
         this.locations = new ArrayList<>();
         this.areaName = areaName;
     }
+
+    public AreaDTO(String areaName, ArrayList<LocationDTO> locations){
+        this.areaName = areaName;
+        this.locations = locations;
+    }
     public String toString() {
         String str = "";
         str += locations.toString() + ", ";

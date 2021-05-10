@@ -30,11 +30,12 @@ public class FacadeController {
 
     public Response<String> toStringResponse() {
         return new Response<>("\n\n-----  System Current State:  -----\n"+
-                "\nDeliveries=\n" + dec +
-                "\nDrivers=\n" + drc.toString("\t") +
-                "\nAreas=\n" + arc +
-                "\nTasks=\n" + tac +
-                "\nTrucks=\n" + trc.toString("\t")+"\n");
+                "\nDeliveries=\n" + dec.getDeliveriesData() +
+                "\nDrivers=\n" + drc.toString("\t") + // TODO: need to add this driver from other module
+                "\nAreas=\n" + arc.getAreas() +
+                "\nFree Tasks=\n" + tac.getTasks() +
+//                "\nTrucks=\n" + trc.toString("\t")+"\n");
+                "\nTrucks=\n" + trc.getTrucks());
     }
 
     @Override

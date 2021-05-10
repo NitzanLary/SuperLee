@@ -778,7 +778,7 @@ public class DeliveryCLI {
         if (input.equals("exit"))
             return;
         truckWeight = Integer.parseInt(input);
-        TruckDTO truckDTO = new TruckDTO(truckModel, truckModel, maxWeight, truckWeight);
+        TruckDTO truckDTO = new TruckDTO(truckNumber, truckModel, maxWeight, truckWeight);
         fc.addTruck(truckDTO);
     }
 
