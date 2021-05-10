@@ -1,5 +1,6 @@
 package PresentationLayer.Supplier;
 import BussinessLayer.FacadeController;
+import BussinessLayer.StringWarpper;
 import BussinessLayer.Supplier.FacadeSupplier;
 import BussinessLayer.Response;
 import BussinessLayer.ResponseT;
@@ -191,12 +192,12 @@ public class IO_Supplier {
                 case 9:
                     System.out.println('\n' + "Enter Supplier ID You Would Like To See His Product: ");
                     int SupID = Integer.parseInt(scanner.nextLine());
-                    ResponseT<String> res = facadeC.showSupplierProducts(SupID);
+                    ResponseT<StringWarpper> res = facadeC.showSupplierProducts(SupID);
                     if (res.ErrorMessage != null) {
                         System.out.println(res.ErrorMessage);
                         return;
                     }
-                    String allSuppliersProd = res.value;
+                    String allSuppliersProd = res.value.getStr();
                     System.out.println(allSuppliersProd);
                     break;
 
@@ -206,18 +207,18 @@ public class IO_Supplier {
                         System.out.println(res.ErrorMessage);
                         return;
                     }
-                    System.out.println('\n' + res.value);
+                    System.out.println('\n' + res.value.getStr());
                     break;
 
                 case 11:
                     System.out.println("Enter Supplier ID You Would Like To See His Details: ");
                     int SupId = Integer.parseInt(scanner.nextLine());
-                    ResponseT<String> resp = facadeC.showSupplierCard(SupId);
+                    ResponseT<StringWarpper> resp = facadeC.showSupplierCard(SupId);
                     if (resp.ErrorMessage != null) {
                         System.out.println(resp.ErrorMessage);
                         return;
                     }
-                    System.out.println(resp.value);
+                    System.out.println(resp.value.getStr());
                     break;
 
                 case 12:
@@ -260,12 +261,12 @@ public class IO_Supplier {
                     break;
 
                 case 3:
-                    ResponseT<String> resp = facadeC.showAllOrders();
+                    ResponseT<StringWarpper> resp = facadeC.showAllOrders();
                     if (resp.ErrorMessage != null) {
                         System.out.println(resp.ErrorMessage);
                         return;
                     }
-                    System.out.println(resp.value);
+                    System.out.println(resp.value.getStr());
                     break;
 
                 case 4:
@@ -322,12 +323,12 @@ public class IO_Supplier {
                     break;
 
                 case 4:
-                    ResponseT<String> resp = facadeC.showAllPOrders();
+                    ResponseT<StringWarpper> resp = facadeC.showAllPOrders();
                     if (resp.ErrorMessage != null) {
                         System.out.println(resp.ErrorMessage);
                         return;
                     }
-                    System.out.println(resp.value);
+                    System.out.println(resp.value.getStr());
                     break;
 
                 case 5:
@@ -1034,12 +1035,12 @@ public class IO_Supplier {
                         break;
 
                     case 4:
-                        ResponseT<String> resp = facadeC.showSupplierProducts(SupplierID);
+                        ResponseT<StringWarpper> resp = facadeC.showSupplierProducts(SupplierID);
                         if (resp.ErrorMessage != null) {
                             System.out.println(resp.ErrorMessage);
                             return;
                         }
-                        System.out.println(resp.value);
+                        System.out.println(resp.value.getStr());
                         break;
 
                     case 5:
@@ -1088,12 +1089,12 @@ public class IO_Supplier {
             int caseNumber = Integer.parseInt(scanner.nextLine());
             switch (caseNumber) {
                 case 1:
-                    ResponseT<String> res = facadeC.showOrdersBySupplier(supID);
+                    ResponseT<StringWarpper> res = facadeC.showOrdersBySupplier(supID);
                     if(res.ErrorMessage != null){
                         System.out.println(res.ErrorMessage);
                         return;
                     }
-                    System.out.println(res.value);
+                    System.out.println(res.value.getStr());
                     break;
 
                 case 2:

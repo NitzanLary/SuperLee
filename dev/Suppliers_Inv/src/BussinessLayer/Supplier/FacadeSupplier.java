@@ -2,6 +2,7 @@ package BussinessLayer.Supplier;
 
 import BussinessLayer.Response;
 import BussinessLayer.ResponseT;
+import BussinessLayer.StringWarpper;
 import DataLayer.Mapper;
 
 import java.time.LocalDate;
@@ -188,9 +189,9 @@ public class FacadeSupplier {
         }
     }
 
-    public ResponseT<String> showSupplierCard(int supplierID) {
+    public ResponseT<StringWarpper> showSupplierCard(int supplierID) {
         try {
-            String s = supController.showSupplierCard(supplierID);
+            StringWarpper s = new StringWarpper(supController.showSupplierCard(supplierID));
             return new ResponseT<>(s);
         } catch (Exception e) {
             return new ResponseT<>(e.getMessage());
@@ -215,18 +216,18 @@ public class FacadeSupplier {
         }
     }
 
-    public ResponseT<String> showSupplierProducts(int supplierID) {
+    public ResponseT<StringWarpper> showSupplierProducts(int supplierID) {
         try {
-            String s = supController.showSupplierProducts(supplierID);
+            StringWarpper s = new StringWarpper(supController.showSupplierProducts(supplierID));
             return new ResponseT<>(s);
         } catch (Exception e) {
             return new ResponseT<>(e.getMessage());
         }
     }
 
-    public ResponseT<String> showAllSupplier() {
+    public ResponseT<StringWarpper> showAllSupplier() {
         try {
-            String s = supController.showAllSupplier();
+            StringWarpper s = new StringWarpper(supController.showAllSupplier());
             return new ResponseT<>(s);
         } catch (Exception e) {
             return new ResponseT<>(e.getMessage());
@@ -380,25 +381,25 @@ public class FacadeSupplier {
         }
     }
 
-    public ResponseT<String> showAllOrders() {
+    public ResponseT<StringWarpper> showAllOrders() {
         try {
-            String s = orderController.showAllOrders();
+            StringWarpper s = new StringWarpper(orderController.showAllOrders());
             return new ResponseT<>(s);
         } catch (Exception e) {
             return new ResponseT<>(e.getMessage());
         }
     }
 
-    public ResponseT<String> showAllPOrders() {
+    public ResponseT<StringWarpper> showAllPOrders() {
         try {
-            String s = orderController.showAllPOrders();
+            StringWarpper s = new StringWarpper(orderController.showAllPOrders());
             return new ResponseT<>(s);
         } catch (Exception e) {
             return new ResponseT<>(e.getMessage());
         }
     }
 
-    public ResponseT<String> showOrdersBySupplier(int supplierID) {
+    public ResponseT<StringWarpper> showOrdersBySupplier(int supplierID) {
         try {
             String allOrders = '\n' + "All Supplier Number:" + supplierID + " Orders Are: ";
             Response res = checkSuppExist(supplierID);
@@ -424,9 +425,9 @@ public class FacadeSupplier {
         }
     }
 
-    public ResponseT<String> showOrder(int orderID) {
+    public ResponseT<StringWarpper> showOrder(int orderID) {
         try {
-            String s = orderController.showOrder(orderID);
+            StringWarpper s = new StringWarpper(orderController.showOrder(orderID));
             return new ResponseT<>(s);
         } catch (Exception e) {
             return new ResponseT<>(e.getMessage());
