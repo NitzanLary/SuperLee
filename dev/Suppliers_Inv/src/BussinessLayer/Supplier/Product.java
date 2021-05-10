@@ -15,6 +15,10 @@ public class Product {
         this.price = price;
     }
 
+    public int getSupplierID() {
+        return supplierID;
+    }
+
     public String toString(){
         return "product ID: " + productID + ",  product Name: " + name + ",  Price: " + price;
     }

@@ -202,8 +202,12 @@ public class Mapper {
         HashMap<Integer,HashMap<Integer, Product>> res1 = new HashMap<>();
         if (!productRes.ErrorOccured()) {
             for (ProductsOfSupplierDTO dbProdOfSupp : productRes.value) {
+                if (res.size() != 0 && res.values().iterator().next().getSupplierID() != dbProdOfSupp.getSupplierID())
+                    res = new HashMap<>();
                 res.put(dbProdOfSupp.getProductID(), new Product(dbProdOfSupp.getProductID(), dbProdOfSupp.getSupplierID(), dbProdOfSupp.getName(),
                         dbProdOfSupp.getCategory(),dbProdOfSupp.getPrice()));
+                        //(dbProdOfSupp.getProductID(), new Product(dbProdOfSupp.getProductID(), dbProdOfSupp.getSupplierID(), dbProdOfSupp.getName(),
+                        //dbProdOfSupp.getCategory(),dbProdOfSupp.getPrice()));
                 res1.put(dbProdOfSupp.getSupplierID(), res);
             }
         } else {
