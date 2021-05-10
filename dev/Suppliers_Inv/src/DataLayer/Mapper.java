@@ -152,7 +152,6 @@ public class Mapper {
         HashMap<Integer,BillOfQuantities> res = new HashMap<>();
         if (!billRes.ErrorOccured()) {
             for (BillOfQuantityDTO dbBill : billRes.value) {
-                System.out.println(dbBill.getProductID()+" " + dbBill.getMinQuantity()+ " "+" "+dbBill.getPercentDiscount());
                 int supplierID = dbBill.getSupplierID();
                 if (res.containsKey(supplierID)) {
                     res.get(supplierID).getMinQuantityForDis().put(dbBill.getProductID(), dbBill.getMinQuantity());
