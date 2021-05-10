@@ -18,7 +18,7 @@ public class Mapper {
     private HashMap<String,AreaDTO> areas;
     private HashMap<String,TruckDTO> trucks;
     private HashMap<String,DriverDTO> drivers;
-    private HashMap<String, ArrayList<LocationDTO>> locationsbyArea;
+//    private HashMap<String, ArrayList<LocationDTO>> locationsbyArea;
     private HashMap<String, LocationDTO> locations;
     private DeliveryDAO deliveryDAO = DeliveryDAO.getInstance();
     private AreaDAO areaDAO = AreaDAO.getInstance();
@@ -31,7 +31,7 @@ public class Mapper {
         areas = new HashMap<>();
         trucks = new HashMap<>();
         drivers = new HashMap<>();
-        locationsbyArea = new HashMap<String, ArrayList<LocationDTO>>();
+//        locationsbyArea = new HashMap<String, ArrayList<LocationDTO>>();
         locations = new HashMap<>();
     }
 
@@ -119,7 +119,7 @@ public class Mapper {
     public AreaDTO getArea(String areaName){
         if (areas.containsKey(areaName))
             return areas.get(areaName);
-        String sql = "SELECT * FROM Areas WHERE Areas.name = (?)";
+        String sql = "SELECT * FROM Areas WHERE Areas.areaName = (?)";
 
         try (Connection conn = areaDAO.connect();
              PreparedStatement pstmt  = conn.prepareStatement(sql)){
@@ -129,7 +129,7 @@ public class Mapper {
             ResultSet rs = pstmt.executeQuery();
 
             // if there is no row
-            if (rs.next())
+            if (!rs.next())
                 return null;
 
 
@@ -172,7 +172,7 @@ public class Mapper {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        locationsbyArea.putAll(ret);
+//        locationsbyArea.putAll(ret);
         return ret;
     }
 
@@ -309,7 +309,7 @@ public class Mapper {
     }
     //TODO we considered here that we already called to the get trucks
     public Response<Boolean> containsTruck(Response<String> truckNumber){
-        if (trucks.containsKey(truckNumber))
+        if (trucks.containsKey(truckNumber.getData()))
             return new Response<>(true);
         return new Response<>(false);
     }
@@ -342,8 +342,6 @@ public class Mapper {
     }
 
     public ArrayList<DeliveryDTO> getDeliveries() {
-        if (!deliveries.isEmpty())
-            return new ArrayList(deliveries.values());
         ArrayList<DeliveryDTO> ret = new ArrayList<>();
         String query = "SELECT ID FROM deliveries";
         ResultSet rs = null;
@@ -382,12 +380,53 @@ public class Mapper {
 
     public void addNewArea(AreaDTO areaDTO) {
         areas.put(areaDTO.getAreaName(), areaDTO);
+//        locationsbyArea.put(areaDTO.getAreaName(), new ArrayList<LocationDTO>());
     }
 
     public void addLocation(AreaDTO areaDTO, LocationDTO locationDTO) {
         locations.put(locationDTO.getAddress(), locationDTO);
-        locationsbyArea.get(areaDTO.getAreaName()).add(locationDTO);
+//        locationsbyArea.get(areaDTO.getAreaName()).add(locationDTO);
         areas.get(areaDTO.getAreaName()).addLocation(locationDTO);
+    }
+
+    public boolean containsArea(String areaName) {
+        return areas.containsKey(areaName);
+    }
+
+    public boolean containsLocation(String address) {
+        return locations.containsKey(address);
+    }
+
+    public String getLastTaskID(){
+        String query = "select taskID from Tasks order by taskID DESC LIMIT 1 ";
+        try (Connection conn = taskDAO.connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            ResultSet rs = pstmt.executeQuery();
+            if(!rs.next()) {
+                return null;
+            }
+            return rs.getString(1);
+        }
+        catch(SQLException e) {
+            System.out.println(e.getStackTrace());
+        }
+        return null;
+    }
+
+    public String getLastDeliveryID(){
+        String query = "select id from deliveries order by id DESC LIMIT 1 ";
+        try (Connection conn = deliveryDAO.connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            ResultSet rs = pstmt.executeQuery();
+            if(!rs.next()) {
+                return null;
+            }
+            return rs.getString(1);
+        }
+        catch(SQLException e) {
+            System.out.println(e.getStackTrace());
+        }
+        return null;
     }
 
 //    public void storeLocation(AreaDTO areaDTO, LocationDTO locationDTO){

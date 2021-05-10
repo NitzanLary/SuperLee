@@ -1,12 +1,15 @@
 package BuisnessLayer.DeliveryBusinessLayer;
 
+import BuisnessLayer.EmployeesBuisnessLayer.Employee;
 import DataAccessLayer.DeliveryDataAccessLayer.DTO.*;
-import serviceObjects.ResponseT;
 import BuisnessLayer.EmployeesBuisnessLayer.ShiftController;
+import serviceObjects.ResponseT;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -104,7 +107,7 @@ public class FacadeController {
 
     // - Delivery -
     public DeliveryDTO getDeliveryById(String id){
-        return this.dec.getDeliveryById(id);
+        return new DeliveryDTO(this.dec.getDeliveryById(id));
     }
 
     public void sendDelivery(DeliveryDTO deliveryDTO, Response<Boolean> storeIt){
@@ -154,10 +157,10 @@ public class FacadeController {
     }
 
     public ArrayList<DeliveryDTO> getUpdatableDeliveries() {
-//        ArrayList<DeliveryDTO> ret = new ArrayList<>();
-//        for (Delivery d:dec.getUpdatableDeliveries())
-//            ret.add(new DeliveryDTO(d));
-        return dec.getUpdatableDeliveries();
+        ArrayList<DeliveryDTO> ret = new ArrayList<>();
+        for (Delivery d:dec.getUpdatableDeliveries())
+            ret.add(new DeliveryDTO(d));
+        return ret;
     }
 
     public DeliveryDTO updateDelivery(DeliveryDTO newDel, String oldDelId) {
@@ -202,7 +205,9 @@ public class FacadeController {
         ArrayList<DriverDTO> ret = new ArrayList<>();
         LocalDate localDate = parseToLocalDate(date);
         LocalTime localTime = parseToLocalTime(timeOfDeparture);
-        ResponseT<List <BuisnessLayer.EmployeesBuisnessLayer.Employee>> drivers = ShiftController.getInstance().getAllAssignedDrivers(localDate, localTime);
+        ResponseT<List <Employee>> drivers = ShiftController.getInstance().getAllAssignedDrivers(localDate, localTime);
+        if (drivers.getValue() == null)
+            return ret;
         for (BuisnessLayer.EmployeesBuisnessLayer.Employee driver : drivers.getValue()){
             if (driver.getLicenceType().getValue() >= ride.getTruckWeight())
                 ret.add(new DriverDTO(driver.getLicenceType().getValue(),driver.getName().getValue()));

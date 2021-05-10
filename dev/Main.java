@@ -10,12 +10,11 @@ import java.util.HashMap;
 
 public class Main {
     public static void main(String[] args){
-//        CLI cli = new CLI();
-//        cli.start();
+        CLI cli = new CLI();
+        cli.start();
 
-        DeliveryCLI cli = DeliveryCLI.getInstance();
-        cli.runWithConsole();
-        System.out.println("hey");
+//        DeliveryCLI cli = DeliveryCLI.getInstance();
+//        cli.runWithConsole();
 
 
 

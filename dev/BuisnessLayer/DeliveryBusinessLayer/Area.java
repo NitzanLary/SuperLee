@@ -1,6 +1,8 @@
 package BuisnessLayer.DeliveryBusinessLayer;
 
 
+import DataAccessLayer.DeliveryDataAccessLayer.DTO.AreaDTO;
+
 import java.util.ArrayList;
 
 public class Area{
@@ -11,6 +13,11 @@ public class Area{
         this.locations = new ArrayList<>();
         this.areaName = areaName;
     }
+
+//    public Area(AreaDTO areaDTO){
+//        this.areaName = areaDTO.getAreaName();
+//        this.locations = areaDTO.getLocations();
+//    }
 
     public String getAreaName() {
         return areaName;
