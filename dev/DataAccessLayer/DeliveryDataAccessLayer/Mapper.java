@@ -367,7 +367,25 @@ public class Mapper {
     }
 
     public void addTruck(TruckDTO truckDTO) {
+        trucks.put(truckDTO.getId(), truckDTO);
+    }
 
+    public void addTask(TaskDTO taskDTO) {
+        tasks.put(taskDTO.getId(), taskDTO);
+    }
+
+    public void addDelivery(DeliveryDTO deliveryDTO) {
+        deliveries.put(deliveryDTO.getId(), deliveryDTO);
+    }
+
+    public void addNewArea(AreaDTO areaDTO) {
+        areas.put(areaDTO.getAreaName(), areaDTO);
+    }
+
+    public void addLocation(AreaDTO areaDTO, LocationDTO locationDTO) {
+        locations.put(locationDTO.getAddress(), locationDTO);
+        locationsbyArea.get(areaDTO.getAreaName()).add(locationDTO);
+        areas.get(areaDTO.getAreaName()).addLocation(locationDTO);
     }
 
 //    public void storeLocation(AreaDTO areaDTO, LocationDTO locationDTO){

@@ -25,6 +25,7 @@ public class TaskController {
         Task newTask = new Task(id, listOfProduct, loadingOrUnloading, destination);
         storeTask(newTask, null);
         controller.put(id, newTask);
+        mapper.addTask(new TaskDTO(newTask));
         return id;
 //        return new TaskDTO(newTask);
     }

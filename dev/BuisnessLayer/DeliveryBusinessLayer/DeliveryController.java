@@ -29,6 +29,7 @@ public class DeliveryController {
         Delivery del = new Delivery(id, date, timeOfDeparture, truckNumber, driverName, departureWeight, modification, origin, destinations);
         deliveries.put(id ,del);
         storeDelivery(del);
+        mapper.addDelivery(new DeliveryDTO(del));
         return id;
     }
 

@@ -33,6 +33,7 @@ public class AreaController {
     public void addNewArea(AreaDTO areaDTO){
         controller.put(areaDTO.getAreaName(), new Area(areaDTO.getAreaName()));
         dc.storeArea(areaDTO);
+        mapper.addNewArea(areaDTO);
     }
 
     public void addArea(String areaName, Area area){
@@ -45,6 +46,7 @@ public class AreaController {
         }
         controller.get(areaDTO.getAreaName()).addLocation(new Location(locationDTO.getAddress(), locationDTO.getPhoneNumber(), locationDTO.getContactName()));
         dc.storeLocation(areaDTO, locationDTO);
+        mapper.addLocation(areaDTO, locationDTO);
         return new Response<>(true);
     }
 
