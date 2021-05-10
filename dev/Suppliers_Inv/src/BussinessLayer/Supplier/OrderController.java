@@ -71,7 +71,8 @@ public class OrderController {
     }
 
     public void addProductToPeriodicOrder(int orderID, LocalDate supplyDate, int interval, int productID , int quantity) {
-        mapper.addPeriodicOrder(orderID, supplyDate, interval, productID, quantity);
+        mapper.addPeriodicOrder(orderID, supplyDate, interval);
+        mapper.addProductToPeriodic(orderID, productID, quantity);
         periodicOrder.get(orderID).getProducts().put(productID, quantity);
     }
 
@@ -92,6 +93,7 @@ public class OrderController {
 
     public void removePOrder(int orderID) {
         PeriodicOrder order = periodicOrder.remove(orderID);
+        mapper.deletePeriodicOrder(orderID);
         if (order == null){
             throw new IllegalArgumentException("Order Does Not Exist");
         }
@@ -208,6 +210,7 @@ public class OrderController {
 
     public void removeProdFromPOrder(int productID, int orderID) {
         Integer remove = periodicOrder.get(orderID).getProducts().remove(productID);
+        mapper.deleteProductFromPeriodic(orderID, productID);
         if(remove == null){
             throw new IllegalArgumentException("The Product Does Not Exist In This Order");
         }
@@ -215,9 +218,10 @@ public class OrderController {
 
     public void changeInterval(int interval, int orderID) {
         PeriodicOrder po = periodicOrder.get(orderID);
-        if(po == null){
+        if(po == null) {
             throw new IllegalArgumentException("The Item Does Not Exist In This Order");
         }
+        mapper.editInterval(orderID, interval);
         po.setInterval(interval);
     }
 
@@ -230,12 +234,13 @@ public class OrderController {
         if(check == null){
             throw new IllegalArgumentException("The Product Does Not Exist In This Order");
         }
+        mapper.editQuantityInPeriodic(orderID, productID, quant);
         order.getProducts().put(productID,quant);
     }
 
     public void addProductToExistPeriodicOrder(int orderID, int productID, int quantity) {
         PeriodicOrder p = periodicOrder.get(orderID);
-        mapper.addPeriodicOrder(orderID, p.getDateOfSupply(), p.getInterval(), productID, quantity);
+        mapper.addPeriodicOrder(orderID, p.getDateOfSupply(), p.getInterval());
         periodicOrder.get(orderID).getProducts().put(productID, quantity);
     }
 }

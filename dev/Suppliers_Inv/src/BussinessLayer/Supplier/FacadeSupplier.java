@@ -553,7 +553,7 @@ public class FacadeSupplier {
 
     public ResponseT<StringBuilder> ordersByLack(HashMap<Integer, Integer> productAmounts) {
         try {
-            HashMap<Integer, HashMap<Integer, Integer>> orders = findCheapestSupplier((productAmounts));
+            HashMap<Integer, HashMap<Integer, Integer>> orders = findCheapestSupplier(productAmounts);
             if (orders.isEmpty())
                 return new ResponseT<>(new StringBuilder());
             StringBuilder sb = new StringBuilder();

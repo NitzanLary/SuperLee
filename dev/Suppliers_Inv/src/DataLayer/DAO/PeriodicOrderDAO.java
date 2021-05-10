@@ -13,9 +13,9 @@ import java.util.List;
 
 public class PeriodicOrderDAO extends DAO{
 
-    public Response insert(Integer orderID, LocalDate supplyDate, Integer intervals, Integer productID, Integer quantity) {
+    public Response insert(Integer orderID, LocalDate supplyDate, Integer intervals) {
 
-        String order = "INSERT INTO PeriodicOrder(orderID, supplyDate, intervals, productID, quantity) VALUES (?, ?, ?, ?, ?)";
+        String order = "INSERT INTO PeriodicOrder(orderID, supplyDate, intervals) VALUES (?, ?, ?)";
 
         try {Connection conn = getConn().value;
              PreparedStatement pstmt = conn.prepareStatement(order);
@@ -24,8 +24,6 @@ public class PeriodicOrderDAO extends DAO{
             pstmt.setInt(1, orderID);
             pstmt.setDate(2, Date.valueOf(supplyDate));
             pstmt.setInt(3,intervals);
-            pstmt.setInt(4, productID);
-            pstmt.setInt(5, quantity);
 
             pstmt.execute();
 
@@ -37,8 +35,7 @@ public class PeriodicOrderDAO extends DAO{
 
 
     public Response insert(PeriodicOrderDTO periodic){
-        return insert(periodic.getProductID(), periodic.getSupplyDate(), periodic.getIntervals(),
-                periodic.getProductID(), periodic.getQuantity());
+        return insert(periodic.getOrderID(), periodic.getSupplyDate(), periodic.getIntervals());
     }
 
     public Response delete(Integer periodicID) {
@@ -74,23 +71,7 @@ public class PeriodicOrderDAO extends DAO{
         return new Response();
     }
 
-    public Response updateQuantity(Integer periodicID, Integer productID, Integer quantity) {
-        String SQL = "UPDATE PeriodicOrder SET quantity = ? WHERE periodicID = ? AND productID = ?";
-        try {
-            ResponseT<Connection> r = getConn();
-            if(!r.ErrorOccured()) {
-                PreparedStatement ps = r.value.prepareStatement(SQL);
-                ps.setInt(1, quantity);
-                ps.setInt(2, periodicID);
-                ps.setInt(3, productID);
 
-                ps.execute();
-            }
-        }catch (SQLException e) {
-            return new Response(e.getMessage());
-        }
-        return new Response();
-    }
 
     public Response deleteProduct(Integer periodicID, Integer productID) {
         String SQL = "DELETE FROM PeriodicOrder WHERE orderID = ? AND productID = ?";
@@ -119,8 +100,7 @@ public class PeriodicOrderDAO extends DAO{
                 ResultSet rs = ps.executeQuery();
                 while(rs.next()) {
                     poList.put(rs.getInt("orderID"),new PeriodicOrderDTO(rs.getInt("orderId"), rs.getDate("supplyDate").toLocalDate(),
-                            rs.getInt("intervals"), rs.getInt("productID"),
-                            rs.getInt("quantity")));
+                            rs.getInt("intervals")));
                 }
             }
         }catch (Exception e) {

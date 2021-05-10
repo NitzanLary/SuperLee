@@ -342,6 +342,7 @@ public class IO_Supplier {
                     int check = facadeController.facadeInv.QuantityBiggerThenInvMin(quantity,productID);
                     if(check == -1){
                         System.out.println("Item Does Not Exists");
+
                         return;
                     }
                     if(check != quantity){
@@ -374,7 +375,7 @@ public class IO_Supplier {
                         System.out.println(res.ErrorMessage);
                         return;
                     }
-                    System.out.println("Deleted Product Successfully");
+                    System.out.println("Quantity Edited Successfully");
                     break;
 
                 case 4:
@@ -460,10 +461,12 @@ public class IO_Supplier {
                         int check = facadeController.facadeInv.QuantityBiggerThenInvMin(quantity,productID);
                         if(check == -1){
                             System.out.println("Item Does Not Exists");
+                            facadeC.removePeriodicOrder(orderID);
                             return;
                         }
                         if(check != quantity){
                             System.out.println('\n' + "The Quantity Of The Product Must Be Bigger Then: " + check);
+                            facadeC.removePeriodicOrder(orderID);
                             return;
                         }
                         Response response = facadeC.addProductToPeriodicOrder(orderID, date, interval,productID,quantity);
@@ -492,7 +495,6 @@ public class IO_Supplier {
                             response = facadeC.removePeriodicOrder(orderID);
                             if (response.ErrorMessage != null) {
                                 System.out.println(response.ErrorMessage);
-                                return;
                             }
                             return;
                         }

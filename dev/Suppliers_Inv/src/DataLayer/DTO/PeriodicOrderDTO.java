@@ -7,15 +7,13 @@ public class PeriodicOrderDTO {
     private Integer orderID;
     private LocalDate supplyDate;
     private Integer intervals;
-    private Integer productID;
-    private Integer quantity;
 
-    public PeriodicOrderDTO(Integer orderID, LocalDate supplyDate, Integer intervals, Integer productID, Integer quantity) {
+
+    public PeriodicOrderDTO(Integer orderID, LocalDate supplyDate, Integer intervals) {
         this.orderID = orderID;
         this.supplyDate = supplyDate;
         this.intervals = intervals;
-        this.productID = productID;
-        this.quantity = quantity;
+
     }
 
     public Integer getOrderID() {
@@ -30,13 +28,6 @@ public class PeriodicOrderDTO {
         return intervals;
     }
 
-    public Integer getProductID() {
-        return productID;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
 
     @Override
     public String toString() {
@@ -44,8 +35,6 @@ public class PeriodicOrderDTO {
                 "orderID: '" + this.orderID + '\'' +
                 ", supplyDate: '" + this.supplyDate + '\'' +
                 ", intervals: '" + this.intervals + '\'' +
-                ", productID: '" + this.productID + '\'' +
-                ", quantity: '" + this.quantity + '\'' +
                 '}';
     }
 }

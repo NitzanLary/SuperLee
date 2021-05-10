@@ -27,6 +27,11 @@ public class Mapper {
     private DiscountDAO costDisDAO;
     private SaleDAO saleDAO;
     private FaultyItemDAO faultyItemDAO;
+    private ProductsInPeriodocDAO productsInPeriodicDAO;
+
+    public void editQuantityInPeriodic(int orderID, int productID, int quant) {
+        productsInPeriodicDAO.editQuantityInPeriodic(orderID, productID, quant);
+    }
 
 
     private static class MapperHolder {
@@ -46,6 +51,7 @@ public class Mapper {
         costDisDAO = new DiscountDAO("itemCostDiscount");
         saleDAO = new SaleDAO();
         faultyItemDAO = new FaultyItemDAO();
+        productsInPeriodicDAO = new ProductsInPeriodocDAO();
     }
 
     public static Mapper getInstance() {
@@ -200,22 +206,21 @@ public class Mapper {
 
     public ResponseT<HashMap<Integer,HashMap<Integer,Product>>> loadProducts() {
         ResponseT<List<ProductsOfSupplierDTO>> productRes = productsOfSupplierDAO.read();
-        HashMap<Integer,Product> res = new HashMap<>();
-        HashMap<Integer,HashMap<Integer, Product>> res1 = new HashMap<>();
+        HashMap<Integer,HashMap<Integer, Product>> res = new HashMap<>();
         if (!productRes.ErrorOccured()) {
             for (ProductsOfSupplierDTO dbProdOfSupp : productRes.value) {
-                if (res.size() != 0 && res.values().iterator().next().getSupplierID() != dbProdOfSupp.getSupplierID())
-                    res = new HashMap<>();
-                res.put(dbProdOfSupp.getProductID(), new Product(dbProdOfSupp.getProductID(), dbProdOfSupp.getSupplierID(), dbProdOfSupp.getName(),
+                if (!res.containsKey(dbProdOfSupp.getSupplierID())) {
+                    res.put(dbProdOfSupp.getSupplierID(), new HashMap<>());
+                }
+            }
+            for (ProductsOfSupplierDTO dbProdOfSupp : productRes.value) {
+                res.get(dbProdOfSupp.getSupplierID()).put(dbProdOfSupp.getProductID(), new Product(dbProdOfSupp.getProductID(), dbProdOfSupp.getSupplierID(), dbProdOfSupp.getName(),
                         dbProdOfSupp.getCategory(),dbProdOfSupp.getPrice()));
-                        //(dbProdOfSupp.getProductID(), new Product(dbProdOfSupp.getProductID(), dbProdOfSupp.getSupplierID(), dbProdOfSupp.getName(),
-                        //dbProdOfSupp.getCategory(),dbProdOfSupp.getPrice()));
-                res1.put(dbProdOfSupp.getSupplierID(), res);
             }
         } else {
             return new ResponseT<>("Could not load orders");
         }
-        return new ResponseT(res1);
+        return new ResponseT<>(res);
     }
 
 
@@ -439,12 +444,28 @@ public class Mapper {
         productsOfSupplierDAO.delete(supplierID,productID);
     }
 
-    public void addPeriodicOrder(int orderID, LocalDate supplyDate, int interval, int productID, int quantity) {
-        periodicOrderDAO.insert(orderID, supplyDate, interval, productID, quantity);
+    public void addPeriodicOrder(int orderID, LocalDate supplyDate, int interval) {
+        periodicOrderDAO.insert(orderID, supplyDate, interval);
     }
-
 
     public ResponseT<Integer> getNextOrderID(){
         return orderDAO.getNextOrderID();
     }
+
+    public void addProductToPeriodic(int orderID, int productID, int quantity) {
+        productsInPeriodicDAO.insert(orderID, productID, quantity);
+    }
+
+    public void deletePeriodicOrder(int orderID) {
+        periodicOrderDAO.delete(orderID);
+    }
+
+    public void deleteProductFromPeriodic(int orderID, int productID) {
+        productsInPeriodicDAO.deleteProductFromPeriodic(orderID, productID);
+    }
+
+    public void editInterval(int orderID, int interval) {
+        periodicOrderDAO.updateInterval(orderID, interval);
+    }
+
 }
