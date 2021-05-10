@@ -1,4 +1,5 @@
 package BussinessLayer.Supplier;
+
 import BussinessLayer.Response;
 import BussinessLayer.ResponseT;
 import DataLayer.Mapper;
@@ -36,16 +37,15 @@ public class FacadeSupplier {
 
     public Response createSupCard(String supplierName, int supplierID, String address, String email, int bankAcc,
                                   String paymentMethod, String contacts, String infoSupplyDay, boolean pickUp) {
-        try{
+        try {
             supController.createSupCard(supplierName, supplierID, address, email, bankAcc, paymentMethod, contacts, infoSupplyDay, pickUp);
             return new Response();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return new Response(e.getMessage());
         }
     }
 
-    public Response deleteSupCard(int supplierID){
+    public Response deleteSupCard(int supplierID) {
         try {
             supController.deleteSupCard(supplierID);
             return new Response();
@@ -54,20 +54,19 @@ public class FacadeSupplier {
         }
     }
 
-    public Response addBillOfQuantity(int supplierID, HashMap<Integer, Integer> minQuantityForDis,  HashMap<Integer, Integer> discountList) {
-        try{
-            supController.addBillOfQuantity(supplierID, minQuantityForDis,discountList);
+    public Response addBillOfQuantity(int supplierID, HashMap<Integer, Integer> minQuantityForDis, HashMap<Integer, Integer> discountList) {
+        try {
+            supController.addBillOfQuantity(supplierID, minQuantityForDis, discountList);
             return new Response();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return new Response(e.getMessage());
         }
     }
 
     public void addBilltoDB(int supplierID, int prodID, int minDis, int percentage) {
-        try{
+        try {
             supController.addBilltoDB(supplierID, prodID, minDis, percentage);
-        } catch (Exception e){
+        } catch (Exception e) {
             return;
         }
     }
@@ -82,51 +81,46 @@ public class FacadeSupplier {
     }
 
     public Response editMinQuantity(int supplierID, int pid, int newQ) {
-        try{
-            orderController.editMinQuantity(supplierID,pid,newQ);
+        try {
+            orderController.editMinQuantity(supplierID, pid, newQ);
             return new Response();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return new Response(e.getMessage());
         }
     }
 
     public Response editDiscount(int supplierID, int pid, int discount) {
-        try{
-            orderController.editDiscount(supplierID,pid,discount);
+        try {
+            orderController.editDiscount(supplierID, pid, discount);
             return new Response();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return new Response(e.getMessage());
         }
     }
 
     public Response addProdToBill(int supplierID, int pid, int minQ, int discount) {
-        try{
-            orderController.addProdToBill(supplierID,pid,minQ,discount);
+        try {
+            orderController.addProdToBill(supplierID, pid, minQ, discount);
             return new Response();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return new Response(e.getMessage());
         }
     }
 
     public Response removeProdFromBill(int supplierID, int pid) {
-        try{
-            orderController.removeProdFromBill(supplierID,pid);
+        try {
+            orderController.removeProdFromBill(supplierID, pid);
             return new Response();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return new Response(e.getMessage());
         }
     }
 
     public Response EditSupplierName(int supplierID, String supplierName) {
-        try{
-            supController.EditSupplierName(supplierID , supplierName);
+        try {
+            supController.EditSupplierName(supplierID, supplierName);
             return new Response();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return new Response(e.getMessage());
         }
     }
@@ -141,18 +135,17 @@ public class FacadeSupplier {
     }
 
     public Response EditEmail(int supplierID, String email) {
-        try{
-            supController.EditEmail(supplierID , email);
+        try {
+            supController.EditEmail(supplierID, email);
             return new Response();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return new Response(e.getMessage());
         }
     }
 
     public Response EditBankAccount(int supplierID, int bankAccount) {
         try {
-            supController.EditBankAccount(supplierID , bankAccount);
+            supController.EditBankAccount(supplierID, bankAccount);
             return new Response();
         } catch (Exception e) {
             return new Response(e.getMessage());
@@ -161,7 +154,7 @@ public class FacadeSupplier {
 
     public Response EditPaymentMethod(int supplierID, String payment) {
         try {
-            supController.EditPaymentMethod(supplierID , payment);
+            supController.EditPaymentMethod(supplierID, payment);
             return new Response();
         } catch (Exception e) {
             return new Response(e.getMessage());
@@ -170,7 +163,7 @@ public class FacadeSupplier {
 
     public Response EditContact(int supplierID, String contact) {
         try {
-            supController.EditContact(supplierID , contact);
+            supController.EditContact(supplierID, contact);
             return new Response();
         } catch (Exception e) {
             return new Response(e.getMessage());
@@ -179,7 +172,7 @@ public class FacadeSupplier {
 
     public Response EditInfoSupDay(int supplierID, String infoSupDay) {
         try {
-            supController.EditInfoSupDay(supplierID , infoSupDay);
+            supController.EditInfoSupDay(supplierID, infoSupDay);
             return new Response();
         } catch (Exception e) {
             return new Response(e.getMessage());
@@ -188,14 +181,14 @@ public class FacadeSupplier {
 
     public Response EditPickup(int supplierID, boolean pickup) {
         try {
-            supController.EditPickup(supplierID , pickup);
+            supController.EditPickup(supplierID, pickup);
             return new Response();
         } catch (Exception e) {
             return new Response(e.getMessage());
         }
     }
 
-    public ResponseT<String> showSupplierCard(int supplierID){
+    public ResponseT<String> showSupplierCard(int supplierID) {
         try {
             String s = supController.showSupplierCard(supplierID);
             return new ResponseT<>(s);
@@ -222,7 +215,7 @@ public class FacadeSupplier {
         }
     }
 
-    public ResponseT<String> showSupplierProducts(int supplierID){
+    public ResponseT<String> showSupplierProducts(int supplierID) {
         try {
             String s = supController.showSupplierProducts(supplierID);
             return new ResponseT<>(s);
@@ -231,7 +224,7 @@ public class FacadeSupplier {
         }
     }
 
-    public ResponseT<String> showAllSupplier(){
+    public ResponseT<String> showAllSupplier() {
         try {
             String s = supController.showAllSupplier();
             return new ResponseT<>(s);
@@ -249,11 +242,11 @@ public class FacadeSupplier {
         }
     }
 
-    public Response checkSuppNotExist(int suppID){
-        try{
+    public Response checkSuppNotExist(int suppID) {
+        try {
             supController.checkSuppNotExist(suppID);
             return new Response();
-        }catch (Exception e){
+        } catch (Exception e) {
             return new Response(e.getMessage());
         }
     }
@@ -276,18 +269,18 @@ public class FacadeSupplier {
         }
     }
 
-    public Response checkProductExist(int supID, int prodID){
+    public Response checkProductExist(int supID, int prodID) {
         try {
-            supController.checkProductExist(supID,prodID);
+            supController.checkProductExist(supID, prodID);
             return new Response();
         } catch (Exception e) {
             return new Response(e.getMessage());
         }
     }
 
-    public Response checkProductInBillOfQ(int supID, int prodID){
+    public Response checkProductInBillOfQ(int supID, int prodID) {
         try {
-            supController.checkProductInBillOfQ(supID,prodID);
+            supController.checkProductInBillOfQ(supID, prodID);
             return new Response();
         } catch (Exception e) {
             return new Response(e.getMessage());
@@ -297,55 +290,54 @@ public class FacadeSupplier {
     /***************** Orders Functions: ***************/
 
 
-    public ResponseT<Integer> createOrder(int supplierID){
-        try{
+    public ResponseT<Integer> createOrder(int supplierID) {
+        try {
             int orderID = orderController.createOrder(supplierID);
             LinkedList<Integer> ordersOfSupplier = supplierOrder.get(supplierID);
-            if( ordersOfSupplier != null){
+            if (ordersOfSupplier != null) {
                 ordersOfSupplier.add(orderID);
-            }
-            else{
+            } else {
                 ordersOfSupplier = new LinkedList<>();
                 ordersOfSupplier.add(orderID);
 
-                supplierOrder.put(supplierID,ordersOfSupplier);
+                supplierOrder.put(supplierID, ordersOfSupplier);
             }
             return new ResponseT<>(orderID);
-        }catch(Exception e) {
+        } catch (Exception e) {
             return new ResponseT<>(e.getMessage());
         }
     }
 
-    public ResponseT<Integer> createPeriodicOrder(int interval, LocalDate date){
-        try{
-            int orderID = orderController.createPeriodicOrder(interval,date);
+    public ResponseT<Integer> createPeriodicOrder(int interval, LocalDate date) {
+        try {
+            int orderID = orderController.createPeriodicOrder(interval, date);
             return new ResponseT<>(orderID);
-        }catch(Exception e) {
+        } catch (Exception e) {
             return new ResponseT<>(e.getMessage());
         }
     }
 
-    public Response addProductToOrder(int orderID, int productID , int quantity) {
+    public Response addProductToOrder(int suppID, int orderID, int productID, int quantity) {
         try {
-            orderController.addProductToOrder(orderID, productID, quantity);
+            orderController.addProductToOrder(suppID, orderID, productID, quantity);
             return new Response();
         } catch (Exception e) {
             return new Response(e.getMessage());
         }
     }
 
-    public Response addProductToPeriodicOrder(int orderID, int productID , int quantity) {
+    public Response addProductToPeriodicOrder(int orderID, LocalDate suppDate, int interval, int productID, int quantity) {
         try {
-            orderController.addProductToPeriodicOrder(orderID, productID, quantity);
+            orderController.addProductToPeriodicOrder(orderID, suppDate, interval, productID, quantity);
             return new Response();
         } catch (Exception e) {
             return new Response(e.getMessage());
         }
     }
 
-    public Response removeFromOrder(int productID , int orderID) {
+    public Response removeFromOrder(int productID, int orderID) {
         try {
-            orderController.removeFromOrder(productID ,orderID);
+            orderController.removeFromOrder(productID, orderID);
             return new Response();
         } catch (Exception e) {
             return new Response(e.getMessage());
@@ -381,14 +373,14 @@ public class FacadeSupplier {
 
     public Response updateProdQuantity(int orderID, int productID, int quantity) {
         try {
-            orderController.updateProdQuantity(orderID, productID,quantity);
+            orderController.updateProdQuantity(orderID, productID, quantity);
             return new Response();
         } catch (Exception e) {
             return new Response(e.getMessage());
         }
     }
 
-    public ResponseT<String> showAllOrders(){
+    public ResponseT<String> showAllOrders() {
         try {
             String s = orderController.showAllOrders();
             return new ResponseT<>(s);
@@ -397,7 +389,7 @@ public class FacadeSupplier {
         }
     }
 
-    public ResponseT<String> showAllPOrders(){
+    public ResponseT<String> showAllPOrders() {
         try {
             String s = orderController.showAllPOrders();
             return new ResponseT<>(s);
@@ -408,14 +400,14 @@ public class FacadeSupplier {
 
     public ResponseT<String> showOrdersBySupplier(int supplierID) {
         try {
-            String allOrders = '\n'+ "All Supplier Number:" + supplierID + " Orders Are: " ;
+            String allOrders = '\n' + "All Supplier Number:" + supplierID + " Orders Are: ";
             Response res = checkSuppExist(supplierID);
             LinkedList<Integer> listOfOrders = supplierOrder.get(supplierID);
-            if (listOfOrders == null){
+            if (listOfOrders == null) {
                 return new ResponseT<>('\n' + " No Orders Yet For This Supplier");
             }
-            for(Integer order : listOfOrders){
-                allOrders += '\n' + "Order ID: "+ order +  ", Date: " + orderController.orders.get(order).getDate()  ;
+            for (Integer order : listOfOrders) {
+                allOrders += '\n' + "Order ID: " + order + ", Date: " + orderController.orders.get(order).getDate();
             }
             return new ResponseT<>(allOrders + '\n');
         } catch (Exception e) {
@@ -423,7 +415,7 @@ public class FacadeSupplier {
         }
     }
 
-    public Response finalPriceForOrder(int OrderID, int suppID){
+    public Response finalPriceForOrder(int OrderID, int suppID) {
         try {
             orderController.finalPriceForOrder(OrderID, suppID);
             return new Response();
@@ -432,7 +424,7 @@ public class FacadeSupplier {
         }
     }
 
-    public ResponseT<String> showOrder(int orderID){
+    public ResponseT<String> showOrder(int orderID) {
         try {
             String s = orderController.showOrder(orderID);
             return new ResponseT<>(s);
@@ -441,15 +433,15 @@ public class FacadeSupplier {
         }
     }
 
-    public boolean isEmptyOrder(int orderID){
+    public boolean isEmptyOrder(int orderID) {
         return orderController.isEmptyOrder(orderID);
     }
 
-    public boolean isEmptyPOrder(int orderID){
+    public boolean isEmptyPOrder(int orderID) {
         return orderController.isEmptyPOrder(orderID);
     }
 
-    public Response productInOrder(int orderID, int prodID){
+    public Response productInOrder(int orderID, int prodID) {
         try {
             orderController.productInOrder(orderID, prodID);
             return new Response();
@@ -471,45 +463,43 @@ public class FacadeSupplier {
     public HashMap<Integer, HashMap<Integer, Integer>> findCheapestSupplier(HashMap<Integer, Integer> prods) {
         HashMap<Integer, HashMap<Integer, Integer>> supplierAndProds = new HashMap<>(); //Integer:supplier, HashMap: his products
         // iterate over all items that we need to find them cheapest supplier
-        for(Integer item : prods.keySet()){
+        for (Integer item : prods.keySet()) {
             int cheapestSupplier = -1;
             double cheapestPrice = -1;
             HashMap<Integer, HashMap<Integer, Product>> SAP = orderController.prodController.getSupplierProd();
             // iterate over all suppliers
-            for(Integer supplierID : SAP.keySet()){
+            for (Integer supplierID : SAP.keySet()) {
                 HashMap<Integer, Product> products = SAP.get(supplierID);
                 // iterate over all supplierID products
-                for(Product product : products.values()){
-                    if(product.getProductID() == item){
+                for (Product product : products.values()) {
+                    if (product.getProductID() == item) {
                         // if only one supplier supply this product
-                        if(cheapestSupplier == -1){
+                        if (cheapestSupplier == -1) {
                             cheapestSupplier = supplierID;
                             cheapestPrice = orderController.prodController.calculateDiscount(product.getProductID(), prods.get(item), supplierID);
-                        }
-                        else{
+                        } else {
                             // if we found cheaper supplier that supply this product
                             double price = orderController.prodController.calculateDiscount(product.getProductID(), prods.get(item), supplierID);
-                            if(price < cheapestPrice){
+                            if (price < cheapestPrice) {
                                 cheapestSupplier = supplierID;
                                 cheapestPrice = product.getPrice();
                             }
                         }
                     }
-                    if (cheapestSupplier == -1){
-                        throw new IllegalArgumentException("The System Did Not Found Any Supplier That Supply Item Number: "+ product.getProductID());
+                    if (cheapestSupplier == -1) {
+                        throw new IllegalArgumentException("The System Did Not Found Any Supplier That Supply Item Number: " + product.getProductID());
                     }
                 }
             }
             // add to the supplier the item
             HashMap<Integer, Integer> products;//itemID + quantity
-            if(supplierAndProds.containsKey(cheapestSupplier)){
+            if (supplierAndProds.containsKey(cheapestSupplier)) {
                 products = supplierAndProds.get(cheapestSupplier);
-            }
-            else{
+            } else {
                 products = new HashMap<>();
             }
-            products.put(item,prods.get(item)); //itemID + quantity
-            supplierAndProds.put(cheapestSupplier,products);
+            products.put(item, prods.get(item)); //itemID + quantity
+            supplierAndProds.put(cheapestSupplier, products);
         }
         return supplierAndProds;
     }
@@ -525,7 +515,7 @@ public class FacadeSupplier {
 
     public Response removeProdFromPOrder(int productID, int orderID) {
         try {
-            orderController.removeProdFromPOrder(productID ,orderID);
+            orderController.removeProdFromPOrder(productID, orderID);
             return new Response();
         } catch (Exception e) {
             return new Response(e.getMessage());
@@ -534,7 +524,7 @@ public class FacadeSupplier {
 
     public Response changeInterval(int interval, int orderID) {
         try {
-            orderController.changeInterval(interval ,orderID);
+            orderController.changeInterval(interval, orderID);
             return new Response();
         } catch (Exception e) {
             return new Response(e.getMessage());
@@ -543,7 +533,7 @@ public class FacadeSupplier {
 
     public Response editQuantityForPOrder(int productID, int orderID, int quant) {
         try {
-            orderController.editQuantityForPOrder(orderID, productID,quant);
+            orderController.editQuantityForPOrder(orderID, productID, quant);
             return new Response();
         } catch (Exception e) {
             return new Response(e.getMessage());
@@ -551,4 +541,13 @@ public class FacadeSupplier {
     }
 
 
+    public Response addProductToExistPeriodicOrder(int orderID, int productID, int quantity) {
+        try {
+            orderController.addProductToExistPeriodicOrder(orderID, productID, quantity);
+            return new Response();
+        } catch (Exception e) {
+            return new Response(e.getMessage());
+        }
+
+    }
 }

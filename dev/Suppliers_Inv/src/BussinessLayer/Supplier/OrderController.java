@@ -20,13 +20,20 @@ public class OrderController {
 
     private OrderController()
     {
-        nextOrderID = 1;
-        nextPeriodOrderID = 1;
-        orders = new HashMap<>();
-        periodicOrder = new HashMap<>();
+        init();
+    }
+
+    private void init() {
         prodController = prodController.getInstance();
         mapper = Mapper.getInstance();
-        mapper.loadOrders();
+        orders = mapper.loadOrders().value;
+        if (orders == null)
+            orders = new HashMap<>();
+        periodicOrder = mapper.loadPeriodic().value;
+        if (periodicOrder == null)
+            periodicOrder = new HashMap<>();
+        nextOrderID = orders.size()+1;
+        nextPeriodOrderID = periodicOrder.size()+1;
     }
 
     public static OrderController getInstance()
@@ -44,6 +51,7 @@ public class OrderController {
         nextOrderID++;
         HashMap<Integer,Integer> products = new HashMap<>();
         Order order = new Order(orderID,supplierID,false,products);
+        mapper.addOrder(order);
         orders.put(orderID,order);
         return orderID;
     }
@@ -57,11 +65,13 @@ public class OrderController {
     }
 
 
-    public void addProductToOrder(int orderID, int productID , int quantity) {
+    public void addProductToOrder(int suppID, int orderID, int productID , int quantity) {
+        mapper.addProductInOrder(suppID, orderID, productID, quantity);
         orders.get(orderID).getProducts().put(productID, quantity);
     }
 
-    public void addProductToPeriodicOrder(int orderID, int productID , int quantity) {
+    public void addProductToPeriodicOrder(int orderID, LocalDate supplyDate, int interval, int productID , int quantity) {
+        mapper.addPeriodicOrder(orderID, supplyDate, interval, productID, quantity);
         periodicOrder.get(orderID).getProducts().put(productID, quantity);
     }
 
@@ -73,6 +83,7 @@ public class OrderController {
     }
 
     public void removeOrder(int orderID) {
+        mapper.deleteOrder(orderID);
         Order order = orders.remove(orderID);
         if (order == null){
             throw new IllegalArgumentException("Order Does Not Exist");
@@ -124,7 +135,7 @@ public class OrderController {
             int quantity = products.get(productId);
             finalPrice += prodController.calculateDiscount(productId, quantity, suppID);
         }
-        mapper.addOrder(orders.get(OrderID), finalPrice);
+        mapper.setOrderPrice(OrderID, finalPrice);
         orders.get(OrderID).setPrice(finalPrice);
         return finalPrice;
     }
@@ -184,9 +195,8 @@ public class OrderController {
     }
 
     public HashMap<Integer, PeriodicOrder> checkForApproachingPOrders() {
-        LinkedList<PeriodicOrder> perOrds = mapper.loadPeriodic().value;
         HashMap<Integer, PeriodicOrder> orders = new HashMap<>();
-        for(PeriodicOrder po : perOrds){
+        for(PeriodicOrder po : periodicOrder.values()){
             LocalDate checkDate = po.getDateOfSupply().plusDays(po.getInterval()+1); // +1 represent check if the order is 24 hours before arriving time
             if(checkDate.equals(LocalDate.now()))
                 orders.put(po.getpOrderID(),po);
@@ -220,5 +230,11 @@ public class OrderController {
             throw new IllegalArgumentException("The Product Does Not Exist In This Order");
         }
         order.getProducts().put(productID,quant);
+    }
+
+    public void addProductToExistPeriodicOrder(int orderID, int productID, int quantity) {
+        PeriodicOrder p = periodicOrder.get(orderID);
+        mapper.addPeriodicOrder(orderID, p.getDateOfSupply(), p.getInterval(), productID, quantity);
+        periodicOrder.get(orderID).getProducts().put(productID, quantity);
     }
 }

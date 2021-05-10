@@ -25,7 +25,7 @@ public class ProductsOfSupplierDAO extends DAO {
             pstmt.setInt(2, supplierID);
             pstmt.setString(3,name);
             pstmt.setString(4, category);
-            pstmt.setFloat(5, (float) price);
+            pstmt.setDouble(5, price);
 
             pstmt.execute();
 
@@ -41,7 +41,7 @@ public class ProductsOfSupplierDAO extends DAO {
                 productOfSup.getCategory(), productOfSup.getPrice());
     }
 
-    public Response delete(Integer productID, Integer supplierID) {
+    public Response delete(Integer supplierID, Integer productID) {
         String SQL = "DELETE FROM ProductsOfSupplier WHERE productID = ? AND supplierID = ? ";
         try {
             ResponseT<Connection> r = getConn();

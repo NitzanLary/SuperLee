@@ -17,7 +17,7 @@ public class SupplierController {
         mapper = Mapper.getInstance();
         prodController = prodController.getInstance();
         suppliers = mapper.loadSupplierCard().value;
-      //  prodController.addSuppliers(suppliers.keySet());
+        prodController.addSuppliers(suppliers.keySet());
 
     }
 
@@ -83,6 +83,7 @@ public class SupplierController {
     }
 
     public void removeProductToSupplier(int supplierID, int productID) {
+        mapper.deleteProductFromSupplier(supplierID, productID);
         prodController.removeProductToSupplier(supplierID, productID);
     }
 
@@ -179,7 +180,7 @@ public class SupplierController {
     }
 
     public void checkBillNotExist(int suppID) {
-        prodController.checkBillExist(suppID);
+        prodController.checkBillNotExist(suppID);
     }
 
     public void checkProductExist(int supID, int prodID) {

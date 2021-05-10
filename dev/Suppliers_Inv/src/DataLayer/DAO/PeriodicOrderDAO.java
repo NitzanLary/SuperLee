@@ -109,16 +109,16 @@ public class PeriodicOrderDAO extends DAO{
         return new Response();
     }
 
-    public ResponseT<List<PeriodicOrderDTO>> read() {
+    public ResponseT<HashMap<Integer,PeriodicOrderDTO>> read() {
         String SQL = "SELECT * FROM PeriodicOrder";
-        List<PeriodicOrderDTO> poList = new LinkedList<>();
+        HashMap<Integer,PeriodicOrderDTO> poList = new HashMap<>();
         try {
             ResponseT<Connection> r = getConn();
             if(!r.ErrorOccured()) {
                 PreparedStatement ps = r.value.prepareStatement(SQL);
                 ResultSet rs = ps.executeQuery();
                 while(rs.next()) {
-                    poList.add(new PeriodicOrderDTO(rs.getInt("orderId"), rs.getDate("supplyDate").toLocalDate(),
+                    poList.put(rs.getInt("orderID"),new PeriodicOrderDTO(rs.getInt("orderId"), rs.getDate("supplyDate").toLocalDate(),
                             rs.getInt("intervals"), rs.getInt("productID"),
                             rs.getInt("quantity")));
                 }

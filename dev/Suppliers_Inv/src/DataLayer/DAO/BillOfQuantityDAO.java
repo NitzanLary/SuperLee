@@ -77,6 +77,23 @@ public class BillOfQuantityDAO extends DAO {
         return new ResponseT(supplierID);
     }
 
+    public Response deleteProduct(Integer supplierID, Integer prodID) {
+        String SQL = "DELETE FROM BillOfQuantity WHERE supplierID = ? AND productID = ?";
+        try {
+            ResponseT<Connection> r = getConn();
+            if(!r.ErrorOccured()) {
+                PreparedStatement ps = r.value.prepareStatement(SQL);
+                ps.setInt(1, supplierID);
+                ps.setInt(2, prodID);
+
+                ps.execute();
+            }
+        }catch (SQLException e) {
+            return new Response(e.getMessage());
+        }
+        return new ResponseT(supplierID);
+    }
+
 
     public Response updateMinQuantity(Integer supplierID, Integer productID, Integer newMinQ) {
         String SQL = "UPDATE BillOfQuantity SET minQuantity = ? WHERE supplierID = ? AND productID = ?";

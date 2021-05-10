@@ -7,6 +7,7 @@ import DataLayer.DAO.*;
 import DataLayer.DTO.*;
 import BussinessLayer.Response;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class Mapper {
@@ -26,6 +27,7 @@ public class Mapper {
     private DiscountDAO costDisDAO;
     private SaleDAO saleDAO;
     private FaultyItemDAO faultyItemDAO;
+
 
     private static class MapperHolder {
         private static Mapper instance = new Mapper();
@@ -82,6 +84,13 @@ public class Mapper {
         return new Response();
     }
 
+    public Response deleteOrder(int orderID) {
+        if(orderDAO.delete(orderID).ErrorOccured()){
+            return new Response("error deleting item");
+        }
+        return new Response();
+
+    }
     public ResponseT<ItemDTO> updateItem(Item item) {
         ResponseT<ItemDTO> resItem = itemDAO.update(item);
         if(resItem.ErrorOccured()) {
@@ -159,13 +168,13 @@ public class Mapper {
         return new ResponseT<>(res);
     }
 
-    public ResponseT<List<Order>> loadOrders() {
-        ResponseT<List<OrderDTO>> orderRes = orderDAO.read();
-        List<Order> res = new LinkedList<>();
+    public ResponseT<HashMap<Integer,Order>> loadOrders() {
+        ResponseT<HashMap<Integer, OrderDTO>> orderRes = orderDAO.read();
+        HashMap<Integer,Order> res = new HashMap<>();
         if (!orderRes.ErrorOccured()) {
-            for (OrderDTO dbOrder : orderRes.value) {
+            for (OrderDTO dbOrder : orderRes.value.values()) {
                 HashMap<Integer,Integer> productsInOrder = productsInOrderDAO.getProductsFromOrder(dbOrder.getOrderID()).value; //all products from specific order
-                res.add(new Order(dbOrder.getOrderID(), dbOrder.getSupplierID(), dbOrder.isDelivered(), productsInOrder));
+                res.put(dbOrder.getOrderID(), new Order(dbOrder.getOrderID(), dbOrder.getSupplierID(), dbOrder.isDelivered(), productsInOrder));
             }
         } else {
             return new ResponseT<>("Could not load orders");
@@ -173,13 +182,13 @@ public class Mapper {
         return new ResponseT<>(res);
     }
 
-    public ResponseT<LinkedList<PeriodicOrder>> loadPeriodic() {
-        ResponseT<List<PeriodicOrderDTO>> perOrderRes = periodicOrderDAO.read();
-        LinkedList<PeriodicOrder> res = new LinkedList<>();
+    public ResponseT<HashMap<Integer, PeriodicOrder>> loadPeriodic() {
+        ResponseT<HashMap<Integer, PeriodicOrderDTO>> perOrderRes = periodicOrderDAO.read();
+        HashMap<Integer, PeriodicOrder> res = new HashMap<>();
         if (!perOrderRes.ErrorOccured()) {
-            for (PeriodicOrderDTO dbPeriodic : perOrderRes.value) {
+            for (PeriodicOrderDTO dbPeriodic : perOrderRes.value.values()) {
                 HashMap<Integer,Integer> productsInOrder = periodicOrderDAO.getProductsFromPeriod(dbPeriodic.getOrderID()).value; //all products from specific order
-                res.add(new PeriodicOrder(dbPeriodic.getOrderID(), dbPeriodic.getIntervals(), dbPeriodic.getSupplyDate(), productsInOrder));
+                res.put(dbPeriodic.getOrderID(),new PeriodicOrder(dbPeriodic.getOrderID(), dbPeriodic.getIntervals(), dbPeriodic.getSupplyDate(), productsInOrder));
             }
         } else {
             return new ResponseT<>("Could not load periodic orders");
@@ -380,10 +389,27 @@ public class Mapper {
     public ResponseT<OrderDTO> addOrder(Order order, double finalPrice) {
         ResponseT<OrderDTO> orderRes = orderDAO.create(order, finalPrice);
         if (orderRes.ErrorOccured()) {
-            return new ResponseT<>("Could not add Item");
+            return new ResponseT<>("Could not add Product");
         }
         orderDAO.insert(order);
         return orderRes;
+    }
+
+    public ResponseT<OrderDTO> addOrder(Order order) {
+        ResponseT<OrderDTO> orderRes = orderDAO.insert(order);
+        if (orderRes.ErrorOccured()) {
+            return new ResponseT<>("Could not add Product");
+        }
+        orderDAO.create(order);
+        return orderRes;
+    }
+
+    public void setOrderPrice(int orderID, double price){
+        orderDAO.updatePrice(orderID, price);
+    }
+
+    public void addProductInOrder(int suppID, int orderID, int productID, int quantity) {
+        productsInOrderDAO.insert(orderID,productID,quantity,suppID);
     }
 
 
@@ -404,12 +430,21 @@ public class Mapper {
         billOfQuantityDAO.delete(supplierID);
     }
 
-    public void addProductToSupplier(int productID, int supplierID, String name, String category, double price) {
-        productsOfSupplierDAO.insert(productID,supplierID,name,category,price);
+    public void deleteProductFromBill(int supplierID, int prodID){
+        billOfQuantityDAO.deleteProduct(supplierID,prodID);
+    }
+
+    public Response addProductToSupplier(int productID, int supplierID, String name, String category, double price) {
+        return productsOfSupplierDAO.insert(productID,supplierID,name,category,price);
     }
 
     public void deleteProductFromSupplier(int supplierID, int productID) {
         productsOfSupplierDAO.delete(supplierID,productID);
     }
+
+    public void addPeriodicOrder(int orderID, LocalDate supplyDate, int interval, int productID, int quantity) {
+        periodicOrderDAO.insert(orderID, supplyDate, interval, productID, quantity);
+    }
+
 
 }

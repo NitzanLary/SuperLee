@@ -7,16 +7,17 @@ import DataLayer.DTO.OrderDTO;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
 public class OrderDAO extends DAO{
 
 
-    public Response insert(Integer orderID, Integer supplierID, boolean delivered, LocalDate supplyDate, double price) {
+    public ResponseT<OrderDTO> insert(Integer orderID, Integer supplierID, boolean delivered, LocalDate supplyDate, double price) {
 
         String order = "INSERT INTO Orders (orderID, supplierID, delivered, supplyDate, price) VALUES (?, ?, ?, ?, ?)";
-
+        OrderDTO orderDTO = new OrderDTO(orderID,supplierID,delivered,supplyDate,price);
         try (Connection conn = getConn().value;
              PreparedStatement pstmt = conn.prepareStatement(order);) {
 
@@ -31,13 +32,13 @@ public class OrderDAO extends DAO{
             pstmt.execute();
 
         } catch (SQLException e) {
-            return new Response(e.getMessage());
+            return new ResponseT(e.getMessage());
         }
-        return new Response();
+        return new ResponseT<>(orderDTO);
     }
 
 
-    public Response insert(Order order){
+    public ResponseT<OrderDTO> insert(Order order){
         return insert(order.getOrderID(), order.getSupplierID(), order.isDelivered(), order.getDate(), order.getPrice());
     }
 
@@ -47,7 +48,7 @@ public class OrderDAO extends DAO{
 
         try(Connection conn = getConn().value;
             Statement ordStmt = conn.createStatement();
-            ResultSet ordRs = ordStmt.executeQuery(orderSQL);){
+            ResultSet ordRs = ordStmt.executeQuery(orderSQL)){
 
             if(ordRs.isClosed())
                 return new ResponseT<>(null, String.format("orderID %s not found", orderID));
@@ -81,22 +82,22 @@ public class OrderDAO extends DAO{
     }
     //TODO: update functions ???????
 
-    public ResponseT<List<OrderDTO>> read() {
-        String SQL = "SELECT * FROM Supplier";
-        List<OrderDTO> orderList = new LinkedList<>();
+    public ResponseT<HashMap<Integer,OrderDTO>> read() {
+        String SQL = "SELECT * FROM Orders";
+        HashMap<Integer,OrderDTO> orderList = new HashMap<>();
         try {
             ResponseT<Connection> r = getConn();
             if(!r.ErrorOccured()) {
                 PreparedStatement ps = r.value.prepareStatement(SQL);
                 ResultSet rs = ps.executeQuery();
                 while(rs.next()) {
-                    orderList.add(new OrderDTO(rs.getInt("orderID"), rs.getInt("supplierID"),
+                    orderList.put(rs.getInt("orderID"),new OrderDTO(rs.getInt("orderID"), rs.getInt("supplierID"),
                             rs.getBoolean("delivered"), rs.getDate("supplyDate").toLocalDate(),
                             rs.getDouble("price")));
                 }
             }
         }catch (Exception e) {
-            return new ResponseT("cannot get faulty item");
+            return new ResponseT("cannot get orders");
         }
         return new ResponseT<>(orderList);
     }
@@ -104,4 +105,27 @@ public class OrderDAO extends DAO{
         return new ResponseT<>(new OrderDTO(order.getOrderID(), order.getSupplierID(), order.isDelivered(),
                 order.getDate(), price));
     }
+
+    public ResponseT<OrderDTO> create(Order order){
+        return new ResponseT<>(new OrderDTO(order.getOrderID(), order.getSupplierID(), order.isDelivered(),
+                order.getDate(), 0));
+    }
+
+    public void updatePrice(int orderID, double price){
+        String sql = String.format("UPDATE Orders SET price = ? WHERE orderID = ?");
+
+        try{
+            Connection conn = getConn().value;
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            pstmt.setDouble(1, price);
+            pstmt.setInt(2, orderID);
+
+            pstmt.execute();
+
+        }catch(SQLException e){
+            //return new Response(e.getMessage());
+        }
+    }
+
 }

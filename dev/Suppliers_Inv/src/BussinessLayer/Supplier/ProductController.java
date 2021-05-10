@@ -1,5 +1,6 @@
 package BussinessLayer.Supplier;
 
+import BussinessLayer.Response;
 import DataLayer.Mapper;
 
 import java.util.HashMap;
@@ -15,10 +16,9 @@ public class ProductController {
 
     private ProductController()
     {
-        discounts = new HashMap<>();
         mapper = Mapper.getInstance();
         supplierProd = mapper.loadProducts().value;
-        mapper.loadBillsOfQuantity();
+        discounts = mapper.loadBillsOfQuantity().value;
     }
 
     public static ProductController getInstance()
@@ -62,16 +62,14 @@ public class ProductController {
     }
 
     public void addProductToSupplier(int supplierID, int productID, String name, String category, double price) {
-//        if (!supplierProd.containsKey(supplierID)){
-//            throw new IllegalArgumentException("This Supplier Does Not Exists In The System");
-//        }
-        if (supplierProd.get(supplierID).containsKey(productID)){
-            throw new IllegalArgumentException("This Item Already Exists In The Supplier Products List");
-        }
-        else{
-            mapper.addProductToSupplier(productID, supplierID, name, category, price);
-            BussinessLayer.Supplier.Product prod = new BussinessLayer.Supplier.Product(productID,supplierID, name,category, price);
-            supplierProd.get(supplierID).put(productID,prod);
+        if (supplierProd.containsKey(supplierID)) {
+            if (supplierProd.get(supplierID).containsKey(productID)) {
+                throw new IllegalArgumentException("This Item Already Exists In The Supplier Products List");
+            } else {
+                Response res = mapper.addProductToSupplier(productID, supplierID, name, category, price);
+                BussinessLayer.Supplier.Product prod = new BussinessLayer.Supplier.Product(productID, supplierID, name, category, price);
+                supplierProd.get(supplierID).put(productID, prod);
+            }
         }
     }
 
@@ -162,6 +160,7 @@ public class ProductController {
     }
 
     public void removeProdFromBill(int supplierID, int pid) {
+        mapper.deleteProductFromBill(supplierID,pid);
         discounts.get(supplierID).getDiscountList().remove(pid);
         discounts.get(supplierID).getMinQuantityForDis().remove(pid);
     }

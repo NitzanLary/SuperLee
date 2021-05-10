@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Scanner;
 import static java.lang.System.exit;
+import static java.lang.System.in;
 
 /**
  * This is the presentation layer of the system.
@@ -375,7 +376,7 @@ public class IO_Supplier {
                         System.out.println('\n' + "The Quantity Of The Product Must Be Bigger Then: " + check);
                         return;
                     }
-                    res = facadeC.addProductToPeriodicOrder(orderID,productID,quantity);
+                    res = facadeC.addProductToExistPeriodicOrder(orderID,productID,quantity);
                     if (res.ErrorMessage != null) {
                         System.out.println(res.ErrorMessage);
                         return;
@@ -443,6 +444,8 @@ public class IO_Supplier {
 
     public void createNewPeriodicOrder(){
         try{
+            LocalDate date;
+            int interval;
             System.out.println('\n' + "Enter The First Date Of Which The Periodic Order Will Be: ");
             System.out.println('\n' + "Enter Number Of Year:");
             int year = Integer.parseInt(scanner.nextLine());
@@ -451,14 +454,14 @@ public class IO_Supplier {
             System.out.println('\n' + "Enter Number Of Day:");
             int day = Integer.parseInt(scanner.nextLine());
             if((year < 2021)| (12<month | month<0)| (day>31 | day<0)){
-                System.out.println("Date Is Not Vaild");
+                System.out.println("Date Is Not Valid");
                 return;
             }
-            LocalDate date = LocalDate.of(year,month,day);
+            date = LocalDate.of(year,month,day);
 
             System.out.println('\n' + "Enter The Number Of Days Between Each Periodic Order: ");
 
-            int interval = Integer.parseInt(scanner.nextLine());
+            interval = Integer.parseInt(scanner.nextLine());
 
             ResponseT<Integer> res = facadeC.createPeriodicOrder(interval,date);
             if (res.ErrorMessage != null) {
@@ -491,7 +494,7 @@ public class IO_Supplier {
                             System.out.println('\n' + "The Quantity Of The Product Must Be Bigger Then: " + check);
                             return;
                         }
-                        Response response = facadeC.addProductToPeriodicOrder(orderID,productID,quantity);
+                        Response response = facadeC.addProductToPeriodicOrder(orderID, date, interval,productID,quantity);
                         if (response.ErrorMessage != null) {
                             System.out.println(response.ErrorMessage);
                             return;
@@ -513,11 +516,13 @@ public class IO_Supplier {
                         finishOrder = true;
                         if(facadeC.isEmptyPOrder(orderID)){
                             System.out.println('\n' + "No Products In This Order, This Order Will Be Deleted");
+                            response = facadeC.removeOrder(orderID);
                             response = facadeC.removePeriodicOrder(orderID);
                             if (response.ErrorMessage != null) {
                                 System.out.println(response.ErrorMessage);
                                 return;
                             }
+                            return;
                         }
                         System.out.println("Order Finished Successfully");
                         return;
@@ -556,7 +561,7 @@ public class IO_Supplier {
             // add each product to the order
             HashMap<Integer, Integer> supProds = ordersToMake.get(supplier);
             for(Integer itemID : supProds.keySet()){
-                Response r = facadeC.addProductToOrder(orderID,itemID,supProds.get(itemID));
+                Response r = facadeC.addProductToOrder(supplier,orderID,itemID,supProds.get(itemID));
                 if (r.ErrorMessage != null) {
                     System.out.println(r.ErrorMessage);
                     return pOrderID;
@@ -983,7 +988,7 @@ public class IO_Supplier {
                         }
                         System.out.println('\n' + "Enter Product Quantity:");
                         int quantity = Integer.parseInt(scanner.nextLine());
-                        response = facadeC.addProductToOrder(orderID,productID,quantity);
+                        response = facadeC.addProductToOrder(SupplierID,orderID,productID,quantity);
                         if (response.ErrorMessage != null) {
                             System.out.println(response.ErrorMessage);
                             return;
@@ -1016,6 +1021,12 @@ public class IO_Supplier {
                         System.out.println('\n' + "Enter New Product Quantity:");
                         quantity = Integer.parseInt(scanner.nextLine());
                         response = facadeC.updateProdQuantity(orderID,productID,quantity);
+                        if (response.ErrorMessage != null) {
+                            System.out.println(response.ErrorMessage);
+                            return;
+                        }
+                        //TODO??????
+                        response = facadeC.addProductToOrder(SupplierID, orderID,productID,quantity);
                         if (response.ErrorMessage != null) {
                             System.out.println(response.ErrorMessage);
                             return;
