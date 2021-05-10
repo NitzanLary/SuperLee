@@ -77,9 +77,8 @@ public class StockController {
         Category c = getCategory(id);
         if (c == null)
             throw new RuntimeException("Cannot find Item id: "+id);
-        mapper.deleteItem(getItem(id));
-        c.removeItem(id);
-
+        Item toRemove = c.removeItem(id);
+        mapper.deleteItem(toRemove, c);
     }
 
     public void removeFromShelf(int id, int amount) {

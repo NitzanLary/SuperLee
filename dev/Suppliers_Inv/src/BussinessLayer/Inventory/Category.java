@@ -119,8 +119,11 @@ public class Category {
     }
 
     public Category getCategory(int id) {
-        if (getItem(id) != null)
-            return this;
+        for(Item i : items) {
+            if(i.getId() == id) {
+                return this;
+            }
+        }
         for (Category c : subCategories) {
             if (c.getCategory(id) != null)
                 return c;
@@ -155,11 +158,15 @@ public class Category {
         return toString("");
     }
 
-    public boolean removeItem(int id) {
+    public Item removeItem(int id) {
         Item i = getItem(id);
+        System.out.println(i.toString(""));
         if (i == null)
-            return false;
-        return items.remove(i);
+            return null;
+        if(!items.remove(i)) {
+            return i;
+        };
+        return i;
     }
 
     public boolean removeFromShelf(int id, int amount) {

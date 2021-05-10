@@ -119,10 +119,7 @@ public class CategoryDAO extends DAO{
                 PreparedStatement ps = r.value.prepareStatement(SQL);
                 ps.setString(1, toDelete.getCatName());
                 ps.setInt(2, toDelete.getItemID());
-
-                if(!ps.execute()) {
-                    return new Response("cannot delete category-item from db");
-                }
+                ps.execute();
             }
         }catch (Exception e) {
             return new Response("cannot delete category-item from db");

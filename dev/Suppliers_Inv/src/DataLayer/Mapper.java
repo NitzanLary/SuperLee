@@ -77,8 +77,8 @@ public class Mapper {
         return new ResponseT<>(itemRes.value);
     }
 
-    public Response deleteItem(Item item) {
-        if(itemDAO.delete(item).ErrorOccured()){
+    public Response deleteItem(Item item, Category cat) {
+        if(itemDAO.delete(item).ErrorOccured() || categoryDAO.deleteCategoryItems(cat, item.getId()).ErrorOccured()){
             return new Response("error deleting item");
         }
         return new Response();

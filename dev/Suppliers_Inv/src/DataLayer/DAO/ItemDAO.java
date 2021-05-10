@@ -90,9 +90,7 @@ public class ItemDAO extends DAO {
             if(!r.ErrorOccured()) {
                 PreparedStatement ps = r.value.prepareStatement(SQL);
                 ps.setInt(1, toDelete.getId());
-                if(!ps.execute()) {
-                    return new Response("cannot delete item from db");
-                }
+                ps.execute();
             }
         }catch (Exception e) {
             return new Response("cannot delete item from db");
