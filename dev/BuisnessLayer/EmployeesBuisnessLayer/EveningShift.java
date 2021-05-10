@@ -13,7 +13,7 @@ public class EveningShift extends Shift {
     }
 
     public EveningShift(ShiftDTO dto) {
-        super(dto.getDate(), dto.getDao());
+        super(dto);
     }
 
     @Override

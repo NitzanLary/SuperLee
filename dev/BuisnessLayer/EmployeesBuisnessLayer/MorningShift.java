@@ -13,7 +13,7 @@ public class MorningShift extends Shift{
     }
 
     public MorningShift(ShiftDTO dto) {
-        super(dto.getDate(), dto.getDao());
+        super(dto);
     }
 
     @Override
