@@ -555,6 +555,8 @@ public class FacadeSupplier {
     public ResponseT<StringBuilder> ordersByLack(HashMap<Integer, Integer> productAmounts) {
         try {
             HashMap<Integer, HashMap<Integer, Integer>> orders = findCheapestSupplier((productAmounts));
+            if (orders.isEmpty())
+                return new ResponseT<>(new StringBuilder());
             StringBuilder sb = new StringBuilder();
             sb.append("Order By Lack Created:\n");
             for (Integer supplierId : orders.keySet()) {
@@ -564,7 +566,7 @@ public class FacadeSupplier {
                 for (Integer productId : orders.get(supplierId).keySet()) {
                     int amount = productsOfSupplier.get(productId);
                     addProductToOrder(supplierId, orderId, productId, amount);
-                    sb.append("\t\tProduct: "+productId+"\tAmount: "+amount);
+                    sb.append("\t\tProduct: "+productId+"\tAmount: "+amount+"\n");
                 }
                 finalPriceForOrder(orderId, supplierId);
             }
