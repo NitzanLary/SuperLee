@@ -101,6 +101,7 @@ public class OrderDAO extends DAO{
         }
         return new ResponseT<>(orderList);
     }
+
     public ResponseT<OrderDTO> create(Order order, double price){
         return new ResponseT<>(new OrderDTO(order.getOrderID(), order.getSupplierID(), order.isDelivered(),
                 order.getDate(), price));
@@ -127,5 +128,21 @@ public class OrderDAO extends DAO{
             //return new Response(e.getMessage());
         }
     }
-
+    public ResponseT<Integer> getNextOrderID() {
+        String SQL = "SELECT MAX(orderID) FROM Orders";
+        ResponseT<Integer> orderID = new ResponseT<>(0);
+        try {
+            ResponseT<Connection> r = getConn();
+            if(!r.ErrorOccured()) {
+                PreparedStatement ps = r.value.prepareStatement(SQL);
+                ResultSet rs = ps.executeQuery();
+                if(rs.next()) {
+                    orderID = new ResponseT<>(rs.getInt("MAX(orderID)"));
+                }
+            }
+        }catch (Exception e) {
+            return new ResponseT("cannot get orders");
+        }
+        return orderID;
+    }
 }

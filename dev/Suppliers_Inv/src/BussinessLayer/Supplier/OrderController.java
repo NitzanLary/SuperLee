@@ -32,7 +32,7 @@ public class OrderController {
         periodicOrder = mapper.loadPeriodic().value;
         if (periodicOrder == null)
             periodicOrder = new HashMap<>();
-        nextOrderID = orders.size()+1;
+        nextOrderID = mapper.getNextOrderID().value+1;
         nextPeriodOrderID = periodicOrder.size()+1;
     }
 

@@ -451,4 +451,7 @@ public class Mapper {
     }
 
 
+    public ResponseT<Integer> getNextOrderID(){
+        return orderDAO.getNextOrderID();
+    }
 }
