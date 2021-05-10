@@ -36,25 +36,20 @@ public class IO_Supplier {
     }
 
     public void init() {
-        System.out.println( "1. Main Menu " + '\n' + "2. Load Data example " + '\n' + "3. Exit From System ");
+        System.out.println( "1. Main Menu " + '\n' + "2. Exit From System ");
         try{
             int caseNumber = Integer.parseInt(scanner.nextLine());
             switch (caseNumber) {
                 case 2:
-                    baseScenario();
-                    ioSupplier.mainMenu();
-                    break;
+                    System.out.println('\n'+ "You Are Log Out From The System, Have A Nice Day.\n");
+                    exit(0);
 
                 case 1:
                     ioSupplier.mainMenu();
                     break;
 
-                case 3:
-                    System.out.println('\n'+ "You Are Log Out From The System, Have A Nice Day.\n");
-                    exit(0);
-
                 default:
-                    System.out.println("Please Choose Only 1-3" + '\n');
+                    System.out.println("Please Choose Only 1-2" + '\n');
                     init();
             }
         }catch(Exception e){
@@ -62,30 +57,6 @@ public class IO_Supplier {
             init();
         }
 
-
-    }
-
-    public void baseScenario() {
-
-        facadeC.createSupCard("Sahar", 001, "Raanana", "kalifa@gmail.com" , 45802000,
-                "credit card","shimon 052-6093400" , "Sunday", false);
-
-        facadeC.addProductToSupplier(001,800,"Bamba", "Snacks", 3.5);
-        facadeC.addProductToSupplier(001,801,"Bisly", "Snacks", 4.5);
-        facadeC.addProductToSupplier(001,802,"Apropo", "Snacks", 3);
-
-        facadeC.createSupCard("Batya", 002, "Tel-Aviv", "batya@gmail.com" , 45650208,
-                "Cash","Shiri 052-6763400" , "Friday", false);
-
-        facadeC.addProductToSupplier(002,300,"Coca-Cola", "Drink", 4);
-        facadeC.addProductToSupplier(002,301,"Sprite", "Drink", 4);
-        facadeC.addProductToSupplier(002,302,"Fusetea", "Drink", 3.5);
-
-        facadeC.createSupCard("Xavi", 3, "Peru", "xavi@gmail.com" , 7004000,
-                "All Method","sahar 050-98223400" , "Monday", true);
-
-        facadeC.addProductToSupplier(3,700,"Water", "Drink", 1.5);
-        facadeC.addProductToSupplier(3,701,"Pasta", "Pasta", 5);
 
     }
 
