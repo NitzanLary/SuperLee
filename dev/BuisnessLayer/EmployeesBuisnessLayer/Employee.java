@@ -3,6 +3,10 @@ package BuisnessLayer.EmployeesBuisnessLayer;
 import DataAccessLayer.EmployeesDataAccessLayer.DAOs.EmployeeDAO;
 import DataAccessLayer.EmployeesDataAccessLayer.DTOs.EmployeeDTO;
 import DataAccessLayer.EmployeesDataAccessLayer.DTOs.RoleDTO;
+import serviceObjects.Response;
+import serviceObjects.ResponseT;
+import serviceObjects.ResponseUpdate;
+import serviceObjects.UpdateFunction;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -122,24 +126,27 @@ public class Employee {
     }
 
     public Response setSalary(int salary) {
-        this.salary = salary;
-        if (isPersisted)
-            this.dto.setSalary(salary);
-        return new Response();
+        return set(() -> dto.setSalary(salary), () -> this.salary = salary);
+//        this.salary = salary;
+//        if (isPersisted)
+//            this.dto.setSalary(salary);
+//        return new Response();
     }
 
     public Response setBankAccount(String bankAccount) {
-        this.bankAccount = bankAccount;
-        if (isPersisted)
-            this.dto.setBankAccount(bankAccount);
-        return new Response();
+        return set(() -> dto.setBankAccount(bankAccount), () -> this.bankAccount = bankAccount);
+//        this.bankAccount = bankAccount;
+//        if (isPersisted)
+//            this.dto.setBankAccount(bankAccount);
+//        return new Response();
     }
 
     public Response AddRole(Role role){
-        roles.add(role);
-        if (isPersisted)
-            this.dto.addRole(role.toDTO());
-        return new Response();
+        return set(() -> dto.addRole(role.toDTO()), () -> roles.add(role));
+//        roles.add(role);
+//        if (isPersisted)
+//            this.dto.addRole(role.toDTO());
+//        return new Response();
     }
 
     public Response setTerms(TermsOfEmployee terms) {
@@ -151,6 +158,25 @@ public class Employee {
         Response r3 = this.dto.setDaysOff(terms.daysOff);
         if(r1.isErrorOccured() || r2.isErrorOccured() || r3.isErrorOccured())
             return new Response("Some error occurred, we can't tell exactly what");
+        return new Response();
+    }
+
+    public Response setSickDays(int updatedSickDays) {
+        return set(() -> dto.setSickDays(updatedSickDays), () -> terms.setSickDays(updatedSickDays));
+    }
+
+    public Response setAdvancedStudyFund(int newStudyFund) {
+        return set(() -> dto.setAdvancedStudyFund(newStudyFund), () -> terms.setAdvancedStudyFund(newStudyFund));
+    }
+
+    public Response setDaysOff(int newDaysOff) {
+        return set(() -> dto.setDaysOff(newDaysOff), () -> terms.setDaysOff(newDaysOff));
+    }
+
+    private Response set(ResponseUpdate updateDTO, UpdateFunction updateEmp){
+        updateEmp.update();
+        if(isPersisted)
+            return updateDTO.update();
         return new Response();
     }
 
@@ -207,4 +233,7 @@ public class Employee {
         }
         return new ResponseT<>(null); //That should never happened.
     }
+
+
+
 }

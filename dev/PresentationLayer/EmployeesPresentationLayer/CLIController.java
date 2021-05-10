@@ -1,6 +1,8 @@
 package PresentationLayer.EmployeesPresentationLayer;
 
 import BuisnessLayer.EmployeesBuisnessLayer.*;
+import serviceObjects.Response;
+import serviceObjects.ResponseT;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -153,7 +155,7 @@ public class CLIController {
 
 
 
-        if (licence.equals("-1")){
+        if (licence.equals(-1)){
             Response r = facade.addEmployee(clientController.userID, EmpID, name, bankAccount, salary, sickDays, studyFund,
                     daysOff, roleName, null, dateOfHire);
             if(r.isErrorOccured())

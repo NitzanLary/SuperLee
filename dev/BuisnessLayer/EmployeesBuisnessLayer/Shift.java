@@ -3,6 +3,8 @@ import DataAccessLayer.EmployeesDataAccessLayer.DAOs.ShiftDAO;
 import DataAccessLayer.EmployeesDataAccessLayer.DTOs.EmployeeDTO;
 import DataAccessLayer.EmployeesDataAccessLayer.DTOs.ShiftDTO;
 import DataAccessLayer.EmployeesDataAccessLayer.Objects.ShiftDate;
+import serviceObjects.Response;
+import serviceObjects.ResponseT;
 
 import java.time.LocalDate;
 
@@ -23,6 +25,8 @@ public abstract class Shift {
 
     Shift(LocalDate _date, ShiftDAO _dao) {
         closed = false; // **added default to be false by Yanay.
+        setStart();
+        setEnd();
         date = _date;
         constrains = new HashMap<Employee, Integer>();
         assignedEmployees = new HashMap<String, Employee>();
@@ -60,25 +64,18 @@ public abstract class Shift {
         return date;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
     public LocalTime getStart() {
         return start;
     }
 
-    public void setStart(LocalTime start) {
-        this.start = start;
-    }
+    public abstract void setStart();
 
     public LocalTime getEnd() {
         return end;
     }
 
-    public void setEnd(LocalTime end) {
-        this.end = end;
-    }
+    public abstract void setEnd();
+
 
     public boolean isClosed() {
         return closed;

@@ -18,10 +18,6 @@ public class DeliveryController {
         deliveries = new HashMap<>();
         dataController = DeliveryDAO.getInstance();
         mapper = Mapper.getInstance();
-        if (mapper.getLastTaskID() != null){
-            nextID = mapper.getLastDeliveryID();
-            getNewDeliveryID();
-        }
     }
 
     public HashMap<String, Delivery> getDeliveries() {

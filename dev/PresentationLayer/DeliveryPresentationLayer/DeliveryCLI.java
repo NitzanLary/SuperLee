@@ -1,9 +1,8 @@
 package PresentationLayer.DeliveryPresentationLayer;
 
 import BuisnessLayer.DeliveryBusinessLayer.FacadeController;
-import BuisnessLayer.EmployeesBuisnessLayer.ResponseT;
+import serviceObjects.ResponseT;
 import DataAccessLayer.DeliveryDataAccessLayer.DTO.*;
-import PresentationLayer.EmployeesPresentationLayer.EmployeeCLI;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -44,7 +43,7 @@ public class DeliveryCLI {
             }
             isFirstIteration = false;
             System.out.println("chose action:\n1 add new delivery\n2 update existing delivery\n3 create new appending task" +
-                    "\n4 add Truck to the sys\n5 add Area to the sys\n6 add location to the sys\n7 send delivery\n8 display documentation");
+                    "\n4 add Truck to the sys\n5 add Driver to the sys\n6 add Area to the sys\n7 add location to the sys\n8 send delivery\n9 display documentation");
             s = in.nextLine().strip();
             chooseAction(s); // Todo: its tachles nees to be after the while, to the case that press immediate exit
         }
@@ -368,8 +367,7 @@ public class DeliveryCLI {
                     System.out.println(res.getErrorMessage());
                     f_legal = false;
                 }
-                else
-                    f_legal = res.getValue();
+                f_legal = res.getValue();
                 if (!f_legal)
                     System.out.println("there isn't any store keeper assigned on given date and time: " + date + " " + timeOfDeparture);
             }
@@ -603,7 +601,6 @@ public class DeliveryCLI {
                 System.out.println("there are no available drivers assigned to shift on the given \ntime and date" +
                         " that can drive the chosen truck\npress <Enter> to exit the delivery creator.");
                 inp = "exit";
-                in.nextLine();
                 continue;
             }
             System.out.println("choose a driver for the delivery: ");

@@ -1,14 +1,12 @@
 package BuisnessLayer.DeliveryBusinessLayer;
 
 import DataAccessLayer.DeliveryDataAccessLayer.DTO.*;
-import BuisnessLayer.EmployeesBuisnessLayer.ResponseT;
+import serviceObjects.ResponseT;
 import BuisnessLayer.EmployeesBuisnessLayer.ShiftController;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.format.ResolverStyle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -205,8 +203,6 @@ public class FacadeController {
         LocalDate localDate = parseToLocalDate(date);
         LocalTime localTime = parseToLocalTime(timeOfDeparture);
         ResponseT<List <BuisnessLayer.EmployeesBuisnessLayer.Employee>> drivers = ShiftController.getInstance().getAllAssignedDrivers(localDate, localTime);
-        if (drivers.getValue() == null)
-            return ret;
         for (BuisnessLayer.EmployeesBuisnessLayer.Employee driver : drivers.getValue()){
             if (driver.getLicenceType().getValue() >= ride.getTruckWeight())
                 ret.add(new DriverDTO(driver.getLicenceType().getValue(),driver.getName().getValue()));

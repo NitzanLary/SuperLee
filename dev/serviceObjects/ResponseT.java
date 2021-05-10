@@ -1,4 +1,4 @@
-package BuisnessLayer.EmployeesBuisnessLayer;
+package serviceObjects;
 
 public class ResponseT<T> extends Response{
     private final T value;

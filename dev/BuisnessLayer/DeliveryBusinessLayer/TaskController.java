@@ -16,12 +16,8 @@ public class TaskController {
     private Mapper mapper = Mapper.getInstance();
 
 
-    public TaskController() {
+    public TaskController(){
         controller = new HashMap<String, Task>();
-        if (mapper.getLastTaskID() != null){
-            nextID = mapper.getLastTaskID();
-            getNewTaskID();
-        }
     }
 
     public String addTask(HashMap<String, Integer> listOfProduct, String loadingOrUnloading, Location destination){

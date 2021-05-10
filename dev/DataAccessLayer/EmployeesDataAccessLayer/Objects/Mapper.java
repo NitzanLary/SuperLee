@@ -1,6 +1,6 @@
 package DataAccessLayer.EmployeesDataAccessLayer.Objects;
 
-import BuisnessLayer.EmployeesBuisnessLayer.ResponseT;
+import serviceObjects.ResponseT;
 import DataAccessLayer.EmployeesDataAccessLayer.DAOs.EmployeeDAO;
 import DataAccessLayer.EmployeesDataAccessLayer.DAOs.ShiftDAO;
 import DataAccessLayer.EmployeesDataAccessLayer.DTOs.EmployeeDTO;

@@ -3,6 +3,8 @@ package BuisnessLayer.EmployeesBuisnessLayer;
 import DataAccessLayer.EmployeesDataAccessLayer.DTOs.ShiftDTO;
 import DataAccessLayer.EmployeesDataAccessLayer.Objects.Mapper;
 import DataAccessLayer.EmployeesDataAccessLayer.Objects.ShiftDate;
+import serviceObjects.Response;
+import serviceObjects.ResponseT;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -80,7 +82,7 @@ public class ShiftController {
     private Shift fromDTO(ShiftDTO dto) {
         if(dto.getStart().equals(LocalTime.of(6,0)))
             return new MorningShift(dto);
-        return new EvningShift(dto);
+        return new EveningShift(dto);
     }
 
     public ResponseT<Shift> findShift(LocalDate date, char type) {
