@@ -55,6 +55,8 @@ public class Employee {
             roles.add(new Role(role));
         terms = new TermsOfEmployee(other.getSickDays(), other.getAdvancedStudyFund(), other.getDaysOff());
         dateOfHire = other.getDateOfHire();
+        dto = other;
+        isPersisted = true;
     }
 
 

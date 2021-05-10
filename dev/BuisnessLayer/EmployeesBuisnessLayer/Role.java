@@ -33,7 +33,7 @@ public class Role{
     }
 
     public RoleDTO toDTO(){
-        return new RoleDTO(name);
+        return new RoleDTO(name, licence);
     }
 
     public Integer getLicence() {

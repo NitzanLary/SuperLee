@@ -85,7 +85,9 @@ public class EmployeeDAO extends DAO{
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, ID);
         pstmt.setString(2, role);
-        pstmt.setInt(3, driverLicence);
+        if (driverLicence != null)
+            pstmt.setString(3, String.valueOf(driverLicence));
+        else pstmt.setString(3, null);
         pstmt.executeUpdate();
     }
 
