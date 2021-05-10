@@ -98,16 +98,16 @@ public class ShiftController {
         return new ResponseT<>(shift.getValue().clone());
     }
 
-    public ResponseT<List<Shift>> getShiftsByDate(LocalDate date){
-        List<Shift> shifts = new ArrayList<>();
-        for (WeeklyShifts ws: weeklyShifts)
-            for (Shift s: ws.getShifts())
-                if (date.compareTo(s.getDate()) == 0)
-                    shifts.add(s);
-        if (shifts.isEmpty())
-            return new ResponseT<>(null, "No shifts on this date");
-        return new ResponseT<>(shifts);
-    }
+//    public ResponseT<List<Shift>> getShiftsByDate(LocalDate date){
+//        List<Shift> shifts = new ArrayList<>();
+//        for (WeeklyShifts ws: weeklyShifts)
+//            for (Shift s: ws.getShifts())
+//                if (date.compareTo(s.getDate()) == 0)
+//                    shifts.add(s);
+//        if (shifts.isEmpty())
+//            return new ResponseT<>(null, "No shifts on this date");
+//        return new ResponseT<>(shifts);
+//    }
 
     public Response putConstrain(Employee employee, LocalDate date, LocalTime start, LocalTime end, int pref/*0-want 1-can 2-cant*/) {
         ResponseT<Shift> rS = findShift(date, start, end);
@@ -140,15 +140,24 @@ public class ShiftController {
     public Response assignToShift(Employee employee, LocalDate date, LocalTime start, LocalTime end, String role){
         if(!employee.haveRoleCheck(role))
             return new Response("The role does not match with the employee's roles");
-        ResponseT<List<Shift>> rShifts = getShiftsByDate(date);
-        if(rShifts.isErrorOccured())
-            return rShifts;
-        for(Shift s: rShifts.getValue())
-            if (s.isAssigned(employee))
-                return new ResponseT<>(null, "The employee already assigned to a shift on this day");
+//        ResponseT<List<Shift>> rShifts = getShiftsByDate(date);
+//        if(rShifts.isErrorOccured())
+//            return rShifts;
+//        for(Shift s: rShifts.getValue())
+//            if (s.isAssigned(employee))
+//                return new ResponseT<>(null, "The employee already assigned to a shift on this day");
+
         ResponseT<Shift> rS = findShift(date, start, end);
         if(rS.isErrorOccured())
             return rS;
+        ResponseT<Shift> rS2;
+        if(rS.getValue().getStart().equals(LocalTime.of(6,0))) // is morning shift
+            rS2 = findShift(date, 'E');
+        else rS2 = findShift(date, 'M');
+        if(rS2.isErrorOccured())
+            return rS2;
+        if(rS2.getValue().isAssigned(employee) || rS.getValue().isAssigned(employee))
+            return new ResponseT<>(null, "The employee already assigned to a shift on this day");
         return rS.getValue().AssignEmployee(employee, role);
     }
 
