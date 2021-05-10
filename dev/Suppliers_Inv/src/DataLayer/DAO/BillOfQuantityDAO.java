@@ -16,9 +16,9 @@ public class BillOfQuantityDAO extends DAO {
 
         String billOfQuantity = "INSERT INTO BillOfQuantity (supplierID, productID, minQuantity, precentDiscount) VALUES (?, ?, ?, ?)";
 
-        try (Connection conn = getConn().value;
-             PreparedStatement pstmt = conn.prepareStatement(billOfQuantity);) {
-
+        try  {
+            Connection conn = getConn().value;
+            PreparedStatement pstmt = conn.prepareStatement(billOfQuantity);
             // inserting to employee table
             pstmt.setInt(1, supplierID);
             pstmt.setInt(2, productID);
@@ -42,10 +42,10 @@ public class BillOfQuantityDAO extends DAO {
     public ResponseT<BillOfQuantityDTO> get(Integer supplierID){
         String billSQL = String.format("SELECT* FROM BillOfQuantity WHERE supplierID = %s", supplierID);
 
-        try(Connection conn = getConn().value;
+        try{
+            Connection conn = getConn().value; //TODO
             Statement billStmt = conn.createStatement();
-            ResultSet billRs = billStmt.executeQuery(billSQL);){
-
+            ResultSet billRs = billStmt.executeQuery(billSQL);//
             if(billRs.isClosed())
                 return new ResponseT<>(null, String.format("supplierID %s not found", supplierID));
             BillOfQuantityDTO bill = new BillOfQuantityDTO(billRs.getInt("supplierID"),

@@ -789,12 +789,12 @@ public class IO_Supplier {
 
                 minQuantityForDis.put(ProdID, minDis);
                 discountList.put(ProdID, percentage);
-
+                facadeC.addBilltoDB(SupplierID, ProdID, minDis, percentage);
                 System.out.println("Do You Want To Add Another Product? " + '\n' + "1. Yes" + '\n' + "2. No");
                 int caseNumber = Integer.parseInt(scanner.nextLine());
                 switch (caseNumber) {
                     case 1:
-                        break;
+                        continue;
 
                     case 2:
                         exit = true;

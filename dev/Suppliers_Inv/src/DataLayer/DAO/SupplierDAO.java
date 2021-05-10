@@ -49,9 +49,9 @@ public class SupplierDAO extends DAO {
     public Response update(String col, int ID, String newVal){
         String sql = String.format("UPDATE Supplier SET %s = ? WHERE ID = ?", col);
 
-        try(Connection conn = getConn().value;
-            PreparedStatement pstmt = conn.prepareStatement(sql)){
-
+        try{
+            Connection conn = getConn().value;
+            PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, newVal);
             pstmt.setInt(2, ID);
 
@@ -68,8 +68,9 @@ public class SupplierDAO extends DAO {
     public Response update(String col, int ID, int newVal){
         String sql = String.format("UPDATE Supplier SET %s = ? WHERE ID = ?", col);
 
-        try(Connection conn = getConn().value;
-            PreparedStatement pstmt = conn.prepareStatement(sql)){
+        try{
+            Connection conn = getConn().value;
+            PreparedStatement pstmt = conn.prepareStatement(sql);
 
             pstmt.setInt(1, newVal);
             pstmt.setInt(2, ID);
@@ -87,9 +88,9 @@ public class SupplierDAO extends DAO {
     public Response update(String col, int ID, boolean newVal){
         String sql = String.format("UPDATE Supplier SET %s = ? WHERE ID = ?", col);
 
-        try(Connection conn = getConn().value;
-            PreparedStatement pstmt = conn.prepareStatement(sql)){
-
+        try{
+            Connection conn = getConn().value;
+            PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setBoolean(1, newVal);
             pstmt.setInt(2, ID);
 
