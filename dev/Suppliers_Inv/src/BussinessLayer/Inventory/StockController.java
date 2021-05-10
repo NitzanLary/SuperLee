@@ -6,6 +6,7 @@ import DataLayer.DAO.DiscountDAO;
 import DataLayer.Mapper;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -161,12 +162,15 @@ public class StockController {
         mapper.addCostDiscount(d, id);
     }
 
-    public String stkReport() {
+    public ResponseT<HashMap<Integer, Integer>> stkReport() {
         StringBuilder sb = new StringBuilder("\n");
+        HashMap<Integer, Integer> lackProducts = new HashMap<>();
         for (Category c : categories) {
             sb.append(c.toString());
+            lackProducts.putAll(c.getLackItems());
         }
-        return sb.toString();
+
+        return new ResponseT<>(lackProducts, sb.toString());
     }
 
     public String showAllItemsInSuper() {
@@ -177,24 +181,25 @@ public class StockController {
         return sb.toString();
     }
 
-    public String catReport(List<String> catNames) {
+    public ResponseT<HashMap<Integer, Integer>> catReport(List<String> catNames) {
         StringBuilder sb = new StringBuilder("\nReport of categories: "+catNames.toString()+"\n");
+        HashMap<Integer, Integer> lackProducts = new HashMap<>();
         for (String cat : catNames) {
             Category c = getCategory(cat);
             if (c == null)
                 sb.append("Could not found category: "+cat+"\n");
-            else
-                sb.append(c.toString()+"\n");
+            else {
+                lackProducts.putAll(c.getLackItems());
+                sb.append(c.toString() + "\n");
+            }
         }
-        return sb.toString();
+        return new ResponseT<>(lackProducts ,sb.toString());
     }
 
     public int QuantityBiggerThenInvMin(int quantity, int productID) {
         Item item = getItem(productID);
         if(item != null){
-            if((item.getShelfQuantity() + item.getStorageQuantity() + quantity) >= item.getMinAlert()*2)
-                return quantity;
-            return (item.getMinAlert()*2)-(item.getShelfQuantity() + item.getStorageQuantity());
+            return item.checkMinAmount(quantity);
         }
         return -1;
     }

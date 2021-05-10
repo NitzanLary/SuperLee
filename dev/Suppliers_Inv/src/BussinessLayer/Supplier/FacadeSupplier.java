@@ -551,4 +551,26 @@ public class FacadeSupplier {
         }
 
     }
+
+    public ResponseT<StringBuilder> ordersByLack(HashMap<Integer, Integer> productAmounts) {
+        try {
+            HashMap<Integer, HashMap<Integer, Integer>> orders = findCheapestSupplier((productAmounts));
+            StringBuilder sb = new StringBuilder();
+            sb.append("Order By Lack Created:\n");
+            for (Integer supplierId : orders.keySet()) {
+                HashMap<Integer, Integer> productsOfSupplier = orders.get(supplierId);
+                int orderId = createOrder(supplierId).value;
+                sb.append("\tSupplier id: "+supplierId+"\n");
+                for (Integer productId : orders.get(supplierId).keySet()) {
+                    int amount = productsOfSupplier.get(productId);
+                    addProductToOrder(supplierId, orderId, productId, amount);
+                    sb.append("\t\tProduct: "+productId+"\tAmount: "+amount);
+                }
+                finalPriceForOrder(orderId, supplierId);
+            }
+            return new ResponseT<>(sb);
+        } catch (Exception e) {
+            return new ResponseT<>(e.getMessage());
+        }
+    }
 }

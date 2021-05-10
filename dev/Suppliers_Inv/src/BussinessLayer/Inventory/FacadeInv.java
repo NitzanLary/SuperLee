@@ -1,8 +1,10 @@
 package BussinessLayer.Inventory;
 
 import BussinessLayer.FacadeController;
+import BussinessLayer.ResponseT;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -95,7 +97,7 @@ public class FacadeInv {
     }
 
     //returns a report of all items in stock
-    public String stkReport() {
+    public ResponseT<HashMap<Integer, Integer>> stkReport() {
         return stockCtrl.stkReport();
     }
 
@@ -103,7 +105,7 @@ public class FacadeInv {
         return stockCtrl.showAllItemsInSuper();
     }
 
-    public String catReport(List<String> catNames) {
+    public ResponseT<HashMap<Integer, Integer>> catReport(List<String> catNames) {
         return stockCtrl.catReport(catNames);
     }
 

@@ -149,8 +149,18 @@ public class Item {
         return currPrice;
     }
 
+    public int checkMinAmount(int amount) { // check if amount+quantity >= 2*minAlert
+        if((getShelfQuantity() + getStorageQuantity() + amount) >= getMinAlert()*2)
+            return amount;
+        return (getMinAlert()*2)-(getShelfQuantity() + getStorageQuantity());
+    }
+
     public Double getCost() {
         return cost;
+    }
+
+    public boolean belowMin() {
+        return shelfQuantity+storageQuantity <= minAlert;
     }
 
     public String toString(String tabs) {
@@ -161,7 +171,7 @@ public class Item {
                 "\n" + tabs + "Quantity: " + (shelfQuantity + storageQuantity) +
                 "\n" + tabs + "Shelf Quantity: " + shelfQuantity +
                 "\n" + tabs + "Storage Quantity: " + storageQuantity + "\n";
-        if (shelfQuantity+storageQuantity <= minAlert)
+        if (belowMin())
             s += tabs + "Item is below the minimum that was set by: " + (minAlert-(shelfQuantity+storageQuantity)) + "\n";
         return s;
     }

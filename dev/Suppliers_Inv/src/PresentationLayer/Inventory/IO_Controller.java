@@ -1,13 +1,17 @@
 package PresentationLayer.Inventory;
 
+import BussinessLayer.FacadeController;
 import BussinessLayer.Inventory.FacadeInv;
+import BussinessLayer.ResponseT;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 
 public class IO_Controller {
     private FacadeInv invCtrl;
     private INV_IO io;
+    private FacadeController facadeController = FacadeController.getInstance();
 
     public IO_Controller() {
         invCtrl = FacadeInv.getInstance();
@@ -28,10 +32,12 @@ public class IO_Controller {
         //go to edit menu
         if (action == 6) { io.editMenu(); }
         //inventory report
-        if (action == 7) { io.print(invCtrl.stkReport()); }
+        if (action == 7) { invReport(); }
         //categories report
         if(action == 8) { catReport(); }
     }
+
+
 
     public void editMenu(int action) {
         //add discount to item
@@ -236,9 +242,30 @@ public class IO_Controller {
     public void catReport() {
         try {
             List<String> cats = io.getList("Enter the names of the categories to view");
-            io.print(invCtrl.catReport(cats));
+            ResponseT<HashMap<Integer, Integer>> reportResponse = invCtrl.catReport(cats);
+            ResponseT<StringBuilder> orderResponse = facadeController.facadeSupplier.ordersByLack(reportResponse.value);
+            io.print(reportResponse.ErrorMessage);
+            if (!orderResponse.ErrorOccured())
+                io.print(orderResponse.value.toString());
+            else
+                io.print(orderResponse.ErrorMessage);
         } catch (RuntimeException err) {
             io.print(err.getMessage());
         }
+    }
+
+    private void invReport() {
+        try {
+            ResponseT<HashMap<Integer, Integer>> reportResponse = invCtrl.stkReport();
+            ResponseT<StringBuilder> orderResponse = facadeController.facadeSupplier.ordersByLack(reportResponse.value);
+            io.print(reportResponse.ErrorMessage);
+            if (!orderResponse.ErrorOccured())
+                io.print(orderResponse.value.toString());
+            else
+                io.print(orderResponse.ErrorMessage);
+        } catch (RuntimeException e) {
+            io.print(e.getMessage());
+        }
+
     }
 }

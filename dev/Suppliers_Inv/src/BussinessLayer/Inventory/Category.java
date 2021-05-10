@@ -4,8 +4,10 @@ import BussinessLayer.Response;
 import BussinessLayer.ResponseT;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class Category {
     private String name;
@@ -182,4 +184,15 @@ public class Category {
             return false;
         return i.removeFromStorage(amount);
     }
+
+    public HashMap<Integer,Integer> getLackItems() {
+        HashMap<Integer, Integer> itemAmounts = new HashMap<>();
+        for (Item i : items) {
+            if (i.belowMin()) {
+                itemAmounts.put(i.getId(), i.checkMinAmount(0));
+            }
+        }
+        return itemAmounts;
+    }
+
 }
