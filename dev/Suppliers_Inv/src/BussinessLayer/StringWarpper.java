@@ -11,4 +11,9 @@ public class StringWarpper
     public String getStr() {
         return str;
     }
+
+    @Override
+    public String toString() {
+        return str;
+    }
 }
