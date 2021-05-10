@@ -15,6 +15,7 @@ public class Main {
 
         DeliveryCLI cli = DeliveryCLI.getInstance();
         cli.runWithConsole();
+        System.out.println("hey");
 
 
 
