@@ -35,6 +35,23 @@ public abstract class Shift {
         dto.persist();
     }
 
+    Shift(ShiftDTO dto){
+        closed = dto.isClosed();
+        setStart();
+        setEnd();
+        date = dto.getDate();
+        for (Map.Entry<EmployeeDTO, Integer> e : dto.getConstrains().entrySet())
+            constrains.put(new Employee(e.getKey()), e.getValue());
+
+        for(Map.Entry<String, EmployeeDTO> entry : dto.getAssignedEmployees().entrySet())
+            assignedEmployees.put(entry.getKey(), new Employee(entry.getValue()));
+
+        for(Map.Entry<String, List<EmployeeDTO>> entry : dto.getRolesMap().entrySet())
+            assignedRolesEmp.put(entry.getKey(),
+                    entry.getValue().stream().map(Employee::new).collect(Collectors.toList()));
+        this.dto = dto;
+    }
+
     private Map<EmployeeDTO, Integer> getConstrainsDTO() {
         Map<EmployeeDTO, Integer> constraintsDTO = new HashMap<>();
         for (Map.Entry<Employee, Integer> entry : constrains.entrySet())
@@ -167,12 +184,6 @@ public abstract class Shift {
         }
         return res.toString();
     }
-
-
-
-
-
-
 
     public ResponseT<String> getWhoIWorkWith(Employee employee){
         if (!assignedEmployees.containsKey(employee.getID().getValue()))
