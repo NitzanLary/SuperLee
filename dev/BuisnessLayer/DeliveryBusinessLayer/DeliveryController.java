@@ -185,6 +185,18 @@ public class DeliveryController {
         }
     }
 
+    public ArrayList<DeliveryDTO> getDeliveriesToSend() {
+        ArrayList<DeliveryDTO> ret = new ArrayList<>();
+        ArrayList<DeliveryDTO> arr = mapper.getDeliveries();
+        for (DeliveryDTO deliveryDTO : arr){
+            if (deliveryDTO.getDepartureWeight() <= 0){
+                deliveries.put(deliveryDTO.getId(), new Delivery(deliveryDTO));
+                ret.add(deliveryDTO);
+            }
+        }
+        return ret;
+    }
+
     public ArrayList<DeliveryDTO> getDeliveriesData() {
         return mapper.getDeliveries();
     }

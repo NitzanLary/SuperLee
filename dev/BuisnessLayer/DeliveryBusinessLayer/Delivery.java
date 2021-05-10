@@ -1,5 +1,8 @@
 package BuisnessLayer.DeliveryBusinessLayer;
 
+import DataAccessLayer.DeliveryDataAccessLayer.DTO.DeliveryDTO;
+import DataAccessLayer.DeliveryDataAccessLayer.DTO.TaskDTO;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -15,6 +18,27 @@ public class Delivery {
     private Location origin;
     private ArrayList<Task> destinations;
 
+    public Delivery(DeliveryDTO deliveryDTO) {
+        this.id = deliveryDTO.getId();
+        this.date =deliveryDTO.getDate();
+        this.timeOfDeparture = deliveryDTO.getTimeOfDeparture();
+        this.truckNumber = deliveryDTO.getTruckNumber();
+        this.driverName = deliveryDTO.getDriverName();
+        this.departureWeight = deliveryDTO.getDepartureWeight();
+        this.modification = deliveryDTO.getModification(); // " - old g121 -- new g123 -"
+        this.origin = new Location(deliveryDTO.getOrigin());
+
+        this.destinations = convertTaskDTO2Task(deliveryDTO.getDestinations());
+    }
+
+    private ArrayList<Task> convertTaskDTO2Task(ArrayList<TaskDTO> arr){
+        ArrayList<Task> ret = new ArrayList<>();
+        for (TaskDTO taskDTO : arr){
+            ret.add(new Task(taskDTO));
+        }
+        return ret;
+
+    }
 
 
     public void setId(String id) {

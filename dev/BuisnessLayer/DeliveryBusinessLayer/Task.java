@@ -1,5 +1,7 @@
 package BuisnessLayer.DeliveryBusinessLayer;
 
+import DataAccessLayer.DeliveryDataAccessLayer.DTO.TaskDTO;
+
 import java.util.HashMap;
 
 public class Task {
@@ -13,6 +15,13 @@ public class Task {
         this.listOfProduct = listOfProduct;
         this.loadingOrUnloading = loadingOrUnloading;
         this.destination = destination;
+    }
+
+    public Task(TaskDTO taskDTO) {
+        this.id = taskDTO.getId();
+        this.listOfProduct = taskDTO.getListOfProduct();
+        this.loadingOrUnloading = taskDTO.getLoadingOrUnloading();
+        this.destination = new Location(taskDTO.getDestination());
     }
 
     public Location getDestination() {
