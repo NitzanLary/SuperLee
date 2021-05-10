@@ -21,7 +21,7 @@ public class WeeklyShifts {
         shifts = new ArrayList<>();
         for (int i=0; i < 7 ; i++){
             shifts.add(new MorningShift(fromDate.plusDays(i), dao));
-            shifts.add(new EvningShift(fromDate.plusDays(i), dao));
+            shifts.add(new EveningShift(fromDate.plusDays(i), dao));
         }
     }
 

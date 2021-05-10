@@ -22,13 +22,11 @@ public class AreaController {
     public boolean containsArea(String areaName){
         if (this.controller.containsKey(areaName))
             return true;
-        if (mapper.containsArea(areaName))
-            return true;
-//        AreaDTO areaDTO = mapper.getArea(areaName);
-//        if (areaDTO != null) {
-////            this.controller.put(areaName, new Area(areaName));
-//            return false;
-//        }
+        AreaDTO areaDTO = mapper.getArea(areaName);
+        if (areaDTO != null) {
+            this.controller.put(areaName, new Area(areaName));
+            return this.controller.containsKey(areaName);
+        }
         return false;
     }
 
@@ -46,9 +44,7 @@ public class AreaController {
         if (!containsArea(areaDTO.getAreaName())){
             return new Response<>(false);
         }
-        if (mapper.containsLocation(locationDTO.getAddress()))
-            return new Response<>(false);
-//        controller.get(areaDTO.getAreaName()).addLocation(new Location(locationDTO.getAddress(), locationDTO.getPhoneNumber(), locationDTO.getContactName()));
+        controller.get(areaDTO.getAreaName()).addLocation(new Location(locationDTO.getAddress(), locationDTO.getPhoneNumber(), locationDTO.getContactName()));
         dc.storeLocation(areaDTO, locationDTO);
         mapper.addLocation(areaDTO, locationDTO);
         return new Response<>(true);
@@ -89,10 +85,9 @@ public class AreaController {
 
     public ArrayList<AreaDTO> getAreas() {
 //        ArrayList<Area> arr = new ArrayList<>();
-//        for (AreaDTO area : mapper.getAreas()){
-//            arr.add(new Area(area));
+//        for (Area areaName : controller.values()){
+//            arr.add(areaName);
 //        }
-
         return mapper.getAreas();
     }
 

@@ -1,6 +1,6 @@
 package DataAccessLayer.EmployeesDataAccessLayer.DTOs;
 
-import BuisnessLayer.EmployeesBuisnessLayer.Response;
+import serviceObjects.Response;
 import DataAccessLayer.EmployeesDataAccessLayer.DAOs.ShiftDAO;
 import DataAccessLayer.EmployeesDataAccessLayer.Objects.ShiftDate;
 

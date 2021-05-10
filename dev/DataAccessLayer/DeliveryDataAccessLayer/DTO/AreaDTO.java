@@ -46,10 +46,7 @@ public class AreaDTO {
     }
     public String toString() {
         String str = "";
-        if (locations == null)
-            str += " []";
-        else
-            str += locations.toString() + ", ";
+        str += locations.toString() + ", ";
 
 //        for (int i = 0; i < locations.size(); i++){
 //            System.out.println(locations);

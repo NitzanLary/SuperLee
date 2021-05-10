@@ -1,7 +1,5 @@
 package DataAccessLayer.EmployeesDataAccessLayer.DAOs;
 
-import BuisnessLayer.EmployeesBuisnessLayer.ResponseT;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

@@ -10,8 +10,6 @@ public class MorningShift extends Shift{
 
     public MorningShift(LocalDate _date, ShiftDAO dao) {
         super(_date, dao);
-        start = LocalTime.of(6,0);
-        end = LocalTime.of(14,0);
     }
 
     public MorningShift(ShiftDTO dto) {
@@ -22,5 +20,15 @@ public class MorningShift extends Shift{
     @Override
     public MorningShift clone() {
         return new MorningShift(date, new ShiftDAO());
+    }
+
+    @Override
+    public void setStart() {
+        start = LocalTime.of(6,0);
+    }
+
+    @Override
+    public void setEnd() {
+        end = LocalTime.of(14,0);
     }
 }
