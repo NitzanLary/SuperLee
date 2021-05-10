@@ -487,10 +487,10 @@ public class FacadeSupplier {
                             }
                         }
                     }
-                    if (cheapestSupplier == -1) {
-                        throw new IllegalArgumentException("The System Did Not Found Any Supplier That Supply Item Number: " + product.getProductID());
-                    }
                 }
+            }
+            if (cheapestSupplier == -1) {
+                throw new IllegalArgumentException("The System Did Not Found Any Supplier That Supply Item Number: " + item);
             }
             // add to the supplier the item
             HashMap<Integer, Integer> products;//itemID + quantity
