@@ -90,13 +90,16 @@ public class ProductController {
         if (!supplierProd.containsKey(supplierID)){
             throw new IllegalArgumentException("This Supplier Does Not Exists In The System");
         }
-        HashMap<Integer, BussinessLayer.Supplier.Product> supItems = supplierProd.get(supplierID);
-        if (supItems.isEmpty()){
+        if (supplierProd.get(supplierID).values().isEmpty())
             throw new IllegalArgumentException("This Supplier Does Not Have Any Products");
-        }
+
+//        HashMap<Integer, BussinessLayer.Supplier.Product> supItems = supplierProd.get(supplierID);
+//        if (supItems.isEmpty()){
+//            throw new IllegalArgumentException("This Supplier Does Not Have Any Products");
+//        }
 
         String productsList = '\n' + "products list: " + '\n';
-        for(BussinessLayer.Supplier.Product p : supItems.values()){
+        for(BussinessLayer.Supplier.Product p : supplierProd.get(supplierID).values()){
             productsList += p.toString() + '\n';
         }
         return productsList;
@@ -174,8 +177,11 @@ public class ProductController {
     }
 
     public void addSuppliers(Set<Integer> keySet) {
-        for(Integer supID : keySet)
-            supplierProd.put(supID, new HashMap<>());
+        for(Integer supID : keySet){
+            if (supplierProd.get(supID) == null)
+                supplierProd.put(supID, new HashMap<>());
+        }
+
     }
 
 
