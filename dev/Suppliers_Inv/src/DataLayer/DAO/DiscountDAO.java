@@ -53,9 +53,7 @@ public class DiscountDAO extends DAO{
                 ps.setDate(2 , Date.valueOf(toInsert.getStart()));
                 ps.setDate(3 , Date.valueOf(toInsert.getEnd()));
                 ps.setInt(4, toInsert.getDiscountPr());
-                if(!ps.execute()) {
-                    return new ResponseT("cannot add discount to db");
-                }
+                ps.execute();
             }
         }catch (Exception e) {
             return new ResponseT("cannot add discount to db");
@@ -74,10 +72,7 @@ public class DiscountDAO extends DAO{
                 ps.setInt(2, toUpdate.getItemId());
                 ps.setDate(3, Date.valueOf(toUpdate.getStart()));
                 ps.setDate(4, Date.valueOf(toUpdate.getEnd()));
-
-                if(!ps.execute()) {
-                    return new Response("cannot update discount to db");
-                }
+                ps.execute();
             }
         }catch (Exception e) {
             return new Response("cannot update discount to db");
