@@ -181,7 +181,7 @@ public class DeliveryController {
         delivery.setDepartureWeight(deliveryDTO.getDepartureWeight());
         if (storeIt) {
             this.deliveries.remove(deliveryDTO.getId());
-            storeDelivery(delivery);
+            dataController.updateDeliveryDW(deliveryDTO.getDepartureWeight());
         }
     }
 

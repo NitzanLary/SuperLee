@@ -66,4 +66,10 @@ public class DeliveryDAO extends DAO{
 
     }
 
+    public void updateDeliveryDW(int departureWeight){
+
+    }
+
+
+
 }
