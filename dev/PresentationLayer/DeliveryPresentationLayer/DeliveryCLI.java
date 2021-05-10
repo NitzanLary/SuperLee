@@ -149,7 +149,7 @@ public class DeliveryCLI {
 
     private void sendDelivery() {
         Scanner in = new Scanner(System.in);
-        DeliveryDTO deliveryDTO = this.chooseDelivery(in, true);
+        DeliveryDTO deliveryDTO = this.chooseDelivery(in, false);
         if (deliveryDTO == null)
             return;
         System.out.println(deliveryDTO + "\n");
@@ -178,7 +178,7 @@ public class DeliveryCLI {
     private void updateDelivery() {
 //        System.out.println("Choose delivery to update");
         Scanner in = new Scanner(System.in);
-        DeliveryDTO chosen = chooseDelivery(in, true);
+        DeliveryDTO chosen = chooseDelivery(in, false);
         if (chosen == null)
             return;
         String delID = chosen.getId();
@@ -373,7 +373,7 @@ public class DeliveryCLI {
                 if (!f_legal)
                     System.out.println("there isn't any store keeper assigned on given date and time: " + date + " " + timeOfDeparture);
             }
-        } while (!f_legal && !timeOfDeparture.equals("exit"));
+        } while (!(f_legal || timeOfDeparture.equals("exit")));
         return new Response<>(timeOfDeparture);
     }
 

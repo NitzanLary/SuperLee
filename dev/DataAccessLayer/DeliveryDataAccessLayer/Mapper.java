@@ -342,6 +342,8 @@ public class Mapper {
     }
 
     public ArrayList<DeliveryDTO> getDeliveries() {
+        if (!deliveries.isEmpty())
+            return new ArrayList(deliveries.values());
         ArrayList<DeliveryDTO> ret = new ArrayList<>();
         String query = "SELECT ID FROM deliveries";
         ResultSet rs = null;

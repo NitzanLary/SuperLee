@@ -126,11 +126,11 @@ public class DeliveryController {
     }
 
     // TODO: same as the upper todo.. dont think its relevant
-    public Delivery getDeliveryById(String id){
-        if (!this.deliveries.containsKey(id)){
+    public DeliveryDTO getDeliveryById(String id){
+        if (!mapper.getDeliveries().contains(id)){
             throw new InputMismatchException("Delivery dose not exist.");
         }
-        return this.deliveries.get(id);
+        return mapper.getDeliveryByID(id);
     }
 
     public void createDelivery(){
@@ -150,13 +150,19 @@ public class DeliveryController {
 //                '}';
     }
 
-    public ArrayList<Delivery> getUpdatableDeliveries() {
-        ArrayList<Delivery> ret = new ArrayList<>();
-        for (Delivery d: deliveries.values()){
-            if(d.isUpdatable())
+    public ArrayList<DeliveryDTO> getUpdatableDeliveries() {
+        ArrayList<DeliveryDTO> ret = new ArrayList<>();
+        for (DeliveryDTO d: mapper.getDeliveries()){
+            if (d.getDepartureWeight()==0)
                 ret.add(d);
         }
         return ret;
+//        ArrayList<Delivery> ret = new ArrayList<>();
+//        for (Delivery d: deliveries.values()){
+//            if(d.isUpdatable())
+//                ret.add(d);
+//        }
+//        return ret;
     }
 
     public LocalDate getCurrentDate(){

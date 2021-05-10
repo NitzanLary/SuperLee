@@ -106,7 +106,7 @@ public class FacadeController {
 
     // - Delivery -
     public DeliveryDTO getDeliveryById(String id){
-        return new DeliveryDTO(this.dec.getDeliveryById(id));
+        return this.dec.getDeliveryById(id);
     }
 
     public void sendDelivery(DeliveryDTO deliveryDTO, Response<Boolean> storeIt){
@@ -156,10 +156,10 @@ public class FacadeController {
     }
 
     public ArrayList<DeliveryDTO> getUpdatableDeliveries() {
-        ArrayList<DeliveryDTO> ret = new ArrayList<>();
-        for (Delivery d:dec.getUpdatableDeliveries())
-            ret.add(new DeliveryDTO(d));
-        return ret;
+//        ArrayList<DeliveryDTO> ret = new ArrayList<>();
+//        for (Delivery d:dec.getUpdatableDeliveries())
+//            ret.add(new DeliveryDTO(d));
+        return dec.getUpdatableDeliveries();
     }
 
     public DeliveryDTO updateDelivery(DeliveryDTO newDel, String oldDelId) {
