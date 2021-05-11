@@ -125,6 +125,9 @@ public class DeliveryController {
             newDel.setId(getNewDeliveryID());
         Delivery ret = new Delivery(newDel.getId(),newDel.getDate(),newDel.getTimeOfDeparture(),newDel.getTruckNumber(),newDel.getDriverName(),newDel.getDepartureWeight(),newDel.getModification(),origin,destinations);
 //        deliveries.put(newDel.getId(), ret); TODO: we need this here? because we say that only in sendDelivery we save
+        deliveries.put(ret.getID() ,ret);
+        storeDelivery(ret);
+        mapper.addDelivery(newDel);
         return ret;
     }
 

@@ -45,10 +45,21 @@ public abstract class DAO {
         try {
             conn = DriverManager.getConnection(url);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return conn;
     }
+
+//    protected Connection connect() throws SQLException {
+//        String url = "jdbc:sqlite:dev/DataBase/SuperLeeDB.db";
+//        try {
+//            Class.forName("org.sqlite.JDBC");
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        return DriverManager.getConnection(url);
+//    }
+
 
 }
 
