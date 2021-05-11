@@ -429,6 +429,10 @@ public class Mapper {
         return null;
     }
 
+    public void removeDelivery(DeliveryDTO deliveryDTO) {
+        deliveries.remove(deliveryDTO.getId());
+    }
+
 //    public void storeLocation(AreaDTO areaDTO, LocationDTO locationDTO){
 //        areas.get(areaDTO.getAreaName()).addLocation(locationDTO);
 //    }

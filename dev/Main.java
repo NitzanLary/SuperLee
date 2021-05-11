@@ -1,5 +1,3 @@
-import BuisnessLayer.EmployeesBuisnessLayer.FacadeController;
-import BuisnessLayer.EmployeesBuisnessLayer.ShiftController;
 import DataAccessLayer.DeliveryDataAccessLayer.DTO.*;
 import DataAccessLayer.DeliveryDataAccessLayer.TruckDAO;
 import PresentationLayer.CLI;
@@ -12,12 +10,14 @@ import java.util.HashMap;
 
 public class Main {
     public static void main(String[] args){
-//        CLI cli = new CLI();
-//        cli.start();
+        CLI cli = new CLI();
+        cli.start();
 
 //        DeliveryCLI cli = DeliveryCLI.getInstance();
 //        cli.runWithConsole();
-        
+
+
+
 
     }
 //    public static void main1(String[] args) {

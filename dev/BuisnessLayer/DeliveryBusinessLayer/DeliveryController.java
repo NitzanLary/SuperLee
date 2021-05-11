@@ -46,10 +46,17 @@ public class DeliveryController {
         this.dataController.storeDelivery(deliveryDTO);
     } // send to database todo
 
+    // TODO: check if the change in the DB is good
+    // TODO olso: check whats happened in the sys
     public Delivery updateDelivery(Delivery newDel, String OldDelID){
-        Delivery toStore = deliveries.remove(OldDelID);
-        toStore.addModification("- newer "+newDel.getID()+" -");
-        newDel.addModification("- older "+OldDelID+" -");
+        Delivery toUpdate = deliveries.remove(OldDelID);
+        String olderModification = "- newer "+newDel.getID()+" -";
+        String newerModification = "- older "+OldDelID+" -";
+
+        olderModification = toUpdate.addModification(olderModification);
+        newerModification = newDel.addModification(newerModification);
+        dataController.updateDeliveryModif(toUpdate, olderModification);
+        dataController.updateDeliveryModif(newDel, newerModification);
 //        storeDelivery(toStore);
 //        Delivery newDel = cloneDelivery(toStore);
 //        return null;
@@ -180,8 +187,9 @@ public class DeliveryController {
         Delivery delivery = this.deliveries.get(deliveryDTO.getId());
         delivery.setDepartureWeight(deliveryDTO.getDepartureWeight());
         if (storeIt) {
+            dataController.updateDeliveryDW(deliveryDTO);
             this.deliveries.remove(deliveryDTO.getId());
-            dataController.updateDeliveryDW(deliveryDTO.getDepartureWeight());
+            mapper.removeDelivery(deliveryDTO);
         }
     }
 
@@ -189,7 +197,7 @@ public class DeliveryController {
         ArrayList<DeliveryDTO> ret = new ArrayList<>();
         ArrayList<DeliveryDTO> arr = mapper.getDeliveries();
         for (DeliveryDTO deliveryDTO : arr){
-            if (deliveryDTO.getDepartureWeight() <= 0){
+            if (deliveryDTO.getDepartureWeight() <= 0 && !deliveryDTO.getModification().contains("newer")){
                 deliveries.put(deliveryDTO.getId(), new Delivery(deliveryDTO));
                 ret.add(deliveryDTO);
             }
