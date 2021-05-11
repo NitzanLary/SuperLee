@@ -55,7 +55,7 @@ public class PeriodicOrderDAO extends DAO{
     }
 
     public Response updateInterval(Integer periodicID, Integer interval) {
-        String SQL = "UPDATE PeriodicOrder SET interval = ? WHERE periodicID = ?";
+        String SQL = "UPDATE PeriodicOrder SET intervals = ? WHERE orderID = ?";
         try {
             ResponseT<Connection> r = getConn();
             if(!r.ErrorOccured()) {
@@ -111,7 +111,7 @@ public class PeriodicOrderDAO extends DAO{
 
 
     public ResponseT<HashMap<Integer, Integer>> getProductsFromPeriod(int periodID) {
-        String SQL = "SELECT productID, quantity FROM PeriodicOrder WHERE orderID = ?";
+        String SQL = "SELECT ProductID, quantity FROM ProductsInPeriodic WHERE PeriodicID = ?";
         HashMap<Integer,Integer> prodQua = new HashMap<>();
         try {
             ResponseT<Connection> r = getConn();
@@ -120,11 +120,11 @@ public class PeriodicOrderDAO extends DAO{
                 ps.setInt(1, periodID);
                 ResultSet rs = ps.executeQuery();
                 while(rs.next()) {
-                    prodQua.put(rs.getInt("productID"), rs.getInt("quantity"));
+                    prodQua.put(rs.getInt("ProductID"), rs.getInt("quantity"));
                 }
             }
         }catch (Exception e) {
-            return new ResponseT("cannot read products from order");
+            return new ResponseT<>("cannot read products from order");
         }
         return new ResponseT<>(prodQua);
     }

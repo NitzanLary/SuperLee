@@ -299,17 +299,17 @@ public class IO_Supplier {
                         System.out.println(resp.ErrorMessage);
                         return;
                     }
-                    System.out.println(resp.value.getStr());
+                    System.out.println(resp.value.toString());
                     break;
 
                 case 5:
                     return;
 
                 default:
-                    System.out.println("Invalid Input - Please Enter 1-4 " + '\n');
+                    System.out.println("Invalid Input - Please Enter 1-5 " + '\n');
             }
         }catch (Exception e){
-            System.out.println("Invalid Input - Please Enter 1-4 " + '\n');
+            System.out.println("Invalid Input - Please Enter 1-5 " + '\n');
             orders();
         }
     }
@@ -375,7 +375,7 @@ public class IO_Supplier {
                         System.out.println(res.ErrorMessage);
                         return;
                     }
-                    System.out.println("Quantity Edited Successfully");
+                    System.out.println("Interval Edited Successfully");
                     break;
 
                 case 4:
@@ -507,7 +507,7 @@ public class IO_Supplier {
             }
         }catch (Exception e){
             System.out.println("Invalid Input, Please Try Again");
-            creatNewOrder();
+            createNewPeriodicOrder();
         }
     }
 

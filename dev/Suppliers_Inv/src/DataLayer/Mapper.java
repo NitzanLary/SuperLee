@@ -196,6 +196,7 @@ public class Mapper {
         if (!perOrderRes.ErrorOccured()) {
             for (PeriodicOrderDTO dbPeriodic : perOrderRes.value.values()) {
                 HashMap<Integer,Integer> productsInOrder = periodicOrderDAO.getProductsFromPeriod(dbPeriodic.getOrderID()).value; //all products from specific order
+                if (productsInOrder == null) productsInOrder = new HashMap<>();
                 res.put(dbPeriodic.getOrderID(),new PeriodicOrder(dbPeriodic.getOrderID(), dbPeriodic.getIntervals(), dbPeriodic.getSupplyDate(), productsInOrder));
             }
         } else {
