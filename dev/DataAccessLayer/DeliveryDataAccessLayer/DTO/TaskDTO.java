@@ -46,6 +46,11 @@ public class TaskDTO {
         return listOfProduct;
     }
 
+    public HashMap<String, Integer> getListOfProductCopy(){
+        HashMap<String, Integer> copy = new HashMap<>(listOfProduct);
+        return copy;
+    }
+
     public void setListOfProduct(HashMap<String, Integer> listOfProduct) {
         this.listOfProduct = listOfProduct;
     }

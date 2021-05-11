@@ -142,9 +142,11 @@ public class FacadeController {
 
     public DeliveryDTO createFullDelivery(DeliveryDTO del){
         ArrayList<Task> tasks = new ArrayList<>();
+        String delID = dec.getNewDeliveryID();
         for (TaskDTO t: del.getDestinations())
-            tasks.add(tac.getAndRemoveTaskById(t.getId(), del.getId()));
-        del.setId(dec.createFullDelivery(del.getDate(),del.getTimeOfDeparture(),del.getTruckNumber(),del.getDriverName(),del.getDepartureWeight(),del.getModification(), arc.getLocation(del.getOrigin().getAddress()),tasks));
+            tasks.add(tac.getAndRemoveTaskById(t.getId(), delID));
+        del.setId(delID);
+        dec.createFullDelivery(delID, del.getDate(),del.getTimeOfDeparture(),del.getTruckNumber(),del.getDriverName(),del.getDepartureWeight(),del.getModification(), arc.getLocation(del.getOrigin().getAddress()),tasks);
         return del;
     }
 

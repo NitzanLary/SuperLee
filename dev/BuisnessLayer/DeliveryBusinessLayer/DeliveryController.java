@@ -28,8 +28,8 @@ public class DeliveryController {
         return deliveries;
     }
 
-    public String createFullDelivery(String date, String timeOfDeparture, String truckNumber, String driverName, int departureWeight, String modification, Location origin, ArrayList<Task> destinations){
-        String id = getNewDeliveryID();
+    public String createFullDelivery(String id, String date, String timeOfDeparture, String truckNumber, String driverName, int departureWeight, String modification, Location origin, ArrayList<Task> destinations){
+//        String id = getNewDeliveryID();
         Delivery del = new Delivery(id, date, timeOfDeparture, truckNumber, driverName, departureWeight, modification, origin, destinations);
         deliveries.put(id ,del);
         storeDelivery(del);

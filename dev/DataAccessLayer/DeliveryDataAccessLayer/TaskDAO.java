@@ -30,13 +30,14 @@ public class TaskDAO extends DAO {
     and if there is delivery connected to the this task - we will use the update func to change to the current delID
     */
     public void storeTask(TaskDTO taskDTO, Response<String> deliveryID){
-        String sql = "INSERT INTO Tasks(taskID, DeliveryID, loadingOrUnloading) VALUES(?,?,?)";
+        String sql = "INSERT INTO Tasks(taskID, DeliveryID, loadingOrUnloading, destination) VALUES(?,?,?,?)";
 
         try (Connection conn = this.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, taskDTO.getId());
             pstmt.setString(2, deliveryID.getData());
             pstmt.setString(3, taskDTO.getLoadingOrUnloading());
+            pstmt.setString(4, taskDTO.getDestination().getAddress());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -53,7 +54,7 @@ public class TaskDAO extends DAO {
     }
 
     public void storeProducts(TaskDTO taskDTO){
-        HashMap<String, Integer> productsMap = taskDTO.getListOfProduct();
+        HashMap<String, Integer> productsMap = taskDTO.getListOfProductCopy();
         Iterator it = productsMap.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
