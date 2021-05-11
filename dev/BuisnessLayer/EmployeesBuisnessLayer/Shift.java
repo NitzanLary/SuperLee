@@ -40,12 +40,16 @@ public abstract class Shift {
         setStart();
         setEnd();
         date = dto.getDate();
+
+        constrains = new HashMap<>();
         for (Map.Entry<EmployeeDTO, Integer> e : dto.getConstrains().entrySet())
             constrains.put(new Employee(e.getKey()), e.getValue());
 
+        assignedEmployees = new HashMap<>();
         for(Map.Entry<String, EmployeeDTO> entry : dto.getAssignedEmployees().entrySet())
             assignedEmployees.put(entry.getKey(), new Employee(entry.getValue()));
 
+        assignedRolesEmp = new HashMap<>();
         for(Map.Entry<String, List<EmployeeDTO>> entry : dto.getRolesMap().entrySet())
             assignedRolesEmp.put(entry.getKey(),
                     entry.getValue().stream().map(Employee::new).collect(Collectors.toList()));

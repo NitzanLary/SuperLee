@@ -18,7 +18,7 @@ public class MorningShift extends Shift{
 
     @Override
     public MorningShift clone() {
-        return new MorningShift(date, new ShiftDAO());
+        return new MorningShift(dto);
     }
 
     @Override
