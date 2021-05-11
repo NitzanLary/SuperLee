@@ -47,8 +47,8 @@ public class DeliveryController {
     } // send to database todo
 
     public Delivery updateDelivery(Delivery newDel, String OldDelID){
-        Delivery toStore = deliveries.remove(OldDelID);
-        toStore.addModification("- newer "+newDel.getID()+" -");
+        Delivery toUpdate = deliveries.remove(OldDelID);
+        toUpdate.addModification("- newer "+newDel.getID()+" -");
         newDel.addModification("- older "+OldDelID+" -");
 //        storeDelivery(toStore);
 //        Delivery newDel = cloneDelivery(toStore);
@@ -180,8 +180,9 @@ public class DeliveryController {
         Delivery delivery = this.deliveries.get(deliveryDTO.getId());
         delivery.setDepartureWeight(deliveryDTO.getDepartureWeight());
         if (storeIt) {
+            dataController.updateDeliveryDW(deliveryDTO);
             this.deliveries.remove(deliveryDTO.getId());
-            dataController.updateDeliveryDW(deliveryDTO.getDepartureWeight());
+            mapper.removeDelivery(deliveryDTO);
         }
     }
 
@@ -189,7 +190,7 @@ public class DeliveryController {
         ArrayList<DeliveryDTO> ret = new ArrayList<>();
         ArrayList<DeliveryDTO> arr = mapper.getDeliveries();
         for (DeliveryDTO deliveryDTO : arr){
-            if (deliveryDTO.getDepartureWeight() <= 0){
+            if (deliveryDTO.getDepartureWeight() <= 0 && !deliveryDTO.getModification().contains("newer")){
                 deliveries.put(deliveryDTO.getId(), new Delivery(deliveryDTO));
                 ret.add(deliveryDTO);
             }

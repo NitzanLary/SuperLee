@@ -192,8 +192,11 @@ public class FacadeController {
     }
 
     public LocalDate parseToLocalDate(String date){
-        String[] d = date.split("-");
-        return LocalDate.of(Integer.parseInt(d[0]) + 2000, Integer.parseInt(d[1]), Integer.parseInt(d[2]));
+//        String[] d = date.split("-");
+//        return LocalDate.of(Integer.parseInt(d[2]) + 2000, Integer.parseInt(d[1]), Integer.parseInt(d[0]));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-M-uu");
+        return LocalDate.parse(date, formatter);
     }
 
     public LocalTime parseToLocalTime(String timeOfDeparture){

@@ -4,10 +4,10 @@ import DataAccessLayer.DeliveryDataAccessLayer.DTO.DeliveryDTO;
 
 import java.sql.*;
 
-public class DeliveryDAO extends DAO{
+public class DeliveryDAO extends DAO {
     private static DeliveryDAO instance = null;
 
-    private DeliveryDAO(){
+    private DeliveryDAO() {
         super();
     }
 
@@ -17,7 +17,7 @@ public class DeliveryDAO extends DAO{
         return instance;
     }
 
-    public void storeDelivery(DeliveryDTO deliveryDTO){
+    public void storeDelivery(DeliveryDTO deliveryDTO) {
         String sql = "INSERT INTO Deliveries(id, date, timeOfDeparture, truckNumber, driverName, departureWeight, modification, origin) VALUES(?,?,?,?,?,?,?,?)";
 
         try (Connection conn = this.connect();
@@ -33,7 +33,7 @@ public class DeliveryDAO extends DAO{
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        }finally {
+        } finally {
             try {
                 if (conn != null) {
                     conn.close();
@@ -45,11 +45,11 @@ public class DeliveryDAO extends DAO{
         // todo - update tasks delivery ids
     }
 
-    public DeliveryDTO getDeliveryByID(String deliveryId){
+    public DeliveryDTO getDeliveryByID(String deliveryId) {
         String sql = "SELECT * FROM DELIVERIES WHERE DELIVERIES.ID = (?)";
 
         try (Connection conn = this.connect();
-             PreparedStatement pstmt  = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, deliveryId);
 
@@ -66,10 +66,19 @@ public class DeliveryDAO extends DAO{
 
     }
 
-    public void updateDeliveryDW(int departureWeight){
+    public void updateDeliveryDW(DeliveryDTO ddto) {
+        String query = """
+                UPDATE Deliveries SET departureWeight = ? WHERE id = ?
+                """;
+        try (Connection conn = this.connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, ddto.getDepartureWeight());
+            pstmt.setString(2, ddto.getId());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
 
     }
-
-
-
 }
