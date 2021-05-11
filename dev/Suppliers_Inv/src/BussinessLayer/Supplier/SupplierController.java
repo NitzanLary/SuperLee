@@ -1,6 +1,5 @@
 package BussinessLayer.Supplier;
 
-import BussinessLayer.Response;
 import DataLayer.Mapper;
 
 import java.util.HashMap;

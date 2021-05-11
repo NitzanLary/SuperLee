@@ -1,17 +1,14 @@
 package DataLayer.DAO;
 
 import BussinessLayer.Inventory.Discount;
-import BussinessLayer.Inventory.Item;
 import BussinessLayer.Response;
 import BussinessLayer.ResponseT;
 import DataLayer.DTO.DiscountDTO;
-import DataLayer.DTO.ItemDTO;
 
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 

@@ -1,8 +1,6 @@
 package BussinessLayer.Inventory;
 
-import BussinessLayer.Response;
 import BussinessLayer.ResponseT;
-import DataLayer.DAO.DiscountDAO;
 import DataLayer.Mapper;
 
 import java.time.LocalDate;

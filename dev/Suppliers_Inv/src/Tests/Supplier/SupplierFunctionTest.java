@@ -9,6 +9,8 @@ import java.util.HashMap;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.fail;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.*;
 
 public class SupplierFunctionTest {

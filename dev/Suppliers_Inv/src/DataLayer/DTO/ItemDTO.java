@@ -1,8 +1,6 @@
 package DataLayer.DTO;
-import BussinessLayer.Inventory.Discount;
-import BussinessLayer.Inventory.Item;
 
-import java.util.List;
+import BussinessLayer.Inventory.Item;
 
 public class ItemDTO {
     private int id;

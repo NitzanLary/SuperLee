@@ -1,6 +1,5 @@
 package BussinessLayer.Inventory;
 
-import BussinessLayer.FacadeController;
 import BussinessLayer.ResponseT;
 
 import java.time.LocalDate;

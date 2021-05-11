@@ -8,8 +8,6 @@ import DataLayer.DTO.OrderDTO;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 
 public class OrderDAO extends DAO {
 

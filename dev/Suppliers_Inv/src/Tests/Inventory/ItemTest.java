@@ -1,10 +1,7 @@
 package Tests.Inventory;
-import BussinessLayer.Inventory.Category;
-import BussinessLayer.Inventory.Item;
-import BussinessLayer.Inventory.Discount;
 
-import DataLayer.DTO.ItemDTO;
-import DataLayer.Mapper;
+import BussinessLayer.Inventory.Discount;
+import BussinessLayer.Inventory.Item;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -2,14 +2,11 @@ package DataLayer.DAO;
 
 import BussinessLayer.Response;
 import BussinessLayer.ResponseT;
-import BussinessLayer.Supplier.PeriodicOrder;
 import DataLayer.DTO.PeriodicOrderDTO;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 
 public class PeriodicOrderDAO extends DAO{
 

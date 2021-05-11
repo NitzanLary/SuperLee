@@ -2,7 +2,6 @@ package DataLayer.DAO;
 
 import BussinessLayer.Response;
 import BussinessLayer.ResponseT;
-import BussinessLayer.Supplier.BillOfQuantities;
 import DataLayer.DTO.BillOfQuantityDTO;
 
 import java.sql.*;

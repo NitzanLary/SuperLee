@@ -1,5 +1,7 @@
 package DataLayer.DTO;
+
 import BussinessLayer.Inventory.Discount;
+
 import java.time.LocalDate;
 public class DiscountDTO {
     private LocalDate start;

@@ -4,9 +4,11 @@ import BussinessLayer.Inventory.Sale;
 import BussinessLayer.Response;
 import BussinessLayer.ResponseT;
 import DataLayer.DTO.SaleDTO;
-import org.sqlite.SQLiteException;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.LinkedList;
