@@ -33,6 +33,14 @@ public class Mapper {
         productsInPeriodicDAO.editQuantityInPeriodic(orderID, productID, quant);
     }
 
+    public void deleteProductFromOrder(int productID, int orderID) {
+        productsInOrderDAO.delete(orderID, productID);
+    }
+
+    public void updateProductQuantInOrder(int orderID, int productID, int quantity) {
+        productsInOrderDAO.updateQuantity(orderID, productID, quantity);
+    }
+
 
     private static class MapperHolder {
         private static Mapper instance = new Mapper();
@@ -91,7 +99,7 @@ public class Mapper {
     }
 
     public Response deleteOrder(int orderID) {
-        if(orderDAO.delete(orderID).ErrorOccured()){
+        if(orderDAO.delete(orderID).ErrorOccured() || productsInOrderDAO.deleteOrder(orderID).ErrorOccured()){
             return new Response("error deleting item");
         }
         return new Response();

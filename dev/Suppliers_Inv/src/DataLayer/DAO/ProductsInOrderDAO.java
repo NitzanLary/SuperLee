@@ -41,15 +41,14 @@ public class ProductsInOrderDAO extends DAO {
                 productInOrder.getSupplierID());
     }
 
-    public Response delete(Integer orderID, Integer productID, Integer supplierID) {
-        String SQL = "DELETE FROM ProductsInOrder WHERE orderID = ? AND productID = ? AND supplierID = ?";
+    public Response delete(Integer orderID, Integer productID) {
+        String SQL = "DELETE FROM ProductsInOrder WHERE orderID = ? AND productID = ?";
         try {
             ResponseT<Connection> r = getConn();
             if(!r.ErrorOccured()) {
                 PreparedStatement ps = r.value.prepareStatement(SQL);
                 ps.setInt(1, orderID);
                 ps.setInt(2, productID);
-                ps.setInt(3, supplierID);
 
                 ps.execute();
             }
@@ -97,5 +96,38 @@ public class ProductsInOrderDAO extends DAO {
             return new ResponseT("cannot read sale");
         }
         return new ResponseT<>(pioList);
+    }
+
+    public ResponseT updateQuantity(int orderID, int productID, int quantity) {
+        String SQL = "UPDATE ProductsInOrder SET quantity = ? WHERE orderID = ? AND productID = ?";
+        try {
+            ResponseT<Connection> r = getConn();
+            if(!r.ErrorOccured()) {
+                PreparedStatement ps = r.value.prepareStatement(SQL);
+                ps.setInt(1, quantity);
+                ps.setInt(2, orderID);
+                ps.setInt(3, productID);
+
+                ps.execute();
+            }
+        }catch (SQLException e) {
+            return new ResponseT<>(e.getMessage());
+        }
+        return new ResponseT<>(null);
+    }
+
+    public Response deleteOrder(int orderID) {
+        String SQL = "DELETE FROM ProductsInOrder WHERE orderID = ?";
+        try {
+            ResponseT<Connection> r = getConn();
+            if(!r.ErrorOccured()) {
+                PreparedStatement ps = r.value.prepareStatement(SQL);
+                ps.setInt(1, orderID);
+                ps.execute();
+            }
+        }catch (SQLException e) {
+            return new Response(e.getMessage());
+        }
+        return new Response();
     }
 }

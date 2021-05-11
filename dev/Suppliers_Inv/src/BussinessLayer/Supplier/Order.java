@@ -21,7 +21,7 @@ public class Order {
     }
 
     public String toString(){
-        return '\n' +"Order ID: " + orderID + "Supplier ID: " + supplierID + "Date: " + date;
+        return '\n' +"Order ID: " + orderID + "\tSupplier ID: " + supplierID + "\tDate: " + date;
     }
 
     public int getOrderID() {

@@ -400,16 +400,17 @@ public class FacadeSupplier {
 
     public ResponseT<StringWarpper> showOrdersBySupplier(int supplierID) {
         try {
-            String allOrders = '\n' + "All Supplier Number:" + supplierID + " Orders Are: ";
+            StringBuilder allOrders = new StringBuilder('\n' + "All Supplier Number:" + supplierID + " Orders Are: ");
             Response res = checkSuppExist(supplierID);
+            if(res.ErrorOccured()) return new ResponseT<>(res.ErrorMessage);
             LinkedList<Integer> listOfOrders = supplierOrder.get(supplierID);
             if (listOfOrders == null) {
                 return new ResponseT<>('\n' + " No Orders Yet For This Supplier");
             }
             for (Integer order : listOfOrders) {
-                allOrders += '\n' + "Order ID: " + order + ", Date: " + orderController.orders.get(order).getDate();
+                allOrders.append('\n' + "Order ID: ").append(order).append(", Date: ").append(orderController.orders.get(order).getDate());
             }
-            return new ResponseT<>(allOrders + '\n');
+            return new ResponseT<>(new StringWarpper(allOrders.toString() + '\n'));
         } catch (Exception e) {
             return new ResponseT<>(e.getMessage());
         }
@@ -573,5 +574,9 @@ public class FacadeSupplier {
         } catch (Exception e) {
             return new ResponseT<>(e.getMessage());
         }
+    }
+
+    public boolean checkOrderPEditable(int orderID) {
+        return orderController.checkOrderPEditable(orderID);
     }
 }

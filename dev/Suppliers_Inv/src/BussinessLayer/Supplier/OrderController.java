@@ -51,7 +51,6 @@ public class OrderController {
         nextOrderID++;
         HashMap<Integer,Integer> products = new HashMap<>();
         Order order = new Order(orderID,supplierID,false,products);
-        //mapper.addOrder(order);
         orders.put(orderID,order);
         return orderID;
     }
@@ -77,6 +76,8 @@ public class OrderController {
     }
 
     public void removeFromOrder(int productID, int orderID) {
+        mapper.deleteProductFromOrder(productID, orderID);
+
         Integer remove = orders.get(orderID).getProducts().remove(productID);
         if(remove == null){
             throw new IllegalArgumentException("The Item Does Not Exist In This Order");
@@ -92,8 +93,8 @@ public class OrderController {
     }
 
     public void removePOrder(int orderID) {
-        PeriodicOrder order = periodicOrder.remove(orderID);
         mapper.deletePeriodicOrder(orderID);
+        PeriodicOrder order = periodicOrder.remove(orderID);
         if (order == null){
             throw new IllegalArgumentException("Order Does Not Exist");
         }
@@ -104,9 +105,11 @@ public class OrderController {
         if (order == null){
             throw new IllegalArgumentException("Order Does Not Exist");
         }
+
     }
 
     public void updateProdQuantity(int orderID, int productID, int quantity) {
+        mapper.updateProductQuantInOrder(orderID, productID, quantity);
         Order order = orders.get(orderID);
         order.getProducts().remove(productID);
         order.getProducts().put(productID,quantity);
@@ -137,7 +140,6 @@ public class OrderController {
             int quantity = products.get(productId);
             finalPrice += prodController.calculateDiscount(productId, quantity, suppID);
         }
-        //mapper.setOrderPrice(OrderID, finalPrice);
         orders.get(OrderID).setPrice(finalPrice);
         mapper.addOrder(orders.get(OrderID));
         return finalPrice;
@@ -218,10 +220,10 @@ public class OrderController {
 
     public void changeInterval(int interval, int orderID) {
         PeriodicOrder po = periodicOrder.get(orderID);
+        mapper.editInterval(orderID, interval);
         if(po == null) {
             throw new IllegalArgumentException("The Item Does Not Exist In This Order");
         }
-        mapper.editInterval(orderID, interval);
         po.setInterval(interval);
     }
 
@@ -240,7 +242,16 @@ public class OrderController {
 
     public void addProductToExistPeriodicOrder(int orderID, int productID, int quantity) {
         PeriodicOrder p = periodicOrder.get(orderID);
-        mapper.addPeriodicOrder(orderID, p.getDateOfSupply(), p.getInterval());
+        if (p == null)
+            throw  new IllegalArgumentException(("The Periodic order does not exists"));
+        mapper.addProductToPeriodic(orderID, productID, quantity);
         periodicOrder.get(orderID).getProducts().put(productID, quantity);
+    }
+
+    public boolean checkOrderPEditable(int orderID) {
+        PeriodicOrder po = periodicOrder.get(orderID);
+        if (po.getDateOfSupply().compareTo(LocalDate.now().plusDays(1)) <= 0)
+            return false;
+        return true;
     }
 }

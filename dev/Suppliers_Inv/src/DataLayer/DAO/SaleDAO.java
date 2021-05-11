@@ -4,6 +4,7 @@ import BussinessLayer.Inventory.Sale;
 import BussinessLayer.Response;
 import BussinessLayer.ResponseT;
 import DataLayer.DTO.SaleDTO;
+import org.sqlite.SQLiteException;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -30,9 +31,8 @@ public class SaleDAO extends DAO {
                 ps.setInt(5, toInsert.getAmount());
                 ps.execute();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return new ResponseT("Could not add sale to DB");
+        } catch (Exception e) {
+            return new ResponseT<>("Could not add sale to DB");
         }
         return new ResponseT<>(toInsert);
     }

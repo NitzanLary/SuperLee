@@ -29,14 +29,16 @@ public class RecordController {
     //adds a sale to list of sales and return Sale object
     public boolean addSale(int itemId, double itemCost, double salePrice, int amount) {
         Sale newSale = new Sale(itemId, itemCost, salePrice, amount);
-        mapper.addSale(newSale);
+        if (mapper.addSale(newSale).ErrorOccured() )
+            return false;
         return sales.add(newSale);
     }
 
     //adds a faulty item to list of faulty items returns faulty item object
     public boolean addFaulty(int itemId, LocalDate expDate, int amountOfFaulyt) {
         FaultyItem newFI = new FaultyItem(itemId, expDate, amountOfFaulyt);
-        mapper.addFaulty(newFI);
+        if (mapper.addFaulty(newFI).ErrorOccured() )
+            return false;
         return faultyItems.add(newFI);
     }
 
@@ -48,7 +50,7 @@ public class RecordController {
     public String faultyReport(LocalDate from, LocalDate to) {
         StringBuilder str = new StringBuilder();
         int i = 1;
-        for(FaultyItem fi : faultyItems) {
+        for (FaultyItem fi : faultyItems) {
             if ((fi.getExpDate().isAfter(from) || fi.getExpDate().isEqual(from))
                     && (fi.getExpDate().isBefore(to) || fi.getExpDate().isEqual(to))) {
                 str.append(i++).append(")\n").append(fi).append("\n");

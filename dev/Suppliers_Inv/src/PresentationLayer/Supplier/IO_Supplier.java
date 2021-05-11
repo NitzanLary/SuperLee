@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Scanner;
 import static java.lang.System.exit;
-import static java.lang.System.in;
 
 /**
  * This is the presentation layer of the system.
@@ -217,7 +216,7 @@ public class IO_Supplier {
             int caseNumber = Integer.parseInt(scanner.nextLine());
             switch (caseNumber) {
                 case 1:
-                    creatNewOrder();
+                    createNewOrder();
                     break;
 
                 case 2:
@@ -318,8 +317,12 @@ public class IO_Supplier {
         try{
             System.out.println('\n' + "Enter Periodic Order ID You Would Like To Edit: ");
             int orderID = Integer.parseInt(scanner.nextLine());
-            if(!facadeC.checkOrderPExist(orderID)){
+            if(!facadeC.checkOrderPExist(orderID) ){
                 System.out.println("Order Does Not Exists");
+                return;
+            }
+            if (!facadeC.checkOrderPEditable(orderID)) {
+                System.out.println("Cannot edit periodic order 1 day before supply date");
                 return;
             }
             System.out.println("1. Add Product To Exists Period Order");
@@ -342,7 +345,6 @@ public class IO_Supplier {
                     int check = facadeController.facadeInv.QuantityBiggerThenInvMin(quantity,productID);
                     if(check == -1){
                         System.out.println("Item Does Not Exists");
-
                         return;
                     }
                     if(check != quantity){
@@ -929,7 +931,7 @@ public class IO_Supplier {
         }
     }
 
-    public void creatNewOrder(){
+    public void createNewOrder(){
         try{
             System.out.println('\n' + "Enter Supplier ID Which You Would Like To Take Order From: ");
             int SupplierID = Integer.parseInt(scanner.nextLine());
@@ -999,12 +1001,6 @@ public class IO_Supplier {
                             System.out.println(response.ErrorMessage);
                             return;
                         }
-                        //TODO??????
-                        response = facadeC.addProductToOrder(SupplierID, orderID,productID,quantity);
-                        if (response.ErrorMessage != null) {
-                            System.out.println(response.ErrorMessage);
-                            return;
-                        }
                         break;
 
                     case 4:
@@ -1047,7 +1043,7 @@ public class IO_Supplier {
             }
         }catch (Exception e){
             System.out.println("Invalid Input, Please Try Again");
-            creatNewOrder();
+            createNewOrder();
         }
 
 
