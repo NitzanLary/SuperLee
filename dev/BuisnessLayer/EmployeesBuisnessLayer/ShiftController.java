@@ -1,5 +1,6 @@
 package BuisnessLayer.EmployeesBuisnessLayer;
 
+import DataAccessLayer.EmployeesDataAccessLayer.DAOs.ShiftDAO;
 import DataAccessLayer.EmployeesDataAccessLayer.DTOs.ShiftDTO;
 import DataAccessLayer.EmployeesDataAccessLayer.Objects.Mapper;
 import DataAccessLayer.EmployeesDataAccessLayer.Objects.ShiftDate;
@@ -74,9 +75,17 @@ public class ShiftController {
             }
         }
         ResponseT<ShiftDTO> shiftDTO = mapper.getShift(new ShiftDate(date,StartTime,EndTime));
-        if (!shiftDTO.isErrorOccured())
-            return new ResponseT<>(fromDTO(shiftDTO.getValue()));
-        return new ResponseT<>(null, "Shift not found");
+        if (shiftDTO.isErrorOccured()) {
+            Shift shift = createShift(date, StartTime, EndTime);
+            return new ResponseT<>(shift);
+        }
+        return new ResponseT<>(fromDTO(shiftDTO.getValue()));
+    }
+
+    private Shift createShift(LocalDate date, LocalTime startTime, LocalTime endTime) {
+        if(startTime.equals(LocalTime.of(6,0)))
+            return new MorningShift(date, new ShiftDAO());
+        else return new EveningShift(date, new ShiftDAO());
     }
 
     private Shift fromDTO(ShiftDTO dto) {

@@ -166,10 +166,7 @@ public class EmployeeCLI {
     public void DisMshiftsMenu(){
         System.out.println("""
                 1) Choose shift by date
-                2) Choose shift from future shifts
-                3) Generate 1 Week Shifts forward 
                 To return to the previous menu press 0
-                
                 """);
     }
 
@@ -333,7 +330,7 @@ public class EmployeeCLI {
             System.out.println("""
                     ID: %s\tName: %s\t\tRoles: %s
                     
-                    """.formatted(e.getID().getValue(), e.getName().getValue(), shift.getAssignedRolesToString(e)));
+                    """.formatted(e.getID().getValue(), e.getName().getValue(), shift.getAllAssignedRolesForEmployeeInShift(e).getValue()));
         }
     }
 

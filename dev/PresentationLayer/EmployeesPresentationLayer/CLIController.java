@@ -79,10 +79,10 @@ public class CLIController {
         // get shift
         if (action == 1)
             handleSingleShiftMenu();
-        if (action == 2)
-            employeeCli.weeksMenu();
-        if (action == 3)
-            generate1weeklyShift();
+//        if (action == 2)
+//            employeeCli.weeksMenu();
+//        if (action == 3)
+//            generate1weeklyShift();
     }
 
     private void generate1weeklyShift() {
@@ -414,7 +414,7 @@ public class CLIController {
         if(action == 1)
             employeeCli.displayWeekly(weeklyShifts.getValue().subList(0,1));
         if(action == 2)
-            employeeCli.displayWeekly(weeklyShifts.getValue().subList(0,2));
+            employeeCli.displayWeekly(weeklyShifts.getValue().subList(1,2));
         handleSingleShiftMenu();
     }
 

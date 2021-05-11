@@ -166,27 +166,13 @@ public abstract class Shift {
         return new ResponseT<>(employees);
     }
 
-    public ResponseT<List<Role>> getAllAssignedRolesForEmployeeInShift(Employee e){
-        List<Role> assigRoles = new ArrayList<>();
+    public ResponseT<List<String>> getAllAssignedRolesForEmployeeInShift(Employee e){
+        List<String> assigRoles = new ArrayList<>();
         for(Map.Entry<String, List<Employee>> entry: assignedRolesEmp.entrySet()){
-            if (entry.getValue().contains(e))
-                assigRoles.add(new Role(entry.getKey()));
+            if (entry.getValue().stream().anyMatch(e2 -> e2.getID().getValue().equals(e.getID().getValue())))
+                assigRoles.add(entry.getKey());
         }
         return new ResponseT<>(assigRoles);
-    }
-
-    public String getAssignedRolesToString(Employee e){
-        StringBuilder res = new StringBuilder("[");
-        List<Role> assignRoles = getAllAssignedRolesForEmployeeInShift(e).getValue();
-        for(int i = 0 ; i < assignRoles.size() ; i++){
-            if(i < assignRoles.size() - 1){
-                res.append(assignRoles.get(i).getName()).append(", ");
-            }
-            else{
-                res.append(assignRoles.get(i).getName()).append("]");
-            }
-        }
-        return res.toString();
     }
 
     public ResponseT<String> getWhoIWorkWith(Employee employee){
