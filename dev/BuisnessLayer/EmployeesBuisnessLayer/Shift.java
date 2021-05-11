@@ -166,10 +166,10 @@ public abstract class Shift {
         return new ResponseT<>(employees);
     }
 
-    public ResponseT<List<String>> getAllAssignedRolesForEmployeeInShift(Employee e){
+    public ResponseT<List<String>> getAllAssignedRolesForEmployeeInShift(String id){
         List<String> assigRoles = new ArrayList<>();
         for(Map.Entry<String, List<Employee>> entry: assignedRolesEmp.entrySet()){
-            if (entry.getValue().stream().anyMatch(e2 -> e2.getID().getValue().equals(e.getID().getValue())))
+            if (entry.getValue().stream().anyMatch(e2 -> e2.getID().getValue().equals(id)))
                 assigRoles.add(entry.getKey());
         }
         return new ResponseT<>(assigRoles);

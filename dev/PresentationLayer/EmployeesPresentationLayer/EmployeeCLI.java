@@ -330,7 +330,9 @@ public class EmployeeCLI {
             System.out.println("""
                     ID: %s\tName: %s\t\tRoles: %s
                     
-                    """.formatted(e.getID().getValue(), e.getName().getValue(), shift.getAllAssignedRolesForEmployeeInShift(e).getValue()));
+                    """.formatted(e.getID().getValue(), e.getName().getValue(),
+                    FacadeController.getInstance().getAllAssignedRolesForEmployeeInShift
+                            (e.getID().getValue(), shift.getDate(), shift.getStart(), shift.getEnd()).getValue()));
         }
     }
 

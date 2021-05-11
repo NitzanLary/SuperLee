@@ -25,6 +25,8 @@ public class FacadeController {
         return facadeController;
     }
 
+
+
     /**
      *This function add new Employee to EmployeeController Hashmap of Employees only if userID is
      *HR manage or General Manger and return Response if successful, else return Response(error message)
@@ -417,6 +419,12 @@ public class FacadeController {
 
     public ResponseT<Boolean> isStorekeeperAssigned(LocalDate date, LocalTime departure){
         return shiftController.isStorekeeperAssigned(date, departure);
+    }
+
+    public ResponseT<List<String>> getAllAssignedRolesForEmployeeInShift(String EmpID, LocalDate date,
+                                                                                LocalTime start, LocalTime end) {
+
+        return shiftController.getAllAssignedRolesForEmployeeInShift(EmpID, date, start, end);
     }
 
     // init with 2 managers and 1 week forward

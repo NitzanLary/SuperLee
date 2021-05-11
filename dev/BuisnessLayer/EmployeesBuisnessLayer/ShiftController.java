@@ -266,5 +266,14 @@ public class ShiftController {
         return new ResponseT<>(weeklyShift);
     }
 
+    public ResponseT<List<String>> getAllAssignedRolesForEmployeeInShift(String EmpID, LocalDate date,
+                                                                         LocalTime start, LocalTime end){
+        ResponseT<Shift> shift = findShift(date, start, end);
+        if(shift.isErrorOccured())
+            return new ResponseT<>(null, shift.getErrorMessage());
+        return shift.getValue().getAllAssignedRolesForEmployeeInShift(EmpID);
+
+    }
+
 
 }
