@@ -8,14 +8,12 @@ public abstract class DAO {
     private final String url = "jdbc:sqlite:dev/DataBase/SuperLeeDB.db";
 
     protected Connection getConn() throws SQLException {
-        Connection conn = null;
         try {
             Class.forName("org.sqlite.JDBC");
         }catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        conn = DriverManager.getConnection(url);
-        return conn;
+        return DriverManager.getConnection(url);
     }
 
 }
