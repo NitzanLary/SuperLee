@@ -89,8 +89,9 @@ public class Delivery {
         return modification;
     }
 
-    public void addModification(String modification) {
+    public String addModification(String modification) {
         this.modification += modification;
+        return this.modification;
     }
 
     public Location getOrigin() {

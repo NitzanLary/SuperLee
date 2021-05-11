@@ -46,10 +46,17 @@ public class DeliveryController {
         this.dataController.storeDelivery(deliveryDTO);
     } // send to database todo
 
+    // TODO: check if the change in the DB is good
+    // TODO olso: check whats happened in the sys
     public Delivery updateDelivery(Delivery newDel, String OldDelID){
         Delivery toUpdate = deliveries.remove(OldDelID);
-        toUpdate.addModification("- newer "+newDel.getID()+" -");
-        newDel.addModification("- older "+OldDelID+" -");
+        String olderModification = "- newer "+newDel.getID()+" -";
+        String newerModification = "- older "+OldDelID+" -";
+
+        olderModification = toUpdate.addModification(olderModification);
+        newerModification = newDel.addModification(newerModification);
+        dataController.updateDeliveryModif(toUpdate, olderModification);
+        dataController.updateDeliveryModif(newDel, newerModification);
 //        storeDelivery(toStore);
 //        Delivery newDel = cloneDelivery(toStore);
 //        return null;

@@ -1,5 +1,6 @@
 package DataAccessLayer.DeliveryDataAccessLayer;
 
+import BuisnessLayer.DeliveryBusinessLayer.Delivery;
 import DataAccessLayer.DeliveryDataAccessLayer.DTO.DeliveryDTO;
 
 import java.sql.*;
@@ -76,9 +77,23 @@ public class DeliveryDAO extends DAO {
             pstmt.setString(2, ddto.getId());
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
 
+    }
+
+    public void updateDeliveryModif(Delivery toUpdate, String strModify) {
+        String query = """
+                UPDATE Deliveries SET modification = ? WHERE id = ?
+                """;
+        try (Connection conn = this.connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, strModify);
+            pstmt.setString(2, toUpdate.getID());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
