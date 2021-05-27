@@ -11,7 +11,6 @@ import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.*;
 
 public class SupplierFunctionTest {
     SupplierController sc = SupplierController.getInstance();
