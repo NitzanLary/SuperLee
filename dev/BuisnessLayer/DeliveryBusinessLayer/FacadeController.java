@@ -29,6 +29,11 @@ public class FacadeController {
         trc = new TruckController();
     }
 
+    public static FacadeController getInstance() {
+        //TODO
+        return null;
+    }
+
     public Response<String> toStringResponse() {
         return new Response<>("\n\n-----  System Current State:  -----\n"+
                 "\nDeliveries=\n" + dec.getDeliveriesToSend() +

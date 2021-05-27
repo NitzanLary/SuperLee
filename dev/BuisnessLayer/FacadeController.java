@@ -12,10 +12,12 @@ public class FacadeController {
     private static FacadeController facadeController = null;
     public FacadeInv facadeInv;
     public FacadeSupplier facadeSupplier;
+    public BuisnessLayer.DeliveryBusinessLayer.FacadeController facadeDelivery;
 
     private FacadeController() {
         facadeInv = FacadeInv.getInstance();
         facadeSupplier = FacadeSupplier.getInstance();
+        facadeDelivery = BuisnessLayer.DeliveryBusinessLayer.FacadeController.getInstance();
     }
 
     public static FacadeController getInstance() {
