@@ -1,0 +1,49 @@
+package DataLayer.DTO;
+
+public class ProductsOfSupplierDTO {
+
+    private Integer productID;
+    private Integer supplierID;
+    private String name;
+    private String category;
+    private double price;
+
+    public ProductsOfSupplierDTO(Integer productID, Integer supplierID, String name, String category, double price) {
+        this.productID = productID;
+        this.supplierID = supplierID;
+        this.name = name;
+        this.category = category;
+        this.price = price;
+    }
+
+    public Integer getProductID() {
+        return productID;
+    }
+
+    public Integer getSupplierID() {
+        return supplierID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductsOfSupplierDTO{" +
+                "productID: '" + this.productID + '\'' +
+                ", supplierID: '" + this.supplierID + '\'' +
+                ", name: '" + this.name + '\'' +
+                ", category: '" + this.category + '\'' +
+                ", price: '" + this.price +
+                '}';
+    }
+}
