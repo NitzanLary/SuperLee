@@ -427,6 +427,14 @@ public class FacadeController {
         return shiftController.getAllAssignedRolesForEmployeeInShift(EmpID, date, start, end);
     }
 
+    public Response addNotification(String id, String msg){
+        return employeeController.addNotification(id, msg);
+    }
+
+    public ResponseT<List<String>> getNotifications(String id){
+        return employeeController.getNotifications(id);
+    }
+
     // init with 2 managers and 1 week forward
 //    public void initData(){
 //        employeeController.initData();

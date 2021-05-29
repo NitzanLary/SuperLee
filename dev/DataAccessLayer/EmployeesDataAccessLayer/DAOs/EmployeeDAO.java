@@ -149,4 +149,49 @@ public class EmployeeDAO extends DAO{
 
     }
 
+    public Response addNotification(EmployeeDTO employee, String msg) {
+        String sql = """
+                INSERT INTO Notifications (EmpID, Message)
+                VALUES
+                (?, ?)
+                """;
+        try (Connection conn = getConn();
+             PreparedStatement pstmt = conn.prepareStatement(sql))
+        {
+
+            pstmt.setString(1, employee.getID());
+            pstmt.setString(2, msg);
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new Response(e.getMessage());
+        }
+        return new Response();
+    }
+
+    public ResponseT<List<String>> getNotifications(EmployeeDTO employee){
+        String sql = """
+                SELECT Message
+                FROM Notifications
+                WHERE EmpID == ?
+                """;
+
+        try (Connection conn = getConn();
+             PreparedStatement pstmt = conn.prepareStatement(sql))
+        {
+            List<String> msgs = new ArrayList<>();
+            pstmt.setString(1, employee.getID());
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()){
+                msgs.add(rs.getString(1));
+            }
+            return new ResponseT<>(msgs);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ResponseT(null, e.getMessage());
+        }
+    }
+
 }

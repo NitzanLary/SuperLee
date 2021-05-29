@@ -8,6 +8,7 @@ import serviceObjects.ResponseT;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 
 public class EmployeeController {
     private static EmployeeController employeeController;
@@ -136,6 +137,20 @@ public class EmployeeController {
         ResponseT<Employee> employee = getEmployee(userID);
         if (!employee.isErrorOccured())
             return employee.getValue().isDeliveryManager();
+        return new ResponseT<>(null, employee.getErrorMessage());
+    }
+
+    public Response addNotification(String empId, String msg){
+        ResponseT<Employee> employee = getEmployee(empId);
+        if (!employee.isErrorOccured())
+            return dao.addNotification(employee.getValue().getDTO(), msg);
+        return new ResponseT<>(null, employee.getErrorMessage());
+    }
+
+    public ResponseT<List<String>> getNotifications(String empId){
+        ResponseT<Employee> employee = getEmployee(empId);
+        if (!employee.isErrorOccured())
+            return dao.getNotifications(employee.getValue().getDTO());
         return new ResponseT<>(null, employee.getErrorMessage());
     }
 }
