@@ -1,6 +1,6 @@
 package DataAccessLayer.DeliveryDataAccessLayer.DTO;
 
-import BuisnessLayer.DeliveryBusinessLayer.Driver;
+import BusinessLayer.DeliveryBusinessLayer.Driver;
 
 public class DriverDTO {
     private int licenseType;

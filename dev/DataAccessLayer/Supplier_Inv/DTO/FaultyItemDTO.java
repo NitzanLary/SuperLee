@@ -1,6 +1,6 @@
-package DataLayer.DTO;
+package DataAccessLayer.Supplier_Inv.DTO;
 
-import BussinessLayer.Inventory.FaultyItem;
+import BusinessLayer.Inventory.FaultyItem;
 
 import java.time.LocalDate;
 public class FaultyItemDTO {

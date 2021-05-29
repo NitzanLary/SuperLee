@@ -1,7 +1,7 @@
 package Tests.Employees.Tests;
 
-import BuisnessLayer.EmployeesBuisnessLayer.Employee;
-import BuisnessLayer.EmployeesBuisnessLayer.Role;
+import BusinessLayer.EmployeesBuisnessLayer.Employee;
+import BusinessLayer.EmployeesBuisnessLayer.Role;
 
 import java.time.LocalDate;
 

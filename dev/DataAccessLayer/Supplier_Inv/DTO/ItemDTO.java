@@ -1,6 +1,6 @@
-package DataLayer.DTO;
+package DataAccessLayer.Supplier_Inv.DTO;
 
-import BussinessLayer.Inventory.Item;
+import BusinessLayer.Inventory.Item;
 
 public class ItemDTO {
     private int id;

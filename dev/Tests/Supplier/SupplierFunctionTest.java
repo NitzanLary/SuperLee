@@ -1,8 +1,9 @@
 package Tests.Supplier;
 
-import BussinessLayer.Supplier.ProductController;
-import BussinessLayer.Supplier.SupplierCard;
-import BussinessLayer.Supplier.SupplierController;
+import BusinessLayer.Supplier.ProductController;
+import BusinessLayer.Supplier.SupplierCard;
+import BusinessLayer.Supplier.SupplierController;
+import org.junit.Assert;
 
 import java.util.HashMap;
 
@@ -95,7 +96,7 @@ public class SupplierFunctionTest {
         }
 
         assertEquals(supCard.getSupplierName(),"Batya");
-        assertNotEquals(supCard.getSupplierName(), "Sahar");
+        Assert.assertNotEquals(supCard.getSupplierName(), "Sahar");
     }
 
     @org.junit.Test
@@ -107,6 +108,6 @@ public class SupplierFunctionTest {
         }
 
         assertEquals(supCard.isPickUp(),true);
-        assertNotEquals(supCard.isPickUp(), false);
+        Assert.assertNotEquals(supCard.isPickUp(), false);
     }
 }

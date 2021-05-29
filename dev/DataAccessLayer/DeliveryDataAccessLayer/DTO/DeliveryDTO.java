@@ -1,7 +1,7 @@
 package DataAccessLayer.DeliveryDataAccessLayer.DTO;
 
-import BuisnessLayer.DeliveryBusinessLayer.Delivery;
-import BuisnessLayer.DeliveryBusinessLayer.Task;
+import BusinessLayer.DeliveryBusinessLayer.Delivery;
+import BusinessLayer.DeliveryBusinessLayer.Task;
 
 import java.util.ArrayList;
 

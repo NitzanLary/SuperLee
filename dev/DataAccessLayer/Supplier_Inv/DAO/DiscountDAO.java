@@ -1,9 +1,9 @@
-package DataLayer.DAO;
+package DataAccessLayer.Supplier_Inv.DAO;
 
-import BussinessLayer.Inventory.Discount;
-import BussinessLayer.Response;
-import BussinessLayer.ResponseT;
-import DataLayer.DTO.DiscountDTO;
+import BusinessLayer.Inventory.Discount;
+import BusinessLayer.Response;
+import BusinessLayer.ResponseT;
+import DataAccessLayer.Supplier_Inv.DTO.DiscountDTO;
 
 import java.sql.Connection;
 import java.sql.Date;

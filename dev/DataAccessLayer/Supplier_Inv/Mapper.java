@@ -1,12 +1,12 @@
-package DataLayer;
+package DataAccessLayer.Supplier_Inv;
 
-import BussinessLayer.Inventory.*;
-import BussinessLayer.Response;
-import BussinessLayer.ResponseT;
-import BussinessLayer.Supplier.*;
-import DataLayer.DAO.*;
-import DataLayer.DTO.*;
-
+import BusinessLayer.Supplier.Order;
+import BusinessLayer.Inventory.*;
+import BusinessLayer.Response;
+import BusinessLayer.ResponseT;
+import BusinessLayer.Supplier.*;
+import DataAccessLayer.Supplier_Inv.DAO.*;
+import DataAccessLayer.Supplier_Inv.DTO.*;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -186,7 +186,7 @@ public class Mapper {
         return new ResponseT<>(res);
     }
 
-    public ResponseT<HashMap<Integer,Order>> loadOrders() {
+    public ResponseT<HashMap<Integer, Order>> loadOrders() {
         ResponseT<HashMap<Integer, OrderDTO>> orderRes = orderDAO.read();
         HashMap<Integer,Order> res = new HashMap<>();
         if (!orderRes.ErrorOccured()) {
@@ -460,7 +460,11 @@ public class Mapper {
     }
 
     public ResponseT<Integer> getNextOrderID(){
-        return orderDAO.getNextOrderID();
+        ResponseT<Integer> res = orderDAO.getNextOrderID();
+        if(res.value == null){
+            return new ResponseT<Integer>(0);
+        }
+        return res;
     }
 
     public void addProductToPeriodic(int orderID, int productID, int quantity) {

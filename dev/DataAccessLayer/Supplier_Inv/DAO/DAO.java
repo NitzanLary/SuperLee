@@ -1,6 +1,6 @@
-package DataLayer.DAO;
+package DataAccessLayer.Supplier_Inv.DAO;
 
-import BussinessLayer.ResponseT;
+import BusinessLayer.ResponseT;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

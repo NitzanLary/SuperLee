@@ -1,6 +1,7 @@
-package DataLayer.DTO;
+package DataAccessLayer.Supplier_Inv.DTO;
 
-import BussinessLayer.Inventory.Discount;
+
+import BusinessLayer.Inventory.Discount;
 
 import java.time.LocalDate;
 public class DiscountDTO {

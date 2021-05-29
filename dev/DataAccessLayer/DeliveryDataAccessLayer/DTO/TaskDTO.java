@@ -1,6 +1,6 @@
 package DataAccessLayer.DeliveryDataAccessLayer.DTO;
 
-import BuisnessLayer.DeliveryBusinessLayer.Task;
+import BusinessLayer.DeliveryBusinessLayer.Task;
 
 import java.util.HashMap;
 

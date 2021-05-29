@@ -1,11 +1,11 @@
-package DataLayer.DAO;
+package DataAccessLayer.Supplier_Inv.DAO;
 
-import BussinessLayer.Inventory.Category;
-import BussinessLayer.Response;
-import BussinessLayer.ResponseT;
-import DataLayer.DTO.CategoryDTO;
-import DataLayer.DTO.CategoryItemsDTO;
-import DataLayer.DTO.subCategoriesDTO;
+import BusinessLayer.Inventory.Category;
+import BusinessLayer.Response;
+import BusinessLayer.ResponseT;
+import DataAccessLayer.Supplier_Inv.DTO.CategoryDTO;
+import DataAccessLayer.Supplier_Inv.DTO.CategoryItemsDTO;
+import DataAccessLayer.Supplier_Inv.DTO.subCategoriesDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

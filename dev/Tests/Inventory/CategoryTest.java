@@ -1,7 +1,7 @@
 package Tests.Inventory;
 
-import BussinessLayer.Inventory.Category;
-import BussinessLayer.Inventory.Item;
+import BusinessLayer.Inventory.Category;
+import BusinessLayer.Inventory.Item;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

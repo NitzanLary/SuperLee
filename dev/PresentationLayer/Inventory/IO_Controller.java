@@ -1,8 +1,8 @@
 package PresentationLayer.Inventory;
 
-import BussinessLayer.FacadeController;
-import BussinessLayer.Inventory.FacadeInv;
-import BussinessLayer.ResponseT;
+import BusinessLayer.FacadeController;
+import BusinessLayer.Inventory.FacadeInv;
+import BusinessLayer.ResponseT;
 
 import java.time.LocalDate;
 import java.util.HashMap;

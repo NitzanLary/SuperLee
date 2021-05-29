@@ -1,9 +1,9 @@
-package DataLayer.DAO;
+package DataAccessLayer.Supplier_Inv.DAO;
 
-import BussinessLayer.Response;
-import BussinessLayer.ResponseT;
-import BussinessLayer.Supplier.Order;
-import DataLayer.DTO.OrderDTO;
+import BusinessLayer.Response;
+import BusinessLayer.ResponseT;
+import BusinessLayer.Supplier.Order;
+import DataAccessLayer.Supplier_Inv.DTO.OrderDTO;
 
 import java.sql.*;
 import java.time.LocalDate;

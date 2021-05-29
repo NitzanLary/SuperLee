@@ -1,4 +1,4 @@
-package DataLayer.DTO;
+package DataAccessLayer.Supplier_Inv.DTO;
 
 import java.time.LocalDate;
 

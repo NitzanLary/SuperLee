@@ -1,6 +1,6 @@
 package DataAccessLayer.DeliveryDataAccessLayer.DTO;
 
-import BuisnessLayer.DeliveryBusinessLayer.Location;
+import BusinessLayer.DeliveryBusinessLayer.Location;
 
 public class LocationDTO {
     private String address;

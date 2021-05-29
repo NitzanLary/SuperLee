@@ -1,6 +1,6 @@
 package DataAccessLayer.DeliveryDataAccessLayer;
 
-import BuisnessLayer.DeliveryBusinessLayer.Delivery;
+import BusinessLayer.DeliveryBusinessLayer.Delivery;
 import DataAccessLayer.DeliveryDataAccessLayer.DTO.DeliveryDTO;
 
 import java.sql.*;

@@ -1,6 +1,6 @@
-package DataLayer.DTO;
+package DataAccessLayer.Supplier_Inv.DTO;
 
-import BussinessLayer.Inventory.Category;
+import BusinessLayer.Inventory.Category;
 
 public class CategoryDTO {
     private String name;

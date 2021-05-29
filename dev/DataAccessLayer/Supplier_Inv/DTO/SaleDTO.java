@@ -1,6 +1,6 @@
-package DataLayer.DTO;
+package DataAccessLayer.Supplier_Inv.DTO;
 
-import BussinessLayer.Inventory.Sale;
+import BusinessLayer.Inventory.Sale;
 
 import java.time.LocalDateTime;
 

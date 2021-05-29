@@ -1,9 +1,9 @@
-package DataLayer.DAO;
+package DataAccessLayer.Supplier_Inv.DAO;
 
-import BussinessLayer.Response;
-import BussinessLayer.ResponseT;
-import BussinessLayer.Supplier.SupplierCard;
-import DataLayer.DTO.SupplierDTO;
+import BusinessLayer.Response;
+import BusinessLayer.ResponseT;
+import BusinessLayer.Supplier.SupplierCard;
+import DataAccessLayer.Supplier_Inv.DTO.SupplierDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

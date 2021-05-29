@@ -1,4 +1,4 @@
-package DataLayer.DTO;
+package DataAccessLayer.Supplier_Inv.DTO;
 
 public class BillOfQuantityDTO {
 

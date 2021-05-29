@@ -1,9 +1,8 @@
 package Tests.Supplier;
-
-import BussinessLayer.Supplier.BillOfQuantities;
-import BussinessLayer.Supplier.Order;
-import BussinessLayer.Supplier.OrderController;
-import BussinessLayer.Supplier.Product;
+import BusinessLayer.Supplier.BillOfQuantities;
+import BusinessLayer.Supplier.Order;
+import BusinessLayer.Supplier.OrderController;
+import BusinessLayer.Supplier.Product;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -58,6 +57,7 @@ public class OrderFunctionsTest {
         }
         assertNull(oc.getOrders().get(orderNum));
     }
+
 
     @Test
     public void updateProdQuantity() {

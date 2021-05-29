@@ -1,9 +1,9 @@
-package DataLayer.DAO;
+package DataAccessLayer.Supplier_Inv.DAO;
 
-import BussinessLayer.Inventory.FaultyItem;
-import BussinessLayer.Response;
-import BussinessLayer.ResponseT;
-import DataLayer.DTO.FaultyItemDTO;
+import BusinessLayer.Inventory.FaultyItem;
+import BusinessLayer.Response;
+import BusinessLayer.ResponseT;
+import DataAccessLayer.Supplier_Inv.DTO.FaultyItemDTO;
 
 import java.sql.Connection;
 import java.sql.Date;

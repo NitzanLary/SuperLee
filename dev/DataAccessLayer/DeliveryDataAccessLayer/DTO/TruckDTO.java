@@ -1,6 +1,6 @@
 package DataAccessLayer.DeliveryDataAccessLayer.DTO;
 
-import BuisnessLayer.DeliveryBusinessLayer.Truck;
+import BusinessLayer.DeliveryBusinessLayer.Truck;
 
 public class TruckDTO {
     private String id;
