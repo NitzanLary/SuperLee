@@ -33,6 +33,14 @@ public class FacadeSupplier {
     }
 
 
+    public OrderController getOrderController() {
+        return orderController;
+    }
+
+    public SupplierController getSupplierController() {
+        return supController;
+    }
+
     /***************** Supplier & Products Functions: ***************/
 
     public Response createSupCard(String supplierName, int supplierID, String address, String email, int bankAcc,
@@ -568,6 +576,7 @@ public class FacadeSupplier {
                     sb.append("\t\tProduct: "+productId+"\tAmount: "+amount+"\n");
                 }
                 finalPriceForOrder(orderId, supplierId);
+                // send info for delivery
             }
             return new ResponseT<>(sb);
         } catch (Exception e) {
@@ -577,5 +586,9 @@ public class FacadeSupplier {
 
     public boolean checkOrderPEditable(int orderID) {
         return orderController.checkOrderPEditable(orderID);
+    }
+
+    public boolean needPickUp(int supplier) {
+        return supController.needPickUp(supplier);
     }
 }

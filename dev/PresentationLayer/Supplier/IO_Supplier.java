@@ -551,6 +551,11 @@ public class IO_Supplier {
                 System.out.println(resp.ErrorMessage);
                 return pOrderID;
             }
+
+            //we sent each order details to delivery ONLY if he need pickup
+            if(facadeC.needPickUp(supplier)){
+                facadeController.sendOrderToDelivery(orderID,supplier);
+            }
         }
         return -1;
     }

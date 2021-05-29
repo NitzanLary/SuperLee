@@ -195,5 +195,7 @@ public class SupplierController {
     }
 
 
-
+    public boolean needPickUp(int supplierID) {
+        return suppliers.get(supplierID).isPickUp();
+    }
 }
