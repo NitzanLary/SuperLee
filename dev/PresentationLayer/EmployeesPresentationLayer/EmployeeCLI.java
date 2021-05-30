@@ -39,7 +39,6 @@ public class EmployeeCLI {
 
 //        String ID;
         int action;
-
         do {
 //            DisloginMenu();
 //            ID = scanner.next();
@@ -84,14 +83,15 @@ public class EmployeeCLI {
                 Please Enter ID:
                 
                 
-                
                 To exit press 0 
                 """);
     }
 
 
     public void DisMmainMenu(){
+        cliController.displayNotifications();
         System.out.println("""
+                
                 1) Employees Menu
                 2) Shifts Menu
                 To exit press 0
@@ -247,7 +247,9 @@ public class EmployeeCLI {
     }
 
     public void DisEmainMenu(){
+        cliController.displayNotifications();
         System.out.println("""
+                
                 1) Show all my information
                 2) Show my preferences for a shift
                 3) Apply preferences for a shift

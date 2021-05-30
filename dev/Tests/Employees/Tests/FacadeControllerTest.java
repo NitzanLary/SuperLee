@@ -8,6 +8,7 @@ import DataAccessLayer.EmployeesDataAccessLayer.DTOs.RoleDTO;
 import DataAccessLayer.EmployeesDataAccessLayer.DTOs.ShiftDTO;
 import DataAccessLayer.EmployeesDataAccessLayer.Objects.Mapper;
 import DataAccessLayer.EmployeesDataAccessLayer.Objects.ShiftDate;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import serviceObjects.Response;
 import serviceObjects.ResponseT;
@@ -26,7 +27,7 @@ class FacadeControllerTest {
     EmployeeController employeeController;
     ShiftController shiftController;
 
-    @org.junit.jupiter.api.BeforeEach
+    @BeforeEach
     void setUp() {
         facade = FacadeController.getInstance();
         //facade.initData();
@@ -59,7 +60,7 @@ class FacadeControllerTest {
         ResponseT<Employee> rE = employeeController.getEmployee("312174295");
         assertFalse(rE.isErrorOccured());
         assertFalse(rE.getValue().getName().isErrorOccured());
-        assertTrue(rE.getValue().getName().getValue().equals("new"));
+        assertEquals("new", rE.getValue().getName().getValue());
     }
 
     @Test
@@ -238,6 +239,20 @@ class FacadeControllerTest {
         Response r = shift.getValue().AssignEmployee(emp, "SomeRole");
         failureHelper(r);
     }
+
+    @Test
+    void Notifications(){
+        Response r1 = facade.addNotification("205952971", "Test1");
+        Response r2 = facade.addNotification("205952971", "Test2");
+        Response r3 = facade.addNotification("208162644", "RAFA note");
+        failureHelper(r1);
+        failureHelper(r2);
+        failureHelper(r3);
+        ResponseT<List<String>> messages = facade.getNotifications("205952971");
+        failureHelper(messages);
+        messages.getValue().forEach(System.out::println);
+    }
+
 
     void failureHelper(Response r){
         if (r.isErrorOccured()){
