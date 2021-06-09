@@ -7,6 +7,7 @@ public class ProductsOfSupplierDTO {
     private String name;
     private String category;
     private double price;
+    private int pidSuperLee;
 
     public ProductsOfSupplierDTO(Integer productID, Integer supplierID, String name, String category, double price) {
         this.productID = productID;
@@ -34,6 +35,10 @@ public class ProductsOfSupplierDTO {
 
     public double getPrice() {
         return price;
+    }
+
+    public int getPidSuperLee() {
+        return pidSuperLee;
     }
 
     @Override

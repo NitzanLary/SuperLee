@@ -1,5 +1,7 @@
 package BusinessLayer.Supplier;
 
+import java.util.HashMap;
+
 public class SupplierCard {
     private String supplierName;
     private int supplierID;

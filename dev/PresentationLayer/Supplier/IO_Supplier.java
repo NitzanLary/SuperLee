@@ -552,10 +552,9 @@ public class IO_Supplier {
                 return pOrderID;
             }
 
-            //we sent each order details to delivery ONLY if he need pickup
-            if(facadeC.needPickUp(supplier)){
-                facadeController.sendOrderToDelivery(orderID,supplier);
-            }
+            boolean pickup = facadeC.needPickUp(supplier);
+            facadeController.sendOrderToDelivery(orderID,supplier,pickup);
+
         }
         return -1;
     }
@@ -911,8 +910,11 @@ public class IO_Supplier {
 
             if(!checkSupExist(SupplierID)){return;}
 
-            System.out.println("Enter Product ID: ");
+            System.out.println("Enter Supplier Product ID: ");
             int pid = Integer.parseInt(scanner.nextLine());
+
+            System.out.println("Enter Super-Lee Product ID: ");
+            int pidSuperLee = Integer.parseInt(scanner.nextLine());
 
             System.out.println("Enter Product Name : ");
             String name = scanner.nextLine();
@@ -927,7 +929,7 @@ public class IO_Supplier {
                 return;
             }
 
-            Response res = facadeC.addProductToSupplier(SupplierID,pid,name,category,price);
+            Response res = facadeC.addProductToSupplier(SupplierID,pid,name,category,price,pidSuperLee);
             if (res.ErrorMessage != null) {
                 System.out.println(res.ErrorMessage);
                 return;

@@ -6,13 +6,15 @@ public class Product {
     private String name;
     private String category;
     private double price;
+    private int pidSuperLee;
 
-    public Product(int productID, int supplierID, String name, String category, double price){
+    public Product(int productID, int supplierID, String name, String category, double price,int pidSuperLee){
         this.productID = productID;
         this.supplierID = supplierID;
         this.name = name;
         this.category = category;
         this.price = price;
+        this.pidSuperLee = pidSuperLee;
     }
 
     public int getSupplierID() {
@@ -29,5 +31,9 @@ public class Product {
 
     public int getProductID() {
         return productID;
+    }
+
+    public int getPidSuperLee() {
+        return pidSuperLee;
     }
 }

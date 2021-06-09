@@ -226,7 +226,7 @@ public class Mapper {
             }
             for (ProductsOfSupplierDTO dbProdOfSupp : productRes.value) {
                 res.get(dbProdOfSupp.getSupplierID()).put(dbProdOfSupp.getProductID(), new Product(dbProdOfSupp.getProductID(), dbProdOfSupp.getSupplierID(), dbProdOfSupp.getName(),
-                        dbProdOfSupp.getCategory(),dbProdOfSupp.getPrice()));
+                        dbProdOfSupp.getCategory(),dbProdOfSupp.getPrice(),dbProdOfSupp.getPidSuperLee()));
             }
         } else {
             return new ResponseT<>("Could not load orders");
@@ -447,8 +447,8 @@ public class Mapper {
         billOfQuantityDAO.deleteProduct(supplierID,prodID);
     }
 
-    public Response addProductToSupplier(int productID, int supplierID, String name, String category, double price) {
-        return productsOfSupplierDAO.insert(productID,supplierID,name,category,price);
+    public Response addProductToSupplier(int productID, int supplierID, String name, String category, double price, int pidSuperLee) {
+        return productsOfSupplierDAO.insert(productID,supplierID,name,category,price,pidSuperLee);
     }
 
     public void deleteProductFromSupplier(int supplierID, int productID) {

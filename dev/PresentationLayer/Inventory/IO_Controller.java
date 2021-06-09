@@ -243,7 +243,7 @@ public class IO_Controller {
         try {
             List<String> cats = io.getList("Enter the names of the categories to view");
             ResponseT<HashMap<Integer, Integer>> reportResponse = invCtrl.catReport(cats);
-            ResponseT<StringBuilder> orderResponse = facadeController.facadeSupplier.ordersByLack(reportResponse.value);
+            ResponseT<StringBuilder> orderResponse = facadeController.ordersByLack(reportResponse.value);
             io.print(reportResponse.ErrorMessage);
             if (!orderResponse.ErrorOccured())
                 io.print(orderResponse.value.toString());

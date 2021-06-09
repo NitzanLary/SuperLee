@@ -24,7 +24,7 @@ public class OrderFunctionsTest {
     @Before
     public void setUp() throws Exception {
         oc = OrderController.getInstance();
-        product = new Product(800,1,"Bamba","Snacks", 3.5);
+        product = new Product(800,1,"Bamba","Snacks", 3.5,2);
         products = new HashMap<>();
         products.put(800,100);
         orderNum = oc.nextOrderID;
