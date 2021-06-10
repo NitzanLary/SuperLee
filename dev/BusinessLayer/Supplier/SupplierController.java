@@ -74,11 +74,11 @@ public class SupplierController {
         prodController.deleteBillOfQuantity(supplierID);
     }
 
-    public void addProductToSupplier(int supplierID, int productID, String name, String category, double price) {
+    public void addProductToSupplier(int supplierID, int productID, String name, String category, double price, int pidSuperLee) {
         if (!suppliers.containsKey(supplierID)){
             throw new IllegalArgumentException("This Supplier Does Not Exists In The System");
         }
-        prodController.addProductToSupplier(supplierID, productID, name, category, price);
+        prodController.addProductToSupplier(supplierID, productID, name, category, price,pidSuperLee);
     }
 
     public void removeProductToSupplier(int supplierID, int productID) {

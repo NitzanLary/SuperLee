@@ -8,9 +8,8 @@ import serviceObjects.ResponseT;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.Callable;
 
 public class FacadeController {
     DeliveryController dec;
@@ -18,6 +17,7 @@ public class FacadeController {
     AreaController arc;
     TaskController tac;
     TruckController trc;
+    BusinessLayer.EmployeesBuisnessLayer.FacadeController efc;
 
     public FacadeController(){
         dec = new DeliveryController();
@@ -25,6 +25,7 @@ public class FacadeController {
         arc = new AreaController();
         tac = new TaskController();
         trc = new TruckController();
+        efc = BusinessLayer.EmployeesBuisnessLayer.FacadeController.getInstance();
     }
 
     public static FacadeController getInstance() {
@@ -262,5 +263,76 @@ public class FacadeController {
                     return new Response<>(true);
         }
         return new Response<>(false);
+    }
+
+    /**
+     * module supplier call this method for create auto periodic order
+     * @param lstOfProducts - <makat, quantity, ?cost?, ?another makat?, ect..>
+     * @param destinationDetails - <address, contact name, phone number, ect???...>
+     * @param loadingOrUnloading - loading if we get products from supplier, unloading if we drop shipment  (Farjun's explanation)
+     * @param daysOfSupplying - list of LocalDate
+     * @return
+     */
+    public Response<Boolean> assignAutoTask(HashMap<String, Integer> lstOfProducts, HashMap<String, Object> destinationDetails, String loadingOrUnloading, ArrayList<LocalDate> daysOfSupplying){
+        Location location = arc.getLocation((String) destinationDetails.get("address")); // todo: check what in the destinationDetails
+        String taskId = tac.addTask(lstOfProducts, loadingOrUnloading, location);
+        for (LocalDate date : daysOfSupplying){
+            DeliveryDTO deliveryDTO = dec.getDeliveriesByDate(date);
+            if (deliveryDTO != null){
+                ArrayList<TaskDTO> arr = deliveryDTO.getDestinations();
+                arr.add(new TaskDTO(tac.getTaskById(taskId)));
+                deliveryDTO.setDestinations(deliveryDTO.getDestinations());
+                updateDelivery(deliveryDTO, deliveryDTO.getId());
+                return new Response(true);
+            }
+            Object[] constraints = checkConstraintsDelivery(date);
+            if (constraints != null){
+//                dec.tryToCreateDelivery(((DriverDTO) constraints[0]).getEmployeeName(), ((TruckDTO) constraints[1]).getId(), (LocalTime) constraints[2], date, new TaskDTO(tac.getTaskById(taskId)));
+                dec.createNewDelivery(new DeliveryDTO(date.toString(), ((LocalTime) constraints[2]).toString(),
+                        ((TruckDTO) constraints[1]).getId(), ((DriverDTO) constraints[0]).getEmployeeName(),
+                        0, "", new LocationDTO(location), new ArrayList<TaskDTO>(Arrays.asList(new TaskDTO(tac.getTaskById(taskId))))),
+                        );
+                return new Response<>(true);
+            }
+
+        }
+// TODO: notifyHRManager(); talk to N&Y !
+        // TODO AddRegularTask() !!
+        return new Response<>(false);
+    }
+
+    public Object[] checkConstraintsDelivery(LocalDate date) {
+        LocalTime MShift = LocalTime.parse("10:00");
+        LocalTime EShift = LocalTime.parse("16:00");
+        LocalTime[] possibleShifts = new LocalTime[]{MShift, EShift};
+        for (LocalTime shift : possibleShifts){
+            boolean thereIsStorekeeper = efc.isStorekeeperAssigned(date, shift).getValue();
+            if (!thereIsStorekeeper)
+                continue;
+            ArrayList<TruckDTO> truckLst = getTrucks();
+            for (TruckDTO truckDTO : truckLst){
+                ArrayList<DriverDTO> driverDTOS = getAllDrivers(date, shift, truckDTO);
+                if (!driverDTOS.isEmpty()){
+                    Object[] arr = new Object[3];
+                    arr[0] = driverDTOS.get(0);
+                    arr[1] = truckDTO;
+                    arr[2] = shift;
+                }
+
+            }
+
+        }
+        return null;
+    }
+
+    public ArrayList<DriverDTO> getAllDrivers(LocalDate date, LocalTime shift, TruckDTO ride){
+        ArrayList<DriverDTO> ret = new ArrayList<>();
+        ResponseT<List <Employee>> drivers = ShiftController.getInstance().getAllAssignedDrivers(date, shift);
+
+        for (BusinessLayer.EmployeesBuisnessLayer.Employee driver : drivers.getValue()){
+            if (driver.getLicenceType().getValue() >= ride.getTruckWeight())
+                ret.add(new DriverDTO(driver.getLicenceType().getValue(),driver.getName().getValue()));
+        }
+        return ret;
     }
 }

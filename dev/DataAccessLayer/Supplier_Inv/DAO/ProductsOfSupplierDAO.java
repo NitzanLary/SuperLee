@@ -13,9 +13,9 @@ import java.util.List;
 
 public class ProductsOfSupplierDAO extends DAO {
 
-    public Response insert(Integer productID, Integer supplierID, String name, String category, double price) {
+    public Response insert(Integer productID, Integer supplierID, String name, String category, double price, int pidSuperLee) {
 
-        String product = "INSERT INTO ProductsOfSupplier (productID, supplierID, name, category, price) VALUES (?, ?, ?, ?, ?)";
+        String product = "INSERT INTO ProductsOfSupplier (productID, supplierID, name, category, price,pidSuperLee) VALUES (?, ?, ?, ?, ?,?)";
 
         try {Connection conn = getConn().value;
              PreparedStatement pstmt = conn.prepareStatement(product);
@@ -26,6 +26,7 @@ public class ProductsOfSupplierDAO extends DAO {
             pstmt.setString(3,name);
             pstmt.setString(4, category);
             pstmt.setDouble(5, price);
+            pstmt.setInt(6,pidSuperLee);
 
             pstmt.execute();
 
@@ -38,7 +39,7 @@ public class ProductsOfSupplierDAO extends DAO {
 
     public Response insert(ProductsOfSupplierDTO productOfSup){
         return insert(productOfSup.getProductID(), productOfSup.getSupplierID(), productOfSup.getName(),
-                productOfSup.getCategory(), productOfSup.getPrice());
+                productOfSup.getCategory(), productOfSup.getPrice(), productOfSup.getPidSuperLee());
     }
 
     public Response delete(Integer supplierID, Integer productID) {

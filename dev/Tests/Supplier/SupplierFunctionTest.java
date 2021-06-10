@@ -24,9 +24,9 @@ public class SupplierFunctionTest {
                 "credit card","shimon 052-6093400" , "Sunday", false);;
         supCard = sc.getSuppliers().get(1);
 
-        sc.addProductToSupplier(1,800,"Bamba","Snacks",3.5);
-        sc.addProductToSupplier(1,801,"Bisly","Snacks",4.5);
-        sc.addProductToSupplier(1,802,"Apropo","Snacks",3);
+        sc.addProductToSupplier(1,800,"Bamba","Snacks",3.5,2);
+        sc.addProductToSupplier(1,801,"Bisly","Snacks",4.5,2);
+        sc.addProductToSupplier(1,802,"Apropo","Snacks",3,2);
 
     }
 

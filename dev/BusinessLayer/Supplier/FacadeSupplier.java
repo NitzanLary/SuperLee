@@ -205,9 +205,9 @@ public class FacadeSupplier {
         }
     }
 
-    public Response addProductToSupplier(int supplierID, int productID, String name, String category, double price) {
+    public Response addProductToSupplier(int supplierID, int productID, String name, String category, double price,int pidSuperLee) {
         try {
-            supController.addProductToSupplier(supplierID, productID, name, category, price);
+            supController.addProductToSupplier(supplierID, productID, name, category, price,pidSuperLee);
             return new Response();
         } catch (Exception e) {
             return new Response(e.getMessage());
@@ -472,6 +472,7 @@ public class FacadeSupplier {
         HashMap<Integer, HashMap<Integer, Integer>> supplierAndProds = new HashMap<>(); //Integer:supplier, HashMap: his products
         // iterate over all items that we need to find them cheapest supplier
         for (Integer item : prods.keySet()) {
+            int supplierPID = -1;
             int cheapestSupplier = -1;
             double cheapestPrice = -1;
             HashMap<Integer, HashMap<Integer, Product>> SAP = orderController.prodController.getSupplierProd();
@@ -480,10 +481,11 @@ public class FacadeSupplier {
                 HashMap<Integer, Product> products = SAP.get(supplierID);
                 // iterate over all supplierID products
                 for (Product product : products.values()) {
-                    if (product.getProductID() == item) {
+                    if (product.getPidSuperLee() == item) {
                         // if only one supplier supply this product
                         if (cheapestSupplier == -1) {
                             cheapestSupplier = supplierID;
+                            supplierPID = product.getProductID();
                             cheapestPrice = orderController.prodController.calculateDiscount(product.getProductID(), prods.get(item), supplierID);
                         } else {
                             // if we found cheaper supplier that supply this product
@@ -491,6 +493,7 @@ public class FacadeSupplier {
                             if (price < cheapestPrice) {
                                 cheapestSupplier = supplierID;
                                 cheapestPrice = product.getPrice();
+                                supplierPID = product.getProductID();
                             }
                         }
                     }
@@ -506,7 +509,7 @@ public class FacadeSupplier {
             } else {
                 products = new HashMap<>();
             }
-            products.put(item, prods.get(item)); //itemID + quantity
+            products.put(supplierPID, prods.get(item)); //itemID + quantity
             supplierAndProds.put(cheapestSupplier, products);
         }
         return supplierAndProds;
@@ -569,7 +572,8 @@ public class FacadeSupplier {
             for (Integer supplierId : orders.keySet()) {
                 HashMap<Integer, Integer> productsOfSupplier = orders.get(supplierId);
                 int orderId = createOrder(supplierId).value;
-                sb.append("\tSupplier id: "+supplierId+"\n");
+                sb.append("\tOrderID: "+orderId+"\n");
+                sb.append("\tSupplierID: "+supplierId+"\n");
                 for (Integer productId : orders.get(supplierId).keySet()) {
                     int amount = productsOfSupplier.get(productId);
                     addProductToOrder(supplierId, orderId, productId, amount);

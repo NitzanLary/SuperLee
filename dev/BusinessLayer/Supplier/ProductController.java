@@ -61,13 +61,13 @@ public class ProductController {
         }
     }
 
-    public void addProductToSupplier(int supplierID, int productID, String name, String category, double price) {
+    public void addProductToSupplier(int supplierID, int productID, String name, String category, double price, int pidSuperLee) {
         if (supplierProd.containsKey(supplierID)) {
             if (supplierProd.get(supplierID).containsKey(productID)) {
                 throw new IllegalArgumentException("This Item Already Exists In The Supplier Products List");
             } else {
-                Response res = mapper.addProductToSupplier(productID, supplierID, name, category, price);
-                BusinessLayer.Supplier.Product prod = new BusinessLayer.Supplier.Product(productID, supplierID, name, category, price);
+                Response res = mapper.addProductToSupplier(productID, supplierID, name, category, price,pidSuperLee);
+                BusinessLayer.Supplier.Product prod = new BusinessLayer.Supplier.Product(productID, supplierID, name, category, price,pidSuperLee);
                 supplierProd.get(supplierID).put(productID, prod);
             }
         }
