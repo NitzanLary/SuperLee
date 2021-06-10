@@ -153,5 +153,12 @@ public class EmployeeController {
             return dao.getNotifications(employee.getValue().getDTO());
         return new ResponseT<>(null, employee.getErrorMessage());
     }
+
+    public ResponseT<Boolean> hasRole(String id, String role) {
+        ResponseT<Employee> employee = getEmployee(id);
+        if (!employee.isErrorOccured())
+            return employee.getValue().haveRoleCheck(role) ? new ResponseT<>(true) : new ResponseT<>(false);
+        return new ResponseT<>(null, employee.getErrorMessage());
+    }
 }
 

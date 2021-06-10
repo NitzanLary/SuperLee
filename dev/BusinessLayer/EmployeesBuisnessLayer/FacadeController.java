@@ -47,11 +47,6 @@ public class FacadeController {
 
         return update(userID, () -> employeeController.AddEmployee(EmpID, name, bankAccount, salary, sickDays, studyFund,
                 daysOff, roleName, licence, _dateOfHire));
-//        ResponseT<Employee> rE = checkAuthorization(userID);
-//        if (rE.isErrorOccured())
-//            return rE;
-//        return employeeController.AddEmployee(EmpID, name, bankAccount, salary, sickDays, studyFund,
-//                daysOff, roleName, licence, _dateOfHire);
     }
 
     private Response update(String userID, ResponseUpdate updateFunc){
@@ -70,10 +65,6 @@ public class FacadeController {
      */
     public Response updateEmpName(String userID, String EmpID, String newEmpName){
         return update(userID, () -> employeeController.setEmpName(EmpID, newEmpName));
-//        ResponseT<Employee> rE = checkAuthorization(userID);
-//        if (rE.isErrorOccured())
-//            return rE;
-//        return employeeController.setEmpName(EmpID, newEmpName);
     }
 
     /**
@@ -85,10 +76,6 @@ public class FacadeController {
      */
     public Response updateEmpBankAccount(String userID, String EmpID, String newBankAccount) {
         return update(userID, () -> employeeController.updateEmpBankAccount(EmpID, newBankAccount));
-//        ResponseT<Employee> rE = checkAuthorization(userID);
-//        if (rE.isErrorOccured())
-//            return rE;
-//        return employeeController.updateEmpBankAccount(EmpID, newBankAccount);
     }
 
     /**
@@ -100,10 +87,6 @@ public class FacadeController {
      */
     public Response updateEmpSalary(String userID, String EmpID, int newSalary) {
         return update(userID, () -> employeeController.updateEmpSalary(EmpID, newSalary));
-//        ResponseT<Employee> rE = checkAuthorization(userID);
-//        if (rE.isErrorOccured())
-//            return rE;
-//        return employeeController.updateEmpSalary(EmpID, newSalary);
     }
 
     /**
@@ -115,10 +98,6 @@ public class FacadeController {
      */
     public Response updateEmpSickDays(String userID, String EmpID, int UpdatedsickDays){
         return update(userID, () -> employeeController.updateEmpSickDays(EmpID, UpdatedsickDays));
-//        ResponseT<Employee> rE = checkAuthorization(userID);
-//        if (rE.isErrorOccured())
-//            return rE;
-//        return employeeController.updateEmpSickDays(EmpID, UpdatedsickDays);
     }
 
     /**
@@ -130,10 +109,6 @@ public class FacadeController {
      */
     public Response updateEmpStudyFund(String userID, String EmpID, int newStudyFund) {
         return update(userID, () -> employeeController.updateEmpStudyFund(EmpID, newStudyFund));
-//        ResponseT<Employee> rE = checkAuthorization(userID);
-//        if (rE.isErrorOccured())
-//            return rE;
-//        return employeeController.updateEmpStudyFund(EmpID, newStudyFund);
     }
 
     /**
@@ -145,10 +120,6 @@ public class FacadeController {
      */
     public Response updateEmpDaysOff(String userID, String EmpID, int newDaysOff) {
         return update(userID, () -> employeeController.updateEmpDaysOff(EmpID, newDaysOff));
-//        ResponseT<Employee> rE = checkAuthorization(userID);
-//        if (rE.isErrorOccured())
-//            return rE;
-//        return employeeController.updateEmpDaysOff(EmpID, newDaysOff);
     }
 
     /**
@@ -160,10 +131,6 @@ public class FacadeController {
      */
     public Response addRoleToEmp(String userID, String EmpID, String role){
         return update(userID, () -> employeeController.addRoleToEmp(EmpID, role));
-//        ResponseT<Employee> rE = checkAuthorization(userID);
-//        if (rE.isErrorOccured())
-//            return rE;
-//        return employeeController.addRoleToEmp(EmpID, role);
     }
 
     /**
@@ -433,6 +400,15 @@ public class FacadeController {
 
     public ResponseT<List<String>> getNotifications(String id){
         return employeeController.getNotifications(id);
+    }
+
+    public ResponseT<Boolean> isEmployee(String id) {
+        return employeeController.getEmployee(id).isErrorOccured() ?
+                new ResponseT<>(false) : new ResponseT<>(true);
+    }
+
+    public ResponseT<Boolean> hasRole(String id, String role) {
+        return employeeController.hasRole(id, role);
     }
 
     // init with 2 managers and 1 week forward
