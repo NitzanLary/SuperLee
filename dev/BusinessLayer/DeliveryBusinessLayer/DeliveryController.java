@@ -6,6 +6,7 @@ import DataAccessLayer.DeliveryDataAccessLayer.Mapper;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class DeliveryController {
@@ -210,6 +211,17 @@ public class DeliveryController {
 
     public ArrayList<DeliveryDTO> getDeliveriesData() {
         return mapper.getDeliveries();
+    }
+
+    public DeliveryDTO getDeliveriesByDate(LocalDate date) {
+        ArrayList<DeliveryDTO> ret = new ArrayList<>();
+        ArrayList<DeliveryDTO> deliveryDTOS = mapper.getDeliveries();
+        for (DeliveryDTO deliveryDTO : deliveryDTOS){
+            if (deliveryDTO.getDate() == date.format(DateTimeFormatter.ofPattern("d-M-uu")) && deliveryDTO.getDepartureWeight() > 0)
+                return deliveryDTO;
+
+        }
+        return null;
     }
 
 //    public ArrayList<DeliveryDTO> getTasksFromDeliveriesData() {

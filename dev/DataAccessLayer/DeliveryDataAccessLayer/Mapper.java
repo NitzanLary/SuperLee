@@ -7,6 +7,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.ResolverStyle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -432,6 +435,27 @@ public class Mapper {
     public void removeDelivery(DeliveryDTO deliveryDTO) {
         deliveries.remove(deliveryDTO.getId());
     }
+
+//    public ArrayList<DeliveryDTO> getLastDeliveryByDate(LocalDate date) {
+//        ArrayList<DeliveryDTO> ret = getDeliveries();
+//        String query = "select * from deliveries WHERE deliveries.date = (?)";
+//        try (Connection conn = deliveryDAO.connect();
+//             PreparedStatement pstmt = conn.prepareStatement(query)) {
+//
+//            pstmt.setString(1, ));
+//            ResultSet rs = pstmt.executeQuery();
+//
+//            if(!rs.next()) {
+//                return null;
+//            }
+//            return rs.getString(1);
+//        }
+//        catch(SQLException e) {
+//            System.out.println(e.getStackTrace());
+//        }
+//        return null;
+//    }
+//    }
 
 //    public void storeLocation(AreaDTO areaDTO, LocationDTO locationDTO){
 //        areas.get(areaDTO.getAreaName()).addLocation(locationDTO);

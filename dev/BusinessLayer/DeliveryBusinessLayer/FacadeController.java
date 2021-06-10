@@ -263,4 +263,25 @@ public class FacadeController {
         }
         return new Response<>(false);
     }
+
+    /**
+     * module supplier call this method for create auto periodic order
+     * @param lstOfProducts - <makat, quantity, ?cost?, ?another makat?, ect..>
+     * @param destinationDetails - <address, contact name, phone number, ect???...>
+     * @param loadingOrUnloading - loading if we get products from supplier, unloading if we drop shipment  (Farjun's explanation)
+     * @param daysOfSupplying - list of LocalDate
+     * @return
+     */
+    public Response assignAutoTask(HashMap<String, Integer> lstOfProducts, HashMap<String, Object> destinationDetails, String loadingOrUnloading, ArrayList<LocalDate> daysOfSupplying){
+        Location location = arc.getLocation((String) destinationDetails.get("address"));
+        String taskId = tac.addTask(lstOfProducts, loadingOrUnloading, location);
+        for (LocalDate date : daysOfSupplying){
+            DeliveryDTO deliveryDTO = dec.getDeliveriesByDate(date);
+            if (deliveryDTO != null){
+
+            }
+        }
+
+
+    }
 }
