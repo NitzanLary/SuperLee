@@ -1,13 +1,25 @@
 package BusinessLayer.DeliveryBusinessLayer;
 
+import BusinessLayer.EmployeesBuisnessLayer.Employee;
+import BusinessLayer.EmployeesBuisnessLayer.ShiftController;
+import BusinessLayer.Supplier.FacadeSupplier;
 import DataAccessLayer.DeliveryDataAccessLayer.DTO.DeliveryDTO;
+import DataAccessLayer.DeliveryDataAccessLayer.DTO.DriverDTO;
+import DataAccessLayer.DeliveryDataAccessLayer.DTO.TaskDTO;
+import DataAccessLayer.DeliveryDataAccessLayer.DTO.TruckDTO;
 import DataAccessLayer.DeliveryDataAccessLayer.DeliveryDAO;
 import DataAccessLayer.DeliveryDataAccessLayer.Mapper;
+import serviceObjects.ResponseT;
 
+import javax.security.auth.callback.Callback;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.function.Function;
+import java.lang.reflect.Method;
 
 public class DeliveryController {
     private HashMap<String, Delivery> deliveries; // changes it to deliveries
@@ -222,6 +234,20 @@ public class DeliveryController {
 
         }
         return null;
+    }
+
+
+    public boolean tryToCreateDelivery(DriverDTO driverDTO, TruckDTO truckDTO, LocalTime shift, LocalDate date, TaskDTO taskDTO) {
+
+        BusinessLayer.EmployeesBuisnessLayer.FacadeController efc = BusinessLayer.EmployeesBuisnessLayer.FacadeController.getInstance();
+        LocalTime MShift = LocalTime.parse("10:00");
+        LocalTime EShift = LocalTime.parse("16:00");
+        LocalTime[] possibleShifts = new LocalTime[]{MShift, EShift};
+        for (LocalTime shift : possibleShifts){
+            boolean thereIsStorekeeper = efc.isStorekeeperAssigned(date, shift).getValue();
+            ResponseT<List <Employee>> drivers = getAllAssignedDrivers.invoke(date, shift)//ShiftController.getInstance().getAllAssignedDrivers(date, shift);
+
+        }
     }
 
 //    public ArrayList<DeliveryDTO> getTasksFromDeliveriesData() {
