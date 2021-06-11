@@ -7,7 +7,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public abstract class DAO {
-    private static String url = "jdbc:sqlite:dev/Suppliers_Inv/src/DataLayer/Super-Li.db";
+    private static final String url = "jdbc:sqlite:dev/Suppliers_Inv/Super-Li.db";
     private static Connection conn;
 
     public static ResponseT<Connection> getConn() {

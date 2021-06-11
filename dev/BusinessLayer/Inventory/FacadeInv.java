@@ -41,7 +41,6 @@ public class FacadeInv {
             stockCtrl.removeFromShelf(id, amountOfFaulty);
         } else
             stockCtrl.removeFromStorage(id, amountOfFaulty);
-        Item item = stockCtrl.getItem(id);
         return recCtrl.addFaulty(id, LocalDate.now() ,amountOfFaulty);
     }
 

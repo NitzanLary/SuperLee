@@ -35,8 +35,8 @@ public class RecordController {
     }
 
     //adds a faulty item to list of faulty items returns faulty item object
-    public boolean addFaulty(int itemId, LocalDate expDate, int amountOfFaulyt) {
-        FaultyItem newFI = new FaultyItem(itemId, expDate, amountOfFaulyt);
+    public boolean addFaulty(int itemId, LocalDate expDate, int amountOfFaulty) {
+        FaultyItem newFI = new FaultyItem(itemId, expDate, amountOfFaulty);
         if (mapper.addFaulty(newFI).ErrorOccured() )
             return false;
         return faultyItems.add(newFI);
