@@ -44,6 +44,13 @@ public class IO_Controller {
 
     public void accRejOrder() {
         int orderId = io.getInt("Enter order ID");
+        String delivery = facadeController.getOrderString(orderId);
+        if(delivery != null) {
+            io.print(delivery);
+        } else {
+            io.print("No such order: " + orderId);
+            return;
+        }
         String accRej = io.getString("Do you accept or reject order (accept = 'y', reject = 'n'");
         Map<Integer, Integer> faultyItems = new HashMap<>();
         if (accRej.equals("y")) {
