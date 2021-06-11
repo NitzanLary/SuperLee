@@ -6,6 +6,7 @@ import BusinessLayer.Supplier.FacadeSupplier;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This is the Facade of the system.
@@ -67,9 +68,22 @@ public class FacadeController {
         }
     }
 
-    public void acceptOrder(int orderId) {
+    public void acceptOrder(int orderId, Map faultyItems) {
+        Map<Integer, Integer> itemsInOrder=null;// = facadeDelivery.getUpdatedDelivery(orderId, faultyItems);
+        //TODO: get order from delivery after updated the faulty items
+        for (int key : itemsInOrder.keySet()) {
+            facadeInv.addToStorage(key, itemsInOrder.get(key));
+        }
     }
 
     public void rejectOrder(int orderId) {
+        //facadeDelivery.rejectDelivery(orderId);
+        //TODO: reject delivery
+    }
+
+    public String getOrderString(int orderId) {
+        //facadeDelivery.getOrderString(orderId);
+        //TODO: facadeDelivery\facadeSupplier return order string
+        return "";
     }
 }
