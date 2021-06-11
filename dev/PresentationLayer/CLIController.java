@@ -26,15 +26,26 @@ public class CLIController {
     public void handleManagement(int action, String userID){
         switch (action){
             case 1:
-                supplierCLI.init();
+                if(hasRole(userID, "Supplier Manager"))
+                    supplierCLI.init();
+                else System.out.println("You are not permitted entering Supplier Management");
+                break;
             case 2:
                 employeeCLI.start(userID);
+                break;
             case 3:
-                inventoryCLI.start();
+                if(hasRole(userID, "Inventory worker"))
+                    inventoryCLI.start();
+                else System.out.println("You are not permitted entering Inventory Management");
+                break;
             case 4:
-                deliveryCLI.runWithConsole();
+                if(hasRole(userID, "Delivery Manager"))
+                    deliveryCLI.runWithConsole();
+                else System.out.println("You are not permitted entering Delivery Management");
+                break;
             default:
                 System.out.println("Incorrect typing");
+                break;
         }
     }
 

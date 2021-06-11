@@ -149,7 +149,7 @@ public class EmployeeDAO extends DAO{
 
     }
 
-    public Response addNotification(EmployeeDTO employee, String msg) {
+    public Response addNotification(String id, String msg) {
         String sql = """
                 INSERT INTO Notifications (EmpID, Message)
                 VALUES
@@ -159,7 +159,7 @@ public class EmployeeDAO extends DAO{
              PreparedStatement pstmt = conn.prepareStatement(sql))
         {
 
-            pstmt.setString(1, employee.getID());
+            pstmt.setString(1, id);
             pstmt.setString(2, msg);
             pstmt.executeUpdate();
 
@@ -170,7 +170,7 @@ public class EmployeeDAO extends DAO{
         return new Response();
     }
 
-    public ResponseT<List<String>> getNotifications(EmployeeDTO employee){
+    public ResponseT<List<String>> getNotifications(String id){
         String sql = """
                 SELECT Message
                 FROM Notifications
@@ -181,7 +181,7 @@ public class EmployeeDAO extends DAO{
              PreparedStatement pstmt = conn.prepareStatement(sql))
         {
             List<String> msgs = new ArrayList<>();
-            pstmt.setString(1, employee.getID());
+            pstmt.setString(1, id);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()){
                 msgs.add(rs.getString(1));

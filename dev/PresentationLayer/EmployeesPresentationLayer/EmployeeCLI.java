@@ -89,7 +89,7 @@ public class EmployeeCLI {
 
 
     public void DisMmainMenu(){
-        cliController.displayNotifications();
+        cliController.ManagerNotifications();
         System.out.println("""
                 
                 1) Employees Menu
@@ -247,7 +247,7 @@ public class EmployeeCLI {
     }
 
     public void DisEmainMenu(){
-        cliController.displayNotifications();
+        cliController.EmpNotifications();
         System.out.println("""
                 
                 1) Show all my information

@@ -141,16 +141,20 @@ public class EmployeeController {
     }
 
     public Response addNotification(String empId, String msg){
+        if (empId == "0") // manager message
+            return dao.addNotification("0", msg);
         ResponseT<Employee> employee = getEmployee(empId);
         if (!employee.isErrorOccured())
-            return dao.addNotification(employee.getValue().getDTO(), msg);
+            return dao.addNotification(employee.getValue().getID().getValue(), msg);
         return new ResponseT<>(null, employee.getErrorMessage());
     }
 
     public ResponseT<List<String>> getNotifications(String empId){
+        if (empId == "0") // manager message
+            return dao.getNotifications("0");
         ResponseT<Employee> employee = getEmployee(empId);
         if (!employee.isErrorOccured())
-            return dao.getNotifications(employee.getValue().getDTO());
+            return dao.getNotifications(employee.getValue().getID().getValue());
         return new ResponseT<>(null, employee.getErrorMessage());
     }
 

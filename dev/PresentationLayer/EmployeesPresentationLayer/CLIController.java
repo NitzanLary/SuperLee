@@ -418,7 +418,7 @@ public class CLIController {
         handleSingleShiftMenu();
     }
 
-    public void displayNotifications(){
+    public void EmpNotifications(){
         ResponseT<List<String>> msgs = facade.getNotifications(userID);
         if(msgs.isErrorOccured()){
             employeeCli.print(msgs.getErrorMessage());
@@ -428,18 +428,19 @@ public class CLIController {
         msgs.getValue().forEach(employeeCli::print);
     }
 
+    public void ManagerNotifications() {
+        EmpNotifications();
+        ResponseT<List<String>> ManagerMsgs = facade.getNotifications("0");
+        if(ManagerMsgs.isErrorOccured()){
+            employeeCli.print(ManagerMsgs.getErrorMessage());
+            return;
+        }
+        employeeCli.print(String.format("You have %s new notifications regarding management", ManagerMsgs.getValue().size()));
+        ManagerMsgs.getValue().forEach(employeeCli::print);
+    }
+
 //    public String showThisShiftStatus(){
 //        return facade.getShiftStatuts(clientController.userID).getValue();
 //    }
-
-
-
-
-
-
-
-
-
-
 
 }

@@ -1,13 +1,6 @@
 package PresentationLayer;
-
-
 import BusinessLayer.EmployeesBuisnessLayer.FacadeController;
-import PresentationLayer.Inventory.INV_IO;
-import PresentationLayer.Supplier.IO_Supplier;
 import serviceObjects.ResponseT;
-import PresentationLayer.DeliveryPresentationLayer.DeliveryCLI;
-import PresentationLayer.EmployeesPresentationLayer.EmployeeCLI;
-
 import java.util.Scanner;
 
 public class CLI {
@@ -19,7 +12,55 @@ public class CLI {
         controller = new CLIController();
     }
 
-//    public void start() {
+    public void start() {
+        String ID;
+        int action;
+
+        do {
+            LoginWindow();
+            ID = scanner.next();
+            if(ID.equals("0"))
+                break;
+            ResponseT<Boolean> r = controller.isEmployee(ID);
+            while(r.isErrorOccured() || !r.getValue()) {
+                System.out.println("ID not found, please try again");
+                ID = scanner.next();
+                r = FacadeController.getInstance().isDeliveryManager(ID);
+            }
+            do {
+                MainMenuWindow();
+                action = scanner.nextInt();
+                if (action == 0)
+                    break;
+                controller.handleManagement(action, ID);
+            }while (true);
+        }while (true);
+    }
+
+    private void LoginWindow(){
+        System.out.println("""
+                Hi,
+                Welcome to Nitzan's code.
+                Also known as "Super Lee",
+                But Let's keep it Nitzan's code.
+                
+                Enter your ID please. quick.
+                To exit (why? don't you like my code?) press 0
+                """);
+    }
+
+    private void MainMenuWindow(){
+        System.out.println("""
+                1) Supplier Management
+                2) Employee Management
+                3) Inventory Management
+                4) Delivery Management
+                
+                To exit press 0
+                """);
+    }
+
+    //    public void start() {
 //
 //        String ID;
 //        int action;
@@ -58,52 +99,5 @@ public class CLI {
 //            }
 //        }while (true);
 //    }
-
-    public void start() {
-        String ID;
-        int action;
-
-        do {
-            LoginWindow();
-            ID = scanner.next();
-            if(ID.equals("0"))
-                break;
-            ResponseT<Boolean> r = controller.isEmployee(ID);
-            while(r.isErrorOccured() || !r.getValue()) {
-                System.out.println("ID not found, please try again");
-                ID = scanner.next();
-                r = FacadeController.getInstance().isDeliveryManager(ID);
-            }
-            MainMenuWindow();
-            action = scanner.nextInt();
-            if(action == 0)
-                break;
-            controller.handleManagement(action, ID);
-
-        }while (true);
-    }
-
-    private void LoginWindow(){
-        System.out.println("""
-                Hi,
-                Welcome to Nitzan's code.
-                Also known as "Super Lee",
-                But Let's keep it Nitzan's code.
-                
-                Enter your ID please. quick.
-                To exit (why? don't you like my code?) press 0
-                """);
-    }
-
-    private void MainMenuWindow(){
-        System.out.println("""
-                1) Supplier Management
-                2) Employee Management
-                3) Inventory Management
-                4) Delivery Management
-                
-                To exit press 0
-                """);
-    }
 
 }
