@@ -66,4 +66,10 @@ public class FacadeController {
             return new ResponseT<>(e.getMessage());
         }
     }
+
+    public void acceptOrder(int orderId) {
+    }
+
+    public void rejectOrder(int orderId) {
+    }
 }
