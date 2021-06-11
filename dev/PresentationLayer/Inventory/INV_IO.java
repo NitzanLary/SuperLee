@@ -30,18 +30,13 @@ public class INV_IO {
     public void start() {
         int action;
         do {
-            System.out.println("1) Add sale\n" +
-                    "2) Report Faulty\n" +
-                    "3) Add Item\n" +
-                    "4) Add Category\n" +
-                    "5) Faulty Report\n" +
-                    "6) Edit\n" +
-                    "7) Inventory report\n" +
-                    "8) Categories report\n" +
+            System.out.println("1) Accept or Reject Order\n" +
+                    "2) Reports\n" +
+                    "3) Stock Management\n" +
                     "\n9) Exit");
             try {
                 action = scanner.nextInt();
-                if (action > 8 || action < 1)
+                if (action > 3 || action < 1)
                     break;
                 scanner.nextLine();
                 ioCtrl.mainMenu(action);
@@ -59,15 +54,14 @@ public class INV_IO {
         do {
             System.out.println("1) Add Item discount\n" +
                     "2) Add Category discount\n" +
-                    "3) Add to storage\n" +
-                    "4) Add manufacturer discount\n"+
+                    "3) Add manufacturer discount\n"+
+                    "7) Remove Item\n" +
                     "5) Change item shelf\n" +
                     "6) Move item to shelf from storage\n" +
-                    "7) Remove Item\n" +
                     "\n9) Back");
             try {
                 action = scanner.nextInt();
-                if (action > 7 || action < 1)
+                if (action > 6 || action < 1)
                     break;
                 scanner.nextLine();
                 ioCtrl.editMenu(action);
@@ -149,5 +143,47 @@ public class INV_IO {
             }
         }
         return cats;
+    }
+
+    public void reportMenu() {
+        int action;
+        do {
+            System.out.println("1) Stock Report\n" +
+                    "2) Faulty Report\n" +
+                    "3) Category Report\n" +
+                    "\n9) Exit");
+            try {
+                action = scanner.nextInt();
+                if (action > 3 || action < 1)
+                    break;
+                scanner.nextLine();
+                ioCtrl.reportsMenu(action);
+            } catch (InputMismatchException e) {
+                System.out.println("Illegal input");
+                scanner.nextLine();
+            }
+        } while (true);
+    }
+
+    public void stockMenu() {
+        int action;
+        do {
+            System.out.println("1) Add Sale\n" +
+                    "2) Report Faulty\n" +
+                    "3) Add Item\n" +
+                    "4) Add Category\n" +
+                    "5) Edit" +
+                    "\n9) Exit");
+            try {
+                action = scanner.nextInt();
+                if (action > 5 || action < 1)
+                    break;
+                scanner.nextLine();
+                ioCtrl.stockMenu(action);
+            } catch (InputMismatchException e) {
+                System.out.println("Illegal input");
+                scanner.nextLine();
+            }
+        } while (true);
     }
 }

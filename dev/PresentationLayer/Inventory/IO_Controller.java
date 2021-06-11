@@ -20,40 +20,58 @@ public class IO_Controller {
     public void mainMenu(int action) {
         io = INV_IO.getInstance();
         //add sale
-        if (action == 1){ addSale(); }
+        if (action == 1){ accRejOrder(); }
         //add faulty
-        if (action == 2){ addFaulty(); }
+        if (action == 2){ io.reportMenu(); }
         //add item
-        if (action == 3){ addItem(); }
-        // add category
-        if (action == 4) { addCategory(); }
-        // faulty report
-        if (action == 5) { faultyReport(); }
-        //go to edit menu
-        if (action == 6) { io.editMenu(); }
-        //inventory report
-        if (action == 7) { invReport(); }
-        //categories report
-        if(action == 8) { catReport(); }
+        if (action == 3){ io.stockMenu(); }
     }
 
+    public void stockMenu(int action) {
+        if (action == 1) { addSale(); }
 
+        if (action == 2) { addFaulty(); }
+
+        if (action == 3) { addItem(); }
+
+        if ( action == 4) { addCategory(); }
+
+        if( action == 5) { io.editMenu(); }
+    }
+
+    public void accRejOrder() {
+        int orderId = io.getInt("Enter order ID");
+        String accRej = io.getString("Do you accept or reject order (accept = 'y', reject = 'n'");
+        if (accRej.equals("y")) {
+            facadeController.acceptOrder(orderId);
+        } else if (accRej.equals("n")) {
+            facadeController.rejectOrder(orderId);
+        } else {
+            io.print("please enter y/n");
+        }
+    }
+
+    public void reportsMenu(int action) {
+        if (action == 1) { invReport(); }
+
+        if ( action == 2) { faultyReport(); }
+
+        if( action == 3) { catReport(); }
+    }
 
     public void editMenu(int action) {
-        //add discount to item
+
         if(action == 1) { discountItem(); }
-        //add discount to category
+
         if(action == 2) { discountCategory(); }
-        //add items to storage
-        if(action == 3) { addToStorage(); }
-        //add a manufacturer discount to item
-        if(action == 4) { manuDiscount(); }
-        //change the shelf of an item
+
+        if(action == 3) { manuDiscount(); }
+
+        if(action == 4) { removeItem(); }
+
         if(action == 5) { changeShelf(); }
-        //moves items from storage to the shelf
+
         if(action == 6) { moveToShelf(); }
-        //removes an item
-        if(action == 7) { removeItem(); }
     }
 
     private void badInput(String msg){
