@@ -288,10 +288,11 @@ public class FacadeController {
             Object[] constraints = checkConstraintsDelivery(date);
             if (constraints != null){
 //                dec.tryToCreateDelivery(((DriverDTO) constraints[0]).getEmployeeName(), ((TruckDTO) constraints[1]).getId(), (LocalTime) constraints[2], date, new TaskDTO(tac.getTaskById(taskId)));
-                dec.createNewDelivery(new DeliveryDTO(date.toString(), ((LocalTime) constraints[2]).toString(),
-                        ((TruckDTO) constraints[1]).getId(), ((DriverDTO) constraints[0]).getEmployeeName(),
-                        0, "", new LocationDTO(location), new ArrayList<TaskDTO>(Arrays.asList(new TaskDTO(tac.getTaskById(taskId))))),
-                        );
+//                // TODO: add location and Task to the func below !
+//                dec.createNewDelivery(new DeliveryDTO(date.toString(), ((LocalTime) constraints[2]).toString(),
+//                        ((TruckDTO) constraints[1]).getId(), ((DriverDTO) constraints[0]).getEmployeeName(),
+//                        0, "", new LocationDTO(location), new ArrayList<TaskDTO>(Arrays.asList(new TaskDTO(tac.getTaskById(taskId))))),
+//                        );
                 return new Response<>(true);
             }
 
