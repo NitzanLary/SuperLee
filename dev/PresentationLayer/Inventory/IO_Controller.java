@@ -2,11 +2,14 @@ package PresentationLayer.Inventory;
 
 import BusinessLayer.FacadeController;
 import BusinessLayer.Inventory.FacadeInv;
+import BusinessLayer.Inventory.FaultyItem;
 import BusinessLayer.ResponseT;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class IO_Controller {
     private FacadeInv invCtrl;
@@ -42,8 +45,17 @@ public class IO_Controller {
     public void accRejOrder() {
         int orderId = io.getInt("Enter order ID");
         String accRej = io.getString("Do you accept or reject order (accept = 'y', reject = 'n'");
+        Map<Integer, Integer> faultyItems = new HashMap<>();
         if (accRej.equals("y")) {
-            facadeController.acceptOrder(orderId);
+            do {
+                int itemId = io.getInt("Enter Item ID or -1 if there are no more faulty items");
+                if (itemId == -1) {
+                    break;
+                }
+                int amount = io.getInt("Enter Amount");
+                faultyItems.put(itemId, amount);
+            } while (true);
+            facadeController.acceptOrder(orderId, faultyItems);
         } else if (accRej.equals("n")) {
             facadeController.rejectOrder(orderId);
         } else {
