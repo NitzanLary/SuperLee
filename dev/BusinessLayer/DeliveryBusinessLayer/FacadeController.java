@@ -18,6 +18,7 @@ public class FacadeController {
     TaskController tac;
     TruckController trc;
     BusinessLayer.EmployeesBuisnessLayer.FacadeController efc;
+    String origin;
 
     public FacadeController(){
         dec = new DeliveryController();
@@ -26,6 +27,7 @@ public class FacadeController {
         tac = new TaskController();
         trc = new TruckController();
         efc = BusinessLayer.EmployeesBuisnessLayer.FacadeController.getInstance();
+        origin = "Ben-Gurion 1, Beer Sheva";
     }
 
     public static FacadeController getInstance() {
@@ -116,9 +118,9 @@ public class FacadeController {
 
     public void sendDelivery(DeliveryDTO deliveryDTO, Response<Boolean> storeIt){
         this.dec.sendDelivery(deliveryDTO, storeIt.getData());
+        //  TODO: insert the Delivery details to the order Table in the DB
     }
 
-    // todo - should be integrated with employee module to get all drivers
 //    public ArrayList<tmpEmployee> getAllDriverEmployees(){
 //        ArrayList<tmpEmployee> ret = new ArrayList<>();
 //        tmpEmployee emp1 = new tmpEmployee("yanay the sunny",15000);
@@ -278,6 +280,7 @@ public class FacadeController {
         String taskId = tac.addTask(lstOfProducts, loadingOrUnloading, location);
         for (LocalDate date : daysOfSupplying){
             DeliveryDTO deliveryDTO = dec.getDeliveriesByDate(date);
+            // if there is a delivery that send in the same day
             if (deliveryDTO != null){
                 ArrayList<TaskDTO> arr = deliveryDTO.getDestinations();
                 arr.add(new TaskDTO(tac.getTaskById(taskId)));
@@ -285,14 +288,18 @@ public class FacadeController {
                 updateDelivery(deliveryDTO, deliveryDTO.getId());
                 return new Response(true);
             }
+            // if not we create new delivery for it
             Object[] constraints = checkConstraintsDelivery(date);
             if (constraints != null){
-//                dec.tryToCreateDelivery(((DriverDTO) constraints[0]).getEmployeeName(), ((TruckDTO) constraints[1]).getId(), (LocalTime) constraints[2], date, new TaskDTO(tac.getTaskById(taskId)));
-//                // TODO: add location and Task to the func below !
-//                dec.createNewDelivery(new DeliveryDTO(date.toString(), ((LocalTime) constraints[2]).toString(),
-//                        ((TruckDTO) constraints[1]).getId(), ((DriverDTO) constraints[0]).getEmployeeName(),
-//                        0, "", new LocationDTO(location), new ArrayList<TaskDTO>(Arrays.asList(new TaskDTO(tac.getTaskById(taskId))))),
-//                        );
+                Location origin = arc.getLocation(this.origin);
+                ArrayList<Task> arrTask = new ArrayList<>(Collections.singletonList(tac.getTaskById(taskId)));
+
+                dec.createNewDelivery(new DeliveryDTO(date.toString(), ((LocalTime) constraints[2]).toString(),
+                        ((TruckDTO) constraints[1]).getId(), ((DriverDTO) constraints[0]).getEmployeeName(),
+                        0, "",new LocationDTO(origin) ,
+                        new ArrayList<TaskDTO>(Collections.singletonList(new TaskDTO(tac.getTaskById(taskId))))),
+                        origin, arrTask
+                        );
                 return new Response<>(true);
             }
 
@@ -318,6 +325,7 @@ public class FacadeController {
                     arr[0] = driverDTOS.get(0);
                     arr[1] = truckDTO;
                     arr[2] = shift;
+                    return arr;
                 }
 
             }
