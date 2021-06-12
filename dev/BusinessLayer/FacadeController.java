@@ -3,11 +3,9 @@ package BusinessLayer;
 import BusinessLayer.Inventory.FacadeInv;
 import BusinessLayer.Supplier.FacadeSupplier;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This is the Facade of the system.
@@ -38,12 +36,33 @@ public class FacadeController {
         HashMap<Integer,Integer> prodQuantity = facadeSupplier.getOrderController().orders.get(orderID).getProducts();
         //Supplier details:
         String address = facadeSupplier.getSupplierController().getSuppliers().get(suppID).getAddress();
-        String phoneNumber="";// TODO: complete
-        String contactName="";// TODO: complete
-        ArrayList<LocalDate> supplierDays;// TODO: complete
-        String infoSupplyDates = facadeSupplier.getSupplierController().getSuppliers().get(suppID).getInfoSupplyDay();
-        // TODO: delivery module need to continue from here.
-        //facadeDelivery.assignAutoTaskNew(prodQuantity, address, phoneNumber, contactName, "loading", supplierDays)
+        String[] contact = (facadeSupplier.getSupplierController().getSuppliers().get(suppID).getContacts()).split(" ");
+        String contactName = contact[0];
+        String phoneNumber= contact [1];
+        String[] infoSupplyDates = (facadeSupplier.getSupplierController().getSuppliers().get(suppID).getInfoSupplyDay()).split(" ");
+        ArrayList<LocalDate> supplierDays = supplyDateFunction(infoSupplyDates);
+        //TODO delivery need to finish from here
+        //facadeDelivery.assignAutoTask(prodQuantity, address, phoneNumber, contactName, "loading", supplierDays);
+    }
+
+    private ArrayList<LocalDate> supplyDateFunction(String[] infoSupplyDates){
+        ArrayList<LocalDate> list = new ArrayList<>();
+        LocalDate todayDate = LocalDate.now();
+        int today = LocalDate.now().getDayOfWeek().getValue();
+        for(String day : infoSupplyDates){
+            int dayVal = DayOfWeek.valueOf(day).getValue();
+            int diff = Math.abs(today - dayVal);
+            if(diff == 0){
+                list.add(todayDate.plusDays(7));
+            }
+            else if (today < dayVal){
+                list.add(todayDate.plusDays(diff));
+            }
+            else if (dayVal < today){
+                list.add(todayDate.plusDays(7-diff));
+            }
+        }
+        return list;
     }
 
     public ResponseT<StringBuilder> ordersByLack(HashMap<Integer, Integer> stkReport){

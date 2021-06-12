@@ -9,6 +9,7 @@ import BusinessLayer.Supplier.PeriodicOrder;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Scanner;
 
 import static java.lang.System.exit;
@@ -585,11 +586,15 @@ public class IO_Supplier {
             System.out.println("Enter Payment Method: ");
             String payment = scanner.nextLine();
 
-            System.out.println("Enter Contacts Details: ");
-            String contacts = scanner.nextLine();
+            System.out.println("Enter Contact Details: ");
+            System.out.println("Enter Private Name: ");
+            String pname = scanner.nextLine();
+            System.out.println("Enter Contact Phone Number:");
+            int phoneNumber = Integer.parseInt(scanner.nextLine());
+            String contacts = pname + " " + phoneNumber;
 
-            System.out.println("Enter Days of Supply: ");
-            String infoSupplyDay = scanner.nextLine();
+            System.out.println("Enter Days of Supply Separated By Spaces: ");
+            String infoSupplyDay = scanner.nextLine().toUpperCase(Locale.ROOT);
 
             System.out.println("The Supplier Need Pickup?, (Y/N): ");
             System.out.println("1. Yes");
