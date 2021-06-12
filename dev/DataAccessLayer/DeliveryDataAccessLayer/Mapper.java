@@ -13,6 +13,8 @@ import java.time.format.ResolverStyle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.SplittableRandom;
+import java.util.stream.Collectors;
 
 public class Mapper {
     private static Mapper instance = null;
@@ -21,6 +23,7 @@ public class Mapper {
     private HashMap<String,AreaDTO> areas;
     private HashMap<String,TruckDTO> trucks;
     private HashMap<String,DriverDTO> drivers;
+    private HashMap<Integer, Integer> orders;
 //    private HashMap<String, ArrayList<LocationDTO>> locationsbyArea;
     private HashMap<String, LocationDTO> locations;
     private DeliveryDAO deliveryDAO = DeliveryDAO.getInstance();
@@ -36,6 +39,7 @@ public class Mapper {
         drivers = new HashMap<>();
 //        locationsbyArea = new HashMap<String, ArrayList<LocationDTO>>();
         locations = new HashMap<>();
+        orders = new HashMap<>();
     }
 
     public static Mapper getInstance(){
@@ -434,6 +438,66 @@ public class Mapper {
 
     public void removeDelivery(DeliveryDTO deliveryDTO) {
         deliveries.remove(deliveryDTO.getId());
+    }
+
+    public HashMap<Integer, Integer> getOrder() {
+        String taskID = extractOrderID();
+        if (taskID != null){
+            removeOrder(taskID);
+            HashMap<String, Integer> productsLst = getProducts(taskID);
+            Map<Integer , Integer> intIntProducts =
+                    productsLst.entrySet().stream().collect(Collectors.toMap(
+                            entry -> Integer.parseInt(entry.getKey()),
+                            entry -> entry.getValue())
+                    );
+            return (HashMap<Integer, Integer>) intIntProducts;
+        }
+        return null;
+    }
+
+    private HashMap<String, Integer> getProducts(String taskID) {
+        String sql = "SELECT * FROM Tasks WHERE Tasks.id = (?)";
+        HashMap<String, Integer> products = new HashMap<>();
+        try (Connection conn = taskDAO.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()){
+                products.put(rs.getString(1), rs.getInt(2));
+            }
+            return products;
+        }
+        catch(SQLException e) {
+            System.out.println(e.getStackTrace());
+        }
+        return products;
+
+    }
+
+    private void removeOrder(String taskID) {
+        String sql = " DELETE FROM AppendingTasks WHERE id = (?)";
+        try (Connection conn = taskDAO.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.executeQuery();
+        }
+        catch(SQLException e) {
+            System.out.println(e.getStackTrace());
+        }
+    }
+
+    private String extractOrderID() {
+        String query = "select id from AppendingTasks order by id DESC LIMIT 1 ";
+        try (Connection conn = taskDAO.connect();
+            PreparedStatement pstmt = conn.prepareStatement(query)) {
+            ResultSet rs = pstmt.executeQuery();
+            if(!rs.next()) {
+                return null;
+            }
+            return rs.getString(1);
+        }
+        catch(SQLException e) {
+            System.out.println(e.getStackTrace());
+        }
+        return null;
     }
 
 //    public ArrayList<DeliveryDTO> getLastDeliveryByDate(LocalDate date) {

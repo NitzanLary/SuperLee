@@ -91,6 +91,14 @@ public class TaskController {
             ret.add(t);
         return ret;
     }
+
+    public void storeAppendingTasks(ArrayList<TaskDTO> taskDTOS){
+        dc.storeAppendingTasks(taskDTOS);
+    }
+
+    public HashMap<Integer, Integer> getOrder() {
+        return mapper.getOrder();
+    }
 //
 //    public ArrayList<TaskDTO> getTasksData() {
 //        //        this.dc.getAreas().values();

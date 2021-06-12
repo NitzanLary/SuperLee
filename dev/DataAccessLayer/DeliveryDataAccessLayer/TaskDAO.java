@@ -6,6 +6,7 @@ import DataAccessLayer.DeliveryDataAccessLayer.DTO.TaskDTO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -92,5 +93,20 @@ public class TaskDAO extends DAO {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+
+    public void storeAppendingTasks(ArrayList<TaskDTO> taskDTOS) {
+        String sql = "INSERT INTO AppendingTasks(taskID) VALUES(?)";
+        try (Connection conn = this.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            for (TaskDTO taskDTO : taskDTOS){
+                pstmt.setString(1, taskDTO.getId());
+                pstmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 }

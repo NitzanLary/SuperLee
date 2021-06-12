@@ -10,6 +10,9 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
+import java.util.Map;
+import java.util.stream.Stream;
 
 public class FacadeController {
     DeliveryController dec;
@@ -118,8 +121,16 @@ public class FacadeController {
 
     public void sendDelivery(DeliveryDTO deliveryDTO, Response<Boolean> storeIt){
         this.dec.sendDelivery(deliveryDTO, storeIt.getData());
-        //  TODO: insert the Delivery details to the order Table in the DB
+        // store to appendingTask(taskId)
+        this.tac.storeAppendingTasks(deliveryDTO.getDestinations());
+        //  TODO: check if work
     }
+
+    public HashMap<Integer, Integer> getOrder(){
+        return this.tac.getOrder();
+    }
+
+
 
 //    public ArrayList<tmpEmployee> getAllDriverEmployees(){
 //        ArrayList<tmpEmployee> ret = new ArrayList<>();
@@ -269,15 +280,21 @@ public class FacadeController {
 
     /**
      * module supplier call this method for create auto periodic order
-     * @param lstOfProducts - <makat, quantity, ?cost?, ?another makat?, ect..>
+     * @param intIntLstOfProducts - <makat, quantity, ?cost?, ?another makat?, ect..>
      * @param destinationDetails - <address, contact name, phone number, ect???...>
      * @param loadingOrUnloading - loading if we get products from supplier, unloading if we drop shipment  (Farjun's explanation)
      * @param daysOfSupplying - list of LocalDate
      * @return
      */
-    public Response<Boolean> assignAutoTask(HashMap<String, Integer> lstOfProducts, HashMap<String, Object> destinationDetails, String loadingOrUnloading, ArrayList<LocalDate> daysOfSupplying){
+    public Response<Boolean> assignAutoTask(HashMap<Integer, Integer> intIntLstOfProducts, HashMap<String, Object> destinationDetails, String loadingOrUnloading, ArrayList<LocalDate> daysOfSupplying){
         Location location = arc.getLocation((String) destinationDetails.get("address")); // todo: check what in the destinationDetails
-        String taskId = tac.addTask(lstOfProducts, loadingOrUnloading, location);
+        Map<String , Integer> lstOfProducts =
+                intIntLstOfProducts.entrySet().stream().collect(Collectors.toMap(
+                        entry -> Integer.toString(entry.getKey()),
+                        entry -> entry.getValue())
+                );
+//        HashMap<String , Integer> ourLst = convertLop2Str(lstOfProducts);
+        String taskId = tac.addTask((HashMap<String, Integer>) lstOfProducts, loadingOrUnloading, location);
         for (LocalDate date : daysOfSupplying){
             DeliveryDTO deliveryDTO = dec.getDeliveriesByDate(date);
             // if there is a delivery that send in the same day
@@ -308,6 +325,7 @@ public class FacadeController {
         // TODO AddRegularTask() !!
         return new Response<>(false);
     }
+
 
     public Object[] checkConstraintsDelivery(LocalDate date) {
         LocalTime MShift = LocalTime.parse("10:00");
