@@ -3,6 +3,7 @@ package BusinessLayer;
 import BusinessLayer.Inventory.FacadeInv;
 import BusinessLayer.Supplier.FacadeSupplier;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,8 +38,12 @@ public class FacadeController {
         HashMap<Integer,Integer> prodQuantity = facadeSupplier.getOrderController().orders.get(orderID).getProducts();
         //Supplier details:
         String address = facadeSupplier.getSupplierController().getSuppliers().get(suppID).getAddress();
+        String phoneNumber="";// TODO: complete
+        String contactName="";// TODO: complete
+        ArrayList<LocalDate> supplierDays;// TODO: complete
         String infoSupplyDates = facadeSupplier.getSupplierController().getSuppliers().get(suppID).getInfoSupplyDay();
         // TODO: delivery module need to continue from here.
+        //facadeDelivery.assignAutoTaskNew(prodQuantity, address, phoneNumber, contactName, "loading", supplierDays)
     }
 
     public ResponseT<StringBuilder> ordersByLack(HashMap<Integer, Integer> stkReport){
@@ -68,22 +73,25 @@ public class FacadeController {
         }
     }
 
-    public void acceptOrder(int orderId, Map faultyItems) {
+    public void acceptOrder(int orderId, Map<Integer, Integer> faultyItems) {
         Map<Integer, Integer> itemsInOrder=null;// = facadeDelivery.getUpdatedDelivery(orderId, faultyItems);
         //TODO: get order from delivery after updated the faulty items
         for (int key : itemsInOrder.keySet()) {
             facadeInv.addToStorage(key, itemsInOrder.get(key));
         }
+        for (int key : faultyItems.keySet()) {
+            facadeInv.addFaulty(key,0, faultyItems.get(key));
+        }
     }
 
     public void rejectOrder(int orderId) {
         //facadeDelivery.rejectDelivery(orderId);
-        //TODO: reject delivery
+        //TODO: reject delivery (pop order from queue)
     }
 
     public String getOrderString(int orderId) {
         //facadeDelivery.getOrderString(orderId);
-        //TODO: facadeDelivery\facadeSupplier return order string
+        //TODO: facadeDelivery\facadeSupplier return order string (pop from queue?)
         return "";
     }
 }
