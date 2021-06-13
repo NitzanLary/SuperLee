@@ -41,8 +41,7 @@ public class FacadeController {
         String phoneNumber= contact [1];
         String[] infoSupplyDates = (facadeSupplier.getSupplierController().getSuppliers().get(suppID).getInfoSupplyDay()).split(" ");
         ArrayList<LocalDate> supplierDays = supplyDateFunction(infoSupplyDates);
-        //TODO delivery need to finish from here
-        //facadeDelivery.assignAutoTask(prodQuantity, address, phoneNumber, contactName, "loading", supplierDays);
+        facadeDelivery.assignAutoTask(prodQuantity, address, phoneNumber, contactName, "loading", supplierDays);
     }
 
     private ArrayList<LocalDate> supplyDateFunction(String[] infoSupplyDates){

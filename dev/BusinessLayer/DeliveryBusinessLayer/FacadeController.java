@@ -281,13 +281,29 @@ public class FacadeController {
     /**
      * module supplier call this method for create auto periodic order
      * @param intIntLstOfProducts - <makat, quantity, ?cost?, ?another makat?, ect..>
-     * @param destinationDetails - <address, contact name, phone number, ect???...>
+     * @param sendToAddress - <address>
+     * @param sendToPhoneNumber - <phone>
+     * @param sendToContactName - <name>
      * @param loadingOrUnloading - loading if we get products from supplier, unloading if we drop shipment  (Farjun's explanation)
      * @param daysOfSupplying - list of LocalDate
      * @return
      */
-    public Response<Boolean> assignAutoTask(HashMap<Integer, Integer> intIntLstOfProducts, HashMap<String, Object> destinationDetails, String loadingOrUnloading, ArrayList<LocalDate> daysOfSupplying){
-        Location location = arc.getLocation((String) destinationDetails.get("address")); // todo: check what in the destinationDetails
+    public Response<Boolean> assignAutoTask(HashMap<Integer, Integer> intIntLstOfProducts, String sendToAddress, String sendToPhoneNumber, String sendToContactName, String loadingOrUnloading, ArrayList<LocalDate> daysOfSupplying){
+        Location location = arc.getLocation(sendToAddress); // todo: check what in the destinationDetails
+        if (location == null){
+            LocationDTO newLoc = new LocationDTO(sendToAddress, sendToPhoneNumber, sendToContactName);
+            ArrayList<AreaDTO> allAreas = arc.getAreas();
+            AreaDTO targetArea = null;
+            if (allAreas == null || allAreas.isEmpty()){
+                AreaDTO south = new AreaDTO("South");
+                arc.addNewArea(south);
+                targetArea = arc.getAreas().get(0);
+            }else{
+                targetArea = allAreas.get(0);
+            }
+            arc.addLocation(targetArea, newLoc);
+            location = arc.getLocation(sendToAddress);
+        }
         Map<String , Integer> lstOfProducts =
                 intIntLstOfProducts.entrySet().stream().collect(Collectors.toMap(
                         entry -> Integer.toString(entry.getKey()),

@@ -456,10 +456,11 @@ public class Mapper {
     }
 
     private HashMap<String, Integer> getProducts(String taskID) {
-        String sql = "SELECT * FROM Tasks WHERE Tasks.id = (?)";
+        String sql = "SELECT * FROM Products WHERE Products.taskID = (?)";
         HashMap<String, Integer> products = new HashMap<>();
         try (Connection conn = taskDAO.connect();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1,taskID);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()){
                 products.put(rs.getString(1), rs.getInt(2));
@@ -477,6 +478,7 @@ public class Mapper {
         String sql = " DELETE FROM AppendingTasks WHERE id = (?)";
         try (Connection conn = taskDAO.connect();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1,taskID);
             pstmt.executeQuery();
         }
         catch(SQLException e) {
