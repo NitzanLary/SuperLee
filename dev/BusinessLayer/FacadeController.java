@@ -91,18 +91,19 @@ public class FacadeController {
         }
     }
 
-    public void acceptOrder(int orderId, Map<Integer, Integer> faultyItems) {
-        Map<Integer, Integer> itemsInOrder=null;// = facadeDelivery.getUpdatedDelivery(orderId, faultyItems);
+    public void acceptOrder(HashMap<Integer, Integer> items, Map<Integer, Integer> faultyItems) {
+        //Map<Integer, Integer> itemsInOrder=facadeDelivery.getOrder();// = facadeDelivery.getUpdatedDelivery(orderId, faultyItems);
         //TODO: get order from delivery after updated the faulty items
-        for (int key : itemsInOrder.keySet()) {
-            facadeInv.addToStorage(key, itemsInOrder.get(key));
+        //System.out.println(items.toString());
+        for (int key : items.keySet()) {
+            facadeInv.addToStorage(key, items.get(key));
         }
         for (int key : faultyItems.keySet()) {
             facadeInv.addFaulty(key,0, faultyItems.get(key));
         }
     }
 
-    public void rejectOrder(int orderId) {
+    public void rejectOrder() {
         //facadeDelivery.rejectDelivery(orderId);
         //TODO: reject delivery (pop order from queue)
     }

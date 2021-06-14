@@ -463,7 +463,7 @@ public class Mapper {
             pstmt.setString(1,taskID);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()){
-                products.put(rs.getString(1), rs.getInt(2));
+                products.put(rs.getString(2), rs.getInt(3));
             }
             return products;
         }
@@ -475,7 +475,7 @@ public class Mapper {
     }
 
     private void removeOrder(String taskID) {
-        String sql = " DELETE FROM AppendingTasks WHERE id = (?)";
+        String sql = " DELETE FROM AppendingTasks WHERE taskID = (?)";
         try (Connection conn = taskDAO.connect();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1,taskID);
@@ -487,7 +487,7 @@ public class Mapper {
     }
 
     private String extractOrderID() {
-        String query = "select id from AppendingTasks order by id DESC LIMIT 1 ";
+        String query = "select taskID from AppendingTasks order by taskID DESC LIMIT 1 ";
         try (Connection conn = taskDAO.connect();
             PreparedStatement pstmt = conn.prepareStatement(query)) {
             ResultSet rs = pstmt.executeQuery();

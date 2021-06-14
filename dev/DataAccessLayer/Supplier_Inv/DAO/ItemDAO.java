@@ -79,7 +79,7 @@ public class ItemDAO extends DAO {
         }catch (Exception e) {
             return new ResponseT("cannot update item to db");
         }
-        return new ResponseT(item);
+        return new ResponseT(toUpdate);
     }
 
     public Response delete(Item item) {

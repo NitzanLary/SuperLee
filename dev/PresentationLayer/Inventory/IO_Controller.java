@@ -14,10 +14,11 @@ import java.util.Map;
 public class IO_Controller {
     private FacadeInv invCtrl;
     private INV_IO io;
-    private FacadeController facadeController = FacadeController.getInstance();
+    private FacadeController facadeController;
 
     public IO_Controller() {
         invCtrl = FacadeInv.getInstance();
+        facadeController = FacadeController.getInstance();
     }
 
     public void mainMenu(int action) {
@@ -43,12 +44,11 @@ public class IO_Controller {
     }
 
     public void accRejOrder() {
-        int orderId = io.getInt("Enter order ID");
-        String delivery = facadeController.getOrderString(orderId);
+        HashMap<Integer, Integer> delivery = facadeController.facadeDelivery.getOrder();
         if(delivery != null) {
-            io.print(delivery);
+            io.print(delivery.toString());
         } else {
-            io.print("No such order: " + orderId);
+            io.print("No such order");
             return;
         }
         String accRej = io.getString("Do you accept or reject order (accept = 'y', reject = 'n'");
@@ -62,9 +62,9 @@ public class IO_Controller {
                 int amount = io.getInt("Enter Amount");
                 faultyItems.put(itemId, amount);
             } while (true);
-            facadeController.acceptOrder(orderId, faultyItems);
+            facadeController.acceptOrder(delivery, faultyItems);
         } else if (accRej.equals("n")) {
-            facadeController.rejectOrder(orderId);
+            facadeController.rejectOrder();
         } else {
             io.print("please enter y/n");
         }

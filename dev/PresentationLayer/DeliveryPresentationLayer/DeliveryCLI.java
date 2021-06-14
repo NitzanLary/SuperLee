@@ -1,5 +1,6 @@
 package PresentationLayer.DeliveryPresentationLayer;
 
+import BusinessLayer.DeliveryBusinessLayer.DeliveryController;
 import BusinessLayer.DeliveryBusinessLayer.FacadeController;
 import DataAccessLayer.DeliveryDataAccessLayer.DTO.*;
 import serviceObjects.ResponseT;
@@ -13,7 +14,7 @@ public class DeliveryCLI {
     FacadeController fc;
 
     public DeliveryCLI() {
-        fc = new FacadeController();
+        fc = FacadeController.getInstance();
     }
 
     public static DeliveryCLI getInstance(){

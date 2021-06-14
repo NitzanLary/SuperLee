@@ -23,6 +23,8 @@ public class FacadeController {
     BusinessLayer.EmployeesBuisnessLayer.FacadeController efc;
     String origin;
 
+    static FacadeController instance;
+
     public FacadeController(){
         dec = new DeliveryController();
         drc = new DriverController();
@@ -34,8 +36,9 @@ public class FacadeController {
     }
 
     public static FacadeController getInstance() {
-        //TODO
-        return null;
+        if (instance == null)
+            instance = new FacadeController();
+        return instance;
     }
 
     public Response<String> toStringResponse() {
