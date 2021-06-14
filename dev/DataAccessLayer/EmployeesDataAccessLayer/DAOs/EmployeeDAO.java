@@ -54,7 +54,7 @@ public class EmployeeDAO extends DAO{
                     DaysOff = ?
                 WHERE EmpID = ?
                 """;
-        
+
         try(Connection conn = getConn();
             PreparedStatement pstmt = conn.prepareStatement(sql)){
 
@@ -147,6 +147,51 @@ public class EmployeeDAO extends DAO{
             return new ResponseT<>(null, e.getMessage());
         }
 
+    }
+
+    public Response addNotification(String id, String msg) {
+        String sql = """
+                INSERT INTO Notifications (EmpID, Message)
+                VALUES
+                (?, ?)
+                """;
+        try (Connection conn = getConn();
+             PreparedStatement pstmt = conn.prepareStatement(sql))
+        {
+
+            pstmt.setString(1, id);
+            pstmt.setString(2, msg);
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new Response(e.getMessage());
+        }
+        return new Response();
+    }
+
+    public ResponseT<List<String>> getNotifications(String id){
+        String sql = """
+                SELECT Message
+                FROM Notifications
+                WHERE EmpID == ?
+                """;
+
+        try (Connection conn = getConn();
+             PreparedStatement pstmt = conn.prepareStatement(sql))
+        {
+            List<String> msgs = new ArrayList<>();
+            pstmt.setString(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()){
+                msgs.add(rs.getString(1));
+            }
+            return new ResponseT<>(msgs);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ResponseT(null, e.getMessage());
+        }
     }
 
 }

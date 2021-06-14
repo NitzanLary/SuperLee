@@ -8,6 +8,7 @@ import serviceObjects.ResponseT;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 
 public class EmployeeController {
     private static EmployeeController employeeController;
@@ -37,7 +38,7 @@ public class EmployeeController {
         Role role = new Role(roleName, licence);
         Employee e;
         try{
-             e = new Employee(name, ID, _dateOfHire);
+            e = new Employee(name, ID, _dateOfHire);
         }catch (IllegalArgumentException exception){
             return new Response(exception.getMessage());
         }
@@ -138,5 +139,29 @@ public class EmployeeController {
             return employee.getValue().isDeliveryManager();
         return new ResponseT<>(null, employee.getErrorMessage());
     }
-}
 
+    public Response addNotification(String empId, String msg){
+        if (empId == "0") // manager message
+            return dao.addNotification("0", msg);
+        ResponseT<Employee> employee = getEmployee(empId);
+        if (!employee.isErrorOccured())
+            return dao.addNotification(employee.getValue().getID().getValue(), msg);
+        return new ResponseT<>(null, employee.getErrorMessage());
+    }
+
+    public ResponseT<List<String>> getNotifications(String empId){
+        if (empId == "0") // manager message
+            return dao.getNotifications("0");
+        ResponseT<Employee> employee = getEmployee(empId);
+        if (!employee.isErrorOccured())
+            return dao.getNotifications(employee.getValue().getID().getValue());
+        return new ResponseT<>(null, employee.getErrorMessage());
+    }
+
+    public ResponseT<Boolean> hasRole(String id, String role) {
+        ResponseT<Employee> employee = getEmployee(id);
+        if (!employee.isErrorOccured())
+            return employee.getValue().haveRoleCheck(role) ? new ResponseT<>(true) : new ResponseT<>(false);
+        return new ResponseT<>(null, employee.getErrorMessage());
+    }
+}
