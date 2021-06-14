@@ -572,8 +572,8 @@ public class FacadeSupplier {
             for (Integer supplierId : orders.keySet()) {
                 HashMap<Integer, Integer> productsOfSupplier = orders.get(supplierId);
                 int orderId = createOrder(supplierId).value;
-                sb.append("\tOrderID: "+orderId+"\n");
-                sb.append("\tSupplierID: "+supplierId+"\n");
+                sb.append("\t OrderID: "+orderId+" \n");
+                sb.append("\t SupplierID: "+supplierId+" \n");
                 for (Integer productId : orders.get(supplierId).keySet()) {
                     int amount = productsOfSupplier.get(productId);
                     addProductToOrder(supplierId, orderId, productId, amount);

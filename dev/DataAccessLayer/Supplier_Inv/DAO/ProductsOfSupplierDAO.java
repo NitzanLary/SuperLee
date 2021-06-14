@@ -72,7 +72,7 @@ public class ProductsOfSupplierDAO extends DAO {
                 while(rs.next()) {
                     posList.add(new ProductsOfSupplierDTO(rs.getInt("productID"),
                             rs.getInt("supplierID"), rs.getString("name"),
-                            rs.getString("category"), rs.getDouble("price")));
+                            rs.getString("category"), rs.getDouble("price"), rs.getInt("prodIDSuperLee")));
                 }
             }
         }catch (Exception e) {

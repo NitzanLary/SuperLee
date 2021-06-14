@@ -294,7 +294,7 @@ public class IO_Controller {
     private void invReport() {
         try {
             ResponseT<HashMap<Integer, Integer>> reportResponse = invCtrl.stkReport();
-            ResponseT<StringBuilder> orderResponse = facadeController.facadeSupplier.ordersByLack(reportResponse.value);
+            ResponseT<StringBuilder> orderResponse = facadeController.ordersByLack(reportResponse.value);
             io.print(reportResponse.ErrorMessage);
             if (!orderResponse.ErrorOccured())
                 io.print(orderResponse.value.toString());

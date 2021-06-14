@@ -84,7 +84,10 @@ public class AreaController {
 //                }
 //            }
 //        }
-        return new Location(mapper.getLocation(destination));
+        LocationDTO locationDTO = mapper.getLocation(destination);
+        if (locationDTO != null)
+            return new Location(locationDTO);
+        return  null;
     }
 
     public ArrayList<AreaDTO> getAreas() {

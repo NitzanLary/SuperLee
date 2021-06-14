@@ -9,12 +9,13 @@ public class ProductsOfSupplierDTO {
     private double price;
     private int pidSuperLee;
 
-    public ProductsOfSupplierDTO(Integer productID, Integer supplierID, String name, String category, double price) {
+    public ProductsOfSupplierDTO(Integer productID, Integer supplierID, String name, String category, double price, int pidSuperLee) {
         this.productID = productID;
         this.supplierID = supplierID;
         this.name = name;
         this.category = category;
         this.price = price;
+        this.pidSuperLee = pidSuperLee;
     }
 
     public Integer getProductID() {

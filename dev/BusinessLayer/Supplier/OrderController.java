@@ -253,4 +253,12 @@ public class OrderController {
             return false;
         return true;
     }
+
+    public HashMap<Integer, Integer> switchToSuperLeeID(int orderID, int supID) {
+        HashMap<Integer, Integer> output = new HashMap<>();
+        for(Integer pID : orders.get(orderID).getProducts().keySet()){
+            output.put(getProdController().getSupplierProd().get(supID).get(pID).getPidSuperLee(), orders.get(orderID).getProducts().get(pID));
+        }
+        return output;
+    }
 }

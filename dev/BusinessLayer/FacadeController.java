@@ -33,7 +33,7 @@ public class FacadeController {
 
     // after each order we send info to match delivery.
     public void sendOrderToDelivery(int orderID, int suppID, boolean pickup) {
-        HashMap<Integer,Integer> prodQuantity = facadeSupplier.getOrderController().orders.get(orderID).getProducts();
+        HashMap<Integer,Integer> prodQuantity = facadeSupplier.getOrderController().switchToSuperLeeID(orderID, suppID);
         //Supplier details:
         String address = facadeSupplier.getSupplierController().getSuppliers().get(suppID).getAddress();
         String[] contact = (facadeSupplier.getSupplierController().getSuppliers().get(suppID).getContacts()).split(" ");
@@ -49,7 +49,7 @@ public class FacadeController {
         LocalDate todayDate = LocalDate.now();
         int today = LocalDate.now().getDayOfWeek().getValue();
         for(String day : infoSupplyDates){
-            int dayVal = DayOfWeek.valueOf(day).getValue();
+            int dayVal = DayOfWeek.valueOf(day.toUpperCase(Locale.ROOT)).getValue();
             int diff = Math.abs(today - dayVal);
             if(diff == 0){
                 list.add(todayDate.plusDays(7));

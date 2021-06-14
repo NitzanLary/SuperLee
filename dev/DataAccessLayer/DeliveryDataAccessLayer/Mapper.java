@@ -202,10 +202,10 @@ public class Mapper {
 //                return null;
             locationDTO = new LocationDTO(address, rs.getString(2), rs.getString(3));
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+//            System.out.println(e.getMessage());
         }
-
-        locations.put(address, locationDTO);
+        if (locationDTO != null)
+            locations.put(address, locationDTO);
         return locationDTO;
 
     }
@@ -479,7 +479,7 @@ public class Mapper {
         try (Connection conn = taskDAO.connect();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1,taskID);
-            pstmt.executeQuery();
+            pstmt.execute();
         }
         catch(SQLException e) {
             System.out.println(e.getStackTrace());
