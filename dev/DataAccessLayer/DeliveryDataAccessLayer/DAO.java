@@ -39,6 +39,8 @@ public abstract class DAO {
     public Connection connect() {
         // SQLite connection string
         String url = "jdbc:sqlite:" + System.getProperty("user.dir") + "/dev/DataBase/SuperLeeDB.db";
+//        String url = "jdbc:sqlite:ADSS_Group_J/dev/DataBase/SuperLeeDB.db";
+
 //        String url = "jdbc:sqlite:C:/Users/refae/BGU/Courses/Semester_B/Software_systems_analysis_and_design/SSAD_Project/ADSS_Group_J/dev/Delivery/DataAccessLayer/super-li.db";
 //        System.out.println(System.getProperty("user.dir"));
         Connection conn = null;
