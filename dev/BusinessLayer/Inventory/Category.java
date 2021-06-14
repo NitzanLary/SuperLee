@@ -190,6 +190,9 @@ public class Category {
                 itemAmounts.put(i.getId(), i.checkMinAmount(0));
             }
         }
+        for (Category c : subCategories) {
+            itemAmounts.putAll(c.getLackItems());
+        }
         return itemAmounts;
     }
 
