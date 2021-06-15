@@ -22,6 +22,14 @@ public class TaskController {
             nextID = mapper.getLastTaskID();
             getNewTaskID();
         }
+        initTasks();
+    }
+
+    private void initTasks() {
+        HashMap<String, TaskDTO> taskDTOS = (HashMap<String, TaskDTO>) mapper.getTasks();
+        for (TaskDTO taskDTO : taskDTOS.values()){
+            controller.put(taskDTO.getId(), new Task(taskDTO));
+        }
     }
 
     public String addTask(HashMap<String, Integer> listOfProduct, String loadingOrUnloading, Location destination){
@@ -98,6 +106,10 @@ public class TaskController {
 
     public HashMap<Integer, Integer> getOrder() {
         return mapper.getOrder();
+    }
+
+    public void updateTaskDelID(Task task, String delID){
+        dc.updateTask(new TaskDTO(task), new Response<>(delID));
     }
 //
 //    public ArrayList<TaskDTO> getTasksData() {

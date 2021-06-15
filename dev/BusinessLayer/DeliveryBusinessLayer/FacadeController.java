@@ -186,16 +186,21 @@ public class FacadeController {
     }
 
     public DeliveryDTO updateDelivery(DeliveryDTO newDel, String oldDelId) {
+        String nextID = dec.getNextDeliveryID();
         ArrayList<Task> tasks = new ArrayList<>();
         for(TaskDTO td: newDel.getDestinations()){
             Task t = dec.getTasksFromDelivery(td.getId(), oldDelId);
             if (t==null)
-                t = tac.getAndRemoveTaskById(td.getId(), newDel.getId());
+                t = tac.getAndRemoveTaskById(td.getId(), nextID);
+            else{
+                tac.updateTaskDelID(t, nextID);
+            }
             tasks.add(t);
         }
         Location orig = arc.getLocation(newDel.getOrigin().getAddress());
         newDel.setId(null);
         Delivery newD = dec.createNewDelivery(newDel, orig, tasks);
+
         return new DeliveryDTO(dec.updateDelivery(newD, oldDelId));
     }
 

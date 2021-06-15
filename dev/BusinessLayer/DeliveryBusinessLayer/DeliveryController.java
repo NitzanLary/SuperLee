@@ -237,10 +237,10 @@ public class DeliveryController {
         ArrayList<DeliveryDTO> ret = new ArrayList<>();
         ArrayList<DeliveryDTO> deliveryDTOS = mapper.getDeliveries();
         for (DeliveryDTO deliveryDTO : deliveryDTOS){
-            System.out.println(date.format(DateTimeFormatter.ofPattern("d-M-uu")) + "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
             if (deliveryDTO.getDate().equals(date.format(DateTimeFormatter.ofPattern("d-M-uu"))))
                 if  (deliveryDTO.getDepartureWeight() <= 0) {
-                    return deliveryDTO;
+                    if (!deliveryDTO.getModification().contains("newer"))
+                        return deliveryDTO;
                 }
         }
         return null;

@@ -246,8 +246,8 @@ public class Mapper {
         if (tasks.containsKey(id))
             return tasks.get(id);
 
-        String sql = "SELECT * FROM Tasks WHERE Tasks.id = (?)";
-        String sqlProduct = "SELECT * FROM Products WHERE Products.TaskID = (?)";
+        String sql = "SELECT * FROM Tasks WHERE Tasks.taskID = (?)";
+        String sqlProduct = "SELECT * FROM Products WHERE Products.taskID = (?)";
         String sqlLoc = "SELECT * FROM Locations WHERE Locations.address = (?)";
         TaskDTO tkDTO = null;
 
@@ -345,10 +345,28 @@ public class Mapper {
     }
 
     public Map<String, TaskDTO> getTasks() {
-        return tasks;
+        if (!tasks.keySet().isEmpty())
+            return tasks;
+        HashMap<String,TaskDTO> ret = new HashMap<>(    );
+        String query = "SELECT taskID FROM Tasks where Tasks.deliveryID is null ";
+        ResultSet rs = null;
+        try (Connection conn = taskDAO.connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                TaskDTO taskDTO = getTaskByID(rs.getString(1));
+                ret.put(taskDTO.getId(), taskDTO);
+            }
+        }
+        catch(SQLException e) {
+            System.out.println(e.getStackTrace());
+        }
+        return ret;
     }
 
     public ArrayList<DeliveryDTO> getDeliveries() {
+        if (!deliveries.keySet().isEmpty())
+            return new ArrayList<>(deliveries.values());
         ArrayList<DeliveryDTO> ret = new ArrayList<>();
         String query = "SELECT ID FROM deliveries";
         ResultSet rs = null;
