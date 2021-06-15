@@ -343,8 +343,7 @@ public class FacadeController {
             }
 
         }
-// TODO: notifyHRManager(); talk to N&Y !
-        // TODO AddRegularTask() !!
+        efc.addNotification("0","cannot assign task " + taskId);
         return new Response<>(false);
     }
 
