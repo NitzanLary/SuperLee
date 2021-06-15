@@ -35,6 +35,14 @@ public class DeliveryController {
             nextID = mapper.getLastDeliveryID();
             getNewDeliveryID();
         }
+        initDeliveries();
+    }
+
+    private void initDeliveries() {
+        ArrayList<DeliveryDTO> deliveryDTOS = mapper.getDeliveries();
+        for (DeliveryDTO deliveryDTO : deliveryDTOS){
+            this.deliveries.put(deliveryDTO.getId(), new Delivery(deliveryDTO));
+        }
     }
 
     public HashMap<String, Delivery> getDeliveries() {

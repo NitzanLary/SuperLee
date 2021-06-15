@@ -25,7 +25,7 @@ public class CLI {
             while(r.isErrorOccured() || !r.getValue()) {
                 System.out.println("ID not found, please try again");
                 ID = scanner.next();
-                r = FacadeController.getInstance().isDeliveryManager(ID);
+                r = FacadeController.getInstance().isEmployee(ID);
             }
             do {
                 MainMenuWindow();
