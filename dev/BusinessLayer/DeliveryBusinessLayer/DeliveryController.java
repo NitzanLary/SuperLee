@@ -237,9 +237,11 @@ public class DeliveryController {
         ArrayList<DeliveryDTO> ret = new ArrayList<>();
         ArrayList<DeliveryDTO> deliveryDTOS = mapper.getDeliveries();
         for (DeliveryDTO deliveryDTO : deliveryDTOS){
-            if (deliveryDTO.getDate() == date.format(DateTimeFormatter.ofPattern("d-M-uu")) && deliveryDTO.getDepartureWeight() > 0)
-                return deliveryDTO;
-
+            System.out.println(date.format(DateTimeFormatter.ofPattern("d-M-uu")) + "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+            if (deliveryDTO.getDate().equals(date.format(DateTimeFormatter.ofPattern("d-M-uu"))))
+                if  (deliveryDTO.getDepartureWeight() <= 0) {
+                    return deliveryDTO;
+                }
         }
         return null;
     }
