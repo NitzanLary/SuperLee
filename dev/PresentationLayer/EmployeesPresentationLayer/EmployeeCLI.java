@@ -39,7 +39,6 @@ public class EmployeeCLI {
 
 //        String ID;
         int action;
-
         do {
 //            DisloginMenu();
 //            ID = scanner.next();
@@ -79,10 +78,9 @@ public class EmployeeCLI {
 
     public void DisloginMenu(){
         System.out.println("""
-                *** Welcome! ****
+                * Welcome! **
                
                 Please Enter ID:
-                
                 
                 
                 To exit press 0 
@@ -91,12 +89,19 @@ public class EmployeeCLI {
 
 
     public void DisMmainMenu(){
+        printNotifications(cliController.ManagerNotifications());
         System.out.println("""
+                
                 1) Employees Menu
                 2) Shifts Menu
                 To exit press 0
                 
                 """);
+    }
+
+    private void printNotifications(List<String> notifications) {
+        System.out.println(String.format("You have %s new messages", notifications.size()));
+        notifications.forEach(System.out::println);
     }
 
     //------------------------------MANAGER ONLY----------------------------------
@@ -247,7 +252,9 @@ public class EmployeeCLI {
     }
 
     public void DisEmainMenu(){
+        printNotifications(cliController.EmpNotifications());
         System.out.println("""
+                
                 1) Show all my information
                 2) Show my preferences for a shift
                 3) Apply preferences for a shift
