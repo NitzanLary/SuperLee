@@ -164,8 +164,8 @@ public class CLIController {
         }
 
         else{
-        Response r = facade.addEmployee(clientController.userID, EmpID, name, bankAccount, salary, sickDays, studyFund,
-                            daysOff, roleName, licence, dateOfHire);
+            Response r = facade.addEmployee(clientController.userID, EmpID, name, bankAccount, salary, sickDays, studyFund,
+                    daysOff, roleName, licence, dateOfHire);
             if(r.isErrorOccured())
                 employeeCli.print(r.getErrorMessage());
             else employeeCli.print("Employee added");
@@ -290,7 +290,7 @@ public class CLIController {
                 Enter 2 if you WANT work on this shift
                 """);
         if (MorningEvning == ('M')){
-             facade.putConstrain(clientController.userID, shiftDate,
+            facade.putConstrain(clientController.userID, shiftDate,
                     LocalTime.of(6, 0), LocalTime.of(14,0), preference);
         }
         else
@@ -418,19 +418,30 @@ public class CLIController {
         handleSingleShiftMenu();
     }
 
+    public List<String> EmpNotifications(){
+        ResponseT<List<String>> msgs = facade.getNotifications(userID);
+        if(msgs.isErrorOccured()){
+            employeeCli.print(msgs.getErrorMessage());
+            return null;
+        }
+        return msgs.getValue();
+    }
+
+    public List<String> ManagerNotifications() {
+        EmpNotifications();
+        List<String> msgs = EmpNotifications();
+        if(msgs == null) return null; // some error occurred
+        ResponseT<List<String>> ManagerMsgs = facade.getNotifications("0");
+        if(ManagerMsgs.isErrorOccured()){
+            employeeCli.print(ManagerMsgs.getErrorMessage());
+            return null;
+        }
+        msgs.addAll(ManagerMsgs.getValue());
+        return msgs;
+    }
 
 //    public String showThisShiftStatus(){
 //        return facade.getShiftStatuts(clientController.userID).getValue();
 //    }
-
-
-
-
-
-
-
-
-
-
 
 }

@@ -330,7 +330,7 @@ public class FacadeController {
                 Location origin = arc.getLocation(this.origin);
                 ArrayList<Task> arrTask = new ArrayList<>(Collections.singletonList(tac.getTaskById(taskId)));
 
-                Delivery delivery = dec.createNewDelivery(new DeliveryDTO(date.toString(), ((LocalTime) constraints[2]).toString(),
+                Delivery delivery = dec.createNewDelivery(new DeliveryDTO(date.toString(), ((LocalTime) constraints[2]).format(DateTimeFormatter.ofPattern("d-M-uu")),
                         ((TruckDTO) constraints[1]).getId(), ((DriverDTO) constraints[0]).getEmployeeName(),
                         0, "",new LocationDTO(origin) ,
                         new ArrayList<TaskDTO>(Collections.singletonList(new TaskDTO(tac.getTaskById(taskId))))),
